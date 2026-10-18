@@ -32,10 +32,22 @@ URLs, hashes, commencement dates and the exact in-scope parts are in the manifes
 reasoning is in the [scope verification](../docs/phase01_corpus/scope_verification.md) and the
 [v1 corpus definition](../docs/phase01_corpus/v1_corpus_definition.md).
 
-**The file that is not committed** must be downloaded by hand after cloning, from
-<https://www.nrs.gov.ng/uploads/NIGERIA_TAX_ADMINISTRATION_ACT_2025_8c945071a7.pdf>, saved as
-`data/raw/nigeria_tax_administration_act_2025_gazette_nrs.pdf`, and checked with the script
-above.
+## Fresh clone
+
+One file is not committed (the 27.7 MB Nigeria Tax Administration Act scan from the Nigeria
+Revenue Service). After cloning, fetch it and check everything against the manifest:
+
+```powershell
+.venv\Scripts\python python\ingest\fetch_raw.py
+```
+
+```powershell
+.venv\Scripts\python python\ingest\verify_manifest.py
+```
+
+`fetch_raw.py` downloads each non-committed file from its manifest URL, accepts it only if the
+size and SHA-256 match, and never overwrites an existing file that fails the hash. The source URL
+is <https://www.nrs.gov.ng/uploads/NIGERIA_TAX_ADMINISTRATION_ACT_2025_8c945071a7.pdf>.
 
 **No NRS copy of the Nigeria Tax Act.** On 2026-10-18 the Nigeria Revenue Service's "Nigeria
 Tax Act, 2025" page carried only a written overview, with no PDF of the Act. The Lagos State IRS
