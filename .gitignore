@@ -12,6 +12,9 @@ GEMINI.md
 !.env.example
 .venv/
 
+# Raw source files of 10 MB or more (URL and sha256 pinned in data/manifest.csv)
+data/raw/nigeria_tax_administration_act_2025_gazette_nrs.pdf
+
 # Python
 __pycache__/
 *.py[cod]

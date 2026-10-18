@@ -14,6 +14,11 @@ document is added, moved or renamed.
 | [00_planning/implementation_plan.md](00_planning/implementation_plan.md) | Phased implementation plan (Phases 0 to 12, gates, stack, repository structure, evaluation method), converted to Markdown. |
 | [00_planning/decision_log.md](00_planning/decision_log.md) | Decisions (D-xx), corrections to the plan (C-xx) and data-quality issues (DQ-xx). |
 | [phase00_setup/model_selection.md](phase00_setup/model_selection.md) | Sourced LLM and embedding comparison, cost per query, and recommendation (D-03). |
+| [phase01_corpus/scope_verification.md](phase01_corpus/scope_verification.md) | Primary-source check of the Nigeria Tax Act 2025 (assent, commencement, repeals, later changes) and of the gazette and National Assembly text dispute; verdict on D-01. |
+| [phase01_corpus/v1_corpus_definition.md](phase01_corpus/v1_corpus_definition.md) | Exact in-scope chapters, parts and sections of both Acts, which text is cited (D-09), known gaps and source files. |
+
+The source-document inventory (files, hashes, provenance, snapshot date) is in
+[../data/README.md](../data/README.md) and [../data/manifest.csv](../data/manifest.csv).
 
 ## Planned folder structure
 

@@ -12,16 +12,20 @@ rather than in the language model.
 
 ## v1 scope
 
-The Nigeria Tax Act 2025 (company income tax and VAT parts). The Nigeria Tax Administration Act
-2025 is added only if needed. Scope is confirmed against primary sources in Phase 1. See
-[decision log](docs/00_planning/decision_log.md) (D-01, C-01).
+The Nigeria Tax Act 2025 (company income tax and VAT parts) and selected procedural parts of the
+Nigeria Tax Administration Act 2025 (registration, returns, assessment, payment, penalties),
+as a dated snapshot taken on 2026-10-18. Two official texts of each Act are in circulation; the
+corpus cites the Official Gazette and discloses where the National Assembly text differs. See
+[scope verification](docs/phase01_corpus/scope_verification.md), the
+[data inventory](data/README.md) and the [decision log](docs/00_planning/decision_log.md)
+(D-01, C-01, D-09, D-10).
 
 Out of scope: personal income tax, state-level taxes, real-time tracking of legislative change,
 model fine-tuning, and any integration with real filing systems.
 
 ## Status
 
-**Phase 0**: environment and repository setup. No corpus, retrieval or generation code yet.
+**Phase 1**: corpus acquired and hash-pinned. No parsing, retrieval or generation code yet.
 
 ## Documentation
 
