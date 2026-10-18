@@ -4,3 +4,7 @@ pgvector==0.5.1
 python-dotenv==1.2.4
 pytest==9.1.1
 streamlit==1.66.0
+# PDF extraction and token counting (Phase 2, D-12). The OCR stack is in requirements-ocr.txt.
+pdfplumber==0.11.4
+pypdfium2==4.30.0
+tiktoken==0.8.0
