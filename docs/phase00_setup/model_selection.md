@@ -1,7 +1,7 @@
 # LLM and Embedding Model Selection (D-03)
 
-Status: **recommendation for Kene to approve.** The embedding choice is provisional until the
-Phase 4 hit-rate results.
+Status: **approved by Kene on 2026-10-18 (D-03).** The embedding choice stays provisional until
+the Phase 4 hit-rate results.
 
 All prices are USD per 1M tokens, taken from the providers' official pricing pages on
 **2026-10-18** (access date). Standard tier, no batch or cache discounts. Prices change; re-check

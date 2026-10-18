@@ -11,7 +11,10 @@ entries are never edited silently; add a new entry that supersedes them.
 | D-02 | 2026-10-18 | Local pgvector runs in Docker (image `pgvector/pgvector:pg17`, host port 5434). The existing PostgreSQL 17 (5433) and PostgreSQL 15 (5432) services are left untouched. | pgvector is not installed on either local server, and compiling it on Windows needs VS Build Tools and is fragile. Docker also mirrors the deployed environment. |
 | D-03 | 2026-10-18 | The hosted LLM and the embedding model are chosen from a sourced comparison ([model selection](../phase00_setup/model_selection.md)). **Approved 2026-10-18:** Claude Sonnet 5.5 for generation, Claude Haiku 5.5 for the verification pass, `text-embedding-3-small` for embeddings. The embedding choice stays provisional until Phase 4 hit-rate results; the verification model is revisited in Phase 6. | Budget and per-query cost should be understood before heavy experimentation (plan Phase 0). |
 | D-04 | 2026-10-18 | The original planning `.docx` moves to `.agents/planning/` (not committed). A cleaned Markdown conversion lives at [implementation_plan.md](implementation_plan.md), with non-technical framing removed. | The repository should read as a professional project. The original is kept unchanged for provenance (sha256 `665433b9…2b7abb`). |
-| D-05 | 2026-10-18 | Repository name is `ng-tax-advisory-copilot`. No remote has been created yet. | Name suggested in the plan. GitHub username still to be supplied. |
+| D-05 | 2026-10-18 | Repository name is `ng-tax-advisory-copilot`. No remote has been created yet. Superseded by D-08. | Name suggested in the plan. GitHub username still to be supplied. |
+| D-06 | 2026-10-18 | Public docs may name model products and vendors as factual references where the system depends on them; never as authorship or attribution. | Documents such as the model selection need to name the models they compare and use. |
+| D-07 | 2026-10-18 | Licence is MIT. | Permissive and simple for a research and demonstration project. |
+| D-08 | 2026-10-18 | Repository name is `nigeria-tax-copilot`, superseding D-05. | "ng" is ambiguous and "advisory" conflicts with the not-tax-advice disclaimer. |
 
 ## Corrections to the original plan
 

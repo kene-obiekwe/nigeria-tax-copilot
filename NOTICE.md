@@ -7,4 +7,5 @@ This project is provided for research and demonstration purposes only.
 - It does not collect, store or process real taxpayer data.
 - Its output is not tax, legal or financial advice.
 
-No licence has been chosen yet. Until one is added, all rights are reserved by the project owner.
+The software is licensed under the MIT licence; see [LICENSE](LICENSE). The statutory texts the
+system draws on remain the work of their official publishers.
