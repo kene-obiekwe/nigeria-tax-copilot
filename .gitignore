@@ -25,6 +25,9 @@ __pycache__/
 # Runtime logs (schema documented, never committed)
 logs/
 
+# Review packs: page images rendered for human checks (regenerated, never committed)
+docs/phase02_chunking/proofread_pack/
+
 # OS and editor
 .DS_Store
 Thumbs.db

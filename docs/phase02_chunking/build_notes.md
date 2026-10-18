@@ -224,3 +224,67 @@ pages.
   pages. After gap fill, s12(4) and s62(4), both out of scope, are still missing, and in-scope
   sections s11, s29, s34 and s147 have OCR misreads. Strict alignment sends every affected
   in-scope section to proofreading; none can be marked identical by mistake.
+
+## 2b-4: Proofreading the six differing NTAA sections
+
+Files: [`data/curated/ntaa_nrs_proofread/`](../../data/curated/ntaa_nrs_proofread/index.csv)
+(`s011.txt`, `s029.txt`, `s034.txt`, `s039.txt`, `s041.txt`, `s147.txt`, `index.csv`), the
+[proofread report](proofread_report.md), and `tests/test_ntaa_proofread.py`. The review pack
+(page images) is in `docs/phase02_chunking/proofread_pack/`, which is git-ignored.
+
+### Method
+
+1. 14 NRS pages (11, 12, 21, 22, 23, 24, 26, 27, 69 to 74) were rendered to PNG with
+   pypdfium2. Each has a whole-page image and two half-page images at full scan resolution.
+2. Each section was transcribed from the half-page images, applying only the design
+   section 1 normalisation. The OCR and Gombe texts were not used as a starting point.
+3. Each draft was then diffed against the Gombe text and the re-OCR text, on letters and digits
+   with the alignment mappings. A second diff against Gombe included punctuation, with
+   whitespace ignored.
+4. Every difference was classified. In every print difference, the draft and the re-OCR agree
+   against Gombe. In every OCR error, the draft and Gombe agree against the re-OCR. So each
+   point rests on two independent readings.
+
+### Counts
+
+| | Count | Sections |
+|---|---|---|
+| Print differences | 7 (3 substantive, 1 missing content, 3 wording) | s29 (2), s39 (2), s41 (1), s147 (2) |
+| OCR errors corrected | 8 | s11 (3), s29 (1), s34 (2), s41 (1), s147 (1) |
+| Sections identical to Gombe once OCR errors are corrected | 2 | s11, s34 |
+| Punctuation differences from Gombe beyond the substantive ones | 0 | |
+
+Time was not measured precisely. Transcription was most of the work, and s147 (six pages, 55
+definitions) was about half of it.
+
+### Surprising
+
+- **Typesetting slips in the cited print.** s29(b)(ii) omits "a month" ("cumulative
+  transactions in amount to ₦100,000,000"), and s29(b)(i) prints "amonth". Both are kept as
+  printed, pending Kene's decision on P2.
+- **s147 "small business" is ₦100m in the NRS print**, against ₦50m in Gombe. This is the NTAA
+  counterpart of the NTA small-company dispute (DQ-01).
+- **NRS s148 gives commencement as 1 January 2025**, against 1 January 2026 in the long title.
+  Proposed DQ-12.
+
+### Missed-line guard
+
+`test_no_line_missed_by_the_reocr_on_in_scope_pages` reads the scan's original OCR layer with
+pdfplumber for the 41 NRS pages holding in-scope sections. Every word of 6+ letters that also
+occurs in the Gombe print must appear in the re-OCR text of that page or a neighbouring page
+(letters only, case-folded). It finds no misses and runs in about 20 seconds. If the scan is
+absent, it fails with an instruction to run `fetch_raw.py`.
+
+The allowlist holds the entry the task specified, (58, "though"): an old-layer misread of
+"through" in s121. pdfplumber reads that word as "through", so the entry is not currently
+triggered. It is kept, documented, for a reading that does produce it.
+
+### Review
+
+Before review, `tests/test_ntaa_proofread.py` had 17 passing and the 6 review-gate tests
+(`status = reviewed`, `reviewed_by` filled) failing by design.
+
+Kene reviewed all six sections against the page images on 2026-10-18 and approved them with no
+corrections. On P2 (s29(b)(i) "amonth"), Kene decided to keep the text exactly as printed.
+`index.csv` now records `reviewed`, `Kene` and `2026-10-18` for each section, and all 23 tests
+pass.
