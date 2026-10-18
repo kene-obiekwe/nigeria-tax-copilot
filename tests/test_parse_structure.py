@@ -12,6 +12,7 @@ NTA_GAZETTE = "nigeria_tax_act_2025_gazette_lirs.pdf"
 NTA_NASS = "nigeria_tax_act_2025_nass.pdf"
 NTAA_GOMBE = "nigeria_tax_administration_act_2025_gazette_gombe_irs.pdf"
 NTAA_NASS = "nigeria_tax_administration_act_2025_nass.pdf"
+NTAA_NRS = "nigeria_tax_administration_act_2025_gazette_nrs.pdf"  # parsed from committed OCR output
 
 
 @lru_cache(maxsize=None)
@@ -20,7 +21,7 @@ def parsed(name):
 
 
 @pytest.mark.parametrize("name, expected", [
-    (NTA_GAZETTE, 203), (NTA_NASS, 202), (NTAA_GOMBE, 148), (NTAA_NASS, 148),
+    (NTA_GAZETTE, 203), (NTA_NASS, 202), (NTAA_GOMBE, 148), (NTAA_NASS, 148), (NTAA_NRS, 148),
 ])
 def test_section_counts_in_order(name, expected):
     act = parsed(name)
@@ -56,6 +57,13 @@ EXPECTED_ANOMALIES = {
         "s67: no marginal-note heading level with the section (page 43); heading taken from the arrangement of sections",
         "s95: no marginal-note heading level with the section (page 54); heading taken from the arrangement of sections",
         "s145: heading 'Supemacy of this Act' does not match the arrangement of sections 'Conflict with other laws'",
+    ],
+    NTAA_NRS: [
+        # OCR missed the line holding s12(4) and s62(4) (both out of scope); see build notes.
+        "s12: subsection (5) follows (3) (page 13)",
+        "s62: subsection (5) follows (3) (page 39)",
+        "s34: no marginal-note heading level with the section (page 23); heading taken from the arrangement of sections",
+        "s79: heading 'Power of the President to designate relevant authority' does not match the arrangement of sections 'Taxation of digital and virtual transactions or assets'",
     ],
 }
 

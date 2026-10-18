@@ -1,0 +1,66 @@
+section,status,similarity,diff_summary,nrs_pages,gombe_pages
+1,identical,1.0000,,7,9
+2,identical,1.0000,,7,9
+3,identical,1.0000,,7 8,9 10
+4,identical,1.0000,,8,10
+5,identical,1.0000,,8,10
+6,identical,1.0000,,8 9,11
+7,identical,1.0000,,9,11
+8,identical,1.0000,,9,11
+9,identical,1.0000,,9 10,12
+10,identical,1.0000,,10,12
+11,different,0.9882,gombe[f] / nrs[]; gombe[cinthecaseofacompanythatpermanentlycease] / nrs[]; gombe[a] / nrs[d],11 12,13 14
+15,identical,1.0000,,14,16
+22,identical,1.0000,,19 20,21 22
+23,identical,1.0000,,20,22
+25,identical,1.0000,,20 21,22 23
+26,identical,1.0000,,21,23
+27,identical,1.0000,,21,23
+28,identical,1.0000,,21,23
+29,different,0.9914,gombe[a] / nrs[d]; gombe[nthamo] / nrs[],21 22,23 24
+30,identical,1.0000,,22,24
+31,identical,1.0000,,22 23,24 25
+32,identical,1.0000,,23,25
+33,identical,1.0000,,23,25
+34,different,0.9988,gombe[] / nrs[13]; gombe[c] / nrs[],23 24,25 26
+35,identical,1.0000,,24,26
+36,identical,1.0000,,24 25,26 27
+38,identical,1.0000,,25 26,28
+39,different,0.8636,gombe[] / nrs[0rthenigeriannairaattheprevailingexchang]; gombe[] / nrs[andpayments],26,28
+40,identical,1.0000,,26,28
+41,different,0.9387,gombe[i] / nrs[]; gombe[whereataxpayerisdissatisfiedwiththejudge] / nrs[],26 27,28 29
+42,identical,1.0000,,27 28,30
+43,identical,1.0000,,28 29,30 31
+44,identical,1.0000,,29,31
+45,identical,1.0000,,29,31
+46,identical,1.0000,,29 30,31 32
+47,identical,1.0000,,30,32
+48,identical,1.0000,,30,32
+49,identical,1.0000,,30 31,32 33
+51,identical,1.0000,,32 33,34 35
+52,identical,1.0000,,33,35
+53,identical,1.0000,,33,35
+55,identical,1.0000,,33 34,35 36
+56,identical,1.0000,,34,36
+65,identical,1.0000,,40 41,42 43
+66,identical,1.0000,,41,43
+72,identical,1.0000,,43 44,45 46
+73,identical,1.0000,,44 45,46 47
+74,identical,1.0000,,45,47
+75,identical,1.0000,,46,47 48
+76,identical,1.0000,,46,48
+100,identical,1.0000,,54,55 56
+101,identical,1.0000,,54,56
+102,identical,1.0000,,54,56
+103,identical,1.0000,,54,56
+104,identical,1.0000,,54,56
+105,identical,1.0000,,55,56
+106,identical,1.0000,,55,56
+107,identical,1.0000,,55,56 57
+108,identical,1.0000,,55 56,57
+121,identical,1.0000,,58 59,60
+122,identical,1.0000,,59,60
+124,identical,1.0000,,59 60,61
+126,identical,1.0000,,60,61 62
+127,identical,1.0000,,60,62
+147,different,0.9997,gombe[5] / nrs[10]; gombe[] / nrs[a]; gombe[] / nrs[f],69 70 71 72 73 74,70 71 72 73 74 75

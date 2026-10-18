@@ -1,0 +1,29 @@
+Nigeria Tax Administration Act,2025 2025 No.5 A345
+(e) implement industry-standard cybersecurity protocols to protect
+customer data,transactions and assets from breachesorunauthorised
+access；and
+f) conduct internal audits to ensure compliance with AML/KYC, tax
+obligations and reporting standards.
+Interpretation
+8.InthisSchedule--
+virtual asset"means a digital representation ofvalue that can be digitally
+traded or transferred and used for payment, investment, or other financial
+purposes which include cryptocurrencies, tokens and digital collectibles, but
+virtual assets shall not include certain types of digital currencies and assets,
+which are--
+(a)national currencies and foreign national currencies;
+(b) electronic money licensed by the Central Bank of Nigeria ;
+(c)instruments that provide the holderwith access toproducts,services
+or benefits, such as loyalty programs and other reward systems; and
+(d) digital representations of other assets whose issuance,bookkeeping,
+tradingor settlementisprovided forunder theInvestments and Securities
+Act;
+"Virtual Asset Service Provider (VASP)"means a person who offers
+services related to the exchange,custody,or management ofvirtual assets on
+behalfofclients;
+"Anti-Money Laundering(AML)"meansmeasures designed toprevent
+criminals from disguising illegally obtained funds as legitimate ;
+"Counter-Terrorism Financing (CTF)"means efforts to prevent the
+financingofterrorism,including throughvirtual assets;and
+"Know Your Customer (KYC)"means the process of identifying and
+verifying theidentity ofclients.

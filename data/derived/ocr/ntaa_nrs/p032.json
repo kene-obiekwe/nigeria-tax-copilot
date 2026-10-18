@@ -1,0 +1,1114 @@
+{
+ "page": 32,
+ "width": 2088,
+ "height": 2895,
+ "boxes": [
+  {
+   "text": "A-290",
+   "score": 0.8884,
+   "bbox": [
+    [
+     237.0,
+     241.0
+    ],
+    [
+     366.0,
+     241.0
+    ],
+    [
+     366.0,
+     283.0
+    ],
+    [
+     237.0,
+     283.0
+    ]
+   ],
+   "x0": 237.0,
+   "x1": 366.0,
+   "cy": 262.0,
+   "h": 42.0,
+   "pass": 1
+  },
+  {
+   "text": "2025 No.5",
+   "score": 0.941,
+   "bbox": [
+    [
+     494.0,
+     243.0
+    ],
+    [
+     701.0,
+     243.0
+    ],
+    [
+     701.0,
+     278.0
+    ],
+    [
+     494.0,
+     278.0
+    ]
+   ],
+   "x0": 494.0,
+   "x1": 701.0,
+   "cy": 260.5,
+   "h": 35.0,
+   "pass": 1
+  },
+  {
+   "text": "Nigeria TaxAdministration Act,2025",
+   "score": 0.9666,
+   "bbox": [
+    [
+     942.0,
+     239.0
+    ],
+    [
+     1653.0,
+     232.0
+    ],
+    [
+     1654.0,
+     271.0
+    ],
+    [
+     942.0,
+     277.0
+    ]
+   ],
+   "x0": 942.0,
+   "x1": 1654.0,
+   "cy": 254.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "monthlypaymentsremainingtobemadeinrespectofsuch accountingperiod",
+   "score": 0.9903,
+   "bbox": [
+    [
+     489.0,
+     347.0
+    ],
+    [
+     1886.0,
+     342.0
+    ],
+    [
+     1886.0,
+     383.0
+    ],
+    [
+     489.0,
+     389.0
+    ]
+   ],
+   "x0": 489.0,
+   "x1": 1886.0,
+   "cy": 365.5,
+   "h": 47.0,
+   "pass": 1
+  },
+  {
+   "text": "(4) A final instalment of tax shall be due and payable on or before the",
+   "score": 0.9504,
+   "bbox": [
+    [
+     589.0,
+     427.0
+    ],
+    [
+     1891.0,
+     419.0
+    ],
+    [
+     1892.0,
+     462.0
+    ],
+    [
+     590.0,
+     471.0
+    ]
+   ],
+   "x0": 589.0,
+   "x1": 1892.0,
+   "cy": 445.0,
+   "h": 52.0,
+   "pass": 1
+  },
+  {
+   "text": "duedate of filing of the self-assessment of tax for such accounting period",
+   "score": 0.969,
+   "bbox": [
+    [
+     488.0,
+     481.0
+    ],
+    [
+     1892.0,
+     478.0
+    ],
+    [
+     1892.0,
+     521.0
+    ],
+    [
+     488.0,
+     525.0
+    ]
+   ],
+   "x0": 488.0,
+   "x1": 1892.0,
+   "cy": 501.5,
+   "h": 47.0,
+   "pass": 1
+  },
+  {
+   "text": "and shallbe theamountofthe taxassessed for thataccountingperiod lessso",
+   "score": 0.9603,
+   "bbox": [
+    [
+     490.0,
+     536.0
+    ],
+    [
+     1890.0,
+     536.0
+    ],
+    [
+     1890.0,
+     575.0
+    ],
+    [
+     490.0,
+     575.0
+    ]
+   ],
+   "x0": 490.0,
+   "x1": 1890.0,
+   "cy": 555.5,
+   "h": 39.0,
+   "pass": 1
+  },
+  {
+   "text": "much as has already been paid under subsections (2) and (3)",
+   "score": 0.9821,
+   "bbox": [
+    [
+     490.0,
+     594.0
+    ],
+    [
+     1618.0,
+     591.0
+    ],
+    [
+     1618.0,
+     633.0
+    ],
+    [
+     490.0,
+     635.0
+    ]
+   ],
+   "x0": 490.0,
+   "x1": 1618.0,
+   "cy": 613.0,
+   "h": 44.0,
+   "pass": 1
+  },
+  {
+   "text": "（5) Any instalments on account of tax estimated tobe chargeable shall",
+   "score": 0.9236,
+   "bbox": [
+    [
+     590.0,
+     675.0
+    ],
+    [
+     1891.0,
+     668.0
+    ],
+    [
+     1892.0,
+     709.0
+    ],
+    [
+     590.0,
+     716.0
+    ]
+   ],
+   "x0": 590.0,
+   "x1": 1892.0,
+   "cy": 692.0,
+   "h": 48.0,
+   "pass": 1
+  },
+  {
+   "text": "be treated as tax charged and assessed for the purpose of sections 54 and 65",
+   "score": 0.9505,
+   "bbox": [
+    [
+     487.0,
+     729.0
+    ],
+    [
+     1890.0,
+     725.0
+    ],
+    [
+     1890.0,
+     767.0
+    ],
+    [
+     487.0,
+     771.0
+    ]
+   ],
+   "x0": 487.0,
+   "x1": 1890.0,
+   "cy": 748.0,
+   "h": 46.0,
+   "pass": 1
+  },
+  {
+   "text": "ofthisAct.",
+   "score": 0.9661,
+   "bbox": [
+    [
+     490.0,
+     786.0
+    ],
+    [
+     689.0,
+     788.0
+    ],
+    [
+     689.0,
+     822.0
+    ],
+    [
+     490.0,
+     820.0
+    ]
+   ],
+   "x0": 490.0,
+   "x1": 689.0,
+   "cy": 804.0,
+   "h": 36.0,
+   "pass": 1
+  },
+  {
+   "text": "(6)Thissection covers income taxongasincome underPart Hof Chapter",
+   "score": 0.9421,
+   "bbox": [
+    [
+     591.0,
+     866.0
+    ],
+    [
+     1891.0,
+     863.0
+    ],
+    [
+     1892.0,
+     904.0
+    ],
+    [
+     591.0,
+     908.0
+    ]
+   ],
+   "x0": 591.0,
+   "x1": 1892.0,
+   "cy": 885.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "Three of the Nigeria TaxAct,2025.",
+   "score": 0.9384,
+   "bbox": [
+    [
+     492.0,
+     922.0
+    ],
+    [
+     1153.0,
+     920.0
+    ],
+    [
+     1153.0,
+     958.0
+    ],
+    [
+     492.0,
+     960.0
+    ]
+   ],
+   "x0": 492.0,
+   "x1": 1153.0,
+   "cy": 940.0,
+   "h": 40.0,
+   "pass": 1
+  },
+  {
+   "text": "51.(1) Where any payment is made to a person, the person making the",
+   "score": 0.9525,
+   "bbox": [
+    [
+     588.0,
+     1001.0
+    ],
+    [
+     1891.0,
+     997.0
+    ],
+    [
+     1891.0,
+     1041.0
+    ],
+    [
+     588.0,
+     1045.0
+    ]
+   ],
+   "x0": 588.0,
+   "x1": 1891.0,
+   "cy": 1021.0,
+   "h": 48.0,
+   "pass": 1
+  },
+  {
+   "text": "Deductionat",
+   "score": 0.9969,
+   "bbox": [
+    [
+     239.0,
+     1012.0
+    ],
+    [
+     432.0,
+     1012.0
+    ],
+    [
+     432.0,
+     1041.0
+    ],
+    [
+     239.0,
+     1041.0
+    ]
+   ],
+   "x0": 239.0,
+   "x1": 432.0,
+   "cy": 1026.5,
+   "h": 29.0,
+   "pass": 1
+  },
+  {
+   "text": "source",
+   "score": 0.9934,
+   "bbox": [
+    [
+     236.0,
+     1060.0
+    ],
+    [
+     337.0,
+     1059.0
+    ],
+    [
+     337.0,
+     1086.0
+    ],
+    [
+     237.0,
+     1088.0
+    ]
+   ],
+   "x0": 236.0,
+   "x1": 337.0,
+   "cy": 1073.5,
+   "h": 29.0,
+   "pass": 1
+  },
+  {
+   "text": "payment shall, at the date when payment is made or otherwise settled, deduct",
+   "score": 0.9582,
+   "bbox": [
+    [
+     486.0,
+     1058.0
+    ],
+    [
+     1895.0,
+     1046.0
+    ],
+    [
+     1895.0,
+     1092.0
+    ],
+    [
+     487.0,
+     1104.0
+    ]
+   ],
+   "x0": 486.0,
+   "x1": 1895.0,
+   "cy": 1075.0,
+   "h": 58.0,
+   "pass": 1
+  },
+  {
+   "text": "the tax at the rate prescribed in regulations relating to deduction of tax at",
+   "score": 0.9845,
+   "bbox": [
+    [
+     488.0,
+     1112.0
+    ],
+    [
+     1895.0,
+     1109.0
+    ],
+    [
+     1895.0,
+     1153.0
+    ],
+    [
+     488.0,
+     1155.0
+    ]
+   ],
+   "x0": 488.0,
+   "x1": 1895.0,
+   "cy": 1132.0,
+   "h": 46.0,
+   "pass": 1
+  },
+  {
+   "text": "source.",
+   "score": 0.9896,
+   "bbox": [
+    [
+     488.0,
+     1178.0
+    ],
+    [
+     622.0,
+     1176.0
+    ],
+    [
+     623.0,
+     1206.0
+    ],
+    [
+     489.0,
+     1208.0
+    ]
+   ],
+   "x0": 488.0,
+   "x1": 623.0,
+   "cy": 1192.0,
+   "h": 32.0,
+   "pass": 1
+  },
+  {
+   "text": "(2) In the case of dividend,interest,rent,royalty,directors'fee and payment",
+   "score": 0.9029,
+   "bbox": [
+    [
+     592.0,
+     1249.0
+    ],
+    [
+     1893.0,
+     1244.0
+    ],
+    [
+     1893.0,
+     1288.0
+    ],
+    [
+     592.0,
+     1292.0
+    ]
+   ],
+   "x0": 592.0,
+   "x1": 1893.0,
+   "cy": 1268.0,
+   "h": 48.0,
+   "pass": 1
+  },
+  {
+   "text": "to entertainers and sportspersons, the tax, when paid over to the relevant tax",
+   "score": 0.959,
+   "bbox": [
+    [
+     489.0,
+     1308.0
+    ],
+    [
+     1892.0,
+     1301.0
+    ],
+    [
+     1892.0,
+     1340.0
+    ],
+    [
+     489.0,
+     1346.0
+    ]
+   ],
+   "x0": 489.0,
+   "x1": 1892.0,
+   "cy": 1323.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "authority,shall be thefinal taxduefrom anon-residentrecipient ofthepayment.",
+   "score": 0.9563,
+   "bbox": [
+    [
+     493.0,
+     1360.0
+    ],
+    [
+     1892.0,
+     1359.0
+    ],
+    [
+     1892.0,
+     1398.0
+    ],
+    [
+     493.0,
+     1399.0
+    ]
+   ],
+   "x0": 493.0,
+   "x1": 1892.0,
+   "cy": 1379.0,
+   "h": 40.0,
+   "pass": 1
+  },
+  {
+   "text": "(3) Dividend distributed by a Nigerian company and received by a person",
+   "score": 0.9692,
+   "bbox": [
+    [
+     591.0,
+     1440.0
+    ],
+    [
+     1895.0,
+     1437.0
+    ],
+    [
+     1895.0,
+     1481.0
+    ],
+    [
+     591.0,
+     1484.0
+    ]
+   ],
+   "x0": 591.0,
+   "x1": 1895.0,
+   "cy": 1460.5,
+   "h": 47.0,
+   "pass": 1
+  },
+  {
+   "text": "afterdeductionof the taxprescribedin thissection and regulationsrelating to",
+   "score": 0.9665,
+   "bbox": [
+    [
+     492.0,
+     1495.0
+    ],
+    [
+     1892.0,
+     1493.0
+    ],
+    [
+     1892.0,
+     1535.0
+    ],
+    [
+     492.0,
+     1537.0
+    ]
+   ],
+   "x0": 492.0,
+   "x1": 1892.0,
+   "cy": 1515.0,
+   "h": 44.0,
+   "pass": 1
+  },
+  {
+   "text": "deduction of tax atsource,shall beregarded asfranked investmentincome of",
+   "score": 0.9487,
+   "bbox": [
+    [
+     492.0,
+     1552.0
+    ],
+    [
+     1898.0,
+     1550.0
+    ],
+    [
+     1898.0,
+     1589.0
+    ],
+    [
+     492.0,
+     1591.0
+    ]
+   ],
+   "x0": 492.0,
+   "x1": 1898.0,
+   "cy": 1570.5,
+   "h": 41.0,
+   "pass": 1
+  },
+  {
+   "text": "theperson receiving the dividend and shall not be charged to further tax.",
+   "score": 0.9499,
+   "bbox": [
+    [
+     490.0,
+     1607.0
+    ],
+    [
+     1820.0,
+     1604.0
+    ],
+    [
+     1820.0,
+     1645.0
+    ],
+    [
+     490.0,
+     1649.0
+    ]
+   ],
+   "x0": 490.0,
+   "x1": 1820.0,
+   "cy": 1626.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "(4) Where a franked investment income is redistributed and tax is to be",
+   "score": 0.9563,
+   "bbox": [
+    [
+     590.0,
+     1688.0
+    ],
+    [
+     1896.0,
+     1680.0
+    ],
+    [
+     1896.0,
+     1724.0
+    ],
+    [
+     590.0,
+     1732.0
+    ]
+   ],
+   "x0": 590.0,
+   "x1": 1896.0,
+   "cy": 1706.0,
+   "h": 52.0,
+   "pass": 1
+  },
+  {
+   "text": "accounted for on the gross amount of the distribution in accordance with",
+   "score": 0.9714,
+   "bbox": [
+    [
+     489.0,
+     1743.0
+    ],
+    [
+     1893.0,
+     1741.0
+    ],
+    [
+     1893.0,
+     1783.0
+    ],
+    [
+     489.0,
+     1784.0
+    ]
+   ],
+   "x0": 489.0,
+   "x1": 1893.0,
+   "cy": 1762.5,
+   "h": 43.0,
+   "pass": 1
+  },
+  {
+   "text": "regulations relating to deduction of tax at source,the company may set-off",
+   "score": 0.9461,
+   "bbox": [
+    [
+     490.0,
+     1797.0
+    ],
+    [
+     1898.0,
+     1797.0
+    ],
+    [
+     1898.0,
+     1843.0
+    ],
+    [
+     490.0,
+     1843.0
+    ]
+   ],
+   "x0": 490.0,
+   "x1": 1898.0,
+   "cy": 1820.0,
+   "h": 46.0,
+   "pass": 1
+  },
+  {
+   "text": "the amount deducted atsourcewhichit hasitselfsuffered on thesameincome.",
+   "score": 0.9665,
+   "bbox": [
+    [
+     492.0,
+     1854.0
+    ],
+    [
+     1892.0,
+     1855.0
+    ],
+    [
+     1891.0,
+     1891.0
+    ],
+    [
+     492.0,
+     1890.0
+    ]
+   ],
+   "x0": 492.0,
+   "x1": 1892.0,
+   "cy": 1872.5,
+   "h": 37.0,
+   "pass": 1
+  },
+  {
+   "text": "（5) Interest on short term securities and corporate bondsearned by an",
+   "score": 0.9333,
+   "bbox": [
+    [
+     592.0,
+     1934.0
+    ],
+    [
+     1893.0,
+     1932.0
+    ],
+    [
+     1893.0,
+     1973.0
+    ],
+    [
+     592.0,
+     1975.0
+    ]
+   ],
+   "x0": 592.0,
+   "x1": 1893.0,
+   "cy": 1953.5,
+   "h": 43.0,
+   "pass": 1
+  },
+  {
+   "text": "individualafterdeductionoftaxatsource,shall notbecharged tofurther tax.",
+   "score": 0.9708,
+   "bbox": [
+    [
+     492.0,
+     1989.0
+    ],
+    [
+     1889.0,
+     1991.0
+    ],
+    [
+     1889.0,
+     2027.0
+    ],
+    [
+     492.0,
+     2025.0
+    ]
+   ],
+   "x0": 492.0,
+   "x1": 1889.0,
+   "cy": 2008.0,
+   "h": 38.0,
+   "pass": 1
+  },
+  {
+   "text": "(6) Income taxchargeableon an employeewhether ornot the assessment",
+   "score": 0.9456,
+   "bbox": [
+    [
+     592.0,
+     2071.0
+    ],
+    [
+     1897.0,
+     2070.0
+    ],
+    [
+     1897.0,
+     2111.0
+    ],
+    [
+     592.0,
+     2112.0
+    ]
+   ],
+   "x0": 592.0,
+   "x1": 1897.0,
+   "cy": 2091.0,
+   "h": 42.0,
+   "pass": 1
+  },
+  {
+   "text": "hasbeen made,shall be deducted from any emolument payable, or from any",
+   "score": 0.9511,
+   "bbox": [
+    [
+     487.0,
+     2122.0
+    ],
+    [
+     1894.0,
+     2128.0
+    ],
+    [
+     1894.0,
+     2171.0
+    ],
+    [
+     487.0,
+     2165.0
+    ]
+   ],
+   "x0": 487.0,
+   "x1": 1894.0,
+   "cy": 2146.5,
+   "h": 49.0,
+   "pass": 1
+  },
+  {
+   "text": "payment made on account of the emolument,by the employer to the employee.",
+   "score": 0.9512,
+   "bbox": [
+    [
+     488.0,
+     2181.0
+    ],
+    [
+     1889.0,
+     2178.0
+    ],
+    [
+     1889.0,
+     2225.0
+    ],
+    [
+     488.0,
+     2228.0
+    ]
+   ],
+   "x0": 488.0,
+   "x1": 1889.0,
+   "cy": 2203.0,
+   "h": 50.0,
+   "pass": 1
+  },
+  {
+   "text": "(7) In arriving at the amount of income tax to be deducted from any",
+   "score": 0.9594,
+   "bbox": [
+    [
+     590.0,
+     2254.0
+    ],
+    [
+     1894.0,
+     2258.0
+    ],
+    [
+     1894.0,
+     2305.0
+    ],
+    [
+     589.0,
+     2301.0
+    ]
+   ],
+   "x0": 589.0,
+   "x1": 1894.0,
+   "cy": 2279.5,
+   "h": 51.0,
+   "pass": 1
+  },
+  {
+   "text": "payment of or on account of the emolument to an employee, the employer",
+   "score": 0.9556,
+   "bbox": [
+    [
+     487.0,
+     2312.0
+    ],
+    [
+     1894.0,
+     2310.0
+    ],
+    [
+     1894.0,
+     2357.0
+    ],
+    [
+     487.0,
+     2359.0
+    ]
+   ],
+   "x0": 487.0,
+   "x1": 1894.0,
+   "cy": 2334.5,
+   "h": 49.0,
+   "pass": 1
+  },
+  {
+   "text": "shall ensure that the aggregate amount of all the deductions made during a",
+   "score": 0.9755,
+   "bbox": [
+    [
+     487.0,
+     2364.0
+    ],
+    [
+     1896.0,
+     2367.0
+    ],
+    [
+     1896.0,
+     2414.0
+    ],
+    [
+     487.0,
+     2410.0
+    ]
+   ],
+   "x0": 487.0,
+   "x1": 1896.0,
+   "cy": 2389.0,
+   "h": 50.0,
+   "pass": 1
+  },
+  {
+   "text": "yearof assessmentshall equal theincome taxchargeable on the employeein",
+   "score": 0.958,
+   "bbox": [
+    [
+     488.0,
+     2424.0
+    ],
+    [
+     1894.0,
+     2424.0
+    ],
+    [
+     1894.0,
+     2465.0
+    ],
+    [
+     488.0,
+     2465.0
+    ]
+   ],
+   "x0": 488.0,
+   "x1": 1894.0,
+   "cy": 2444.5,
+   "h": 41.0,
+   "pass": 1
+  },
+  {
+   "text": "respect ofits emolumentsforthatyear.",
+   "score": 0.9729,
+   "bbox": [
+    [
+     488.0,
+     2478.0
+    ],
+    [
+     1213.0,
+     2477.0
+    ],
+    [
+     1213.0,
+     2519.0
+    ],
+    [
+     488.0,
+     2520.0
+    ]
+   ],
+   "x0": 488.0,
+   "x1": 1213.0,
+   "cy": 2498.5,
+   "h": 43.0,
+   "pass": 1
+  },
+  {
+   "text": "(8)Notwithstanding subsections (1) to(6),a non-resident company that",
+   "score": 0.9736,
+   "bbox": [
+    [
+     592.0,
+     2557.0
+    ],
+    [
+     1894.0,
+     2558.0
+    ],
+    [
+     1894.0,
+     2600.0
+    ],
+    [
+     592.0,
+     2598.0
+    ]
+   ],
+   "x0": 592.0,
+   "x1": 1894.0,
+   "cy": 2578.5,
+   "h": 43.0,
+   "pass": 1
+  }
+ ]
+}

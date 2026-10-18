@@ -1,0 +1,1330 @@
+{
+ "page": 67,
+ "width": 2117,
+ "height": 2924,
+ "boxes": [
+  {
+   "text": "2025No.5",
+   "score": 0.9757,
+   "bbox": [
+    [
+     1396.0,
+     218.0
+    ],
+    [
+     1615.0,
+     218.0
+    ],
+    [
+     1615.0,
+     252.0
+    ],
+    [
+     1396.0,
+     252.0
+    ]
+   ],
+   "x0": 1396.0,
+   "x1": 1615.0,
+   "cy": 235.0,
+   "h": 34.0,
+   "pass": 1
+  },
+  {
+   "text": "A325",
+   "score": 0.9991,
+   "bbox": [
+    [
+     1737.0,
+     213.0
+    ],
+    [
+     1867.0,
+     212.0
+    ],
+    [
+     1868.0,
+     250.0
+    ],
+    [
+     1738.0,
+     252.0
+    ]
+   ],
+   "x0": 1737.0,
+   "x1": 1868.0,
+   "cy": 232.0,
+   "h": 40.0,
+   "pass": 1
+  },
+  {
+   "text": "NigeriaTaxAdministration Act,2025",
+   "score": 0.976,
+   "bbox": [
+    [
+     460.0,
+     237.0
+    ],
+    [
+     1175.0,
+     229.0
+    ],
+    [
+     1176.0,
+     266.0
+    ],
+    [
+     460.0,
+     274.0
+    ]
+   ],
+   "x0": 460.0,
+   "x1": 1176.0,
+   "cy": 251.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "(3) A person who administers this Act shall not be required to produce",
+   "score": 0.9737,
+   "bbox": [
+    [
+     310.0,
+     332.0
+    ],
+    [
+     1613.0,
+     323.0
+    ],
+    [
+     1613.0,
+     366.0
+    ],
+    [
+     310.0,
+     376.0
+    ]
+   ],
+   "x0": 310.0,
+   "x1": 1613.0,
+   "cy": 349.5,
+   "h": 53.0,
+   "pass": 1
+  },
+  {
+   "text": "any return, document or assessment or to divulge or communicate any",
+   "score": 0.9811,
+   "bbox": [
+    [
+     206.0,
+     387.0
+    ],
+    [
+     1617.0,
+     380.0
+    ],
+    [
+     1618.0,
+     426.0
+    ],
+    [
+     207.0,
+     434.0
+    ]
+   ],
+   "x0": 206.0,
+   "x1": 1618.0,
+   "cy": 407.0,
+   "h": 54.0,
+   "pass": 1
+  },
+  {
+   "text": "information that comes into his possession in the performance of his duties",
+   "score": 0.9673,
+   "bbox": [
+    [
+     208.0,
+     444.0
+    ],
+    [
+     1617.0,
+     436.0
+    ],
+    [
+     1617.0,
+     479.0
+    ],
+    [
+     208.0,
+     487.0
+    ]
+   ],
+   "x0": 208.0,
+   "x1": 1617.0,
+   "cy": 461.5,
+   "h": 51.0,
+   "pass": 1
+  },
+  {
+   "text": "except as may be necessary in order to institute a prosecution, or in the course",
+   "score": 0.9805,
+   "bbox": [
+    [
+     209.0,
+     501.0
+    ],
+    [
+     1619.0,
+     492.0
+    ],
+    [
+     1619.0,
+     538.0
+    ],
+    [
+     210.0,
+     548.0
+    ]
+   ],
+   "x0": 209.0,
+   "x1": 1619.0,
+   "cy": 520.0,
+   "h": 56.0,
+   "pass": 1
+  },
+  {
+   "text": "of a prosecution for any offence committed in relation to any tax in Nigeria.",
+   "score": 0.9792,
+   "bbox": [
+    [
+     208.0,
+     558.0
+    ],
+    [
+     1604.0,
+     547.0
+    ],
+    [
+     1605.0,
+     594.0
+    ],
+    [
+     208.0,
+     604.0
+    ]
+   ],
+   "x0": 208.0,
+   "x1": 1605.0,
+   "cy": 575.5,
+   "h": 57.0,
+   "pass": 1
+  },
+  {
+   "text": "(4) Where under any law in force in respect of a double taxation treaty",
+   "score": 0.9557,
+   "bbox": [
+    [
+     310.0,
+     632.0
+    ],
+    [
+     1617.0,
+     627.0
+    ],
+    [
+     1618.0,
+     673.0
+    ],
+    [
+     310.0,
+     679.0
+    ]
+   ],
+   "x0": 310.0,
+   "x1": 1618.0,
+   "cy": 653.0,
+   "h": 52.0,
+   "pass": 1
+  },
+  {
+   "text": "with any country, provision is made for the allowance of relief from income",
+   "score": 0.9768,
+   "bbox": [
+    [
+     209.0,
+     689.0
+    ],
+    [
+     1621.0,
+     676.0
+    ],
+    [
+     1621.0,
+     727.0
+    ],
+    [
+     210.0,
+     741.0
+    ]
+   ],
+   "x0": 209.0,
+   "x1": 1621.0,
+   "cy": 708.5,
+   "h": 65.0,
+   "pass": 1
+  },
+  {
+   "text": "tax in respect of the payment of income tax in Nigeria,the obligation as to",
+   "score": 0.9438,
+   "bbox": [
+    [
+     209.0,
+     748.0
+    ],
+    [
+     1620.0,
+     739.0
+    ],
+    [
+     1620.0,
+     780.0
+    ],
+    [
+     209.0,
+     789.0
+    ]
+   ],
+   "x0": 209.0,
+   "x1": 1620.0,
+   "cy": 764.0,
+   "h": 50.0,
+   "pass": 1
+  },
+  {
+   "text": "secrecyimposed by thissectionshall not prevent the disclosure to the authorised",
+   "score": 0.9567,
+   "bbox": [
+    [
+     212.0,
+     806.0
+    ],
+    [
+     1619.0,
+     793.0
+    ],
+    [
+     1620.0,
+     832.0
+    ],
+    [
+     213.0,
+     845.0
+    ]
+   ],
+   "x0": 212.0,
+   "x1": 1620.0,
+   "cy": 819.0,
+   "h": 52.0,
+   "pass": 1
+  },
+  {
+   "text": "officers of the Government in that country of such facts as may be necessary",
+   "score": 0.9475,
+   "bbox": [
+    [
+     212.0,
+     853.0
+    ],
+    [
+     1620.0,
+     852.0
+    ],
+    [
+     1620.0,
+     896.0
+    ],
+    [
+     212.0,
+     897.0
+    ]
+   ],
+   "x0": 212.0,
+   "x1": 1620.0,
+   "cy": 874.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "to enable the proper relief to be given in cases where relief is claimed from",
+   "score": 0.9593,
+   "bbox": [
+    [
+     209.0,
+     915.0
+    ],
+    [
+     1621.0,
+     904.0
+    ],
+    [
+     1621.0,
+     948.0
+    ],
+    [
+     209.0,
+     959.0
+    ]
+   ],
+   "x0": 209.0,
+   "x1": 1621.0,
+   "cy": 931.5,
+   "h": 55.0,
+   "pass": 1
+  },
+  {
+   "text": "the tax in Nigeria or from income tax in that country.",
+   "score": 0.9596,
+   "bbox": [
+    [
+     210.0,
+     967.0
+    ],
+    [
+     1185.0,
+     966.0
+    ],
+    [
+     1185.0,
+     1010.0
+    ],
+    [
+     210.0,
+     1012.0
+    ]
+   ],
+   "x0": 210.0,
+   "x1": 1185.0,
+   "cy": 989.0,
+   "h": 46.0,
+   "pass": 1
+  },
+  {
+   "text": "(5) Where an agreement or arrangement with any other country,",
+   "score": 0.969,
+   "bbox": [
+    [
+     312.0,
+     1044.0
+    ],
+    [
+     1622.0,
+     1038.0
+    ],
+    [
+     1623.0,
+     1086.0
+    ],
+    [
+     312.0,
+     1091.0
+    ]
+   ],
+   "x0": 312.0,
+   "x1": 1623.0,
+   "cy": 1064.5,
+   "h": 53.0,
+   "pass": 1
+  },
+  {
+   "text": "government or relevant tax authority for exchange of information or with",
+   "score": 0.9795,
+   "bbox": [
+    [
+     211.0,
+     1105.0
+    ],
+    [
+     1622.0,
+     1091.0
+    ],
+    [
+     1623.0,
+     1135.0
+    ],
+    [
+     211.0,
+     1150.0
+    ]
+   ],
+   "x0": 211.0,
+   "x1": 1623.0,
+   "cy": 1120.5,
+   "h": 59.0,
+   "pass": 1
+  },
+  {
+   "text": "respect to relief for double taxation of income or profits includes provisions",
+   "score": 0.9799,
+   "bbox": [
+    [
+     211.0,
+     1158.0
+    ],
+    [
+     1623.0,
+     1147.0
+    ],
+    [
+     1623.0,
+     1194.0
+    ],
+    [
+     212.0,
+     1204.0
+    ]
+   ],
+   "x0": 211.0,
+   "x1": 1623.0,
+   "cy": 1175.5,
+   "h": 57.0,
+   "pass": 1
+  },
+  {
+   "text": "for the exchange of taxpayer information with that country for the purpose of",
+   "score": 0.9722,
+   "bbox": [
+    [
+     211.0,
+     1210.0
+    ],
+    [
+     1628.0,
+     1204.0
+    ],
+    [
+     1628.0,
+     1252.0
+    ],
+    [
+     212.0,
+     1258.0
+    ]
+   ],
+   "x0": 211.0,
+   "x1": 1628.0,
+   "cy": 1231.0,
+   "h": 54.0,
+   "pass": 1
+  },
+  {
+   "text": "implementing a tax relief orpreventing avoidance of tax,or for such other",
+   "score": 0.9554,
+   "bbox": [
+    [
+     218.0,
+     1271.0
+    ],
+    [
+     1624.0,
+     1261.0
+    ],
+    [
+     1624.0,
+     1303.0
+    ],
+    [
+     218.0,
+     1313.0
+    ]
+   ],
+   "x0": 218.0,
+   "x1": 1624.0,
+   "cy": 1287.0,
+   "h": 52.0,
+   "pass": 1
+  },
+  {
+   "text": "purposes as may be enshrined in the agreement or arrangement, the obligation",
+   "score": 0.9891,
+   "bbox": [
+    [
+     211.0,
+     1326.0
+    ],
+    [
+     1624.0,
+     1310.0
+    ],
+    [
+     1624.0,
+     1362.0
+    ],
+    [
+     212.0,
+     1377.0
+    ]
+   ],
+   "x0": 211.0,
+   "x1": 1624.0,
+   "cy": 1343.5,
+   "h": 67.0,
+   "pass": 1
+  },
+  {
+   "text": "as to secrecy imposed by this Act shall not prevent the disclosure of such",
+   "score": 0.9701,
+   "bbox": [
+    [
+     212.0,
+     1385.0
+    ],
+    [
+     1625.0,
+     1372.0
+    ],
+    [
+     1625.0,
+     1414.0
+    ],
+    [
+     213.0,
+     1427.0
+    ]
+   ],
+   "x0": 212.0,
+   "x1": 1625.0,
+   "cy": 1399.5,
+   "h": 55.0,
+   "pass": 1
+  },
+  {
+   "text": "information to the authorised officers of the Government of such country",
+   "score": 0.9667,
+   "bbox": [
+    [
+     214.0,
+     1432.0
+    ],
+    [
+     1567.0,
+     1429.0
+    ],
+    [
+     1567.0,
+     1476.0
+    ],
+    [
+     214.0,
+     1479.0
+    ]
+   ],
+   "x0": 214.0,
+   "x1": 1567.0,
+   "cy": 1454.0,
+   "h": 50.0,
+   "pass": 1
+  },
+  {
+   "text": "144. (1) The Minister may give the relevant tax authority or its Chairman",
+   "score": 0.9627,
+   "bbox": [
+    [
+     318.0,
+     1514.0
+    ],
+    [
+     1627.0,
+     1505.0
+    ],
+    [
+     1627.0,
+     1549.0
+    ],
+    [
+     318.0,
+     1558.0
+    ]
+   ],
+   "x0": 318.0,
+   "x1": 1627.0,
+   "cy": 1531.5,
+   "h": 53.0,
+   "pass": 1
+  },
+  {
+   "text": "Powersof",
+   "score": 0.9948,
+   "bbox": [
+    [
+     1693.0,
+     1516.0
+    ],
+    [
+     1852.0,
+     1516.0
+    ],
+    [
+     1852.0,
+     1545.0
+    ],
+    [
+     1693.0,
+     1545.0
+    ]
+   ],
+   "x0": 1693.0,
+   "x1": 1852.0,
+   "cy": 1530.5,
+   "h": 29.0,
+   "pass": 1
+  },
+  {
+   "text": "theMinister",
+   "score": 0.9598,
+   "bbox": [
+    [
+     1692.0,
+     1561.0
+    ],
+    [
+     1878.0,
+     1559.0
+    ],
+    [
+     1879.0,
+     1591.0
+    ],
+    [
+     1693.0,
+     1593.0
+    ]
+   ],
+   "x0": 1692.0,
+   "x1": 1879.0,
+   "cy": 1576.0,
+   "h": 34.0,
+   "pass": 1
+  },
+  {
+   "text": "such directives of a general nature or relating generally to matters of policy",
+   "score": 0.9616,
+   "bbox": [
+    [
+     217.0,
+     1571.0
+    ],
+    [
+     1623.0,
+     1565.0
+    ],
+    [
+     1623.0,
+     1607.0
+    ],
+    [
+     217.0,
+     1613.0
+    ]
+   ],
+   "x0": 217.0,
+   "x1": 1623.0,
+   "cy": 1589.0,
+   "h": 48.0,
+   "pass": 1
+  },
+  {
+   "text": "to issue",
+   "score": 0.9779,
+   "bbox": [
+    [
+     1691.0,
+     1607.0
+    ],
+    [
+     1811.0,
+     1605.0
+    ],
+    [
+     1811.0,
+     1638.0
+    ],
+    [
+     1691.0,
+     1640.0
+    ]
+   ],
+   "x0": 1691.0,
+   "x1": 1811.0,
+   "cy": 1622.5,
+   "h": 35.0,
+   "pass": 1
+  },
+  {
+   "text": "with regards to the exercise of the functions under this Act or any other tax",
+   "score": 0.9587,
+   "bbox": [
+    [
+     218.0,
+     1627.0
+    ],
+    [
+     1626.0,
+     1619.0
+    ],
+    [
+     1626.0,
+     1660.0
+    ],
+    [
+     218.0,
+     1669.0
+    ]
+   ],
+   "x0": 218.0,
+   "x1": 1626.0,
+   "cy": 1644.0,
+   "h": 50.0,
+   "pass": 1
+  },
+  {
+   "text": "general",
+   "score": 0.9933,
+   "bbox": [
+    [
+     1690.0,
+     1656.0
+    ],
+    [
+     1798.0,
+     1648.0
+    ],
+    [
+     1801.0,
+     1684.0
+    ],
+    [
+     1693.0,
+     1692.0
+    ]
+   ],
+   "x0": 1690.0,
+   "x1": 1801.0,
+   "cy": 1670.0,
+   "h": 44.0,
+   "pass": 1
+  },
+  {
+   "text": "law as may be considered necessary and the relevant tax authority or its",
+   "score": 0.9864,
+   "bbox": [
+    [
+     214.0,
+     1683.0
+    ],
+    [
+     1625.0,
+     1671.0
+    ],
+    [
+     1626.0,
+     1716.0
+    ],
+    [
+     214.0,
+     1727.0
+    ]
+   ],
+   "x0": 214.0,
+   "x1": 1626.0,
+   "cy": 1699.0,
+   "h": 56.0,
+   "pass": 1
+  },
+  {
+   "text": "directives",
+   "score": 0.9933,
+   "bbox": [
+    [
+     1694.0,
+     1695.0
+    ],
+    [
+     1840.0,
+     1696.0
+    ],
+    [
+     1840.0,
+     1728.0
+    ],
+    [
+     1694.0,
+     1727.0
+    ]
+   ],
+   "x0": 1694.0,
+   "x1": 1840.0,
+   "cy": 1711.5,
+   "h": 33.0,
+   "pass": 1
+  },
+  {
+   "text": "Chairman shall comply with the directives or cause them to be complied with.",
+   "score": 0.9544,
+   "bbox": [
+    [
+     218.0,
+     1738.0
+    ],
+    [
+     1622.0,
+     1728.0
+    ],
+    [
+     1622.0,
+     1772.0
+    ],
+    [
+     218.0,
+     1782.0
+    ]
+   ],
+   "x0": 218.0,
+   "x1": 1622.0,
+   "cy": 1755.0,
+   "h": 54.0,
+   "pass": 1
+  },
+  {
+   "text": "and make",
+   "score": 0.9442,
+   "bbox": [
+    [
+     1694.0,
+     1741.0
+    ],
+    [
+     1838.0,
+     1741.0
+    ],
+    [
+     1838.0,
+     1776.0
+    ],
+    [
+     1694.0,
+     1776.0
+    ]
+   ],
+   "x0": 1694.0,
+   "x1": 1838.0,
+   "cy": 1758.5,
+   "h": 35.0,
+   "pass": 1
+  },
+  {
+   "text": "regulations",
+   "score": 0.996,
+   "bbox": [
+    [
+     1693.0,
+     1792.0
+    ],
+    [
+     1857.0,
+     1787.0
+    ],
+    [
+     1858.0,
+     1822.0
+    ],
+    [
+     1694.0,
+     1827.0
+    ]
+   ],
+   "x0": 1693.0,
+   "x1": 1858.0,
+   "cy": 1807.0,
+   "h": 40.0,
+   "pass": 1
+  },
+  {
+   "text": "(2) The Minister shall not give any directive, order or instruction in respect",
+   "score": 0.9671,
+   "bbox": [
+    [
+     321.0,
+     1816.0
+    ],
+    [
+     1630.0,
+     1806.0
+    ],
+    [
+     1630.0,
+     1850.0
+    ],
+    [
+     321.0,
+     1860.0
+    ]
+   ],
+   "x0": 321.0,
+   "x1": 1630.0,
+   "cy": 1833.0,
+   "h": 54.0,
+   "pass": 1
+  },
+  {
+   "text": "of any particular person which would have the effect of requiring the relevant",
+   "score": 0.9622,
+   "bbox": [
+    [
+     220.0,
+     1873.0
+    ],
+    [
+     1630.0,
+     1862.0
+    ],
+    [
+     1631.0,
+     1906.0
+    ],
+    [
+     221.0,
+     1917.0
+    ]
+   ],
+   "x0": 220.0,
+   "x1": 1631.0,
+   "cy": 1889.5,
+   "h": 55.0,
+   "pass": 1
+  },
+  {
+   "text": "tax authority to increase or decrease any assessment of tax made or to be",
+   "score": 0.9851,
+   "bbox": [
+    [
+     215.0,
+     1931.0
+    ],
+    [
+     1629.0,
+     1917.0
+    ],
+    [
+     1629.0,
+     1964.0
+    ],
+    [
+     216.0,
+     1978.0
+    ]
+   ],
+   "x0": 215.0,
+   "x1": 1629.0,
+   "cy": 1947.5,
+   "h": 61.0,
+   "pass": 1
+  },
+  {
+   "text": "made or any relief given or to be given or to defer the collection of any tax or",
+   "score": 0.9696,
+   "bbox": [
+    [
+     219.0,
+     1985.0
+    ],
+    [
+     1630.0,
+     1975.0
+    ],
+    [
+     1631.0,
+     2018.0
+    ],
+    [
+     219.0,
+     2028.0
+    ]
+   ],
+   "x0": 219.0,
+   "x1": 1631.0,
+   "cy": 2001.5,
+   "h": 53.0,
+   "pass": 1
+  },
+  {
+   "text": "judgement debt due, or which would have the effect of initiating, forbidding",
+   "score": 0.9695,
+   "bbox": [
+    [
+     215.0,
+     2041.0
+    ],
+    [
+     1630.0,
+     2029.0
+    ],
+    [
+     1631.0,
+     2075.0
+    ],
+    [
+     215.0,
+     2087.0
+    ]
+   ],
+   "x0": 215.0,
+   "x1": 1631.0,
+   "cy": 2058.0,
+   "h": 58.0,
+   "pass": 1
+  },
+  {
+   "text": "the initiation of, withdrawing or altering the normal course of any proceeding",
+   "score": 0.9689,
+   "bbox": [
+    [
+     220.0,
+     2094.0
+    ],
+    [
+     1630.0,
+     2087.0
+    ],
+    [
+     1630.0,
+     2131.0
+    ],
+    [
+     220.0,
+     2138.0
+    ]
+   ],
+   "x0": 220.0,
+   "x1": 1630.0,
+   "cy": 2112.5,
+   "h": 51.0,
+   "pass": 1
+  },
+  {
+   "text": "whether civil or criminal, relating either to the recovery of any tax or to any",
+   "score": 0.959,
+   "bbox": [
+    [
+     222.0,
+     2151.0
+    ],
+    [
+     1629.0,
+     2146.0
+    ],
+    [
+     1629.0,
+     2187.0
+    ],
+    [
+     222.0,
+     2192.0
+    ]
+   ],
+   "x0": 222.0,
+   "x1": 1629.0,
+   "cy": 2169.0,
+   "h": 46.0,
+   "pass": 1
+  },
+  {
+   "text": "offence under this Act or any other tax law.",
+   "score": 0.9549,
+   "bbox": [
+    [
+     223.0,
+     2210.0
+    ],
+    [
+     1033.0,
+     2204.0
+    ],
+    [
+     1033.0,
+     2245.0
+    ],
+    [
+     223.0,
+     2251.0
+    ]
+   ],
+   "x0": 223.0,
+   "x1": 1033.0,
+   "cy": 2227.5,
+   "h": 47.0,
+   "pass": 1
+  },
+  {
+   "text": "(3) The Minister may, on the advice of the Service or the Joint Revenue",
+   "score": 0.967,
+   "bbox": [
+    [
+     323.0,
+     2289.0
+    ],
+    [
+     1633.0,
+     2276.0
+    ],
+    [
+     1634.0,
+     2320.0
+    ],
+    [
+     324.0,
+     2333.0
+    ]
+   ],
+   "x0": 323.0,
+   "x1": 1634.0,
+   "cy": 2304.5,
+   "h": 57.0,
+   "pass": 1
+  },
+  {
+   "text": "Board, make regulations for the carrying out of the provisions of this Act or",
+   "score": 0.9781,
+   "bbox": [
+    [
+     222.0,
+     2346.0
+    ],
+    [
+     1635.0,
+     2331.0
+    ],
+    [
+     1636.0,
+     2377.0
+    ],
+    [
+     223.0,
+     2393.0
+    ]
+   ],
+   "x0": 222.0,
+   "x1": 1636.0,
+   "cy": 2362.0,
+   "h": 62.0,
+   "pass": 1
+  },
+  {
+   "text": "any other tax law by order published in the Federal Government Gazette to -",
+   "score": 0.9694,
+   "bbox": [
+    [
+     224.0,
+     2403.0
+    ],
+    [
+     1634.0,
+     2386.0
+    ],
+    [
+     1634.0,
+     2427.0
+    ],
+    [
+     224.0,
+     2445.0
+    ]
+   ],
+   "x0": 224.0,
+   "x1": 1634.0,
+   "cy": 2415.5,
+   "h": 59.0,
+   "pass": 1
+  },
+  {
+   "text": "(a) determine what constitutes the significant economic presence of a",
+   "score": 0.9955,
+   "bbox": [
+    [
+     326.0,
+     2453.0
+    ],
+    [
+     1636.0,
+     2441.0
+    ],
+    [
+     1637.0,
+     2487.0
+    ],
+    [
+     327.0,
+     2500.0
+    ]
+   ],
+   "x0": 326.0,
+   "x1": 1637.0,
+   "cy": 2470.5,
+   "h": 59.0,
+   "pass": 1
+  },
+  {
+   "text": "company other than a Nigerian company or an individual in accordance",
+   "score": 0.9899,
+   "bbox": [
+    [
+     274.0,
+     2509.0
+    ],
+    [
+     1636.0,
+     2495.0
+    ],
+    [
+     1637.0,
+     2544.0
+    ],
+    [
+     274.0,
+     2558.0
+    ]
+   ],
+   "x0": 274.0,
+   "x1": 1637.0,
+   "cy": 2526.5,
+   "h": 63.0,
+   "pass": 1
+  },
+  {
+   "text": "with the Nigeria Tax Act, 2025 ;",
+   "score": 0.9433,
+   "bbox": [
+    [
+     281.0,
+     2567.0
+    ],
+    [
+     872.0,
+     2563.0
+    ],
+    [
+     872.0,
+     2601.0
+    ],
+    [
+     281.0,
+     2605.0
+    ]
+   ],
+   "x0": 281.0,
+   "x1": 872.0,
+   "cy": 2584.0,
+   "h": 42.0,
+   "pass": 1
+  }
+ ]
+}

@@ -1,0 +1,601 @@
+{
+ "page": 79,
+ "width": 2103,
+ "height": 2924,
+ "boxes": [
+  {
+   "text": "2025No.5",
+   "score": 0.9691,
+   "bbox": [
+    [
+     1418.0,
+     261.0
+    ],
+    [
+     1637.0,
+     259.0
+    ],
+    [
+     1637.0,
+     294.0
+    ],
+    [
+     1419.0,
+     297.0
+    ]
+   ],
+   "x0": 1418.0,
+   "x1": 1637.0,
+   "cy": 278.0,
+   "h": 38.0,
+   "pass": 1
+  },
+  {
+   "text": "A337",
+   "score": 0.9986,
+   "bbox": [
+    [
+     1760.0,
+     255.0
+    ],
+    [
+     1890.0,
+     253.0
+    ],
+    [
+     1890.0,
+     291.0
+    ],
+    [
+     1760.0,
+     293.0
+    ]
+   ],
+   "x0": 1760.0,
+   "x1": 1890.0,
+   "cy": 273.0,
+   "h": 40.0,
+   "pass": 1
+  },
+  {
+   "text": "NigeriaTaxAdministrationAct,2025",
+   "score": 0.99,
+   "bbox": [
+    [
+     485.0,
+     286.0
+    ],
+    [
+     1198.0,
+     277.0
+    ],
+    [
+     1198.0,
+     312.0
+    ],
+    [
+     486.0,
+     322.0
+    ]
+   ],
+   "x0": 485.0,
+   "x1": 1198.0,
+   "cy": 299.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "and payable by, a resident person or a government in Nigeria ;",
+   "score": 0.9633,
+   "bbox": [
+    [
+     287.0,
+     357.0
+    ],
+    [
+     1431.0,
+     344.0
+    ],
+    [
+     1432.0,
+     393.0
+    ],
+    [
+     288.0,
+     406.0
+    ]
+   ],
+   "x0": 287.0,
+   "x1": 1432.0,
+   "cy": 375.0,
+   "h": 62.0,
+   "pass": 1
+  },
+  {
+   "text": "place ofresidence\"in relation to an individual,means a place",
+   "score": 0.9499,
+   "bbox": [
+    [
+     346.0,
+     438.0
+    ],
+    [
+     1638.0,
+     421.0
+    ],
+    [
+     1638.0,
+     465.0
+    ],
+    [
+     346.0,
+     481.0
+    ]
+   ],
+   "x0": 346.0,
+   "x1": 1638.0,
+   "cy": 451.0,
+   "h": 60.0,
+   "pass": 1
+  },
+  {
+   "text": "available forhis domesticuse in Nigeria on a relevant day,and doesnot",
+   "score": 0.9413,
+   "bbox": [
+    [
+     289.0,
+     494.0
+    ],
+    [
+     1643.0,
+     478.0
+    ],
+    [
+     1643.0,
+     520.0
+    ],
+    [
+     289.0,
+     535.0
+    ]
+   ],
+   "x0": 289.0,
+   "x1": 1643.0,
+   "cy": 506.5,
+   "h": 57.0,
+   "pass": 1
+  },
+  {
+   "text": "include any hotel,rest house or other place at which he is temporarily",
+   "score": 0.9545,
+   "bbox": [
+    [
+     287.0,
+     550.0
+    ],
+    [
+     1635.0,
+     534.0
+    ],
+    [
+     1636.0,
+     578.0
+    ],
+    [
+     287.0,
+     594.0
+    ]
+   ],
+   "x0": 287.0,
+   "x1": 1636.0,
+   "cy": 564.0,
+   "h": 60.0,
+   "pass": 1
+  },
+  {
+   "text": "lodging unless no permanent place is available for his use on that day ;",
+   "score": 0.974,
+   "bbox": [
+    [
+     284.0,
+     605.0
+    ],
+    [
+     1585.0,
+     589.0
+    ],
+    [
+     1585.0,
+     639.0
+    ],
+    [
+     285.0,
+     656.0
+    ]
+   ],
+   "x0": 284.0,
+   "x1": 1585.0,
+   "cy": 622.5,
+   "h": 67.0,
+   "pass": 1
+  },
+  {
+   "text": "moreplaces of residence on a relevant day,not beingboth within any one",
+   "score": 0.9303,
+   "bbox": [
+    [
+     289.0,
+     746.0
+    ],
+    [
+     1643.0,
+     729.0
+    ],
+    [
+     1643.0,
+     773.0
+    ],
+    [
+     290.0,
+     789.0
+    ]
+   ],
+   "x0": 289.0,
+   "x1": 1643.0,
+   "cy": 759.0,
+   "h": 60.0,
+   "pass": 1
+  },
+  {
+   "text": "territorymeans in thecase of an individual-",
+   "score": 0.9399,
+   "bbox": [
+    [
+     292.0,
+     803.0
+    ],
+    [
+     1110.0,
+     788.0
+    ],
+    [
+     1111.0,
+     830.0
+    ],
+    [
+     292.0,
+     845.0
+    ]
+   ],
+   "x0": 292.0,
+   "x1": 1111.0,
+   "cy": 816.5,
+   "h": 57.0,
+   "pass": 1
+  },
+  {
+   "text": "（a)withnosource ofincome other than apension inNigeria,thatplace",
+   "score": 0.9507,
+   "bbox": [
+    [
+     343.0,
+     868.0
+    ],
+    [
+     1640.0,
+     852.0
+    ],
+    [
+     1640.0,
+     896.0
+    ],
+    [
+     343.0,
+     912.0
+    ]
+   ],
+   "x0": 343.0,
+   "x1": 1640.0,
+   "cy": 882.0,
+   "h": 60.0,
+   "pass": 1
+  },
+  {
+   "text": "wherehe usuallyresides;",
+   "score": 0.9493,
+   "bbox": [
+    [
+     295.0,
+     926.0
+    ],
+    [
+     770.0,
+     926.0
+    ],
+    [
+     770.0,
+     962.0
+    ],
+    [
+     295.0,
+     962.0
+    ]
+   ],
+   "x0": 295.0,
+   "x1": 770.0,
+   "cy": 944.0,
+   "h": 36.0,
+   "pass": 1
+  },
+  {
+   "text": "(b)whohas a source of earned income other than a pensioninNigeria",
+   "score": 0.9329,
+   "bbox": [
+    [
+     344.0,
+     993.0
+    ],
+    [
+     1640.0,
+     978.0
+    ],
+    [
+     1640.0,
+     1022.0
+    ],
+    [
+     344.0,
+     1037.0
+    ]
+   ],
+   "x0": 344.0,
+   "x1": 1640.0,
+   "cy": 1007.5,
+   "h": 59.0,
+   "pass": 1
+  },
+  {
+   "text": "thatplacewhereon a relevant dayisnearest tohisusual placeofwork;",
+   "score": 0.9608,
+   "bbox": [
+    [
+     292.0,
+     1052.0
+    ],
+    [
+     1617.0,
+     1036.0
+    ],
+    [
+     1618.0,
+     1076.0
+    ],
+    [
+     293.0,
+     1092.0
+    ]
+   ],
+   "x0": 292.0,
+   "x1": 1618.0,
+   "cy": 1064.0,
+   "h": 56.0,
+   "pass": 1
+  },
+  {
+   "text": "（c)who has a source or sources of unearned income in Nigeria,that",
+   "score": 0.9317,
+   "bbox": [
+    [
+     344.0,
+     1115.0
+    ],
+    [
+     1648.0,
+     1099.0
+    ],
+    [
+     1648.0,
+     1145.0
+    ],
+    [
+     344.0,
+     1161.0
+    ]
+   ],
+   "x0": 344.0,
+   "x1": 1648.0,
+   "cy": 1130.0,
+   "h": 62.0,
+   "pass": 1
+  },
+  {
+   "text": "place where he usually resides;or",
+   "score": 0.9487,
+   "bbox": [
+    [
+     293.0,
+     1174.0
+    ],
+    [
+     922.0,
+     1165.0
+    ],
+    [
+     922.0,
+     1209.0
+    ],
+    [
+     294.0,
+     1218.0
+    ]
+   ],
+   "x0": 293.0,
+   "x1": 922.0,
+   "cy": 1191.5,
+   "h": 53.0,
+   "pass": 1
+  },
+  {
+   "text": "other body corporate, the place at which the branch office or operational",
+   "score": 0.9364,
+   "bbox": [
+    [
+     297.0,
+     1297.0
+    ],
+    [
+     1649.0,
+     1281.0
+    ],
+    [
+     1650.0,
+     1325.0
+    ],
+    [
+     297.0,
+     1341.0
+    ]
+   ],
+   "x0": 297.0,
+   "x1": 1650.0,
+   "cy": 1311.0,
+   "h": 60.0,
+   "pass": 1
+  },
+  {
+   "text": "site is situate,provided that operational site shall include oil terminals,oil",
+   "score": 0.9534,
+   "bbox": [
+    [
+     294.0,
+     1351.0
+    ],
+    [
+     1648.0,
+     1335.0
+    ],
+    [
+     1649.0,
+     1381.0
+    ],
+    [
+     294.0,
+     1397.0
+    ]
+   ],
+   "x0": 294.0,
+   "x1": 1649.0,
+   "cy": 1366.0,
+   "h": 62.0,
+   "pass": 1
+  },
+  {
+   "text": "platforms,flowstations,factories,quarries,constructionsitewithaminimum",
+   "score": 0.9178,
+   "bbox": [
+    [
+     295.0,
+     1410.0
+    ],
+    [
+     1653.0,
+     1390.0
+    ],
+    [
+     1654.0,
+     1436.0
+    ],
+    [
+     296.0,
+     1456.0
+    ]
+   ],
+   "x0": 295.0,
+   "x1": 1654.0,
+   "cy": 1423.0,
+   "h": 66.0,
+   "pass": 1
+  },
+  {
+   "text": "of50workers,etc.",
+   "score": 0.9694,
+   "bbox": [
+    [
+     299.0,
+     1465.0
+    ],
+    [
+     644.0,
+     1466.0
+    ],
+    [
+     643.0,
+     1503.0
+    ],
+    [
+     299.0,
+     1502.0
+    ]
+   ],
+   "x0": 299.0,
+   "x1": 644.0,
+   "cy": 1484.0,
+   "h": 38.0,
+   "pass": 1
+  },
+  {
+   "text": "\"principal place of residence”in relation to an individual with two or",
+   "score": 0.9409,
+   "bbox": [
+    [
+     344.0,
+     688.0
+    ],
+    [
+     1647.0,
+     666.0
+    ],
+    [
+     1648.0,
+     714.0
+    ],
+    [
+     345.0,
+     736.0
+    ]
+   ],
+   "x0": 344.0,
+   "x1": 1648.0,
+   "cy": 701.0,
+   "h": 70.0,
+   "pass": 2
+  },
+  {
+   "text": "(d) who works in the branch office or operational site of a company or",
+   "score": 0.9881,
+   "bbox": [
+    [
+     341.0,
+     1238.0
+    ],
+    [
+     1654.0,
+     1223.0
+    ],
+    [
+     1655.0,
+     1276.0
+    ],
+    [
+     342.0,
+     1291.0
+    ]
+   ],
+   "x0": 341.0,
+   "x1": 1655.0,
+   "cy": 1257.0,
+   "h": 68.0,
+   "pass": 2
+  }
+ ]
+}

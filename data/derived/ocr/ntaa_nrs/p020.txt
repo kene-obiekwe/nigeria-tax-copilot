@@ -1,0 +1,38 @@
+A 278 2025 No.5 Nigeria TaxAdministrationAct,2025
+prescribe
+(11) For the purpose of attribution, any return under this section shall
+provide details of consumption of taxable supplies, irrespective of where the
+return is filed.
+Valueadded 23. (1) Where the Service deploys an Electronic Fiscal System (EFS),
+tax fiscalisa- any person making a taxable supply shall use the EFS for recording and
+tion system
+reportingall supplies
+(2) Taxablepersonsshall beresponsibleformaintaining accuraterecords
+of all transactions passing through the EFS.
+(3) The Service shall specify the fiscalisation system to be adopted and
+a transition arrangement for itsimplementation.
+(4) TheService shall issue a regulation togive effect to theprovisions of
+this section
+Returns-for 24. (1) A taxable person engaged in the provision of relevant services
+surcharge shall, in respect of surcharge imposed under Chapter Seven of the Nigeria
+Tax Act, 2025,submit a return to the Service in the form prescribed by the
+Service.
+(2) Thereturnshall be rendered on orbefore the 21st day of the following
+month, or such other time as may be determined by the Service.
+(3) The return shall contain the following information --
+(a) value of the service on which surcharge is payable ;
+(b) amount of surcharge payable ; and
+(c) such other particulars as may be prescribed by the Service.
+Returns for 25. (1) A taxable person engaged in services related to the exchange,
+Virtual custody or management of virtual assets as a Virtual Asset ServiceProvider
+Assets (VASP) shall, with or without a notice,in addition to the returns provided in
+Service
+Providers sections11 and13ofthisAct,submittotherelevant taxauthority,theinformation
+prescribed in subsection (2).
+(2) The returns shall contain-
+(a) a description of the virtual asset service (exchange, sale, or transfer
+ofvirtual assets) provided during the month;
+(b) the date of the transaction ;
+(c) the type and value of the virtual assets involved ;
+(d) the sales value of the virtual assets ;
+(e) the name, address, telephone number, email address and Tax ID

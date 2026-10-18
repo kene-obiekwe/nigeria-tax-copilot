@@ -1,0 +1,35 @@
+NigeriaTaxAdministrationAct,2025 2025 No.5 A343
+FifthSchedule
+Section79
+VIRTUALASSETS
+Registration
+1.(1) A taxable person engaging in virtual assets related activities,including
+the exchange,trading,custody,orissuance ofvirtual assets,shall register with
+therelevant tax authority asaVirtualAssetsServiceProvider(VASP)fortax
+purposes.
+(2)A VASP operating in Nigeria shall obtain a license from the Securities
+and Exchange Commission before commencementof business.
+Relevantauthority
+2. (1) Subject to section 79 of this Act, the Securities and Exchange
+Commission shall have regulatory oversight over virtual assets that qualify as
+securities only
+(2) Among other determinants, virtual asset shall be classified as a security
+where-
+(a) it is an investment of money or other assets ;
+(b) the investment of money or other assets is in a common
+enterprise;
+(c) there is an expectation of profits from the investment ; and
+(d) any profit comes from the efforts of a promoter or third-party.
+Taxabletransactions
+3. (1) Taxable virtual assets transactions shall include -
+(a) the sale, exchange, or transfer of virtual assets ;
+(b) mining or staking activities that generate income ;
+(c) airdrops, bounties, or any form of virtual asset received as
+compensation orreward;and
+(d) any other transaction or activity relating to virtual assets.
+(2) Transaction where payment for goods and services is made with
+virtual assets,shall-
+(a) be subject to the same tax treatment as transactions
+conducted in fiat currency ;
+(b) have the same value as the goods and services, determined
+at the market price at the time of the transaction ; and

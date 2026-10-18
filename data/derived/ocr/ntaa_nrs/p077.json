@@ -1,0 +1,1060 @@
+{
+ "page": 77,
+ "width": 2103,
+ "height": 2924,
+ "boxes": [
+  {
+   "text": "2025No.5",
+   "score": 0.9932,
+   "bbox": [
+    [
+     1454.0,
+     252.0
+    ],
+    [
+     1674.0,
+     252.0
+    ],
+    [
+     1674.0,
+     286.0
+    ],
+    [
+     1454.0,
+     286.0
+    ]
+   ],
+   "x0": 1454.0,
+   "x1": 1674.0,
+   "cy": 269.0,
+   "h": 34.0,
+   "pass": 1
+  },
+  {
+   "text": "A335",
+   "score": 0.9978,
+   "bbox": [
+    [
+     1795.0,
+     251.0
+    ],
+    [
+     1924.0,
+     249.0
+    ],
+    [
+     1924.0,
+     287.0
+    ],
+    [
+     1796.0,
+     289.0
+    ]
+   ],
+   "x0": 1795.0,
+   "x1": 1924.0,
+   "cy": 269.0,
+   "h": 40.0,
+   "pass": 1
+  },
+  {
+   "text": "NigeriaTaxAdministrationAct,2025",
+   "score": 0.9828,
+   "bbox": [
+    [
+     526.0,
+     265.0
+    ],
+    [
+     1232.0,
+     265.0
+    ],
+    [
+     1232.0,
+     299.0
+    ],
+    [
+     526.0,
+     299.0
+    ]
+   ],
+   "x0": 526.0,
+   "x1": 1232.0,
+   "cy": 282.0,
+   "h": 34.0,
+   "pass": 1
+  },
+  {
+   "text": "day,besubject tosection3(1)(a)（iv)of thisAct.",
+   "score": 0.9345,
+   "bbox": [
+    [
+     280.0,
+     338.0
+    ],
+    [
+     1155.0,
+     338.0
+    ],
+    [
+     1155.0,
+     379.0
+    ],
+    [
+     280.0,
+     379.0
+    ]
+   ],
+   "x0": 280.0,
+   "x1": 1155.0,
+   "cy": 358.5,
+   "h": 41.0,
+   "pass": 1
+  },
+  {
+   "text": "Otherearnedincome",
+   "score": 0.9938,
+   "bbox": [
+    [
+     775.0,
+     419.0
+    ],
+    [
+     1184.0,
+     424.0
+    ],
+    [
+     1183.0,
+     458.0
+    ],
+    [
+     775.0,
+     453.0
+    ]
+   ],
+   "x0": 775.0,
+   "x1": 1184.0,
+   "cy": 438.5,
+   "h": 39.0,
+   "pass": 1
+  },
+  {
+   "text": "6.Anindividual,otherthanacorporationsoleorbodyofindividuals,who",
+   "score": 0.9692,
+   "bbox": [
+    [
+     379.0,
+     492.0
+    ],
+    [
+     1675.0,
+     493.0
+    ],
+    [
+     1675.0,
+     532.0
+    ],
+    [
+     379.0,
+     531.0
+    ]
+   ],
+   "x0": 379.0,
+   "x1": 1675.0,
+   "cy": 512.0,
+   "h": 40.0,
+   "pass": 1
+  },
+  {
+   "text": "has a source ofearnedincomeinNigeria forayear of assessment,other than",
+   "score": 0.9477,
+   "bbox": [
+    [
+     273.0,
+     545.0
+    ],
+    [
+     1677.0,
+     548.0
+    ],
+    [
+     1677.0,
+     594.0
+    ],
+    [
+     273.0,
+     591.0
+    ]
+   ],
+   "x0": 273.0,
+   "x1": 1677.0,
+   "cy": 569.5,
+   "h": 49.0,
+   "pass": 1
+  },
+  {
+   "text": "an employmentor apension,shall bedeemed toberesidentfor thatyearin",
+   "score": 0.9619,
+   "bbox": [
+    [
+     278.0,
+     604.0
+    ],
+    [
+     1677.0,
+     601.0
+    ],
+    [
+     1677.0,
+     645.0
+    ],
+    [
+     278.0,
+     648.0
+    ]
+   ],
+   "x0": 278.0,
+   "x1": 1677.0,
+   "cy": 624.5,
+   "h": 47.0,
+   "pass": 1
+  },
+  {
+   "text": "Januaryin thatyearprovided that-",
+   "score": 0.9785,
+   "bbox": [
+    [
+     274.0,
+     717.0
+    ],
+    [
+     935.0,
+     717.0
+    ],
+    [
+     935.0,
+     758.0
+    ],
+    [
+     274.0,
+     759.0
+    ]
+   ],
+   "x0": 274.0,
+   "x1": 935.0,
+   "cy": 738.0,
+   "h": 42.0,
+   "pass": 1
+  },
+  {
+   "text": "(a)wherethesourceof theincomeisfirst acquiredby theindividual",
+   "score": 0.9606,
+   "bbox": [
+    [
+     379.0,
+     794.0
+    ],
+    [
+     1679.0,
+     794.0
+    ],
+    [
+     1679.0,
+     837.0
+    ],
+    [
+     379.0,
+     837.0
+    ]
+   ],
+   "x0": 379.0,
+   "x1": 1679.0,
+   "cy": 815.5,
+   "h": 43.0,
+   "pass": 1
+  },
+  {
+   "text": "during the year of assessment,and hehad noplace orprincipal place of",
+   "score": 0.9355,
+   "bbox": [
+    [
+     278.0,
+     850.0
+    ],
+    [
+     1681.0,
+     851.0
+    ],
+    [
+     1681.0,
+     895.0
+    ],
+    [
+     278.0,
+     894.0
+    ]
+   ],
+   "x0": 278.0,
+   "x1": 1681.0,
+   "cy": 872.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "residenceon thefirst dayof thatyear,heshall bedeemedtoberesident for",
+   "score": 0.9575,
+   "bbox": [
+    [
+     276.0,
+     906.0
+    ],
+    [
+     1677.0,
+     905.0
+    ],
+    [
+     1677.0,
+     947.0
+    ],
+    [
+     276.0,
+     948.0
+    ]
+   ],
+   "x0": 276.0,
+   "x1": 1677.0,
+   "cy": 926.5,
+   "h": 43.0,
+   "pass": 1
+  },
+  {
+   "text": "thatyear in the territorywhere hefirst establishes a place ofresidence during",
+   "score": 0.9513,
+   "bbox": [
+    [
+     274.0,
+     960.0
+    ],
+    [
+     1676.0,
+     961.0
+    ],
+    [
+     1676.0,
+     1007.0
+    ],
+    [
+     274.0,
+     1006.0
+    ]
+   ],
+   "x0": 274.0,
+   "x1": 1676.0,
+   "cy": 983.5,
+   "h": 47.0,
+   "pass": 1
+  },
+  {
+   "text": "that year; and",
+   "score": 0.9408,
+   "bbox": [
+    [
+     276.0,
+     1020.0
+    ],
+    [
+     534.0,
+     1019.0
+    ],
+    [
+     534.0,
+     1061.0
+    ],
+    [
+     276.0,
+     1063.0
+    ]
+   ],
+   "x0": 276.0,
+   "x1": 534.0,
+   "cy": 1041.0,
+   "h": 44.0,
+   "pass": 1
+  },
+  {
+   "text": "(b)in anyother casewhere the individual hadnoplace orprincipal place",
+   "score": 0.9378,
+   "bbox": [
+    [
+     378.0,
+     1099.0
+    ],
+    [
+     1673.0,
+     1099.0
+    ],
+    [
+     1673.0,
+     1145.0
+    ],
+    [
+     378.0,
+     1145.0
+    ]
+   ],
+   "x0": 378.0,
+   "x1": 1673.0,
+   "cy": 1122.0,
+   "h": 46.0,
+   "pass": 1
+  },
+  {
+   "text": "ofresidence,heshall be deemed toberesidentfor thatyearin any territory",
+   "score": 0.9577,
+   "bbox": [
+    [
+     277.0,
+     1150.0
+    ],
+    [
+     1675.0,
+     1158.0
+    ],
+    [
+     1675.0,
+     1202.0
+    ],
+    [
+     277.0,
+     1194.0
+    ]
+   ],
+   "x0": 277.0,
+   "x1": 1675.0,
+   "cy": 1176.0,
+   "h": 52.0,
+   "pass": 1
+  },
+  {
+   "text": "from which hisearned income arisinginNigeria is derived,or the territory",
+   "score": 0.9494,
+   "bbox": [
+    [
+     275.0,
+     1209.0
+    ],
+    [
+     1675.0,
+     1211.0
+    ],
+    [
+     1675.0,
+     1255.0
+    ],
+    [
+     275.0,
+     1253.0
+    ]
+   ],
+   "x0": 275.0,
+   "x1": 1675.0,
+   "cy": 1232.0,
+   "h": 46.0,
+   "pass": 1
+  },
+  {
+   "text": "fromwhich anypart oftheearned incomeisderived,iftheincomeisderived",
+   "score": 0.963,
+   "bbox": [
+    [
+     277.0,
+     1266.0
+    ],
+    [
+     1678.0,
+     1265.0
+    ],
+    [
+     1678.0,
+     1309.0
+    ],
+    [
+     277.0,
+     1310.0
+    ]
+   ],
+   "x0": 277.0,
+   "x1": 1678.0,
+   "cy": 1287.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "frommore than oneterritory.",
+   "score": 0.9555,
+   "bbox": [
+    [
+     277.0,
+     1320.0
+    ],
+    [
+     809.0,
+     1328.0
+    ],
+    [
+     808.0,
+     1367.0
+    ],
+    [
+     276.0,
+     1360.0
+    ]
+   ],
+   "x0": 276.0,
+   "x1": 809.0,
+   "cy": 1343.5,
+   "h": 47.0,
+   "pass": 1
+  },
+  {
+   "text": "UnearnedIncome",
+   "score": 0.9849,
+   "bbox": [
+    [
+     806.0,
+     1404.0
+    ],
+    [
+     1151.0,
+     1408.0
+    ],
+    [
+     1151.0,
+     1444.0
+    ],
+    [
+     805.0,
+     1440.0
+    ]
+   ],
+   "x0": 805.0,
+   "x1": 1151.0,
+   "cy": 1424.0,
+   "h": 40.0,
+   "pass": 1
+  },
+  {
+   "text": "7.Anindividual,otherthan acorporationsoleorbodyofindividuals,who",
+   "score": 0.9657,
+   "bbox": [
+    [
+     376.0,
+     1478.0
+    ],
+    [
+     1672.0,
+     1476.0
+    ],
+    [
+     1672.0,
+     1517.0
+    ],
+    [
+     376.0,
+     1519.0
+    ]
+   ],
+   "x0": 376.0,
+   "x1": 1672.0,
+   "cy": 1497.5,
+   "h": 43.0,
+   "pass": 1
+  },
+  {
+   "text": "hasnosourceofearned incomeinNigeria forayearofassessmentbutwho",
+   "score": 0.9827,
+   "bbox": [
+    [
+     272.0,
+     1532.0
+    ],
+    [
+     1673.0,
+     1532.0
+    ],
+    [
+     1673.0,
+     1575.0
+    ],
+    [
+     272.0,
+     1575.0
+    ]
+   ],
+   "x0": 272.0,
+   "x1": 1673.0,
+   "cy": 1553.5,
+   "h": 43.0,
+   "pass": 1
+  },
+  {
+   "text": "hasoneormoresourceofunearned incomeinNigeria for thatyearshall be",
+   "score": 0.9722,
+   "bbox": [
+    [
+     272.0,
+     1590.0
+    ],
+    [
+     1674.0,
+     1589.0
+    ],
+    [
+     1674.0,
+     1630.0
+    ],
+    [
+     272.0,
+     1631.0
+    ]
+   ],
+   "x0": 272.0,
+   "x1": 1674.0,
+   "cy": 1610.0,
+   "h": 42.0,
+   "pass": 1
+  },
+  {
+   "text": "deemed toberesidentfor thatyearinthe territoryinwhich hehasaplace or",
+   "score": 0.9597,
+   "bbox": [
+    [
+     277.0,
+     1645.0
+    ],
+    [
+     1675.0,
+     1647.0
+    ],
+    [
+     1675.0,
+     1686.0
+    ],
+    [
+     277.0,
+     1684.0
+    ]
+   ],
+   "x0": 277.0,
+   "x1": 1675.0,
+   "cy": 1665.5,
+   "h": 41.0,
+   "pass": 1
+  },
+  {
+   "text": "principal placeofresidence on1 January of thatyear,provided thatwhere-",
+   "score": 0.9414,
+   "bbox": [
+    [
+     274.0,
+     1701.0
+    ],
+    [
+     1666.0,
+     1697.0
+    ],
+    [
+     1666.0,
+     1744.0
+    ],
+    [
+     275.0,
+     1748.0
+    ]
+   ],
+   "x0": 274.0,
+   "x1": 1666.0,
+   "cy": 1722.5,
+   "h": 51.0,
+   "pass": 1
+  },
+  {
+   "text": "(a)all theunearned income of theindividual for thatyear arisesin one",
+   "score": 0.9453,
+   "bbox": [
+    [
+     378.0,
+     1781.0
+    ],
+    [
+     1677.0,
+     1775.0
+    ],
+    [
+     1677.0,
+     1819.0
+    ],
+    [
+     378.0,
+     1825.0
+    ]
+   ],
+   "x0": 378.0,
+   "x1": 1677.0,
+   "cy": 1800.0,
+   "h": 50.0,
+   "pass": 1
+  },
+  {
+   "text": "territory,and hehasnoplaceofresidence on that day,heshall be deemed to",
+   "score": 0.9285,
+   "bbox": [
+    [
+     274.0,
+     1837.0
+    ],
+    [
+     1672.0,
+     1832.0
+    ],
+    [
+     1672.0,
+     1874.0
+    ],
+    [
+     275.0,
+     1879.0
+    ]
+   ],
+   "x0": 274.0,
+   "x1": 1672.0,
+   "cy": 1855.5,
+   "h": 47.0,
+   "pass": 1
+  },
+  {
+   "text": "beresident for thatyearin that territory;",
+   "score": 0.9615,
+   "bbox": [
+    [
+     274.0,
+     1886.0
+    ],
+    [
+     1031.0,
+     1894.0
+    ],
+    [
+     1031.0,
+     1938.0
+    ],
+    [
+     274.0,
+     1930.0
+    ]
+   ],
+   "x0": 274.0,
+   "x1": 1031.0,
+   "cy": 1912.0,
+   "h": 52.0,
+   "pass": 1
+  },
+  {
+   "text": "(b)the unearned income of the individual arisesfor thatyearin more",
+   "score": 0.9513,
+   "bbox": [
+    [
+     375.0,
+     1974.0
+    ],
+    [
+     1677.0,
+     1967.0
+    ],
+    [
+     1678.0,
+     2013.0
+    ],
+    [
+     376.0,
+     2020.0
+    ]
+   ],
+   "x0": 375.0,
+   "x1": 1678.0,
+   "cy": 1993.5,
+   "h": 53.0,
+   "pass": 1
+  },
+  {
+   "text": "than one territory,and hehasnoplace ofresidence on that day,he shall be",
+   "score": 0.9209,
+   "bbox": [
+    [
+     274.0,
+     2030.0
+    ],
+    [
+     1673.0,
+     2028.0
+    ],
+    [
+     1673.0,
+     2069.0
+    ],
+    [
+     274.0,
+     2071.0
+    ]
+   ],
+   "x0": 274.0,
+   "x1": 1673.0,
+   "cy": 2049.5,
+   "h": 43.0,
+   "pass": 1
+  },
+  {
+   "text": "deemed toberesidentforthatyearinthe territoryfromwhichanypartofthe",
+   "score": 0.977,
+   "bbox": [
+    [
+     277.0,
+     2086.0
+    ],
+    [
+     1674.0,
+     2084.0
+    ],
+    [
+     1674.0,
+     2127.0
+    ],
+    [
+     277.0,
+     2129.0
+    ]
+   ],
+   "x0": 277.0,
+   "x1": 1674.0,
+   "cy": 2106.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "unearnedincome arises.",
+   "score": 0.9762,
+   "bbox": [
+    [
+     275.0,
+     2146.0
+    ],
+    [
+     724.0,
+     2143.0
+    ],
+    [
+     724.0,
+     2179.0
+    ],
+    [
+     275.0,
+     2182.0
+    ]
+   ],
+   "x0": 275.0,
+   "x1": 724.0,
+   "cy": 2162.5,
+   "h": 39.0,
+   "pass": 1
+  },
+  {
+   "text": "Application",
+   "score": 0.9572,
+   "bbox": [
+    [
+     864.0,
+     2226.0
+    ],
+    [
+     1084.0,
+     2221.0
+    ],
+    [
+     1085.0,
+     2261.0
+    ],
+    [
+     865.0,
+     2267.0
+    ]
+   ],
+   "x0": 864.0,
+   "x1": 1085.0,
+   "cy": 2244.0,
+   "h": 46.0,
+   "pass": 1
+  },
+  {
+   "text": "8.(1)Where the territory of residenceof an individual for ayear of",
+   "score": 0.9376,
+   "bbox": [
+    [
+     376.0,
+     2295.0
+    ],
+    [
+     1683.0,
+     2289.0
+    ],
+    [
+     1683.0,
+     2335.0
+    ],
+    [
+     376.0,
+     2341.0
+    ]
+   ],
+   "x0": 376.0,
+   "x1": 1683.0,
+   "cy": 2315.0,
+   "h": 52.0,
+   "pass": 1
+  },
+  {
+   "text": "assessmentmay be determined under more than one of the preceding",
+   "score": 0.9375,
+   "bbox": [
+    [
+     273.0,
+     2353.0
+    ],
+    [
+     1675.0,
+     2349.0
+    ],
+    [
+     1676.0,
+     2391.0
+    ],
+    [
+     273.0,
+     2394.0
+    ]
+   ],
+   "x0": 273.0,
+   "x1": 1676.0,
+   "cy": 2371.5,
+   "h": 45.0,
+   "pass": 1
+  },
+  {
+   "text": "paragraphs of this Schedule,it shall be determined by the first-numbered",
+   "score": 0.9584,
+   "bbox": [
+    [
+     274.0,
+     2408.0
+    ],
+    [
+     1680.0,
+     2395.0
+    ],
+    [
+     1681.0,
+     2441.0
+    ],
+    [
+     275.0,
+     2454.0
+    ]
+   ],
+   "x0": 274.0,
+   "x1": 1681.0,
+   "cy": 2424.5,
+   "h": 59.0,
+   "pass": 1
+  },
+  {
+   "text": "paragraphwhich is applicable tohiscircumstances.",
+   "score": 0.9732,
+   "bbox": [
+    [
+     276.0,
+     2467.0
+    ],
+    [
+     1218.0,
+     2457.0
+    ],
+    [
+     1218.0,
+     2499.0
+    ],
+    [
+     276.0,
+     2508.0
+    ]
+   ],
+   "x0": 276.0,
+   "x1": 1218.0,
+   "cy": 2482.5,
+   "h": 51.0,
+   "pass": 1
+  },
+  {
+   "text": "(2)Where,by reason of subparagraph(1)ofthisparagraph,or otherwise",
+   "score": 0.9345,
+   "bbox": [
+    [
+     379.0,
+     2542.0
+    ],
+    [
+     1668.0,
+     2535.0
+    ],
+    [
+     1668.0,
+     2579.0
+    ],
+    [
+     379.0,
+     2585.0
+    ]
+   ],
+   "x0": 379.0,
+   "x1": 1668.0,
+   "cy": 2560.0,
+   "h": 50.0,
+   "pass": 1
+  },
+  {
+   "text": "a determinationofresidenceofanindividual forayearof assessmentfailsto",
+   "score": 0.9751,
+   "bbox": [
+    [
+     278.0,
+     2596.0
+    ],
+    [
+     1673.0,
+     2592.0
+    ],
+    [
+     1673.0,
+     2631.0
+    ],
+    [
+     278.0,
+     2635.0
+    ]
+   ],
+   "x0": 278.0,
+   "x1": 1673.0,
+   "cy": 2613.5,
+   "h": 43.0,
+   "pass": 1
+  }
+ ]
+}

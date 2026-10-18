@@ -1,0 +1,35 @@
+A344 2025No.5 Nigeria Tax Administration Act,2025
+(c) be reported as income by the person receiving such payments in
+virtual assets and pay taxes in accordance with the provisions of this Act.
+Valuationofvirtualassets
+4. The value of virtual assets for tax purposes shall be determined using
+the prevailing market price at the time of the transaction, as determined by a
+recognised virtual asset exchange platform approved by the Service.
+Taxpayerobligations
+5. A taxable person engaged in virtual asset activities shall keep records
+and books as provided under section 31 of this Act and report virtual assets
+activitiesto therelevant taxauthorities.
+VASP reporting obligations
+6. A VASP operating in Nigeria is required to -
+the Service and the Nigerian Financial Intelligence Unit (NFIU) in accordance
+with existing anti-money laundering(AML) laws ;
+(b) obtain a Special Control Unit Against Money Laundering Certificate
+(SCUML Certificate)issued by therelevant authority;
+(c) report any suspicious activity or transactionsrelated tovirtual assets
+that may involve money laundering, terrorist financing, or fraud to the
+Nigerian Financial Intelligence Unit (NFIU) within 48 hours ;
+(d) provide periodic reports of customer transactions to the Service,
+including but not limited to, exchange, sale, or transfer of virtual assets ;
+(e) maintain accurate customer information to comply with Know Your
+Customer (KYC) requirements ; and
+(f) maintain records of all customer transactions and identification data
+for at least seven years after the date of the last transaction.
+Customer due diligence and Know Your Customer (KYC) obligations
+7. VASPs shall conduct thorough customer verification, followingKYC
+and Anti-Money Laundering(AML) guidelines,which includes -
+(a) collect personal identification details (name, address, national ID, etc.);
+(b) conduct risk assessments and ongoing monitoring of transactions ;
+(c) implement effective internal controls to prevent money laundering
+and terrorist financing;
+(d)report regularly, suspicious activities to therelevant law enforcement
+agencies;

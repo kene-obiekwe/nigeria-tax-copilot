@@ -117,3 +117,110 @@ compared in step 2b-3.
 
 Parsing all four files takes about 55 seconds (the cited Nigeria Tax Act about 20 seconds).
 The structure tests parse each file once per test session.
+
+## 2b-3: NTAA re-OCR, parse and alignment with the Gombe print
+
+Code: [`python/ingest/ocr_ntaa.py`](../../python/ingest/ocr_ntaa.py) (runs in `.venv-ocr`, D-13),
+the OCR input path in [`python/ingest/parse_structure.py`](../../python/ingest/parse_structure.py),
+[`python/ingest/align_ntaa.py`](../../python/ingest/align_ntaa.py) and
+[`python/ingest/scope.py`](../../python/ingest/scope.py). Tests: `tests/test_ntaa_ocr.py`, plus the
+NRS print added to `tests/test_parse_structure.py`. Outputs: `data/derived/ocr/ntaa_nrs/`
+(89 `pNNN.json` box files, 89 `pNNN.txt` reading-order views, `ocr_manifest.json`; 1.9 MB) and
+[`data/derived/ntaa_alignment.csv`](../../data/derived/ntaa_alignment.csv).
+
+### Determinism
+
+- Full-page pass: pages 10 and 26 were OCR'd twice. JSON, text and rendered-image hashes were
+  byte-identical.
+- Gap-fill pass (below): pages 11 and 42 were refilled twice from the same pass-1 boxes. JSON
+  and text were byte-identical.
+- The committed output was produced as a full pass-1 run followed by a `--refill` run. A single
+  from-scratch run composes the same two deterministic steps, but it has not been run end to
+  end as one job.
+
+### Results
+
+| Measure | Value |
+|---|---|
+| Pages | 89, all with output |
+| Text boxes | 3,964, of which 60 come from the gap-fill pass (on 29 pages) |
+| Run time | Pass 1: 2,039.7 s (34 min). Gap-fill refill: 2,031.2 s (34 min; `ocr_manifest.json` records this run). A from-scratch run is about 60 minutes |
+| Sections parsed in order | **148 of 148**; arrangement of sections 148 of 148; all 5 schedules found |
+| In-scope NTAA sections (65) | **59 identical** to the Gombe print, **6 different**: s11, s29, s34, s39, s41, s147 |
+
+### Deviations from the design
+
+1. **Gap-fill second OCR pass.** The full-page pass sometimes drops a whole line. On page 42 it
+   missed the first line of section 69, which stopped the parse at section 68. Missed lines
+   leave gaps that look like paragraph breaks (both are about twice the line pitch), so every
+   body gap over 1.8 times the page's median pitch is re-read on its own, along with a band
+   below the last line. The detector size for these bands is 1,280 px. Only boxes that overlap
+   no existing box are kept, and they are tagged `"pass": 2`. This recovered s69, s11(3) and
+   others. `--refill` reruns only this pass over the existing pass-1 boxes.
+2. **Comparison mappings added** in `align_ntaa.py`. They are applied to both texts the same
+   way, so they can only make two prints that read the same compare equal:
+   - ₦ removed. The OCR keeps the sign as "N" when the space before it is lost.
+   - "o" mapped to "0" next to a digit or comma inside a figure (`N1,0oo.oo0`). This is
+     applied after whitespace removal, because the OCR also drops spaces ("to10"), and only
+     then is the mapping symmetric.
+   - "(l)" or "(I)" read as "(1)" anywhere. The design allowed label mappings only before a
+     capital letter.
+3. **In-scope list in code.** `scope.py` holds the 65 in-scope NTAA sections. A test checks the
+   list against the table in the v1 corpus definition.
+
+### NRS print profile: tolerances
+
+Profile `nigeria_tax_administration_act_2025_gazette_nrs.pdf` in `FILE_PROFILES`. It reads the
+committed boxes and never opens the scan.
+
+| Setting or fix | What it handles |
+|---|---|
+| Boxes rescaled to a 612-pt page | So the PDF thresholds apply |
+| Column edges from the median long line | A few lines overrun the justified edge |
+| `OCR_RIGHT_NOTE_START = 0.72` | Right-hand notes can start just inside the median edge (0.76 to 0.79 of the width) |
+| `note_line_gap = 20`, `align_tolerance = 6`; notes grouped into blocks and given to the nearest section start; a block also splits at a gap of at least 15 pt level with a section start | In the scan, notes are centred on their section, and within-note gaps run up to 15.3 pt. The notes of back-to-back sections are 18.5 pt apart |
+| O1 | Spaces inside a label: `(1 )` becomes `(1)` |
+| O2 | `l`, `I` or an empty label at a section start: `10. (l)` and `94.()` become `(1)` |
+| O3 | `(1l)` becomes `(11)` |
+| O4 | No space after a label: `(2)An` becomes `(2) An` |
+| O5 | `CHAPTERTWO`; `PARTII=REGISTRATION`; title-case `Part II-Offences` |
+| O6 | `ANACTTO` becomes `AN ACT TO` (the front-matter anchor) |
+| O7 | `l`, `I` or `O` inside a leading number: `10l.` becomes `101.` |
+| O8 | `FirstSchedule` becomes `First Schedule` |
+| O9 | A box that reads a note together with its body line is split at an embedded section number (note on the left) or at the word nearest the column edge (note on the right) |
+| O10 | `ofN5,000,000` becomes `of ₦5,000,000` |
+| Arrangement of sections | Up to two stray glyphs between the number and the title (`1.( Objective`, `74.-Rejection`, `30.1 Disclosure`). This applies to every file; entries are accepted only in sequence |
+
+The four text PDFs' pinned anomalies and section counts are unchanged.
+
+### Anomalies left (pinned by the tests)
+
+| Anomaly | Assessment |
+|---|---|
+| s12: subsection (5) follows (3); s62: (5) follows (3) | The OCR missed the line holding (4) even after gap fill: on page 13 it recovered only the last word, "gas". Both sections are out of scope |
+| s34: heading from the arrangement | The note is printed about 56 pt below the section start, as in the Gombe print |
+| s79: note "Power of the President to designate relevant authority" against the arrangement's "Taxation of digital and virtual transactions or assets" | The **cited** print has the same inconsistency as the Gombe print. DQ-08 said the cited texts had none; proposed DQ-10 corrects that |
+
+### Alignment: the 6 differing in-scope sections (for proofreading in 2b-4)
+
+| Section | NRS pages | What differs (from the diff summary; not proofread) | Likely cause |
+|---|---|---|---|
+| s11 | 11-12 | A paragraph (c) line and an "(f)" missing; "(a)" read as "(d)" | OCR misses and misreads |
+| s29 | 21-22 | "(a)" read as "(d)"; words around a threshold ("…month amount…") | OCR misreads; the threshold may also differ between prints (DQ-02 reported ₦25m and ₦100m in Gombe) |
+| s34 | 23-24 | NRS has an extra "13"; a "(c)" missing | OCR misread, or a cross-reference that differs |
+| s39 | 26 | NRS adds "or the Nigerian Naira at the prevailing exchange rate…" and "and payments" | **Genuine print difference** (payment in Naira allowed) |
+| s41 | 26-27 | NRS has no "(8) Where a taxpayer is dissatisfied … pay 20% …" | **Genuine print difference** (deposit clause removed; DQ-02) |
+| s147 | 69-74 | "5" against "10" in one place; extra "a", "f" | To be checked: a figure in the interpretation section, or OCR |
+
+The other 59 in-scope sections are identical after the mappings. Their chunks will use the
+Gombe text verbatim (`text_source = "gombe_verified_identical"`), citing the NRS print and NRS
+pages.
+
+### Proposed data-quality entries
+
+- **DQ-10:** corrects DQ-08. The cited NRS print's s79 marginal note also contradicts its own
+  arrangement of sections, as the Gombe print's does. Headings are kept as printed.
+- **DQ-11:** the re-OCR of the NRS scan misses whole lines. One pass missed lines on many
+  pages. After gap fill, s12(4) and s62(4), both out of scope, are still missing, and in-scope
+  sections s11, s29, s34 and s147 have OCR misreads. Strict alignment sends every affected
+  in-scope section to proofreading; none can be marked identical by mistake.
