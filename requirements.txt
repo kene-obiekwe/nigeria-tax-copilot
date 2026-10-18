@@ -1,0 +1,6 @@
+# Direct dependencies, pinned. LLM and embedding SDKs are added after the D-03 model choice.
+psycopg[binary]==3.3.6
+pgvector==0.5.1
+python-dotenv==1.2.4
+pytest==9.1.1
+streamlit==1.66.0

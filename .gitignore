@@ -1,0 +1,29 @@
+# Agent files (never committed)
+CLAUDE.md
+CLAUDE.local.md
+GEMINI.md
+.claude/
+.agents/
+.gemini/
+
+# Secrets and environments
+.env
+.env.*
+!.env.example
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Runtime logs (schema documented, never committed)
+logs/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+~$*
