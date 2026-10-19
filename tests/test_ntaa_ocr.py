@@ -8,7 +8,7 @@ from pathlib import Path
 
 from ingest.align_ntaa import FIELDS, OUT, align
 from ingest.extract import join_lines
-from ingest.parse_structure import parse
+from ingest.parse_structure import parse_cached
 from ingest.scope import NTAA_IN_SCOPE, ntaa_in_scope_from_doc
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,7 +20,7 @@ GOMBE = "nigeria_tax_administration_act_2025_gazette_gombe_irs.pdf"
 
 @lru_cache(maxsize=None)
 def parsed(name):
-    return parse(RAW / name)
+    return parse_cached(name)  # shared with the other test modules
 
 
 def sha256(path: Path) -> str:

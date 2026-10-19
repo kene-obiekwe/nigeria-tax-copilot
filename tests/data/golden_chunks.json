@@ -1,0 +1,547 @@
+{
+ "about": "Thirty chunks whose text was checked by eye against the cited page of the cited print. A change to any of these texts must be re-checked against the page before this file is updated.",
+ "chunks": [
+  {
+   "chunk_id": "nta2025:s1",
+   "citation": "Nigeria Tax Act 2025, section 1",
+   "unit_type": "section",
+   "text_source": "pdf_text",
+   "pages": [
+    9
+   ],
+   "page_labels": [
+    "A 393"
+   ],
+   "heading": "Objective",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "1. The objective of this Act is to provide a unified fiscal legislation\ngoverning taxation in Nigeria."
+  },
+  {
+   "chunk_id": "nta2025:s2",
+   "citation": "Nigeria Tax Act 2025, section 2",
+   "unit_type": "section",
+   "text_source": "pdf_text",
+   "pages": [
+    9
+   ],
+   "page_labels": [
+    "A 393"
+   ],
+   "heading": "Application",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "2. This Act applies throughout Nigeria to any person required to comply\nwith any provision of the tax laws whether personally or on behalf of another\nperson."
+  },
+  {
+   "chunk_id": "nta2025:s10(7)",
+   "citation": "Nigeria Tax Act 2025, section 10(7)",
+   "unit_type": "subsection_group",
+   "text_source": "pdf_text",
+   "pages": [
+    14
+   ],
+   "page_labels": [
+    "A 398"
+   ],
+   "heading": "Certain undistributed profits may be treated as distributed",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "(7) A company in respect of which a direction is made under this section,\nshall have a right of appeal in accordance with Chapter Two of Nigeria Tax\nAdministration Act, 2025."
+  },
+  {
+   "chunk_id": "nta2025:s21(p)",
+   "citation": "Nigeria Tax Act 2025, section 21(p)",
+   "unit_type": "paragraph_group",
+   "text_source": "pdf_text",
+   "pages": [
+    26
+   ],
+   "page_labels": [
+    "A 410"
+   ],
+   "heading": "Deductions not allowed",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "(p) any expense on which Value Added Tax is due under this Act but\nwas not charged, or in the case of imported items, any expense on which\nthe applicable import duty or levy was not paid."
+  },
+  {
+   "chunk_id": "nta2025:s56",
+   "citation": "Nigeria Tax Act 2025, section 56",
+   "unit_type": "section",
+   "text_source": "pdf_text",
+   "pages": [
+    42
+   ],
+   "page_labels": [
+    "A 426"
+   ],
+   "heading": "Rates of tax for companies",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "56. Tax shall be levied, for each year of assessment in respect of total\nprofits of every company, in the case of –\n(a) a small company, at 0%; and\n(b) any other company, at the rate of 30 per cent from the commencement of this Act."
+  },
+  {
+   "chunk_id": "nta2025:s57",
+   "citation": "Nigeria Tax Act 2025, section 57",
+   "unit_type": "section",
+   "text_source": "pdf_text",
+   "pages": [
+    42
+   ],
+   "page_labels": [
+    "A 426"
+   ],
+   "heading": "Effective Tax Rate",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "57. (1) Notwithstanding any provision of this Act or any other enactment,\nwhere, in any year of assessment, the effective tax rate of a company is less\nthan 15%, such company shall recompute and pay an additional tax that makes\nits effective tax rate equal to 15%.\n(2) The provisions of this section shall apply to –\n(a) a company that is a constituent entity of an MNE group; and\n(b) any other company with an aggregate turnover of ₦20,000,000,000\nand above in the relevant year of assessment.\n(4) For the purposes of this section –\n\"effective tax rate\" means the rate produced by dividing the aggregate covered tax paid by a company for a year of assessment by the\nprofits of the company; and\n\"profits\" means the net profits before tax as reported in the audited\nfinancial statement less 5% of depreciation and personnel cost for the\nyear."
+  },
+  {
+   "chunk_id": "nta2025:s144",
+   "citation": "Nigeria Tax Act 2025, section 144",
+   "unit_type": "section",
+   "text_source": "pdf_text",
+   "pages": [
+    86
+   ],
+   "page_labels": [
+    "A 470"
+   ],
+   "heading": "Imposition of Value Added Tax",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "144. Value Added Tax (VAT) is imposed in accordance with the provisions\nof Chapter Six of this Act."
+  },
+  {
+   "chunk_id": "nta2025:s148",
+   "citation": "Nigeria Tax Act 2025, section 148",
+   "unit_type": "section",
+   "text_source": "pdf_text",
+   "pages": [
+    88
+   ],
+   "page_labels": [
+    "A 472"
+   ],
+   "heading": "Rate of VAT",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "148. Subject to the provisions of Part IV of Chapter Eight of this Act,\nVAT shall be charged on the value of all taxable supplies at the rate of 7.5%."
+  },
+  {
+   "chunk_id": "nta2025:s189:def:basic-food-items(l)-(p)",
+   "citation": "Nigeria Tax Act 2025, section 189, definition of \"basic food items\", paragraphs (l) to (p)",
+   "unit_type": "definition",
+   "text_source": "pdf_text",
+   "pages": [
+    108
+   ],
+   "page_labels": [
+    "A 492"
+   ],
+   "heading": "Interpretation",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "(l) pulses for human consumption including, beans, lentils, peas, chickpeas\nand tamarind, whether raw, roasted, fried, boiled, salted or in their shells;\n(m) tubers (roots) of yam, cocoyam, potatoes, water-yam, cassava,\nwhether in raw form, flakes or flour for human consumption;\n(n) salt for only culinary use, means fine salt and salt in retail packs, and\nexcludes industrial salt;\n(o) vegetables including pepper, melon, lettuce, okra, cabbage, carrot,\nwhether fresh, dried or ground;\n(p) water means natural water and table water, including spring water,\nrain water, pipe borne water or well water excluding –\n(i) sparkling or flavoured water,\n(ii) water sold in restaurants, hotels, eateries, lounges, cafes, canteens\nand other similar settings, and\n(iii) water sold by contractors, caterers or similar persons;"
+  },
+  {
+   "chunk_id": "nta2025:s189:def:farming-machinery-and-implements-and-farming-transportation-equipment",
+   "citation": "Nigeria Tax Act 2025, section 189, definition of \"farming machinery and implements and farming transportation equipment\"",
+   "unit_type": "definition",
+   "text_source": "pdf_text",
+   "pages": [
+    109
+   ],
+   "page_labels": [
+    "A 493"
+   ],
+   "heading": "Interpretation",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "\"farming machinery and implements and farming transportation\nequipment\" means equipment used exclusively for farming or for any other\nagricultural production including tractors, ploughs, harrows, ridgers, harvesters, and equipment of the same kind;"
+  },
+  {
+   "chunk_id": "nta2025:s189:def:fertilisers",
+   "citation": "Nigeria Tax Act 2025, section 189, definition of \"fertilisers\"",
+   "unit_type": "definition",
+   "text_source": "pdf_text",
+   "pages": [
+    109
+   ],
+   "page_labels": [
+    "A 493"
+   ],
+   "heading": "Interpretation",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "\"fertilisers\" means all fertilisers for agricultural purposes;"
+  },
+  {
+   "chunk_id": "nta2025:s202:def:insurance",
+   "citation": "Nigeria Tax Act 2025, section 202, definition of \"insurance\"",
+   "unit_type": "definition",
+   "text_source": "pdf_text",
+   "pages": [
+    121
+   ],
+   "page_labels": [
+    "A 505"
+   ],
+   "heading": "General interpretation",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "\"insurance\" includes assurance;"
+  },
+  {
+   "chunk_id": "nta2025:s202:def:lender",
+   "citation": "Nigeria Tax Act 2025, section 202, definition of \"lender\"",
+   "unit_type": "definition",
+   "text_source": "pdf_text",
+   "pages": [
+    121
+   ],
+   "page_labels": [
+    "A 505"
+   ],
+   "heading": "General interpretation",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "\"lender'' means an approved lender in a regulated securities lending\ntransaction;"
+  },
+  {
+   "chunk_id": "nta2025:s202:def:resident",
+   "citation": "Nigeria Tax Act 2025, section 202, definition of \"resident\"",
+   "unit_type": "definition",
+   "text_source": "pdf_text",
+   "pages": [
+    125
+   ],
+   "page_labels": [
+    "A 509"
+   ],
+   "heading": "General interpretation",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "\"resident\" means resident person, individual or company;"
+  },
+  {
+   "chunk_id": "nta2025:s202:def:small-company",
+   "citation": "Nigeria Tax Act 2025, section 202, definition of \"small company\"",
+   "unit_type": "definition",
+   "text_source": "pdf_text",
+   "pages": [
+    126
+   ],
+   "page_labels": [
+    "A 510"
+   ],
+   "heading": "General interpretation",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "\"small company\" means a company that earns gross turnover of\n₦50,000,000 or less per annum with total fixed assets not exceeding\n₦250,000,000, provided that any business providing professional services shall\nnot be classified as a small company;"
+  },
+  {
+   "chunk_id": "nta2025:sch1:pt1:para1:def:concession",
+   "citation": "Nigeria Tax Act 2025, First Schedule, Part I, paragraph 1, definition of \"concession\"",
+   "unit_type": "schedule_paragraph",
+   "text_source": "pdf_text",
+   "pages": [
+    128
+   ],
+   "page_labels": [
+    "A 512"
+   ],
+   "heading": "CAPITAL ALLOWANCE",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "\"concession\" includes any right or lease in connection with exploration\nor exploitation of any mineral deposit of a wasting nature;"
+  },
+  {
+   "chunk_id": "nta2025:sch1:pt1:table1",
+   "citation": "Nigeria Tax Act 2025, First Schedule, Part I, Table I, Capital Allowance",
+   "unit_type": "schedule_table",
+   "text_source": "pdf_text",
+   "pages": [
+    137
+   ],
+   "page_labels": [
+    "A 521"
+   ],
+   "heading": "CAPITAL ALLOWANCE",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "Table I, Capital Allowance\nClass | Rate | Qualifying Capital Expenditure\nClass: 1 | Rate: 10% | Qualifying Capital Expenditure: (i) Building Expenditure (ii) Agricultural Expenditure (iii) Mast Expenditure (iv) Intangible assets Expenditure (v) Heavy Transportation Expenditure\nClass: 2 | Rate: 20% | Qualifying Capital Expenditure: (i) Plant Expenditure (ii) Agricultural Equipment Expenditure (iii) Furniture and Fittings Expenditure (iv) Mining Expenditure (v) Other Equipment Expenditure\nClass: 3 | Rate: 25% | Qualifying Capital Expenditure: (i) Motor Vehicle Expenditure (ii) Software Expenditure (iii) Other Capital Expenditure"
+  },
+  {
+   "chunk_id": "nta2025:sch11",
+   "citation": "Nigeria Tax Act 2025, Eleventh Schedule",
+   "unit_type": "schedule_paragraph",
+   "text_source": "pdf_text",
+   "pages": [
+    203
+   ],
+   "page_labels": [
+    "A 587"
+   ],
+   "heading": "ITEMS ON WHICH TAX IS SUSPENDED UNDER THIS ACT",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "Sections 186 (2)\nITEMS ON WHICH TAX IS SUSPENDED UNDER THIS ACT\nItems on which VAT may be suspended or delayed\n1. Charging and collection of VAT on the following items shall commence on the date indicated by the Minister, or suspended where it is expedient to do so in the public interest, by an order issued in the Official Gazette –\n(a) petroleum products;\n(b) renewable energy equipment;\n(c) compressed natural gas (CNG);\n(d) Liquefied Petroleum Gas (LPG); and\n(e) other gaseous hydrocarbons.\nItems on which the Minister may vary the classification\n2. The following items may be classified as exempt or zero-rated supplies by an order issued by the Minister in the Official Gazette all -\n(a) equipment, components and infrastructure related to the conversion\nand installation or expansion of Compressed Natural Gas (CNG) and Liquefied Petroleum Gas (LPG), including conversion kits; and\n(b) services relating to the conversion and installation of Compressed\nNatural Gas (CNG) and Liquefied Petroleum Gas (LPG).\nInterpretation\n3. For the purposes of this Schedule –\n\"petroleum products\" means automotive gas oil, aviation turbine kerosene, premium motor spirit, household kerosene and locally produced liquefied\npetroleum gas;\n\"renewable energy equipment\" means equipment used in producing\nrenewable, green or low-carbon energy from renewable resources, such as\nsunlight, wind, the movement of water, and geothermal heat; and\n\"compressed natural gas\" means fuel gas mainly composed of methane (CH4), compressed to less than 1% of the volume it occupies at standard\natmospheric pressure."
+  },
+  {
+   "chunk_id": "nta2025:sch13:table1",
+   "citation": "Nigeria Tax Act 2025, Thirteenth Schedule, Exemption for agricultural businesses",
+   "unit_type": "schedule_table",
+   "text_source": "pdf_text",
+   "pages": [
+    209
+   ],
+   "page_labels": [
+    "A 593"
+   ],
+   "heading": "EXEMPTION FOR AGRICULTURAL BUSINESSES",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "LIRS gazette page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "Sections 163(1) (p),\nand 187\nEXEMPTION FOR AGRICULTURAL BUSINESSES\nSub-sector | Activity | Exempted products\nSub-sector: Crop Production | Activity: Growing of perennial and non-perennial crops | Exempted products: (none printed)\nSub-sector: Livestock | Activity: Raising and breeding of animals in ranches and farms | Exempted products: (none printed)\nSub-sector: (none printed) | Activity: Livestock processing | Exempted products: (none printed)\nSub-sector: Forestry | Activity: Plantation of rubber and acacia trees | Exempted products: (none printed)\nSub-sector: Dairy | Activity: Manufacture of dairy products | Exempted products: (none printed)\nSub-sector: (none printed) | Activity: Processing of cocoa | Exempted products: (none printed)"
+  },
+  {
+   "chunk_id": "ntaa2025:s1",
+   "citation": "Nigeria Tax Administration Act 2025, section 1",
+   "unit_type": "section",
+   "text_source": "gombe_verified_identical",
+   "pages": [
+    7
+   ],
+   "page_labels": [
+    "A 265"
+   ],
+   "heading": "Objective of the Act",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2; words read against the chunk text (punctuation and line breaks are the Gombe print's)"
+   },
+   "text": "1. The objective of this Act is to provide uniform procedures for a\nconsistent and efficient administration of tax laws in order to—\n(a) facilitate tax compliance by taxpayers ; and\n(b) optimise tax revenue."
+  },
+  {
+   "chunk_id": "ntaa2025:s2",
+   "citation": "Nigeria Tax Administration Act 2025, section 2",
+   "unit_type": "section",
+   "text_source": "gombe_verified_identical",
+   "pages": [
+    7
+   ],
+   "page_labels": [
+    "A 265"
+   ],
+   "heading": "Application",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2; words read against the chunk text (punctuation and line breaks are the Gombe print's)"
+   },
+   "text": "2. This Act applies to any person required to comply with any provision\nof the tax laws whether personally or on behalf of another person."
+  },
+  {
+   "chunk_id": "ntaa2025:s15",
+   "citation": "Nigeria Tax Administration Act 2025, section 15",
+   "unit_type": "section",
+   "text_source": "gombe_verified_identical",
+   "pages": [
+    14
+   ],
+   "page_labels": [
+    "A 272"
+   ],
+   "heading": "Simplified Annual Income Tax Return",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2; words read against the chunk text (punctuation and line breaks are the Gombe print's)"
+   },
+   "text": "15. Notwithstanding the provisions of section 14, a relevant tax authority\nmay issue guidelines for the filing of a simplified income tax return by low-income earners or persons operating in the informal sector."
+  },
+  {
+   "chunk_id": "ntaa2025:s22(11)",
+   "citation": "Nigeria Tax Administration Act 2025, section 22(11)",
+   "unit_type": "subsection_group",
+   "text_source": "gombe_verified_identical",
+   "pages": [
+    20
+   ],
+   "page_labels": [
+    "A 278"
+   ],
+   "heading": "Returns for value added tax",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2; words read against the chunk text (punctuation and line breaks are the Gombe print's)"
+   },
+   "text": "(11) For the purpose of attribution, any return under this section shall provide\ndetails of consumption of taxable supplies, irrespective of where the return is\nfiled."
+  },
+  {
+   "chunk_id": "ntaa2025:s26",
+   "citation": "Nigeria Tax Administration Act 2025, section 26",
+   "unit_type": "section",
+   "text_source": "gombe_verified_identical",
+   "pages": [
+    21
+   ],
+   "page_labels": [
+    "A 279"
+   ],
+   "heading": "Returns by priority companies",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2; words read against the chunk text (punctuation and line breaks are the Gombe print's)"
+   },
+   "text": "26. A company granted priority status shall, in accordance with section 11\nof this Act, in each year of assessment, file income tax returns in the manner\nspecified for both priority and non-priority products or services of the company."
+  },
+  {
+   "chunk_id": "ntaa2025:s49(7)",
+   "citation": "Nigeria Tax Administration Act 2025, section 49(7)",
+   "unit_type": "subsection_group",
+   "text_source": "gombe_verified_identical",
+   "pages": [
+    31
+   ],
+   "page_labels": [
+    "A 289"
+   ],
+   "heading": "Payment of Tax",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2; words read against the chunk text (punctuation and line breaks are the Gombe print's)"
+   },
+   "text": "(7) Where there is no objection or appeal, the relevant tax authority may\nproceed to enforce the recovery of the tax payable in accordance with the\nprovisions of this Act."
+  },
+  {
+   "chunk_id": "ntaa2025:s105",
+   "citation": "Nigeria Tax Administration Act 2025, section 105",
+   "unit_type": "section",
+   "text_source": "gombe_verified_identical",
+   "pages": [
+    55
+   ],
+   "page_labels": [
+    "A 313"
+   ],
+   "heading": "Failure to deduct tax",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2; words read against the chunk text (punctuation and line breaks are the Gombe print's)"
+   },
+   "text": "105. A person who has an obligation to collect, deduct or withhold tax\nunder the relevant tax laws, and fails to collect, deduct or withhold the tax due\nis liable to an administrative penalty of 40% of the amount not deducted."
+  },
+  {
+   "chunk_id": "ntaa2025:s29",
+   "citation": "Nigeria Tax Administration Act 2025, section 29",
+   "unit_type": "section",
+   "text_source": "nrs_proofread",
+   "pages": [
+    21,
+    22
+   ],
+   "page_labels": [
+    "A 279",
+    "A 280"
+   ],
+   "heading": "Information to be delivered by bankers and others",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "29. Without prejudice to section 142 of this Act, every bank, insurance\ncompany, stock-broking firm, or any other financial institution, shall prepare,\nwith or without demand by the relevant tax authority, quarterly returns to the\nrelevant tax authority specifying the names and addresses of –\n(a) new customers ; and\n(b) existing customers in the case of –\n(i) an individual, all transactions where the cumulative transactions in\namonth amount to ₦25,000,000 or more, or\n(ii) a body corporate, all transactions where the cumulative transactions\nin amount to ₦100,000,000 or more."
+  },
+  {
+   "chunk_id": "ntaa2025:s39",
+   "citation": "Nigeria Tax Administration Act 2025, section 39",
+   "unit_type": "section",
+   "text_source": "nrs_proofread",
+   "pages": [
+    26
+   ],
+   "page_labels": [
+    "A 284"
+   ],
+   "heading": "Currency of assessment and payment",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "39. (1) Notwithstanding the provisions of any other law, tax shall be\nassessed in the currency of transaction.\n(2) Tax, including royalty, assessed in a currency other than the Nigerian\nNaira shall be paid in that currency, or the Nigerian Naira at the prevailing\nexchange rate in the official foreign exchange market.\n(3) In the case of any return under this Act relating to petroleum operations,\nall computations relating to tax and payments shall be in US Dollars."
+  },
+  {
+   "chunk_id": "ntaa2025:s41(5)-(8)",
+   "citation": "Nigeria Tax Administration Act 2025, section 41(5) to (8)",
+   "unit_type": "subsection_group",
+   "text_source": "nrs_proofread",
+   "pages": [
+    27
+   ],
+   "page_labels": [
+    "A 285"
+   ],
+   "heading": "Revision of assessment in case of objection",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "(5) Where the taxable person and the relevant tax authority agree as to\nthe amount of tax to be assessed, the disputed assessment shall be amended\nand a revised notice of the tax payable shall be served on the taxable person.\n(6) The relevant tax authority shall respond to the objection notice within\n90 days, otherwise the objection of the taxpayer shall be upheld.\n(7) Where the relevant tax authority considers the notice of objection\nsubmitted by the taxable person as invalid or where the taxable person and the\nrelevant tax authority do not agree as to the amount of tax to be assessed, the\ntaxpayer may exercise the right of appeal.\n(8) A party dissatisfied with the decision of the High Court may appeal\nto the Court of Appeal, while an appeal against the judgement of the Court of\nAppeal shall be to the Supreme Court."
+  },
+  {
+   "chunk_id": "ntaa2025:s147:def:small-business",
+   "citation": "Nigeria Tax Administration Act 2025, section 147, definition of \"small business\"",
+   "unit_type": "definition",
+   "text_source": "nrs_proofread",
+   "pages": [
+    73
+   ],
+   "page_labels": [
+    "A 331"
+   ],
+   "heading": "Interpretation",
+   "checked": {
+    "by": "visual comparison with the cited page image, 2026-10-19",
+    "how": "NRS scan page rendered with pypdfium2 and read against the chunk text"
+   },
+   "text": "\"small business\" means a business that earns gross turnover of\n₦100,000,000 or less per annum with a total fixed assets less than\n₦250,000,000, provided that any business providing professional services\nshall not be classified as a small business ;"
+  }
+ ]
+}

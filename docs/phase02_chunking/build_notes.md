@@ -288,3 +288,197 @@ Kene reviewed all six sections against the page images on 2026-10-18 and approve
 corrections. On P2 (s29(b)(i) "amonth"), Kene decided to keep the text exactly as printed.
 `index.csv` now records `reviewed`, `Kene` and `2026-10-18` for each section, and all 23 tests
 pass.
+
+## 2b-5: Chunker, section map and v1 chunk build
+
+```
+.venv\Scripts\python python\ingest\build_chunks.py
+```
+
+The command writes three files: `data/derived/section_map.csv`,
+`data/derived/chunks/v1_chunks.jsonl` and `data/derived/chunks/build_manifest.json`. It takes
+about 70 seconds, most of it parsing the five prints. Neither output records a time.
+
+The manifest records:
+- the sha256 of every input (raw prints, OCR manifest, alignment, proofread files, `tables.yml`,
+  tokenizer, `manifest.csv`);
+- the Python and library versions;
+- the counts, the token statistics and the sha256 of the JSONL.
+
+Two consecutive builds are byte-identical. `test_committed_chunks_equal_a_fresh_build`
+rebuilds in process and compares the result with the committed files.
+
+### Counts
+
+400 chunks: 274 from the Nigeria Tax Act and 126 from the Nigeria Tax Administration Act.
+
+| Unit type | NTA | NTAA |
+|---|---|---|
+| section (whole section in one chunk) | 68 | 57 |
+| subsection_group (packed subsections) | 24 | 14 |
+| paragraph_group (an oversize subsection split at its paragraphs) | 15 | 0 |
+| definition (interpretation sections: NTA s189, s202; NTAA s147) | 143 | 55 |
+| schedule_paragraph (First Schedule Part I; Third and Eleventh Schedules) | 22 | 0 |
+| schedule_table (Table I; Thirteenth Schedule) | 2 | 0 |
+
+The 143 NTA definition chunks are s202's 120 definitions and s189's 22. "Basic food items" is
+split at its paragraphs into (a) to (k) and (l) to (p), which gives one extra chunk.
+
+Text sources:
+
+| Text source | Chunks |
+|---|---|
+| `pdf_text` | 274 |
+| `gombe_verified_identical` | 64 |
+| `nrs_proofread` | 62 |
+
+Heading sources:
+
+| Heading source | Chunks |
+|---|---|
+| `margin` | 250 |
+| `gombe_margin` | 121 |
+| `schedule_title` | 24 |
+| `gombe_arrangement` (NTAA s10, s65, s122) | 3 |
+| `gombe_margin_nrs_arrangement` (NTAA s49) | 2 |
+
+Tokens, counted with the context header:
+
+| Measure | cl100k | bge-small |
+|---|---|---|
+| Minimum | 27 | 24 |
+| Median | 95.5 | 89 |
+| p90 | 379 | 358 |
+| Maximum | 445 | 447 |
+
+By cl100k range: 204 chunks under 100 tokens, 69 from 100 to 199, 46 from 200 to 299, 54 from
+300 to 399, and 27 from 400 to 450. No chunk exceeds the 450 cap, and none is over 450 bge
+tokens, against a limit of 512.
+
+Cross-references: 229 are captured and 195 have a target. The other 34 are Part references,
+paragraph references and references to the other Act.
+
+### Golden chunks and how they were checked
+
+`tests/data/golden_chunks.json` pins 30 chunks with their exact text, citation, unit type, text
+source, heading, pages and page labels.
+
+| Group | Chunks |
+|---|---|
+| NTA sections and subsections | s1, s2, s10(7), s21(p), s56, s57, s144, s148 |
+| NTA definitions | s189 "basic food items" (l) to (p), "farming machinery …" (a term that wraps), "fertilisers"; s202 "insurance", "lender" (closed with `''`), "resident", "small company" |
+| NTA schedules | First Schedule paragraph 1 "concession", Table I, the Eleventh Schedule, the Thirteenth Schedule table |
+| NTAA `gombe_verified_identical` | s1, s2, s15, s22(11), s26, s49(7), s105 |
+| NTAA `nrs_proofread` | s29, s39, s41(5) to (8), s147 "small business" |
+
+Method:
+
+1. Each cited page was rendered to PNG with pypdfium2: the LIRS gazette for the NTA, the NRS
+   scan for the NTAA.
+2. Each chunk's text was read by eye against the printed lines, word by word, including
+   figures and naira amounts. The page number and the printed page label were checked too.
+3. All 30 matched.
+
+For `gombe_verified_identical` chunks the words match the NRS page. Punctuation and line breaks
+are the Gombe print's, by design (D-12 (2)). For example, NRS s1 prints "in order to –" and the
+chunk has "in order to—".
+
+The golden check found a parser gap, described under Surprises below.
+
+### Deviations from the design and the prompt
+
+- **Parser (`parse_structure.py`).**
+  - The text-input path `parse_section_text` was added (approved). It parses the proofread
+    files.
+  - `parse_cached` gives one parse per file per process. `align_ntaa.py` and the test modules
+    now share it.
+  - The per-line section logic moved into `_add_section_line`.
+  - Chapter and Part titles now continue onto a following all-capitals line. This fixed the
+    truncated NTAA chapter titles.
+  - Definition detection was broadened in three ways:
+    - a term may be followed by any lower-case word, not only "means" or "includes";
+    - the gazette's closers `''` and `'` are accepted (an apostrophe inside a term, as in
+      "arm's length", is not a closer);
+    - a term that wraps onto a second line is recognised after a line that ends a clause.
+
+  The pinned 2b-2 and 2b-3 tests pass unchanged.
+- **Schema.**
+  - The extra field `tokens_bge_with_header` records the baseline-model token count.
+  - The `heading_source` values are extended for the NTAA heading rules (`gombe_margin`,
+    `gombe_arrangement`, `gombe_margin_nrs_arrangement`, `proofread_index`, `nrs_ocr`). The
+    last two are not used in v1.
+  - Unit types `paragraph_group` and `schedule_table` are added.
+- **Definition chunks.**
+  - A section's lead-in line ("202. In this Act –") goes with its first definition.
+  - An oversize definition splits at its lettered paragraphs.
+- **Schedules.** An oversize schedule paragraph splits in three steps:
+  1. one chunk per definition (First Schedule paragraph 1 is 1,339 tokens);
+  2. an oversize definition at its lettered paragraphs ("qualifying capital expenditure" splits
+     into (a) to (d), (e) to (i), and (j));
+  3. otherwise at its numbered sub-paragraphs.
+
+  A cross-heading moves to the paragraph it introduces.
+- **Tables.**
+  - The two tables have no ruling lines, so pdfplumber's table finder is not used.
+  - Columns split at the x-position of each header word.
+  - Rows split on vertical space: more than 1.35 line pitches, or more than 1.1 when the first
+    column starts a new entry.
+  - The word-multiset check compares the rebuilt cells with the parser's own text lines for
+    the table body. These come from a separate extraction.
+  - The Thirteenth Schedule prints blank sub-sector cells for "Livestock processing" and
+    "Processing of cocoa". These show "(none printed)", like the empty products column
+    (D-15).
+- **Cross-references.**
+  - Bare words that the committed `CROSS_REF` pattern matches ("this section shall" reads as
+    "section s") are dropped in the chunker.
+  - References to the other Act keep a null target.
+- **NTAA structure and titles.**
+  - Chapter and Part come from the NRS print.
+  - The display title is the Gombe title when it reads the same letter for letter. Otherwise it
+    is the NRS OCR title, re-spaced with a word list. Re-spacing cannot restore lost commas, so
+    Chapter One reads "OBJECTIVE JURISDICTION AND REGISTRATION OF TAX AUTHORITIES" where the
+    print has a comma after "OBJECTIVE".
+  - The section map's NTAA `cited_heading` is the raw NRS OCR reading ("Citationand
+    commencement"). The chunks carry the corrected heading.
+- **tiktoken** downloads the `cl100k_base` encoding on first use and caches it. The bge
+  tokenizer is committed (`python/ingest/assets/`, sha256 pinned in the tests). The cl100k
+  file is not, so a fresh machine needs the network once (D-16; the Phase 11 Docker build
+  pre-fetches it).
+
+### Section map
+
+`data/derived/section_map.csv` has 499 rows:
+- NTA gazette to National Assembly: 203 rows. Gazette s89 "Petroleum royalty" is unmapped, and
+  gazette s90 onwards maps to the National Assembly number minus one.
+- NTAA NRS to Gombe: 148 rows.
+- NTAA NRS to National Assembly: 148 rows.
+
+16 title pairs have similarity below 0.8. Each was looked at and the sections correspond. The
+test pins the list.
+
+| Reason | Pairs |
+|---|---|
+| Reworded between prints | NTA 26/26, 105/104, 114/113, 150/149, 157/156; NTAA National Assembly 7, 8, 81, 145, 148; NTAA Gombe 148 |
+| Comparison heading cut short where its margin note wraps | National Assembly NTA 124 "Manner of", 125 "Obligation", 126 "Admissible"; Gombe NTAA 131 "accounts" |
+| Marginal note against arrangement title | NTAA 79 (DQ-08, DQ-10) |
+
+### Surprising
+
+- **Definitions closed with two apostrophes.** The gazette closes many terms with `''` instead
+  of a quote mark ("lender'' means"). In s202, 16 definitions were folded into the definition
+  before them: 15 closed with `''` or `'`, and one whose term wraps over two lines
+  ("participation, directly or indirectly, …"). In s189, one wrapped term was folded the same
+  way ("farming machinery and implements and farming transportation equipment"). The golden page
+  check found this, and the parser fix now gives s202 120 definitions (was 104).
+  `test_definitions_do_not_swallow_the_next_definition` guards it.
+- **Oversize units.** NTA s189 "basic food items" and First Schedule paragraph 1 exceed the cap
+  on their own and split as above.
+- **Chapter Two starts in a different place in the Gombe print.** Gombe prints the "CHAPTER
+  TWO—RETURNS, ASSESSMENT AND PAYMENTS" and "PART I—RETURNS" headings before s10 (page 12). The
+  NRS and National Assembly prints place them after s10, which stays in Chapter One, Part II
+  (Registration). Proposed DQ-13.
+
+### Run time
+
+The full test suite runs in about 90 seconds (313 tests). Each print is parsed once per session
+through `parse_cached`, and the chunk build runs once in process.

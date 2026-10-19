@@ -8,7 +8,7 @@ from pathlib import Path
 import pdfplumber
 import pytest
 
-from ingest.parse_structure import parse
+from ingest.parse_structure import parse_cached
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
@@ -42,7 +42,7 @@ def index_rows():
 
 @lru_cache(maxsize=None)
 def gombe():
-    return parse(GOMBE)
+    return parse_cached(GOMBE.name)  # shared with the other test modules
 
 
 def different_sections():

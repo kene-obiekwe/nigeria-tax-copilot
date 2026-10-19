@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from ingest.extract import join_lines
-from ingest.parse_structure import FILE_PROFILES, parse
+from ingest.parse_structure import FILE_PROFILES, parse_cached
 
 RAW = Path(__file__).resolve().parents[1] / "data" / "raw"
 NTA_GAZETTE = "nigeria_tax_act_2025_gazette_lirs.pdf"
@@ -17,7 +17,7 @@ NTAA_NRS = "nigeria_tax_administration_act_2025_gazette_nrs.pdf"  # parsed from 
 
 @lru_cache(maxsize=None)
 def parsed(name):
-    return parse(RAW / name)
+    return parse_cached(name)  # shared with the other test modules
 
 
 @pytest.mark.parametrize("name, expected", [

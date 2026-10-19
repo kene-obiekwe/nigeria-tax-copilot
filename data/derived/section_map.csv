@@ -1,0 +1,500 @@
+act_id,cited_print,cited_section,cited_heading,comparison_print,comparison_section,comparison_heading,title_similarity
+nta2025,gazette,1,Objective,nass,1,Objective,1.000
+nta2025,gazette,2,Application,nass,2,Application,1.000
+nta2025,gazette,3,Imposition of tax,nass,3,Imposition of tax,1.000
+nta2025,gazette,4,"Income, profits or gains chargeable to tax",nass,4,"Income, profits or gains chargeable to tax",1.000
+nta2025,gazette,5,Chargeability to tax,nass,5,Chargeability to tax,1.000
+nta2025,gazette,6,Nigerian company,nass,6,Nigerian company,1.000
+nta2025,gazette,7,Nigerian dividends,nass,7,Nigerian dividends,1.000
+nta2025,gazette,8,Profits of a company from certain dividends,nass,8,Profits of a company from certain dividends,1.000
+nta2025,gazette,9,Substitution of dividend for total profit,nass,9,Substitution of dividend for total profit,1.000
+nta2025,gazette,10,Certain undistributed profits may be treated as distributed,nass,10,Certain undistributed profits may be treated as distributed,1.000
+nta2025,gazette,11,Partnership of companies,nass,11,Partnership of companies,1.000
+nta2025,gazette,12,Resident individual,nass,12,Resident individual,1.000
+nta2025,gazette,13,Employment income,nass,13,Employment income,1.000
+nta2025,gazette,14,Benefits-inkind,nass,14,Benefits-inkind,1.000
+nta2025,gazette,15,Partnership of individuals,nass,15,Partnership of individuals,1.000
+nta2025,gazette,16,"Settlements, trusts and estates",nass,16,"Settlements, trusts and estates",1.000
+nta2025,gazette,17,Non-Resident person,nass,17,Non-Resident person,1.000
+nta2025,gazette,18,Non-resident person engaged in shipping or air transport,nass,18,Non-resident person engaged in shipping or air transport,1.000
+nta2025,gazette,19,Nigerian dividends received by Non- Resident persons,nass,19,Nigerian dividends received by Non- Resident persons,1.000
+nta2025,gazette,20,Deductions Allowed,nass,20,Deductions allowed,1.000
+nta2025,gazette,21,Deductions not allowed,nass,21,Deductions not allowed,1.000
+nta2025,gazette,22,Basis for computing assessable profits for trade or business,nass,22,Basis for computing assessable profits for trade or business,1.000
+nta2025,gazette,23,Change in accounting date,nass,23,Change in accounting date,1.000
+nta2025,gazette,24,Cessation of trade or business,nass,24,Cessation of trade or business,1.000
+nta2025,gazette,25,Continuity of trades,nass,25,Continuity of trades,1.000
+nta2025,gazette,26,Basis for computing assessable profits for trade or business,nass,26,Basis for computing assessable income,0.706
+nta2025,gazette,27,Ascertainment of total profits of companies,nass,27,Ascertainment of total profits of companies,1.000
+nta2025,gazette,28,Total income of an individual,nass,28,Total income of an individual,1.000
+nta2025,gazette,29,Presumptive taxation,nass,29,Presumptive taxation,1.000
+nta2025,gazette,30,Ascertainment of chargeable income of individuals,nass,30,Ascertainment of chargeable income of individuals,1.000
+nta2025,gazette,31,Deductions to be claimed,nass,31,Deductions to be claimed,1.000
+nta2025,gazette,32,Proof of claims,nass,32,Proof of claims,1.000
+nta2025,gazette,33,Chargeable Gains,nass,33,Chargeable Gains,1.000
+nta2025,gazette,34,Chargeable assets,nass,34,Chargeable assets,1.000
+nta2025,gazette,35,Disposal of assets,nass,35,Disposal of assets,1.000
+nta2025,gazette,36,"Disposal of assets, provisions as to considerations",nass,36,"Disposal of assets, provisions as to considerations",1.000
+nta2025,gazette,37,Compulsory acquisition of land,nass,37,Compulsory acquisition of land,1.000
+nta2025,gazette,38,Date of acquisition or disposal,nass,38,Date of acquisition or disposal,1.000
+nta2025,gazette,39,Computation of chargeable gains,nass,39,Computation of chargeable gains,1.000
+nta2025,gazette,40,Expenses incurred for disposal of chargeable assets,nass,40,Expenses incurred for disposal of chargeable assets,1.000
+nta2025,gazette,41,Part disposal,nass,41,Part disposal,1.000
+nta2025,gazette,42,Consideration due after time of disposal,nass,42,Consideration due after time of disposal,1.000
+nta2025,gazette,43,Assets lost or destroyed,nass,43,Assets lost or destroyed,1.000
+nta2025,gazette,44,Bargains comprising two or more transactions,nass,44,Bargains comprising two or more transactions,1.000
+nta2025,gazette,45,Valuation at market value,nass,45,Valuation at market value,1.000
+nta2025,gazette,46,Location of assets,nass,46,Location of assets,1.000
+nta2025,gazette,47,Indirect transfer of ownership of companies or assets,nass,47,Indirect transfer of ownership of companies or assets,1.000
+nta2025,gazette,48,Life assurance policies,nass,48,Life assurance policies,1.000
+nta2025,gazette,49,"Rights under policies of insurance, other than life assurance policies",nass,49,"Rights under policies of insurance, other than life assurance policies",1.000
+nta2025,gazette,50,Personal injury,nass,50,Personal injury,1.000
+nta2025,gazette,51,Principal private residences,nass,51,Principal private residences,1.000
+nta2025,gazette,52,Personal chattels,nass,52,Personal chattels,1.000
+nta2025,gazette,53,Motor vehicles,nass,53,Motor vehicles,1.000
+nta2025,gazette,54,Gifts,nass,54,Gifts,1.000
+nta2025,gazette,55,Assets held in trust for charities,nass,55,Assets held in trust for charities,1.000
+nta2025,gazette,56,Rates of tax for companies,nass,56,Rates of tax for companies,1.000
+nta2025,gazette,57,Effective Tax Rate,nass,57,Effective Tax Rate,1.000
+nta2025,gazette,58,Rates of tax for individuals,nass,58,Rates of tax for individuals,1.000
+nta2025,gazette,59,Development Levy,nass,59,Development Levy,1.000
+nta2025,gazette,60,Export Processing and Export Free Zone entities,nass,60,Export Processing and Free Zone entities,0.921
+nta2025,gazette,61,Insurance trade or business,nass,61,Insurance trade or business,1.000
+nta2025,gazette,62,Lottery and gaming trade or business,nass,62,Lottery and gaming trade or business,1.000
+nta2025,gazette,63,Collective Investment Scheme,nass,63,Collective Investment Scheme,1.000
+nta2025,gazette,64,Mining operations,nass,64,Mining operations,1.000
+nta2025,gazette,65,Application of this Part,nass,65,Application of this Part,1.000
+nta2025,gazette,66,Charge of hydrocarbon tax,nass,66,Charge of hydrocarbon tax,1.000
+nta2025,gazette,67,"Ascertainment of crude oil revenue, adjusted profit, assessable profits",nass,67,"Ascertainment of crude oil revenue, adjusted profit, assessable profits",1.000
+nta2025,gazette,68,Allowable deductions,nass,68,Allowable deductions,1.000
+nta2025,gazette,69,Deductions not allowed,nass,69,Deductions not allowed,1.000
+nta2025,gazette,70,Assessable profits and losses,nass,70,Assessable profits and losses,1.000
+nta2025,gazette,71,Chargeable profits and allowances,nass,71,Chargeable profits and allowances,1.000
+nta2025,gazette,72,Chargeable hydrocarbon tax,nass,72,Chargeable hydrocarbon tax,1.000
+nta2025,gazette,73,Additional chargeable tax payable in certain circumstances,nass,73,Additional chargeable tax payable in certain circumstances,1.000
+nta2025,gazette,74,Pre-production cost,nass,74,Pre-production cost,1.000
+nta2025,gazette,75,Trade or business sold or transferred,nass,75,Trade or business sold or transferred,1.000
+nta2025,gazette,76,Consolidation of costs and revenue,nass,76,Consolidation of costs and revenue,1.000
+nta2025,gazette,77,Partnerships,nass,77,Partnerships,1.000
+nta2025,gazette,78,Income tax on petroleum operations,nass,78,Income tax on petroleum operations,1.000
+nta2025,gazette,79,Registration and use of separate company for each stream of petroleum operations,nass,79,Registration and use of separate company for each stream of petroleum operations,1.000
+nta2025,gazette,80,Provisions relating to gas,nass,80,Provisions relating to gas,1.000
+nta2025,gazette,81,Allowances for the purposes of income tax on petroleum operations,nass,81,Allowances for the purposes of income tax on petroleum operations,1.000
+nta2025,gazette,82,Expense deductibility,nass,82,Expense deductibility,1.000
+nta2025,gazette,83,Basis period for income tax on petroleum operations,nass,83,Basis period for income tax on petroleum operations,1.000
+nta2025,gazette,84,Additional income tax payable in certain circumstances,nass,84,Additional income tax payable in certain circumstances,1.000
+nta2025,gazette,85,Non- Associated gas greenfield developments in onshore and shallow water terrains,nass,85,Non- Associated gas greenfield developments in onshore and shallow water terrains,1.000
+nta2025,gazette,86,Provision Relating to Decommissioning and Abandonment of Funds,nass,86,Provision Relating to Decommissioning and Abandonment of Funds,1.000
+nta2025,gazette,87,General application of this Part and other matters,nass,87,General application of this Part and other matters,1.000
+nta2025,gazette,88,Fiscal stabilisation,nass,88,Fiscal stabilisation,1.000
+nta2025,gazette,89,Petroleum royalty,nass,,,
+nta2025,gazette,90,Charge of petroleum profits tax,nass,89,Charge of petroleum profits tax,1.000
+nta2025,gazette,91,"Ascertainment of profits, adjusted profit, assessable profits and chargeable profits",nass,90,"Ascertainment of profits, adjusted profit, assessable profits and chargeable profits",1.000
+nta2025,gazette,92,Deductions allowed,nass,91,Deductions allowed,1.000
+nta2025,gazette,93,Incentives for utilisation of associated gas,nass,92,Incentives for utilisation of associated gas,1.000
+nta2025,gazette,94,Application of incentives to utilisation of non-associated gas,nass,93,Application of incentives to utilisation of non-associated gas,1.000
+nta2025,gazette,95,Deductions not allowed,nass,94,Deductions not allowed,1.000
+nta2025,gazette,96,Exclusion of certain profits,nass,95,Exclusion of certain profits,1.000
+nta2025,gazette,97,Assessable profits and losses,nass,96,Assessable profits and losses,1.000
+nta2025,gazette,98,Chargeable profits and capital allowances,nass,97,Chargeable profits and capital allowances,1.000
+nta2025,gazette,99,Assessable petroleum profits tax,nass,98,Assessable petroleum profits tax,1.000
+nta2025,gazette,100,Additional chargeable tax payable in certain circumstances,nass,99,Additional chargeable tax payable in certain circumstances,1.000
+nta2025,gazette,101,Partnership,nass,100,Partnership,1.000
+nta2025,gazette,102,Production sharing contracts,nass,101,Production sharing contracts,1.000
+nta2025,gazette,103,Duration of oil prospecting licence,nass,102,Duration of oil prospecting licence,1.000
+nta2025,gazette,104,Determination of petroleum profits tax,nass,103,Determination of petroleum profits tax,1.000
+nta2025,gazette,105,Determination of investment tax allowance,nass,104,Determination of investment tax credit and investment tax allowance,0.771
+nta2025,gazette,106,Royalty payable in respect of deep offshore production sharing contracts,nass,105,Royalty payable in respect of deep offshore production sharing contracts,1.000
+nta2025,gazette,107,Computation of petroleum profits tax,nass,106,Computation of petroleum profits tax,1.000
+nta2025,gazette,108,Allocation of royalty oil,nass,107,Allocation of royalty oil,1.000
+nta2025,gazette,109,Allocation of cost oil,nass,108,Allocation of cost oil,1.000
+nta2025,gazette,110,Allocation of tax oil,nass,109,Allocation of tax oil,1.000
+nta2025,gazette,111,Allocation of profit oil,nass,110,Allocation of profit oil,1.000
+nta2025,gazette,112,Payment royalty,nass,111,Payment royalty,1.000
+nta2025,gazette,113,tax petroleum operations,nass,112,Chargeable tax petroleum operations,0.815
+nta2025,gazette,114,Use of realiable price in determining royalty and petroleum,nass,113,Use of realisable price in determining royalty and petroleum profit tax in respect of crude oil,0.779
+nta2025,gazette,115,Submission of receipts,nass,114,Submission of receipts,1.000
+nta2025,gazette,116,Adaptation of laws,nass,115,Adaptation of laws,1.000
+nta2025,gazette,117,Review of the production sharing contract,nass,116,Review of the production sharing contract,1.000
+nta2025,gazette,118,Administration of royalties,nass,117,Administration of royalties,1.000
+nta2025,gazette,119,Interpretation,nass,118,Interpretation,1.000
+nta2025,gazette,120,Unilateral relief of double taxation,nass,119,Unilateral relief of double taxation,1.000
+nta2025,gazette,121,Double taxation agreement,nass,120,Double taxation agreement,1.000
+nta2025,gazette,122,Method of calculating relief to be allowed for double taxation,nass,121,Method of calculating relief to be allowed for double taxation,1.000
+nta2025,gazette,123,Interpretation,nass,122,Interpretation,1.000
+nta2025,gazette,124,Charge of duties,nass,123,Charge of duties,1.000
+nta2025,gazette,125,Manner of denoting duty,nass,124,Manner of,0.571
+nta2025,gazette,126,Obligation to stamp,nass,125,Obligation,0.741
+nta2025,gazette,127,Admissible evidence,nass,126,Admissible,0.714
+nta2025,gazette,128,Bill of exchange,nass,127,Bill of exchange,1.000
+nta2025,gazette,129,Promissory Note,nass,128,Promissory Note,1.000
+nta2025,gazette,130,Sale or purchase of options,nass,129,Sale or purchase of options,1.000
+nta2025,gazette,131,Conveyance on Sale,nass,130,Conveyance on Sale,1.000
+nta2025,gazette,132,Conveyance in consideration of a debt,nass,131,Conveyance in consideration of a debt,1.000
+nta2025,gazette,133,Duty on transfer of mineral assets,nass,132,Duty on transfer of mineral assets,1.000
+nta2025,gazette,134,Provisions as to exchange,nass,133,Provisions as to exchange,1.000
+nta2025,gazette,135,Leases,nass,134,Leases,1.000
+nta2025,gazette,136,Duty on share capital,nass,135,Duty on share capital,1.000
+nta2025,gazette,137,Duty on loan capital,nass,136,Duty on loan capital,1.000
+nta2025,gazette,138,Marketable Security,nass,137,Marketable security,1.000
+nta2025,gazette,139,Appraisements,nass,138,Appraisements,1.000
+nta2025,gazette,140,Duplicates and counterparts,nass,139,Duplicates and counterparts,1.000
+nta2025,gazette,141,Duty relating to one instrument covering multiple transactions,nass,140,Duty relating to one instrument covering multiple transactions,1.000
+nta2025,gazette,142,Duty relating to multiple instruments covering same transaction,nass,141,Duty relating to multiple instruments covering same transaction,1.000
+nta2025,gazette,143,Provisions on non-monetary consideration,nass,142,Provisions on non-monetary consideration,1.000
+nta2025,gazette,144,Imposition of Value Added Tax,nass,143,Imposition of Value Added Tax,1.000
+nta2025,gazette,145,Charge of VAT,nass,144,Charge of VAT,1.000
+nta2025,gazette,146,Taxable supplies,nass,145,Taxable supplies,1.000
+nta2025,gazette,147,Time of Supply,nass,146,Time of Supply,1.000
+nta2025,gazette,148,Rate of VAT,nass,147,Rate of VAT,1.000
+nta2025,gazette,149,Value of taxable supplies,nass,148,Value of taxable supplies,1.000
+nta2025,gazette,150,Value of imported taxable supply,nass,149,Value of imported goods,0.667
+nta2025,gazette,151,Taxable supply by non-residents,nass,150,Taxable supply of non-residents,0.926
+nta2025,gazette,152,Payment of VAT by taxable person,nass,151,Payment of VAT by taxable person,1.000
+nta2025,gazette,153,VAT Invoice,nass,152,VAT Invoice,1.000
+nta2025,gazette,154,Collection of VAT by taxable person,nass,153,Collection of VAT by taxable person,1.000
+nta2025,gazette,155,Collection of VAT by persons other than the supplier,nass,154,Collection of VAT by persons other than the supplier,1.000
+nta2025,gazette,156,Credit for input tax and remission of VAT,nass,155,Credit for input tax and remission of VAT,1.000
+nta2025,gazette,157,Business sold out,nass,156,Business restructuring,0.611
+nta2025,gazette,158,Fiscalisation of supplies for VAT,nass,157,Fiscalisation of supplies for VAT,1.000
+nta2025,gazette,159,Imposition of surcharge,nass,158,Imposition of surcharge,1.000
+nta2025,gazette,160,Chargeable transaction and base for surcharge,nass,159,Chargeable transaction and base for surcharge,1.000
+nta2025,gazette,161,Administration of Surcharge,nass,160,Administration of Surcharge,1.000
+nta2025,gazette,162,Exemption from Surcharge,nass,161,Exemption from Surcharge,1.000
+nta2025,gazette,163,Income tax exemption,nass,162,Income tax exemption,1.000
+nta2025,gazette,164,Deductible donations,nass,163,Deductible donations,1.000
+nta2025,gazette,165,Deduction for research and development,nass,164,Deduction for research and development,1.000
+nta2025,gazette,166,Priority Sectors,nass,165,Priority Sectors,1.000
+nta2025,gazette,167,Eligibility for economic development incentive certificate,nass,166,Eligibility for economic development incentive certificate,1.000
+nta2025,gazette,168,Application for economic development incentive certificate,nass,167,Application for economic development incentive certificate,1.000
+nta2025,gazette,169,Approval of application,nass,168,Approval of application,1.000
+nta2025,gazette,170,Terms of economic development incentive certificate,nass,169,Terms of economic development incentive certificate,1.000
+nta2025,gazette,171,Addition of product to the economic development incentive certificate,nass,170,Addition of product to the economic development incentive certificate,1.000
+nta2025,gazette,172,Application of economic development incentive certificate,nass,171,Application of economic development incentive certificate,1.000
+nta2025,gazette,173,Production day and qualifying capital expenditure,nass,172,Production day and qualifying capital expenditure,1.000
+nta2025,gazette,174,Cancellation of economic development incentive certificate,nass,173,Cancellation of economic development incentive certificate,1.000
+nta2025,gazette,175,Information,nass,174,Information,1.000
+nta2025,gazette,176,Publication of economic development incentive certificate,nass,175,Publication of economic development incentive certificate,1.000
+nta2025,gazette,177,Economic development tax credit,nass,176,Economic development tax credit,1.000
+nta2025,gazette,178,Economic development incentive period,nass,177,Economic development Incentive period,1.000
+nta2025,gazette,179,Books and records for priority products,nass,178,Books and records for priority products,1.000
+nta2025,gazette,180,Returns of profits,nass,179,Returns of profits,1.000
+nta2025,gazette,181,Cancellation or discountenance of economic development tax credit,nass,180,Cancellation or discountenance of economic development tax credit,1.000
+nta2025,gazette,182,Provisions for plantation industry,nass,181,Provisions for plantation industry,1.000
+nta2025,gazette,183,Exclusion from other reliefs and transition arrangements,nass,182,Exclusion from other reliefs and transition arrangements,1.000
+nta2025,gazette,184,Interpretation,nass,183,Interpretation,1.000
+nta2025,gazette,185,Exemption from stamp duties,nass,184,Exemption from stamp duties,1.000
+nta2025,gazette,186,Exempt Supplies,nass,185,Exempt supplies,1.000
+nta2025,gazette,187,Taxable supplies chargeable at 0%,nass,186,Taxable supplies chargeable at zero percent,0.831
+nta2025,gazette,188,Exemption by Order of the President,nass,187,Exemption by Order of the President,1.000
+nta2025,gazette,189,Interpretation,nass,188,Interpretation,1.000
+nta2025,gazette,190,Business restructuring,nass,189,Business restructuring,1.000
+nta2025,gazette,191,Artificial transactions,nass,190,Artificial transactions,1.000
+nta2025,gazette,192,Transactions between related parties to be at arm's length,nass,191,Transactions between related parties to be at arm's length,1.000
+nta2025,gazette,193,Waivers or refund of liability or expenses,nass,192,Waivers or refund of liability or expenses,1.000
+nta2025,gazette,194,Supplemental,nass,193,Supplemental,1.000
+nta2025,gazette,195,Power to make regulations,nass,194,Power to make regulations,1.000
+nta2025,gazette,196,Repeals,nass,195,Repeals,1.000
+nta2025,gazette,197,Consequential amendments,nass,196,Consequential amendments,1.000
+nta2025,gazette,198,Revocation and consequential amendment of subsidiary legislation,nass,197,Revocation and consequential amendment of subsidiary legislation,1.000
+nta2025,gazette,199,Savings provisions,nass,198,Savings provisions,1.000
+nta2025,gazette,200,"Exercise of powers, duties and obligations",nass,199,"Exercise of powers, duties and obligations",1.000
+nta2025,gazette,201,Conflict with other laws,nass,200,Conflict with other laws,1.000
+nta2025,gazette,202,General interpretation,nass,201,General interpretation,1.000
+nta2025,gazette,203,Citation,nass,202,Citation,1.000
+ntaa2025,nrs,1,Objectiveof the Act,gombe,1,Objective of the Act,1.000
+ntaa2025,nrs,2,Application,gombe,2,Application,1.000
+ntaa2025,nrs,3,Jurisdiction oftax authorities,gombe,3,Jurisdiction of tax authorities,1.000
+ntaa2025,nrs,4,Taxable person,gombe,4,Taxable person,1.000
+ntaa2025,nrs,5,"Federal, Stateand Local Government",gombe,5,"Federal, State and Local Government",1.000
+ntaa2025,nrs,6,Non-resident person,gombe,6,Non-resident person,1.000
+ntaa2025,nrs,7,Issuanceof TaxID,gombe,7,Issuance of Tax ID,1.000
+ntaa2025,nrs,8,Use of Tax ID,gombe,8,Use of Tax ID,1.000
+ntaa2025,nrs,9,Notification ofchangeof particulars,gombe,9,Notification of change of particulars,1.000
+ntaa2025,nrs,10,"Suspension, deregistration and cancellation ofTax ID",gombe,10,"Suspension, deregistration and cancellation of tax identification",0.885
+ntaa2025,nrs,11,Incometax returns for companies,gombe,11,Income tax returns for companies,1.000
+ntaa2025,nrs,12,Estimated incometax returns for companies engaged in liquefied natural gas,gombe,12,Estimated income tax returns for companies engaged in liquefied natural gas,1.000
+ntaa2025,nrs,13,Incometax returns for individuals,gombe,13,Income tax returns for individuals,1.000
+ntaa2025,nrs,14,Pay As You Earn,gombe,14,Pay As You Earn,1.000
+ntaa2025,nrs,15,Simplified Annual IncomeTax Return,gombe,15,Simplified Annual Income Tax Return,1.000
+ntaa2025,nrs,16,Estimated returns for upstream petroleum operations,gombe,16,Estimated returns for upstream petroleum operations,1.000
+ntaa2025,nrs,17,Actual returnsfor upstream petroleum operations,gombe,17,Actual returns for upstream petroleum operations,1.000
+ntaa2025,nrs,18,Monthly returns of petroleum royalty,gombe,18,Monthly returns of petroleum royalty,1.000
+ntaa2025,nrs,19,Annual returns of petroleum royalty,gombe,19,Annual returns of petroleum royalty,1.000
+ntaa2025,nrs,20,Monthly returns of mineral royalty,gombe,20,Monthly returns of mineral royalty,1.000
+ntaa2025,nrs,21,Monthly returns by non-residents shipping and airline companies,gombe,21,Monthly returns by non-residents shipping and airline companies,1.000
+ntaa2025,nrs,22,Returns for valueadded tax,gombe,22,Returns for value added tax,1.000
+ntaa2025,nrs,23,Valueadded tax fiscalisation system,gombe,23,Value added tax fiscalisation system,1.000
+ntaa2025,nrs,24,Returns-for surcharge,gombe,24,Returns for surcharge,1.000
+ntaa2025,nrs,25,Returns for Virtual Assets Service Providers,gombe,25,Returns for Virtual Assets Service Providers,1.000
+ntaa2025,nrs,26,Returns by priority companies,gombe,26,Returns by priority companies,1.000
+ntaa2025,nrs,27,Taxincentive returns,gombe,27,Tax incentive returns,1.000
+ntaa2025,nrs,28,Returns for deduction of taxatsource,gombe,28,Returns for deduction of tax at source,1.000
+ntaa2025,nrs,29,Information to be delivered by bankers and others,gombe,29,Information to be delivered by bankers and others,1.000
+ntaa2025,nrs,30,Disclosure oftax planning,gombe,30,Disclosure of tax planning,1.000
+ntaa2025,nrs,31,Booksof account,gombe,31,Books of account,1.000
+ntaa2025,nrs,32,Return deemed to be furnished by an authorised person,gombe,32,Return deemed to be furnished by an authorised person,1.000
+ntaa2025,nrs,33,Accreditation oftax agents,gombe,33,Accreditation of tax agents,1.000
+ntaa2025,nrs,34,Self-assessment of tax payable,gombe,34,Self-assessment of tax payable,1.000
+ntaa2025,nrs,35,Administrativeassessments,gombe,35,Administrative assessments,1.000
+ntaa2025,nrs,36,Additional assessments,gombe,36,Additional assessments,1.000
+ntaa2025,nrs,37,eMakingof assessments oftax in upstream petroleum operations,gombe,37,Making of assessments of tax in upstream petroleum operations,0.991
+ntaa2025,nrs,38,Deemed profit assessment orincome assessment,gombe,38,Deemed profit assessment or income assessment,1.000
+ntaa2025,nrs,39,Currencyof assessment and payment,gombe,39,Currency of assessment and payment,1.000
+ntaa2025,nrs,40,Service of notice of assessment,gombe,40,Service of Notice of Assessment,1.000
+ntaa2025,nrs,41,Revision of assessment in case of objection,gombe,41,Revision of assessment in case of objection,1.000
+ntaa2025,nrs,42,Errors and defects in assessment andnotice,gombe,42,Errors and defects in assessment and notice,1.000
+ntaa2025,nrs,43,Assessments to be final and conclusive,gombe,43,Assessments to be final and conclusive,1.000
+ntaa2025,nrs,44,Lists of taxable persons assessed,gombe,44,Lists of taxable persons assessed,1.000
+ntaa2025,nrs,45,Liabilityof manager or principal officer,gombe,45,Liability of manager or principal officer,1.000
+ntaa2025,nrs,46,Artifical transactions,gombe,46,Artifical transactions,1.000
+ntaa2025,nrs,47,Prohibited tax avoidance arrangement,gombe,47,Prohibited tax avoidance arrangement,1.000
+ntaa2025,nrs,48,Exchangeof information and joint audit,gombe,48,Exchange of information and joint audit,1.000
+ntaa2025,nrs,49,Paymentof,gombe,49,Payment of Tax,0.857
+ntaa2025,nrs,50,Paymentof tax for companies engaged in upstream petroleum operations and midstream liquefied natural gas operations,gombe,50,Payment of tax for companies engaged in upstream petroleum operations and midstream liquefied natural gas operations,1.000
+ntaa2025,nrs,51,Deductionat source,gombe,51,Deduction at source,1.000
+ntaa2025,nrs,52,Indemnification of manageror agent,gombe,52,Indemnification of manager or agent,1.000
+ntaa2025,nrs,53,Company woundup,gombe,53,Company wound up,1.000
+ntaa2025,nrs,54,Avoidance by transfer by companies engaged inpetroleum operations,gombe,54,Avoidance by transfer by companies engaged in petroleum operations,1.000
+ntaa2025,nrs,55,TaxRefund,gombe,55,Tax refund,1.000
+ntaa2025,nrs,56,Valueadded taxrefund,gombe,56,Value added tax refund,1.000
+ntaa2025,nrs,57,"Call for returns, books, documents and information",gombe,57,"Call for returns, books, documents and information",1.000
+ntaa2025,nrs,58,"Powerto assess lands, buildings, books and documents",gombe,58,"Power to assess lands, buildings, books and documents",1.000
+ntaa2025,nrs,59,Power to remove booksand documents,gombe,59,Power to remove books and documents,1.000
+ntaa2025,nrs,60,Power of substitution,gombe,60,Power of substitution,1.000
+ntaa2025,nrs,61,a Power to distrain,gombe,61,Power to distrain,0.968
+ntaa2025,nrs,62,Enforcement ofpowers,gombe,62,Enforcement of powers,1.000
+ntaa2025,nrs,63,Revocation ofpetroleum or mining licence or lease,gombe,63,Revocation of petroleum or mining licence or lease,1.000
+ntaa2025,nrs,64,Tax investigation,gombe,64,Tax investigation,1.000
+ntaa2025,nrs,65,Penaltyand interestfor non-paymentof tax,gombe,65,Penalty and interes for non-payment of tax,0.986
+ntaa2025,nrs,66,Remission of penalty,gombe,66,Remission of penalty,1.000
+ntaa2025,nrs,67,Recoveryof tax,gombe,67,Recovery of tax,1.000
+ntaa2025,nrs,68,Assignment oftaxdebts,gombe,68,Assignment of tax debts,1.000
+ntaa2025,nrs,69,Power to pay reward,gombe,69,Power to pay reward,1.000
+ntaa2025,nrs,70,Endorsement,gombe,70,Endorsement,1.000
+ntaa2025,nrs,71,Deployment oftechnology,gombe,71,Deployment of technology,1.000
+ntaa2025,nrs,72,Taxclearance certificate,gombe,72,Tax clearance certificate,1.000
+ntaa2025,nrs,73,Issuanceof advance rulings,gombe,73,Issuance of advance rulings,1.000
+ntaa2025,nrs,74,Rejection of application foradvance rulings,gombe,74,Rejection of application for advance rulings,1.000
+ntaa2025,nrs,75,Effectof advance rulings,gombe,75,Effect of advance rulings,1.000
+ntaa2025,nrs,76,Withdrawal ormodificationof advance rulings,gombe,76,Withdrawal or modification of advance rulings,1.000
+ntaa2025,nrs,77,Powerofthe President or Governorto remittaxes,gombe,77,Power of the President or Governor to remit taxes,1.000
+ntaa2025,nrs,78,Powerof the Presidentto exempt companies fromincome tax,gombe,78,Power of the President to exempt companies from income tax,1.000
+ntaa2025,nrs,79,Power of the President to designate relevant authority,gombe,79,Power of the President to designate relevant authority,1.000
+ntaa2025,nrs,80,Powerof Accountant- General to deduct at source,gombe,80,Power of Accountant- General to deduct at source,1.000
+ntaa2025,nrs,81,Distribution ofvalue added tax revenue,gombe,81,Distribution of value added tax revenue,1.000
+ntaa2025,nrs,82,Transfer of taxrevenue forrefund,gombe,82,Transfer of tax revenue for refund,1.000
+ntaa2025,nrs,83,National Single Window Portal,gombe,83,National Single Window Portal,1.000
+ntaa2025,nrs,84,Notices,gombe,84,Notices,1.000
+ntaa2025,nrs,85,Forms,gombe,85,Forms,1.000
+ntaa2025,nrs,86,Obligations during the pendency of legal proceedings,gombe,86,Obligations during the pendency of legal proceedings,1.000
+ntaa2025,nrs,87,Establishmentofthe StateInternal Revenue Service,gombe,87,Establishment of the State Internal Revenue Service,1.000
+ntaa2025,nrs,88,Functionsof theState Service,gombe,88,Functions of the State Service,1.000
+ntaa2025,nrs,89,Establishmentand composition ofthe Management Boardofthe StateService,gombe,89,Establishment and composition of the Management Board of the State Service,1.000
+ntaa2025,nrs,90,Appointmentofthe Executive Chairmanof the State Service,gombe,90,Appointment of the Executive Chairman of the State Service,1.000
+ntaa2025,nrs,91,Functionsof the State Board,gombe,91,Functions of the State Board,1.000
+ntaa2025,nrs,92,Establishmentofthe Technical Committee oftheState Board,gombe,92,Establishment of the Technical Committee of the State Board,1.000
+ntaa2025,nrs,93,Establishmentof the Local Government Revenue Committee,gombe,93,Establishment of the Local Government Revenue Committee,1.000
+ntaa2025,nrs,94,Functions of the Revenue Committee,gombe,94,Functions of the Revenue Committee,1.000
+ntaa2025,nrs,95,Establishment and composition ofStateJoint Revenue Committee,gombe,95,Establishment and composition of State Joint Revenue Committee,1.000
+ntaa2025,nrs,96,Functions of the State Joint Revenue Committee,gombe,96,Functions of the State Joint Revenue Committee,1.000
+ntaa2025,nrs,97,Exercise of powers by relevanttax authority,gombe,97,Exercise of powers by relevant tax authority,1.000
+ntaa2025,nrs,98,Delegationof powersof therelevant StateBoard,gombe,98,Delegation of powers of the relevant State Board,1.000
+ntaa2025,nrs,99,Executive Chairman and other officials of therelevant taxauthority,gombe,99,Executive Chairman and other officials of the relevant tax authority,1.000
+ntaa2025,nrs,100,Failure to register,gombe,100,Failure to register,1.000
+ntaa2025,nrs,101,Failure tofile returns,gombe,101,Failure to file returns,1.000
+ntaa2025,nrs,102,Failure to keep books,gombe,102,Failure to keep books,1.000
+ntaa2025,nrs,103,Failure to grantaccess for the deployment oftechnology,gombe,103,Failure to grant access for the deployment of technology,1.000
+ntaa2025,nrs,104,Failure to use fiscalisation system,gombe,104,Failure to use fiscalisation system,1.000
+ntaa2025,nrs,105,Failure to deduct tax,gombe,105,Failure to deduct tax,1.000
+ntaa2025,nrs,106,Failure to make attribution,gombe,106,Failure to make attribution,1.000
+ntaa2025,nrs,107,Failureto remittax deductedat sourceor self-account,gombe,107,Failure to remit tax deducted at source or self-account,1.000
+ntaa2025,nrs,108,"Failure to attend to demands, request or notices",gombe,108,"Failure to attend to demands, request or notices",1.000
+ntaa2025,nrs,109,Penalty for non-compliance by VASP,gombe,109,Penalty for non-compliance by VASP,1.000
+ntaa2025,nrs,110,Failure to stamp,gombe,110,Failure to stamp,1.000
+ntaa2025,nrs,111,Failure to disclose facts inadutiable instrument,gombe,111,Failure to disclose facts in a dutiable instrument,1.000
+ntaa2025,nrs,112,Failure to notify changeof address,gombe,112,Failure to notify change of address,1.000
+ntaa2025,nrs,113,Fraud in relation to stamps,gombe,113,Fraud in relation to stamps,1.000
+ntaa2025,nrs,114,Offenceby authorised and unathorised persons,gombe,114,Offence by authorised and unathorised persons,1.000
+ntaa2025,nrs,115,Inducement of an authorised officer,gombe,115,Inducement of an authorised officer,1.000
+ntaa2025,nrs,116,Use of weapon,gombe,116,Use of weapon,1.000
+ntaa2025,nrs,117,Impersonationofan authorised officer,gombe,117,Impersonation of an authorised officer,1.000
+ntaa2025,nrs,118,Aidingand abetting commission ofoffence,gombe,118,Aiding and abetting commission of offence,1.000
+ntaa2025,nrs,119,Obstruction,gombe,119,Obstruction,1.000
+ntaa2025,nrs,120,Unauthorised disclosure,gombe,120,Unauthorised disclosure,1.000
+ntaa2025,nrs,121,Falseclaim oftaxrefund,gombe,121,False claim of tax refund,1.000
+ntaa2025,nrs,122,False or fictitious claimof valueadded taxrefund,gombe,122,False or fictitious claim of VAT refund,0.868
+ntaa2025,nrs,123,Defaults in paymentsof mineral royalties,gombe,123,Defaults in payments of mineral royalties,1.000
+ntaa2025,nrs,124,False declaration,gombe,124,False declaration,1.000
+ntaa2025,nrs,125,Counterfeiting documents,gombe,125,Counterfeiting documents,1.000
+ntaa2025,nrs,126,Offenceby body corporate,gombe,126,Offence by body corporate,1.000
+ntaa2025,nrs,127,General penalty,gombe,127,General penalty,1.000
+ntaa2025,nrs,128,Failure to file estimated andactual returnson due date,gombe,128,Failure to file estimated and actual returns on due date,1.000
+ntaa2025,nrs,129,Late paymentoftax,gombe,129,Late payment of tax,1.000
+ntaa2025,nrs,130,Failure to complywith therequirementof notice,gombe,130,Failure to comply with the requirement of notice,1.000
+ntaa2025,nrs,131,Incorrect accounts,gombe,131,accounts,0.640
+ntaa2025,nrs,132,False statement and returns,gombe,132,False statement and returns,1.000
+ntaa2025,nrs,133,Offences by authorised and unauthorised persons,gombe,133,Offences by authorised and unauthorised persons,1.000
+ntaa2025,nrs,134,Default in payments of petroleum royalties,gombe,134,Default in payments of petroleum royalties,1.000
+ntaa2025,nrs,135,General penalty in relation to petroleum operations,gombe,135,General penalty in relation to petroleum operations,1.000
+ntaa2025,nrs,136,Contravention of surcharge provisions,gombe,136,Contravention of surcharge provisions,1.000
+ntaa2025,nrs,137,Obstruction ofan authorised officer and refusal to grant immediate entry,gombe,137,Obstruction of an authorised officer and refusal to grant immediate entry,1.000
+ntaa2025,nrs,138,Powerto compound offences,gombe,138,Power to compound offences,1.000
+ntaa2025,nrs,139,Power to prosecute,gombe,139,Power to prosecute,1.000
+ntaa2025,nrs,140,Placeofan offence,gombe,140,Place of an offence,1.000
+ntaa2025,nrs,141,Settlementof dispute,gombe,141,Settlement of dispute,1.000
+ntaa2025,nrs,142,Information and documents to be confidential,gombe,142,Information and documents to be confidential,1.000
+ntaa2025,nrs,143,Official secrecyand confidentiality,gombe,143,Official secrecy and confidentiality,1.000
+ntaa2025,nrs,144,Powersof theMinister to issue general directives and make regulations,gombe,144,Powers of the Minister to issue general directives and make regulations,1.000
+ntaa2025,nrs,145,Conflictwith otherlaws,gombe,145,Conflict with other laws,1.000
+ntaa2025,nrs,146,Savings Provisions,gombe,146,Savings Provisions,1.000
+ntaa2025,nrs,147,Interpretation,gombe,147,Interpretation,1.000
+ntaa2025,nrs,148,Citationand commencement,gombe,148,Citation,0.516
+ntaa2025,nrs,1,Objectiveof the Act,nass,1,Objective of the Act,1.000
+ntaa2025,nrs,2,Application,nass,2,Application,1.000
+ntaa2025,nrs,3,Jurisdiction oftax authorities,nass,3,Jurisdiction of tax authorities,1.000
+ntaa2025,nrs,4,Taxable person,nass,4,Taxable person,1.000
+ntaa2025,nrs,5,"Federal, Stateand Local Government",nass,5,"Federal, State and Local Government",1.000
+ntaa2025,nrs,6,Non-resident person,nass,6,Non-resident person,1.000
+ntaa2025,nrs,7,Issuanceof TaxID,nass,7,Issuance of Taxpayer Identification,0.638
+ntaa2025,nrs,8,Use of Tax ID,nass,8,Use of Taxpayer Identification,0.541
+ntaa2025,nrs,9,Notification ofchangeof particulars,nass,9,Notification of change in particulars,0.939
+ntaa2025,nrs,10,"Suspension, deregistration and cancellation ofTax ID",nass,10,"Suspension, deregistration and cancellation of tax Identification",0.885
+ntaa2025,nrs,11,Incometax returns for companies,nass,11,Income Tax returns for Companies,1.000
+ntaa2025,nrs,12,Estimated incometax returns for companies engaged in liquefied natural gas,nass,12,Estimated income tax returns for companies engaged in liquefied natural gas,1.000
+ntaa2025,nrs,13,Incometax returns for individuals,nass,13,Income Tax Returns for Individuals,1.000
+ntaa2025,nrs,14,Pay As You Earn,nass,14,Pay As You Earn,1.000
+ntaa2025,nrs,15,Simplified Annual IncomeTax Return,nass,15,Simplified annual income tax return,1.000
+ntaa2025,nrs,16,Estimated returns for upstream petroleum operations,nass,16,Estimated returns for upstream petroleum operations,1.000
+ntaa2025,nrs,17,Actual returnsfor upstream petroleum operations,nass,17,Actual returns for upstream petroleum operations,1.000
+ntaa2025,nrs,18,Monthly returns of petroleum royalty,nass,18,Monthly returns of petroleum royalty,1.000
+ntaa2025,nrs,19,Annual returns of petroleum royalty,nass,19,Annual returns of petroleum royalty,1.000
+ntaa2025,nrs,20,Monthly returns of mineral royalty,nass,20,Monthly returns of mineral royalty,1.000
+ntaa2025,nrs,21,Monthly returns by non-residents shipping and airline companies,nass,21,Monthly returns by non-residents shipping and airline companies,1.000
+ntaa2025,nrs,22,Returns for valueadded tax,nass,22,Returns for Value Added Tax,1.000
+ntaa2025,nrs,23,Valueadded tax fiscalisation system,nass,23,Value Added Tax fiscalisation System,1.000
+ntaa2025,nrs,24,Returns-for surcharge,nass,24,Returns for surcharge,1.000
+ntaa2025,nrs,25,Returns for Virtual Assets Service Providers,nass,25,Returns for virtual assets service providers,1.000
+ntaa2025,nrs,26,Returns by priority companies,nass,26,Returns by priority companies,1.000
+ntaa2025,nrs,27,Taxincentive returns,nass,27,Tax Incentive Returns,1.000
+ntaa2025,nrs,28,Returns for deduction of taxatsource,nass,28,Returns for deduction of tax at source,1.000
+ntaa2025,nrs,29,Information to be delivered by bankers and others,nass,29,Information to be delivered by bankers and others,1.000
+ntaa2025,nrs,30,Disclosure oftax planning,nass,30,Disclosure of Tax Planning,1.000
+ntaa2025,nrs,31,Booksof account,nass,31,Books of Account,1.000
+ntaa2025,nrs,32,Return deemed to be furnished by an authorised person,nass,32,Return deemed to be furnished by an authorised person,1.000
+ntaa2025,nrs,33,Accreditation oftax agents,nass,33,Accreditation of Tax Agents,1.000
+ntaa2025,nrs,34,Self-assessment of tax payable,nass,34,Self-assessment of Tax Payable,1.000
+ntaa2025,nrs,35,Administrativeassessments,nass,35,Administrative assessments,1.000
+ntaa2025,nrs,36,Additional assessments,nass,36,Additional assessments,1.000
+ntaa2025,nrs,37,eMakingof assessments oftax in upstream petroleum operations,nass,37,Making of assessments of TAX in upstream petroleum operations,0.991
+ntaa2025,nrs,38,Deemed profit assessment orincome assessment,nass,38,Deemed profit assessment or income assessment,1.000
+ntaa2025,nrs,39,Currencyof assessment and payment,nass,39,Currency of assessment and payment,1.000
+ntaa2025,nrs,40,Service of notice of assessment,nass,40,Service of notice of assessment,1.000
+ntaa2025,nrs,41,Revision of assessment in case of objection,nass,41,Revision of assessment in case of objection,1.000
+ntaa2025,nrs,42,Errors and defects in assessment andnotice,nass,42,Errors and defects in assessment and notice,1.000
+ntaa2025,nrs,43,Assessments to be final and conclusive,nass,43,Assessments to be final and conclusive,1.000
+ntaa2025,nrs,44,Lists of taxable persons assessed,nass,44,List of taxable persons assessed,0.982
+ntaa2025,nrs,45,Liabilityof manager or principal officer,nass,45,Liability of manager or principal officer,1.000
+ntaa2025,nrs,46,Artifical transactions,nass,46,Artifical transactions,1.000
+ntaa2025,nrs,47,Prohibited tax avoidance arrangement,nass,47,Prohibited tax avoidance arrangement,1.000
+ntaa2025,nrs,48,Exchangeof information and joint audit,nass,48,Exchange of information and joint audit,1.000
+ntaa2025,nrs,49,Paymentof,nass,49,Payment of Tax,0.857
+ntaa2025,nrs,50,Paymentof tax for companies engaged in upstream petroleum operations and midstream liquefied natural gas operations,nass,50,Payment of tax for companies engaged in upstream petroleum operations and midstream liquefied natural gas operations,1.000
+ntaa2025,nrs,51,Deductionat source,nass,51,Deduction at source,1.000
+ntaa2025,nrs,52,Indemnification of manageror agent,nass,52,Indemnification of manager or agent,1.000
+ntaa2025,nrs,53,Company woundup,nass,53,Company wound up,1.000
+ntaa2025,nrs,54,Avoidance by transfer by companies engaged inpetroleum operations,nass,54,Avoidance by transfer by companies engaged in petroleum operations,1.000
+ntaa2025,nrs,55,TaxRefund,nass,55,Tax refund,1.000
+ntaa2025,nrs,56,Valueadded taxrefund,nass,56,Value Added Tax Refund,1.000
+ntaa2025,nrs,57,"Call for returns, books, documents and information",nass,57,"Call for returns, books, documents and information",1.000
+ntaa2025,nrs,58,"Powerto assess lands, buildings, books and documents",nass,58,"Power to assess lands, buildings, books and documents",1.000
+ntaa2025,nrs,59,Power to remove booksand documents,nass,59,Power to remove books and documents,1.000
+ntaa2025,nrs,60,Power of substitution,nass,60,Power of substitution,1.000
+ntaa2025,nrs,61,a Power to distrain,nass,61,Power to distrain,0.968
+ntaa2025,nrs,62,Enforcement ofpowers,nass,62,Enforcement of powers,1.000
+ntaa2025,nrs,63,Revocation ofpetroleum or mining licence or lease,nass,63,Revocation of petroleum or mining licence or lease,1.000
+ntaa2025,nrs,64,Tax investigation,nass,64,Tax investigation,1.000
+ntaa2025,nrs,65,Penaltyand interestfor non-paymentof tax,nass,65,Penalty and interest for non-payment of tax,1.000
+ntaa2025,nrs,66,Remission of penalty,nass,66,Remission of penalty,1.000
+ntaa2025,nrs,67,Recoveryof tax,nass,67,Recovery of tax,1.000
+ntaa2025,nrs,68,Assignment oftaxdebts,nass,68,Assignment of tax debts,1.000
+ntaa2025,nrs,69,Power to pay reward,nass,69,Power to pay reward,1.000
+ntaa2025,nrs,70,Endorsement,nass,70,Endorsement,1.000
+ntaa2025,nrs,71,Deployment oftechnology,nass,71,Deployment of technology,1.000
+ntaa2025,nrs,72,Taxclearance certificate,nass,72,Tax clearance certificate,1.000
+ntaa2025,nrs,73,Issuanceof advance rulings,nass,73,Issuance of advance rulings,1.000
+ntaa2025,nrs,74,Rejection of application foradvance rulings,nass,74,Rejection of application for advance rulings,1.000
+ntaa2025,nrs,75,Effectof advance rulings,nass,75,Effect of advance rulings,1.000
+ntaa2025,nrs,76,Withdrawal ormodificationof advance rulings,nass,76,Withdrawal or modification of advance rulings,1.000
+ntaa2025,nrs,77,Powerofthe President or Governorto remittaxes,nass,77,Power of the President or Governor to remit taxes,1.000
+ntaa2025,nrs,78,Powerof the Presidentto exempt companies fromincome tax,nass,78,Power of the President to exempt companies from income tax,1.000
+ntaa2025,nrs,79,Power of the President to designate relevant authority,nass,79,Taxation of digital and virtual transaction or assets,0.344
+ntaa2025,nrs,80,Powerof Accountant- General to deduct at source,nass,80,Power of Accountant- General to deduct at source,1.000
+ntaa2025,nrs,81,Distribution ofvalue added tax revenue,nass,81,Distribution of revenue,0.764
+ntaa2025,nrs,82,Transfer of taxrevenue forrefund,nass,82,Transfer of tax revenue for refund,1.000
+ntaa2025,nrs,83,National Single Window Portal,nass,83,National Single Window Portal,1.000
+ntaa2025,nrs,84,Notices,nass,84,Notices,1.000
+ntaa2025,nrs,85,Forms,nass,85,Forms,1.000
+ntaa2025,nrs,86,Obligations during the pendency of legal proceedings,nass,86,Obligations during the pendency of legal proceedings,1.000
+ntaa2025,nrs,87,Establishmentofthe StateInternal Revenue Service,nass,87,Establishment of the State Internal Revenue Service,1.000
+ntaa2025,nrs,88,Functionsof theState Service,nass,88,Functions of the State Service,1.000
+ntaa2025,nrs,89,Establishmentand composition ofthe Management Boardofthe StateService,nass,89,Establishment and composition of the management board of the State Service,1.000
+ntaa2025,nrs,90,Appointmentofthe Executive Chairmanof the State Service,nass,90,Appointment of the Executive Chairman of the State Service,1.000
+ntaa2025,nrs,91,Functionsof the State Board,nass,91,Functions of the State Board,1.000
+ntaa2025,nrs,92,Establishmentofthe Technical Committee oftheState Board,nass,92,Establishment of the Technical Committee of the State Board,1.000
+ntaa2025,nrs,93,Establishmentof the Local Government Revenue Committee,nass,93,Establishment of the Local Government Revenue Committee,1.000
+ntaa2025,nrs,94,Functions of the Revenue Committee,nass,94,Functions of the Revenue Committee,1.000
+ntaa2025,nrs,95,Establishment and composition ofStateJoint Revenue Committee,nass,95,Establishment and composition of State Joint Revenue Committee,1.000
+ntaa2025,nrs,96,Functions of the State Joint Revenue Committee,nass,96,Functions of the State Joint Revenue Committee,1.000
+ntaa2025,nrs,97,Exercise of powers by relevanttax authority,nass,97,Exercise of powers by relevant tax authority,1.000
+ntaa2025,nrs,98,Delegationof powersof therelevant StateBoard,nass,98,Delegation of powers of the relevant State Board,1.000
+ntaa2025,nrs,99,Executive Chairman and other officials of therelevant taxauthority,nass,99,Executive Chairman and other officials of the relevant tax authority,1.000
+ntaa2025,nrs,100,Failure to register,nass,100,Failure to register,1.000
+ntaa2025,nrs,101,Failure tofile returns,nass,101,Failure to file returns,1.000
+ntaa2025,nrs,102,Failure to keep books,nass,102,Failure to keep books,1.000
+ntaa2025,nrs,103,Failure to grantaccess for the deployment oftechnology,nass,103,Failure to grant access for the deployment of technology,1.000
+ntaa2025,nrs,104,Failure to use fiscalisation system,nass,104,Failure to use fiscalisation system,1.000
+ntaa2025,nrs,105,Failure to deduct tax,nass,105,Failure to deduct tax,1.000
+ntaa2025,nrs,106,Failure to make attribution,nass,106,Failure to make attribution,1.000
+ntaa2025,nrs,107,Failureto remittax deductedat sourceor self-account,nass,107,Failure to remit tax deducted at source or self-account,1.000
+ntaa2025,nrs,108,"Failure to attend to demands, request or notices",nass,108,"Failure to attend to demands, request or notices",1.000
+ntaa2025,nrs,109,Penalty for non-compliance by VASP,nass,109,Penalty for non-compliance by VASP,1.000
+ntaa2025,nrs,110,Failure to stamp,nass,110,Failure to stamp,1.000
+ntaa2025,nrs,111,Failure to disclose facts inadutiable instrument,nass,111,Failure to disclose facts in a dutiable instrument,1.000
+ntaa2025,nrs,112,Failure to notify changeof address,nass,112,Failure to notify change of address,1.000
+ntaa2025,nrs,113,Fraud in relation to stamps,nass,113,Fraud in relation to stamps,1.000
+ntaa2025,nrs,114,Offenceby authorised and unathorised persons,nass,114,Offence by authorised and unathorised persons,1.000
+ntaa2025,nrs,115,Inducement of an authorised officer,nass,115,Inducement of an authorised officer,1.000
+ntaa2025,nrs,116,Use of weapon,nass,116,Use of weapon,1.000
+ntaa2025,nrs,117,Impersonationofan authorised officer,nass,117,Impersonation of an authorised officer,1.000
+ntaa2025,nrs,118,Aidingand abetting commission ofoffence,nass,118,Aiding and abetting commission of offence,1.000
+ntaa2025,nrs,119,Obstruction,nass,119,Obstruction,1.000
+ntaa2025,nrs,120,Unauthorised disclosure,nass,120,Unauthorised disclosure,1.000
+ntaa2025,nrs,121,Falseclaim oftaxrefund,nass,121,False claim of tax refund,1.000
+ntaa2025,nrs,122,False or fictitious claimof valueadded taxrefund,nass,122,False or fictitious claim of VAT refund,0.868
+ntaa2025,nrs,123,Defaults in paymentsof mineral royalties,nass,123,Defaults in payments of mineral royalties,1.000
+ntaa2025,nrs,124,False declaration,nass,124,False declaration,1.000
+ntaa2025,nrs,125,Counterfeiting documents,nass,125,Counterfeiting documents,1.000
+ntaa2025,nrs,126,Offenceby body corporate,nass,126,Offence by body corporate,1.000
+ntaa2025,nrs,127,General penalty,nass,127,General penalty,1.000
+ntaa2025,nrs,128,Failure to file estimated andactual returnson due date,nass,128,Failure to file estimated and actual returns on due date,1.000
+ntaa2025,nrs,129,Late paymentoftax,nass,129,Late payment of tax,1.000
+ntaa2025,nrs,130,Failure to complywith therequirementof notice,nass,130,Failure to comply with the requirement of notice,1.000
+ntaa2025,nrs,131,Incorrect accounts,nass,131,Incorrect accounts,1.000
+ntaa2025,nrs,132,False statement and returns,nass,132,False statement and returns,1.000
+ntaa2025,nrs,133,Offences by authorised and unauthorised persons,nass,133,Offences by authorised and unauthorised persons,1.000
+ntaa2025,nrs,134,Default in payments of petroleum royalties,nass,134,Default in payments of petroleum royalties,1.000
+ntaa2025,nrs,135,General penalty in relation to petroleum operations,nass,135,General penalty in relation to petroleum operations,1.000
+ntaa2025,nrs,136,Contravention of surcharge provisions,nass,136,Contravention of surcharge provisions,1.000
+ntaa2025,nrs,137,Obstruction ofan authorised officer and refusal to grant immediate entry,nass,137,Obstruction of an authorised officer and refusal to grant immediate entry,1.000
+ntaa2025,nrs,138,Powerto compound offences,nass,138,Power to compound offences,1.000
+ntaa2025,nrs,139,Power to prosecute,nass,139,Power to prosecute,1.000
+ntaa2025,nrs,140,Placeofan offence,nass,140,Place of an offence,1.000
+ntaa2025,nrs,141,Settlementof dispute,nass,141,Settlement of dispute,1.000
+ntaa2025,nrs,142,Information and documents to be confidential,nass,142,Information and documents to be confidential,1.000
+ntaa2025,nrs,143,Official secrecyand confidentiality,nass,143,Official secrecy and confidentiality,1.000
+ntaa2025,nrs,144,Powersof theMinister to issue general directives and make regulations,nass,144,Powers of the Minister to issue general directives and make regulations,1.000
+ntaa2025,nrs,145,Conflictwith otherlaws,nass,145,Supemacy of this Act,0.316
+ntaa2025,nrs,146,Savings Provisions,nass,146,Savings Provisions,1.000
+ntaa2025,nrs,147,Interpretation,nass,147,Interpretation,1.000
+ntaa2025,nrs,148,Citationand commencement,nass,148,Citation,0.516

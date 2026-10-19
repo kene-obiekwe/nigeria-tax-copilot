@@ -22,7 +22,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "python"))
 
-from ingest.parse_structure import parse  # noqa: E402
+from ingest.parse_structure import parse_cached  # noqa: E402
 from ingest.scope import NTAA_IN_SCOPE  # noqa: E402
 
 RAW = ROOT / "data" / "raw"
@@ -65,7 +65,7 @@ def diff_summary(a: str, b: str, limit: int = 3) -> str:
 
 
 def align() -> list[dict]:
-    nrs, gombe = parse(RAW / NRS), parse(RAW / GOMBE)
+    nrs, gombe = parse_cached(NRS), parse_cached(GOMBE)
     rows = []
     for number in NTAA_IN_SCOPE:
         n_sec, g_sec = nrs.section(number), gombe.section(number)

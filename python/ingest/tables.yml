@@ -1,0 +1,33 @@
+# In-scope tables (chunking design, section 4). Each table is located by text anchors on one
+# page of the cited file and split into columns at the x-positions of its header words.
+#   region_starts_with: first line of the table region (title or header), letters compared
+#   header_starts_with: the column-header line
+#   column_starts:      first word of each column label in the header line, left to right
+#   ends_before:        first line after the table (null = end of the page)
+#   empty_cell:         text written for a cell with nothing printed in it
+tables:
+  - id: table1
+    file: nigeria_tax_act_2025_gazette_lirs.pdf
+    page: 137
+    schedule: First
+    part: I
+    title: "Table I, Capital Allowance"
+    region_starts_with: "TABLE I"
+    header_starts_with: "Class"
+    columns: ["Class", "Rate", "Qualifying Capital Expenditure"]
+    column_starts: ["Class", "Rate", "Qualifying"]
+    ends_before: "Transitional rules for capital allowances"
+    empty_cell: ""
+  - id: table1
+    file: nigeria_tax_act_2025_gazette_lirs.pdf
+    page: 209
+    schedule: Thirteenth
+    part: null
+    title: "Exemption for agricultural businesses"
+    region_starts_with: "SUB-SECTOR"
+    header_starts_with: "SUB-SECTOR"
+    columns: ["Sub-sector", "Activity", "Exempted products"]
+    column_starts: ["SUB-SECTOR", "ACTIVITY", "EXEMPTED"]
+    ends_before: null
+    # DQ-06 / D-12 decision 6: the gazette prints the column heading but no products.
+    empty_cell: "(none printed)"

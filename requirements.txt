@@ -8,3 +8,6 @@ streamlit==1.66.0
 pdfplumber==0.11.4
 pypdfium2==4.30.0
 tiktoken==0.8.0
+# Chunk build (Phase 2b-5): table config and the 512-token baseline tokenizer check.
+PyYAML==6.0.2
+tokenizers==0.21.0

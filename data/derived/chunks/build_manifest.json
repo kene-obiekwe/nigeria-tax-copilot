@@ -1,0 +1,69 @@
+{
+ "corpus_snapshot": "2026-10-18",
+ "cap_tokens_with_header_cl100k": 450,
+ "inputs": {
+  "data/raw/nigeria_tax_act_2025_gazette_lirs.pdf": "f15edd3bc428d03fddbac7dae9d5c7025c161bc02a04e42e3123975553965b91",
+  "data/raw/nigeria_tax_act_2025_nass.pdf": "41abf6887bc58a3c97116fd9a048aa91ad49c1cab156f39065a58401c0fce94f",
+  "data/raw/nigeria_tax_administration_act_2025_gazette_gombe_irs.pdf": "24eb097f184ecdb758a475f6385f29b7105fc4a7517eb48d6fc276a9c62c54eb",
+  "data/raw/nigeria_tax_administration_act_2025_nass.pdf": "eb3ea717052f48492cc6441ad23f9e7ac2ad4782395db1c391580cc1adef20e2",
+  "data/derived/ocr/ntaa_nrs/ocr_manifest.json": "7747a606093540578d37085c484534679173078242ba4520ebfadb727fb12fee",
+  "data/derived/ntaa_alignment.csv": "7d5b199aa4ee989279a25e57b1f8f9107fea2f4f0249e6c5411e0b7b22d8c9ea",
+  "data/curated/ntaa_nrs_proofread/index.csv": "d341803cf1f98ff85e3fddf379d64a94a40d4c9f065493b76fa1ed56679ce5e2",
+  "data/curated/ntaa_nrs_proofread/s011.txt": "07626ab51ed94d4e521a9ae488f8d62ce484e8b076e7935f2489f8ededb1744c",
+  "data/curated/ntaa_nrs_proofread/s029.txt": "9dcee85cfb46d277d16ba009db77a4e9b7752f583ce2db6938b66e3f42444d40",
+  "data/curated/ntaa_nrs_proofread/s034.txt": "f87d96b7b60c88b32228776f92b936b8e336575ce8cdd181ea8e027be5122bc1",
+  "data/curated/ntaa_nrs_proofread/s039.txt": "27b5023b0a44aeb15dbbf61614c224debcdd9454823cb81529451a3cf66c7ac8",
+  "data/curated/ntaa_nrs_proofread/s041.txt": "7592c67f166c7d20c39e1f6b4ba84d28ee8ff0ce63117d32f93ebd5b538050c8",
+  "data/curated/ntaa_nrs_proofread/s147.txt": "ee7e35e3d4963dc2686d3da7a5c4bfbef1ee7cf746f3ef14b5aaca40586514ff",
+  "python/ingest/tables.yml": "1ee43a333d90deeba496ff66369e5cc91bc83e721b099f1e7512a71bbeccc7a3",
+  "python/ingest/assets/bge-small-en-v1.5.tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+  "data/manifest.csv": "3feab69246f8b3f6a437d7a529fc4a05ae316c0e19a6f749d90e2e5d7e56db39"
+ },
+ "python": "3.12.2",
+ "libraries": {
+  "pdfplumber": "0.11.4",
+  "pdfminer.six": "20231228",
+  "pypdfium2": "4.30.0",
+  "tiktoken": "0.8.0",
+  "tokenizers": "0.21.0",
+  "PyYAML": "6.0.2"
+ },
+ "chunks": 400,
+ "by_act_and_unit_type": {
+  "nta2025/definition": 143,
+  "nta2025/paragraph_group": 15,
+  "nta2025/schedule_paragraph": 22,
+  "nta2025/schedule_table": 2,
+  "nta2025/section": 68,
+  "nta2025/subsection_group": 24,
+  "ntaa2025/definition": 55,
+  "ntaa2025/section": 57,
+  "ntaa2025/subsection_group": 14
+ },
+ "by_text_source": {
+  "gombe_verified_identical": 64,
+  "nrs_proofread": 62,
+  "pdf_text": 274
+ },
+ "by_heading_source": {
+  "gombe_arrangement": 3,
+  "gombe_margin": 121,
+  "gombe_margin_nrs_arrangement": 2,
+  "margin": 250,
+  "schedule_title": 24
+ },
+ "tokens_with_header_cl100k": {
+  "min": 27,
+  "median": 95.5,
+  "p90": 379,
+  "max": 445
+ },
+ "tokens_with_header_bge": {
+  "min": 24,
+  "median": 89.0,
+  "p90": 358,
+  "max": 447
+ },
+ "jsonl_sha256": "fcd14d97a4293bbbeb661d11ea6e3f38c4783a24b6c0d96b25b0c728359e8078",
+ "notes": []
+}

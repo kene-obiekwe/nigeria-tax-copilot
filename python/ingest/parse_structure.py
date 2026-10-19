@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass, field
+from functools import lru_cache
 from pathlib import Path
 
 from ingest.extract import (PAGE_LABEL, Line, Page, extract_pages, hyphen_vocabulary, join_lines,
@@ -32,7 +33,16 @@ PARAGRAPH = re.compile(r"^\(([a-z]{1,2}|[ivx]{1,5})\)\s")
 # A line that can precede a new unit: ends in clause punctuation (optionally followed by a
 # closing quote or bracket) or in "and"/"or".
 CLAUSE_END = re.compile(r"(?:[.;:,—–-][”\"')\]]*|\band|\bor)$")
-DEFINITION = re.compile(r"^[“\"]([^”\"]{1,80})[”\"]\s*(?:means|includes|has the|shall|in relation)")
+# A definition opens with a quoted term at the start of a line ('"small company" means …',
+# '"taxable goods and services" is as defined …', '"Nigeria" for the purpose of this Act, means …').
+# The gazette often closes the term with two apostrophes ('"lender'' means') or one
+# ('"goods' for the purposes'); an apostrophe inside a term ("arm's length") is not a closer.
+TERM_CLOSE = r"(?:[”\"]|''|'(?=[\s,]))"
+DEFINITION = re.compile(rf"^[“\"]([^”\"]{{1,80}}?){TERM_CLOSE}\s*(?=[a-z(,—–-])")
+# A term that wraps: the line opens a quote and never closes it, and the next line closes it
+# ('"farming machinery and implements and farming transportation' / 'equipment" means …').
+WRAPPED_TERM = re.compile(r"^[“\"]([^”\"']{3,80})$")
+TERM_END = re.compile(rf"^([^”\"']{{1,80}}?){TERM_CLOSE}\s*(?=[a-z(,—–-])")
 ORDINALS = ("ONE TWO THREE FOUR FIVE SIX SEVEN EIGHT NINE TEN").split()
 CHAPTER = re.compile(rf"^CHAPTER\s+({'|'.join(ORDINALS)}|\d+)\b\s*(?:{DASH}\s*(.*))?$")
 PART = re.compile(rf"^PART\s+([IVXL]+|\d+)\b\s*(?:{DASH}\s*(.*))?$")
@@ -86,6 +96,7 @@ FILE_PROFILES = {
 }
 
 ROOT = Path(__file__).resolve().parents[2]
+RAW_DIR = ROOT / "data" / "raw"
 
 
 # --- OCR input (the NRS scan, chunking design section 2) -----------------------------------------
@@ -371,6 +382,107 @@ def _similar(a: str, b: str) -> float:
     return SequenceMatcher(None, norm(a), norm(b)).ratio()
 
 
+def _add_section_line(sec: Section, ln: SourceLine, anomalies: list[str]) -> None:
+    """Add one body line to a section, opening subsections, paragraphs and definitions."""
+    text = ln.text
+    # A label opens a new unit only after a line that ends a clause; otherwise it is a
+    # wrapped cross-reference such as "… under subsection" / "(2) of this section".
+    opens_unit = bool(CLAUSE_END.search(sec.lines[-1].text))
+    sec.lines.append(ln)
+    sm = SUBSECTION.match(text)
+    if sm:
+        label = f"({sm.group(1)})"
+        last = _label_value(sec.subsections[-1].label) if sec.subsections else 0
+        value = _label_value(label)
+        # The next number is accepted outright; a jump (s57: (2) then (4)) only after a line
+        # that ends a clause, so a wrapped cross-reference cannot open a subsection.
+        if value == last + 1 or (value > last + 1 and opens_unit):
+            if value != last + 1:
+                anomalies.append(f"s{sec.number}: subsection {label} follows "
+                                 f"{sec.subsections[-1].label if sec.subsections else 'none'} "
+                                 f"(page {ln.page})")
+            sec.subsections.append(Unit(label, [ln]))
+            return
+    if sec.subsections:
+        sec.subsections[-1].lines.append(ln)
+    pm = PARAGRAPH.match(text) if opens_unit else None
+    if pm:
+        sec.paragraphs.append(Unit(f"({pm.group(1)})", [ln]))
+    elif sec.paragraphs:
+        sec.paragraphs[-1].lines.append(ln)
+    dm = DEFINITION.match(text)
+    before = sec.lines[-3].text if len(sec.lines) >= 3 else None
+    wrapped = None if dm or len(sec.lines) < 2 else wrapped_term(before, sec.lines[-2].text, text)
+    if dm:
+        sec.definitions.append(Unit(dm.group(1).strip(), [ln]))
+    elif wrapped:
+        # The previous line opened this definition; take it back from the one before.
+        if sec.definitions and sec.definitions[-1].lines[-1] is sec.lines[-2]:
+            sec.definitions[-1].lines.pop()
+        sec.definitions.append(Unit(wrapped, [sec.lines[-2], ln]))
+    elif sec.definitions:
+        sec.definitions[-1].lines.append(ln)
+
+
+def wrapped_term(before: str | None, first: str, second: str) -> str | None:
+    """The term of a definition whose quoted term wraps from `first` onto `second`, or None.
+    The line before (`before`, None at the start) must end a clause."""
+    m1, m2 = WRAPPED_TERM.match(first), TERM_END.match(second)
+    if m1 and m2 and (before is None or CLAUSE_END.search(before)):
+        return f"{m1.group(1).strip()} {m2.group(1).strip()}"
+    return None
+
+
+def definition_starts(texts: list[str]) -> list[tuple[int, str]]:
+    """(line index, term) for every definition that opens in `texts` (same rules as the parser)."""
+    out = []
+    for i, t in enumerate(texts):
+        m = DEFINITION.match(t)
+        if m:
+            out.append((i, m.group(1).strip()))
+        elif i + 1 < len(texts):
+            term = wrapped_term(texts[i - 1] if i else None, t, texts[i + 1])
+            if term:
+                out.append((i, term))
+    return out
+
+
+def parse_section_text(text: str, number: int, pages: list[int] | None = None,
+                       page_labels: list[str | None] | None = None) -> tuple[Section, list[str]]:
+    """Text-input path: structure one section from a plain-text transcription.
+
+    Used for the proofread NRS sections (2b-4), which have no page geometry. `pages` and
+    `page_labels` give each line's page (same length as the lines); without them every line
+    gets page 0. The same line rules as the PDF path apply.
+    """
+    lines = [ln for ln in text.splitlines() if ln.strip()]
+    pages = pages or [0] * len(lines)
+    page_labels = page_labels or [None] * len(lines)
+    if len(pages) != len(lines) or len(page_labels) != len(lines):
+        raise ValueError("pages and page_labels must give one entry per non-empty line")
+    first = SECTION_START.match(lines[0]) if lines else None
+    if not first or int(first.group(1)) != number:
+        raise ValueError(f"text does not start with section {number}")
+    sec = Section(number=number, chapter=None, part=None)
+    anomalies: list[str] = []
+    for i, line in enumerate(lines):
+        ln = SourceLine(line, pages[i], page_labels[i], float(i), 0.0)
+        if i == 0:
+            sec.lines.append(ln)
+            sm = SUB_IN_FIRST_LINE.match(line)
+            if sm:
+                sec.subsections.append(Unit(f"({sm.group(1)})", [ln]))
+            continue
+        _add_section_line(sec, ln, anomalies)
+    return sec, anomalies
+
+
+@lru_cache(maxsize=None)
+def parse_cached(name: str) -> ParsedAct:
+    """parse() once per process for a profiled raw file name (tests and the chunk build share it)."""
+    return parse(RAW_DIR / name)
+
+
 # --- parser -----------------------------------------------------------------------------------
 
 def parse(pdf_path: str | Path, profile: FileProfile | None = None) -> ParsedAct:
@@ -425,12 +537,12 @@ def parse(pdf_path: str | Path, profile: FileProfile | None = None) -> ParsedAct
         m = CHAPTER.match(text)
         if m:
             chapter, part = (m.group(1), (m.group(2) or "").strip()), None
-            pending_title = None if m.group(2) else "chapter"
+            pending_title = "chapter"  # a title may also wrap onto the next all-capitals line
             continue
         m = PART.match(text)
         if m:
             part = (m.group(1), (m.group(2) or "").strip())
-            pending_title = None if m.group(2) else "part"
+            pending_title = "part"
             continue
         if pending_title and text.isupper() and not SECTION_START.match(text):
             if pending_title == "chapter" and chapter:
@@ -460,38 +572,7 @@ def parse(pdf_path: str | Path, profile: FileProfile | None = None) -> ParsedAct
         if state != "body":
             continue
 
-        sec = sections[-1]
-        # A label opens a new unit only after a line that ends a clause; otherwise it is a
-        # wrapped cross-reference such as "… under subsection" / "(2) of this section".
-        opens_unit = bool(CLAUSE_END.search(sec.lines[-1].text))
-        sec.lines.append(ln)
-        sm = SUBSECTION.match(text)
-        if sm:
-            label = f"({sm.group(1)})"
-            last = _label_value(sec.subsections[-1].label) if sec.subsections else 0
-            value = _label_value(label)
-            # The next number is accepted outright; a jump (s57: (2) then (4)) only after a line
-            # that ends a clause, so a wrapped cross-reference cannot open a subsection.
-            if value == last + 1 or (value > last + 1 and opens_unit):
-                if value != last + 1:
-                    anomalies.append(f"s{sec.number}: subsection {label} follows "
-                                     f"{sec.subsections[-1].label if sec.subsections else 'none'} "
-                                     f"(page {ln.page})")
-                sec.subsections.append(Unit(label, [ln]))
-                continue
-            sm = None  # a "(n)" that does not advance the numbering is ordinary text
-        if sec.subsections:
-            sec.subsections[-1].lines.append(ln)
-        pm = PARAGRAPH.match(text) if opens_unit else None
-        if pm:
-            sec.paragraphs.append(Unit(f"({pm.group(1)})", [ln]))
-        elif sec.paragraphs:
-            sec.paragraphs[-1].lines.append(ln)
-        dm = DEFINITION.match(text)
-        if dm:
-            sec.definitions.append(Unit(dm.group(1).strip(), [ln]))
-        elif sec.definitions:
-            sec.definitions[-1].lines.append(ln)
+        _add_section_line(sections[-1], ln, anomalies)
 
     if expected - 1 != profile.expected_sections:
         anomalies.append(f"found {expected - 1} sections, expected {profile.expected_sections}")
