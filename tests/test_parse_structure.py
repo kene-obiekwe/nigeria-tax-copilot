@@ -161,7 +161,8 @@ def test_no_unconverted_naira(name):
     act = parsed(name)
     lines = [ln.text for s in act.sections for ln in s.lines]
     lines += [ln.text for sch in act.schedules for ln in sch.lines]
-    assert [t for t in lines if re.search(r"(?<![A-Za-z0-9])N\s?\d", t)] == []
+    # "Cap. N61" is a Laws of the Federation chapter number, not a naira amount
+    assert [t for t in lines if re.search(r"(?<![A-Za-z0-9])(?<!Cap\. )(?<!Cap\.)N\s?\d|Cap\.\s?₦", t)] == []
 
 
 @pytest.mark.parametrize("name", list(FILE_PROFILES))

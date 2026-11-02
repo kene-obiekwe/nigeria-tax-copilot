@@ -274,9 +274,12 @@ def test_no_marginal_note_bleed():
 
 
 def test_no_unconverted_naira():
+    # "Cap. N107" is a Laws of the Federation chapter number, not a naira amount
     bad = [(c["chunk_id"], m.group(0)) for c in chunks()
-           for m in re.finditer(r"(?<![A-Za-z0-9])N\s?\d", c["text"])]
+           for m in re.finditer(r"(?<![A-Za-z0-9])(?<!Cap\. )(?<!Cap\.)N\s?\d|Cap\.\s?₦", c["text"])]
     assert bad == []
+    s197 = next(c["text"] for c in chunks() if c["chunk_id"] == "nta2025:s197(1)-(9)")
+    assert "Cap. N107" in s197 and "Cap. N3 " in s197
 
 
 def test_definitions_do_not_swallow_the_next_definition():
@@ -298,10 +301,12 @@ def test_cross_references():
             assert re.search(r"[\d(]|Schedule|Chapter|Part", r["raw"]), (c["chunk_id"], r["raw"])
 
 
-def test_discrepancy_flags_wait_for_the_register():
-    if chunker.REGISTER.is_file():
-        pytest.skip("register present; its integrity is tested with step 2b-6")
-    assert all(c["discrepancy"] == {"flag": False, "register_ids": []} for c in chunks())
+def test_discrepancy_field_shape():
+    # the flags themselves are checked against the register in test_register.py
+    for c in chunks():
+        d = c["discrepancy"]
+        assert set(d) == {"flag", "register_ids"} and d["flag"] == bool(d["register_ids"])
+        assert d["register_ids"] == sorted(d["register_ids"])
 
 
 # --- tables ---------------------------------------------------------------------------------------

@@ -1,0 +1,1522 @@
+about: Review decisions for data/derived/register_candidates.csv (chunking design, section 6). Every candidate has
+  an entry, checked against its diff by python/ingest/build_register.py. An entry gives the final type and, for
+  substantive and missing_content rows, a note on the legal effect; or merge_into (the candidate is part of another
+  row); or drop (the reason). manual_rows are register rows that come from the data-quality log rather than from
+  a text difference. Each row was checked against both PDFs before review; review.by and review.on are set only
+  after the project owner's review. register_id is pinned once reviewed (D-18); a row added later takes the next
+  free number.
+review:
+  by: Kene
+  'on': '2026-10-31'
+rows:
+  nta2025:s4(1)-(5)|nass|1:
+    register_id: DR-001
+    diff: or virtual assets and => assets
+    type: substantive
+    note: The gazette charges gains from transactions in digital or virtual assets; the National Assembly text names
+      digital assets only.
+  nta2025:s4(6)(b)-(e)|nass|1:
+    register_id: DR-002
+    diff: acts … acts => bills … bills
+    type: wording
+    note: The gazette prints 'treasury Acts' and 'commercial Acts' where treasury bills and commercial bills are
+      meant.
+  nta2025:s4(6)(b)-(e)|nass|2:
+    register_id: DR-003
+    diff: 'and e the transfer of securities or shares under a regulated securities lending transaction shall not
+      amount to a disposal provided that such securities or shares are transferred from a lender and subsequently
+      returned by the borrower to the lender => '
+    type: missing_content
+    note: Under the gazette a transfer of securities or shares under a regulated securities lending transaction
+      is not a disposal; the National Assembly text has no such rule.
+  nta2025:s6|nass|1:
+    register_id: DR-004
+    diff: ' => of this section'
+    type: wording
+  nta2025:s6|nass|2:
+    register_id: DR-005
+    diff: ' => nigeria revenue service the'
+    type: wording
+  nta2025:s6|nass|3:
+    register_id: DR-006
+    diff: ' => of this section'
+    type: wording
+  nta2025:s8|nass|1:
+    register_id: DR-007
+    diff: 51 => 50
+    type: numbering
+    note: 'Cross-reference: the gazette cites section 51 of the Nigeria Tax Administration Act, the National Assembly
+      text section 50.'
+  nta2025:s8|nass|2:
+    register_id: DR-008
+    diff: '2025 => '
+    type: wording
+  nta2025:s10(1)-(6)|nass|1:
+    register_id: DR-009
+    diff: ' => the … the … the'
+    type: wording
+  nta2025:s10(1)-(6)|nass|2:
+    register_id: DR-010
+    diff: 2025 and d => and d the
+    type: wording
+  nta2025:s10(7)|nass|1:
+    register_id: DR-011
+    diff: two … 2025 => four
+    type: numbering
+    note: 'Cross-reference: the gazette gives the right of appeal under Chapter Two of the Nigeria Tax Administration
+      Act, the National Assembly text under Chapter Four.'
+  nta2025:s17(1)-(3)|nass|1:
+    register_id: DR-012
+    diff: 'or => '
+    type: wording
+  nta2025:s17(4)-(5)|nass|1:
+    register_id: DR-013
+    diff: accordance with section 51 => line with section 50
+    type: numbering
+    note: 'Cross-reference: section 51 (gazette) against section 50 (National Assembly) of the Nigeria Tax Administration
+      Act.'
+  nta2025:s17(4)-(5)|nass|2:
+    register_id: DR-014
+    diff: 2025 => of this section
+    type: wording
+  nta2025:s17(4)-(5)|nass|3:
+    register_id: DR-015
+    diff: accordance => line
+    type: wording
+  nta2025:s17(6)-(8)|nass|1:
+    register_id: DR-016
+    diff: ' => of this section'
+    type: wording
+  nta2025:s17(6)-(8)|nass|2:
+    register_id: DR-017
+    diff: 2025 … 2025 => of this section
+    type: wording
+  nta2025:s17(9)(a)-(b)|nass|1:
+    register_id: DR-018
+    diff: ' => so on and'
+    type: wording
+    note: The National Assembly text adds 'and so on' to a list that already begins with 'such as'.
+  nta2025:s17(9)(c)-(e)|nass|1:
+    register_id: DR-019
+    diff: to it … and => thereto
+    type: wording
+  nta2025:s18(1)-(3)|nass|1:
+    register_id: DR-020
+    diff: ' => of this section'
+    type: wording
+  nta2025:s18(1)-(3)|nass|2:
+    register_id: DR-021
+    diff: ' => of this section'
+    type: wording
+  nta2025:s18(4)-(6)|nass|1:
+    register_id: DR-022
+    diff: ' => of this section'
+    type: wording
+  nta2025:s18(4)-(6)|nass|2:
+    register_id: DR-023
+    diff: ' => of this section'
+    type: wording
+  nta2025:s18(7)-(9)|nass|1:
+    diff: ' => mandate all persons taxable under the provisions of this section'
+    merge_into: nta2025:s18(7)-(9)|nass|3
+  nta2025:s18(7)-(9)|nass|2:
+    diff: obtaining => obtain
+    merge_into: nta2025:s18(7)-(9)|nass|3
+  nta2025:s18(7)-(9)|nass|3:
+    register_id: DR-024
+    diff: 'mandate all persons taxable under the provisions of this section to => '
+    type: wording
+    note: Same requirement with the words in a different order.
+  nta2025:s18(7)-(9)|nass|4:
+    register_id: DR-025
+    diff: b tax clearance certificates showing income taxes paid for the three preceding tax years or c => and b
+    type: substantive
+    note: The gazette accepts tax clearance certificates for the three preceding tax years as one of three alternative
+      evidences; the National Assembly text lists only filing evidence and evidence of tax declaration and payment.
+  nta2025:s19|nass|1:
+    register_id: DR-026
+    diff: '2025 => '
+    type: wording
+  nta2025:s19|nass|2:
+    register_id: DR-027
+    diff: 51 => 50
+    type: numbering
+    note: 'Cross-reference: section 51 (gazette) against section 50 (National Assembly) of the Nigeria Tax Administration
+      Act.'
+  nta2025:s19|nass|3:
+    register_id: DR-028
+    diff: '2025 => '
+    type: wording
+  nta2025:s20(1)(a)-(h)|nass|1:
+    register_id: DR-029
+    diff: ix … in the course of => xi … during
+    type: numbering
+    note: 'Cross-reference: the gazette cites Part IX of Chapter Two (Rates of Tax), the National Assembly text
+      Part XI (Specialised Trade or Business), which is the intended reference; the gazette reading is a printing
+      slip (DQ-14). Cited as printed. The other difference (''in the course of'' / ''during'') is wording.'
+  nta2025:s20(1)(i)-(m)|nass|1:
+    register_id: DR-030
+    diff: or … in the course of … or => during
+    type: wording
+  nta2025:s20(2)-(4)|nass|1:
+    register_id: DR-031
+    diff: ' => of this section'
+    type: wording
+  nta2025:s20(2)-(4)|nass|2:
+    register_id: DR-032
+    diff: 193 => 194
+    type: numbering
+    note: 'Cross-reference: the gazette cites section 193 of this Act; the National Assembly text cites section
+      194, which is gazette section 195.'
+  nta2025:s21(a)-(o)|nass|1:
+    register_id: DR-033
+    diff: 1 h => j
+    type: numbering
+    note: 'Cross-reference: section 20(1)(h) (gazette) against section 20(j) (National Assembly).'
+  nta2025:s22|nass|1:
+    register_id: DR-034
+    diff: ' => of this section'
+    type: wording
+  nta2025:s23|nass|1:
+    register_id: DR-035
+    diff: ' => of this section'
+    type: wording
+  nta2025:s24|nass|1:
+    register_id: DR-036
+    diff: 2025 => of this section
+    type: wording
+  nta2025:s26|nass|1:
+    register_id: DR-037
+    diff: ' => of this section'
+    type: wording
+  nta2025:s27(1)-(4)|nass|1:
+    register_id: DR-038
+    diff: ' => of this section'
+    type: wording
+  nta2025:s27(1)-(4)|nass|2:
+    register_id: DR-039
+    diff: ' => a in the case of companies in the priority sector certificate of acceptance issued by the industrial
+      inspectorate department shall be obtained inrespect of the qualifying capital expenditure and b'
+    type: missing_content
+    note: The National Assembly text requires companies in the priority sector to obtain a certificate of acceptance
+      from the Industrial Inspectorate Department for qualifying capital expenditure; the gazette has no such condition.
+  nta2025:s27(5)-(6)|nass|1:
+    register_id: DR-040
+    diff: provided that => 6 the amount of loss deductable under subsection 1 of this section shall be subject to
+      the following conditions
+    type: numbering
+    note: The gazette's s27(5) proviso is a separate subsection (6) in the National Assembly text, so gazette (6)
+      is National Assembly (7).
+    refs: 2b-2 s27
+  nta2025:s27(5)-(6)|nass|2:
+    diff: 6 notwithstanding subsection 5 => 7 notwithstanding subsection 6 of this section
+    merge_into: nta2025:s27(5)-(6)|nass|1
+  nta2025:s35|nass|1:
+    register_id: DR-041
+    diff: ' => of this section'
+    type: wording
+  nta2025:s42(1)-(4)|nass|1:
+    register_id: DR-042
+    diff: ' => of this section'
+    type: wording
+  nta2025:s46(a)-(h)|nass|1:
+    register_id: DR-043
+    diff: ' => of this section … of this section'
+    type: wording
+  nta2025:s46(i)-(n)|nass|1:
+    register_id: DR-044
+    diff: ' => of this section'
+    type: wording
+  nta2025:s48|nass|1:
+    register_id: DR-045
+    diff: ' => of this section'
+    type: wording
+  nta2025:s50|nass|1:
+    register_id: DR-046
+    diff: ' => of this section'
+    type: wording
+  nta2025:s50|nass|2:
+    register_id: DR-047
+    diff: 'pursuant to … 2025 => '
+    type: wording
+  nta2025:s52|nass|1:
+    register_id: DR-048
+    diff: ' => of this section'
+    type: wording
+  nta2025:s56|nass|1:
+    register_id: DR-049
+    diff: 30 per cent => 30%
+    type: wording
+  nta2025:s56|nass|2:
+    register_id: DR-050
+    diff: ' => provided that the rate under shall be reduced to 25% effective from a date as may be determined in
+      an order issued by the president on the advice of the national economic council'
+    type: missing_content
+    note: The National Assembly text lets the President, on the advice of the National Economic Council, reduce
+      the 30% rate to 25% by order; the gazette has no such provision.
+    refs: DQ-01
+  nta2025:s57|nass|1:
+    diff: ' => the following shall apply for the purpose of determination the effective tax rate under this section
+      a'
+    merge_into: nta2025:s57|nass|3
+  nta2025:s57|nass|2:
+    diff: ' => that is covered taxes as a percentage of net income'
+    merge_into: nta2025:s57|nass|3
+  nta2025:s57|nass|3:
+    register_id: DR-051
+    diff: ' => b cover taxes for the purpose of this section means companies income tax petroleum profit tax and
+      hydrocarbon tax paid or payable development levy and priority sector tax credit and c net income refers to
+      the profit before tax as reported in the audited financial statements excluding franked investment income
+      and unrealistic gains or losses provided that the net income for a life insurance company shall not include
+      gross income and investment income for policyholders'
+    type: substantive
+    note: 'The minimum tax is measured differently. Gazette: covered tax paid divided by profits, where profits
+      are net profit before tax less 5% of depreciation and personnel cost. National Assembly: covered taxes (companies
+      income tax, petroleum profit tax, hydrocarbon tax, development levy, priority sector tax credit) as a percentage
+      of net income, which excludes franked investment income and unrealised gains or losses.'
+    refs: DQ-07
+    cited_reading: '"effective tax rate" means the rate produced by dividing the aggregate covered tax paid by a
+      company for a year of assessment by the profits of the company; and "profits" means the net profits before
+      tax as reported in the audited financial statement less 5% of depreciation and personnel cost for the year.'
+    comparison_reading: the effective tax rate that is, covered taxes as a percentage of net income, of a company
+      is less than 15% … (b) cover taxes for the purpose of this section means companies income tax, petroleum profit
+      tax, and hydrocarbon tax paid or payable, development levy, and priority sector tax credit ; and (c) net income
+      refers to the profit before tax as reported in the audited financial statements excluding franked investment
+      income and unrealistic gains or losses
+  nta2025:s57|nass|4:
+    register_id: DR-052
+    diff: an mne group => a multinational entity group with aggregate group turnover of at least 750 million or
+      its equivalent
+    type: substantive
+    note: The gazette applies the 15% minimum to every constituent entity of an MNE group; the National Assembly
+      text only where the group's turnover is at least 750 million (printed with a pound sign) or its equivalent.
+    refs: DQ-07
+  nta2025:s57|nass|5:
+    register_id: DR-053
+    diff: 20 => 50
+    type: substantive
+    note: The 15% minimum effective tax rate applies from an aggregate turnover of ₦20,000,000,000 in the gazette
+      and ₦50,000,000,000 in the National Assembly text.
+    refs: DQ-07
+  nta2025:s57|nass|6:
+    register_id: DR-054
+    diff: relevant year of assessment 4 for the purposes of this section effective tax rate means the rate produced
+      by dividing the aggregate covered tax paid by a company for a year of assessment by the profits of the company
+      and profits means the net profits before tax as reported in the audited financial statement less 5% of depreciation
+      and personnel cost for the year => financial year 3 the provisions of subsection 1 a of this section shall
+      not apply to an approved enterprise operating in a free zone with rspect to its approved activities except
+      a with respect to sale within the customs territory b an entity as prescribed under subsection 2 a of this
+      section 4 the service may issue regulations to give effect to the provisions under this section and may prescribe
+      a higher threshold under subsection 2 b of this section
+    type: missing_content
+    note: The National Assembly text exempts approved free-zone enterprises (except for sales into the customs territory
+      and MNE entities) and lets the Service set a higher turnover threshold by regulation; the gazette has neither
+      and measures turnover in the relevant year of assessment rather than the financial year.
+    refs: DQ-07
+    cited_reading: ₦20,000,000,000 and above in the relevant year of assessment. (4) For the purposes of this section
+      –
+    comparison_reading: and above in the financial year. (3) The provisions of subsection (1) (a) of this section
+      shall not apply to an approved enterprise operating in a free zone with rspect to its approved activities
+      except — (a) with respect to sale within the customs territory ; (b) an entity as prescribed under subsection
+      (2) (a) of this section. (4) The service may issue regulations to give effect to the provisions under this
+      section and may prescribe a higher threshold under subsection (2) (b) of this section.
+  nta2025:s59|nass|1:
+    register_id: DR-056
+    diff: ' => of this section'
+    type: wording
+  nta2025:s146|nass|1:
+    register_id: DR-057
+    diff: and valuers => valuers etc
+    type: wording
+    note: The National Assembly text adds 'etc.' to a list introduced by 'including'.
+  nta2025:s147(3)|nass|1:
+    register_id: DR-058
+    diff: ' => of this section'
+    type: wording
+  nta2025:s148|nass|1:
+    register_id: DR-059
+    diff: iv of chapter eight of this act => ix of this chapter
+    type: numbering
+    note: 'Cross-reference: VAT is charged subject to Part IV of Chapter Eight (gazette) against Part IX of this
+      Chapter (National Assembly).'
+  nta2025:s153|nass|1:
+    register_id: DR-060
+    diff: an invoice number c … e … f … g … h => d … e … f … g
+    type: wording
+    note: Both require an invoice number; the National Assembly text lists it with the supplier's name and address,
+      so its paragraphs are lettered one lower.
+  nta2025:s153|nass|2:
+    diff: d => and sequential invoice number c
+    merge_into: nta2025:s153|nass|1
+  nta2025:s154|nass|1:
+    register_id: DR-061
+    diff: 148 => 146
+    type: numbering
+    note: 'Cross-reference: the rate is in section 148 (gazette); the National Assembly text cites section 146,
+      which is not its rate section (147).'
+  nta2025:s154|nass|2:
+    register_id: DR-062
+    diff: ' => of this section'
+    type: wording
+  nta2025:s155|nass|1:
+    register_id: DR-063
+    diff: '2025 => '
+    type: wording
+  nta2025:s155|nass|2:
+    register_id: DR-064
+    diff: ' => of this section'
+    type: wording
+  nta2025:s155|nass|3:
+    register_id: DR-065
+    diff: '2025 => '
+    type: wording
+  nta2025:s156|nass|1:
+    register_id: DR-066
+    diff: '2025 => '
+    type: wording
+  nta2025:s156|nass|2:
+    register_id: DR-067
+    diff: 'a person whose supplies are chargeable to vat at 0% shall pay vat on taxable supplies consumed in the
+      production of its supplies and may thereafter request for a refund of the vat paid 5 => '
+    type: missing_content
+    note: The gazette lets a person whose supplies are zero-rated pay VAT on its inputs and then claim a refund;
+      the National Assembly text has no such subsection.
+    refs: 2b-2 s156
+  nta2025:s156|nass|3:
+    register_id: DR-068
+    diff: 6 => 5
+    type: numbering
+    note: Because of the gazette's extra subsection (4), gazette (5) and (6) are National Assembly (4) and (5).
+    refs: 2b-2 s156
+  nta2025:s156|nass|4:
+    diff: 5 => 4 of this section
+    merge_into: nta2025:s156|nass|3
+  nta2025:s157|nass|1:
+    register_id: DR-069
+    diff: 190 => 191
+    type: numbering
+    note: 'Cross-reference: section 190 (gazette) against section 191 (National Assembly, which is gazette section
+      192).'
+  nta2025:s158|nass|1:
+    register_id: DR-070
+    diff: '2025 => '
+    type: wording
+  nta2025:s163(1)(d)-(l)|nass|1:
+    register_id: DR-071
+    diff: 4 => 5 2 c
+    type: numbering
+    note: 'Cross-reference: dividends ''under section 4 of this Act'' (gazette) against ''section (5)(2)(c)'' (National
+      Assembly).'
+  nta2025:s163(1)(d)-(l)|nass|2:
+    diff: 4 => 5 2 c
+    merge_into: nta2025:s163(1)(d)-(l)|nass|1
+  nta2025:s163(1)(d)-(l)|nass|3:
+    register_id: DR-072
+    diff: pursuant to => under
+    type: wording
+  nta2025:s163(1)(m)-(v)|nass|1:
+    register_id: DR-073
+    diff: capitalist => capitalists
+    type: wording
+  nta2025:s163(1)(m)-(v)|nass|2:
+    register_id: DR-074
+    diff: 'and v the profits of any nigerian company other than companies engaged in the upstream midstream or downstream
+      petroleum operations in respect of goods or services exported from nigeria if the proceeds of such exports
+      are repatriated through official channels => '
+    type: missing_content
+    note: The gazette exempts a Nigerian company's profits from goods or services exported from Nigeria (other than
+      petroleum companies) if the export proceeds are repatriated through official channels; the National Assembly
+      text has no such exemption.
+  nta2025:s163(4)|nass|1:
+    register_id: DR-075
+    diff: 'other rank has the meaning assigned to it by the armed forces pensions act personal emoluments means
+      wages or salaries and includes allowances benefits in kind gratuities superannuation or pension schemes and
+      any other income derived solely by reason of employment as other rank => '
+    type: numbering
+    note: The definitions of 'other rank' and 'personal emoluments' sit in s163(4) in the gazette and in the section
+      corresponding to gazette s164 in the National Assembly text.
+  nta2025:s164|nass|1:
+    diff: ' => and other rank has the meaning assigned to it by the armed forces pension act personal emolument
+      means wages or salaries and includes allowances benefits in kind gratuities superannuation or pension or pension
+      schemes and any other income derived by reason of employment as the rank'
+    merge_into: nta2025:s163(4)|nass|1
+  nta2025:s164|nass|2:
+    register_id: DR-076
+    diff: pursuant to subsection 1 => under subsection 1 of this section
+    type: wording
+  nta2025:s165|nass|1:
+    register_id: DR-077
+    diff: ' => of this section'
+    type: wording
+  nta2025:s186|nass|1:
+    register_id: DR-078
+    diff: ' => provided that the humanitarian donor shall first pay the vat and request a refund from the service'
+    type: missing_content
+    note: The National Assembly text requires the humanitarian donor to pay the VAT first and request a refund from
+      the Service; the gazette exempts the supply without that condition.
+  nta2025:s186|nass|2:
+    register_id: DR-079
+    diff: ' => stakes'
+    type: substantive
+    note: The National Assembly text adds 'stakes' to the VAT-exempt item for money and securities.
+  nta2025:s186|nass|3:
+    register_id: DR-080
+    diff: official => federal government
+    type: wording
+    note: '''Official Gazette'' against ''Federal Government Gazette''.'
+  nta2025:s187|nass|1:
+    register_id: DR-081
+    diff: thirtenth … 0% => tenth … zero percent
+    type: numbering
+    note: 'Cross-reference: the gazette refers to paragraph 2 of the ''Thirtenth'' Schedule, which has no paragraph
+      2; the National Assembly text refers to the Tenth Schedule.'
+  nta2025:s187|nass|2:
+    register_id: DR-082
+    diff: 'r electric vehicles and s parts semi knock down units for the assembly of electric vehicles => '
+    type: missing_content
+    note: The gazette zero-rates electric vehicles and parts and semi-knock-down units for assembling them; the
+      National Assembly text does not list them.
+  nta2025:s189:def:agricultural-seeds-and-seedlings|nass|1:
+    register_id: DR-083
+    diff: 'definition agricultural-seeds-and-seedlings => '
+    type: missing_content
+    note: Only the gazette defines 'agricultural seeds and seedlings'.
+  nta2025:s189:def:baby-products|nass|1:
+    register_id: DR-084
+    diff: three … for example … for example … for example … for example … g sanitary wares for example … for example
+      => 3 … e g … etc … e g … e g … etc … etc g sanitary wares e g … e g
+    type: wording
+  nta2025:s189:def:baby-products|nass|2:
+    diff: or cribs => cribs etc
+    merge_into: nta2025:s189:def:baby-products|nass|1
+  nta2025:s189:def:baby-products|nass|3:
+    diff: or lotions => lotions etc
+    merge_into: nta2025:s189:def:baby-products|nass|1
+  nta2025:s189:def:baby-products|nass|4:
+    diff: or rockers => rockers etc
+    merge_into: nta2025:s189:def:baby-products|nass|1
+  nta2025:s189:def:basic-food-items(a)-(k)|nass|1:
+    register_id: DR-085
+    diff: and pawpaw => pawpaw etc
+    type: wording
+    note: The National Assembly text adds 'etc.' to lists that already begin with 'including'.
+  nta2025:s189:def:basic-food-items(a)-(k)|nass|2:
+    diff: and coconut => coconut etc
+    merge_into: nta2025:s189:def:basic-food-items(a)-(k)|nass|1
+  nta2025:s189:def:basic-food-items(l)-(p)|nass|1:
+    register_id: DR-086
+    diff: ' => etc … etc … etc'
+    type: wording
+  nta2025:s189:def:equipment|nass|1:
+    register_id: DR-087
+    diff: means => refers
+    type: wording
+  nta2025:s189:def:locally-produced-agricultural-or-veterinary-medicines|nass|1:
+    register_id: DR-088
+    diff: veterinary biosecurity for example … for example … for example … and => etc veterinary biosecurity e g
+      … e g … e g
+    type: wording
+  nta2025:s189:def:locally-produced-animal-feeds|nass|1:
+    register_id: DR-089
+    diff: or fish => fish etc
+    type: substantive
+    note: The gazette's locally produced animal feeds are feeds for poultry, cattle or fish only; the National Assembly
+      text adds 'etc.', leaving the list open.
+  nta2025:s189:def:machinery|nass|1:
+    register_id: DR-090
+    diff: means => refers to
+    type: wording
+  nta2025:s189:def:medical-equipment|nass|1:
+    register_id: DR-091
+    diff: means => refers to
+    type: wording
+  nta2025:s189:def:medical-products|nass|1:
+    register_id: DR-092
+    diff: means => refers to
+    type: wording
+  nta2025:s189:def:pharmaceutical-products|nass|1:
+    register_id: DR-093
+    diff: means => refer to
+    type: wording
+  nta2025:s189:def:utilisation-of-gas-in-downstream-petroleum-operations|nass|1:
+    register_id: DR-094
+    diff: means => refers to … and
+    type: wording
+  nta2025:s189:def:shared-passenger-road-transport-service|nass|1:
+    register_id: DR-095
+    diff: ' => definition stake'
+    type: missing_content
+    note: Only the National Assembly text defines 'stake'.
+  nta2025:s190(1)(a)|nass|1:
+    register_id: DR-096
+    diff: as a result => because
+    type: wording
+  nta2025:s190(1)(b)-(c)|nass|1:
+    register_id: DR-097
+    diff: at … v … vi … and => of … iv … v
+    type: wording
+  nta2025:s190(1)(b)-(c)|nass|2:
+    register_id: DR-098
+    diff: 'the provisions of part viii of chapter two of this act as they relate to chargeable gains shall apply
+      on any asset sold or transferred iv => '
+    type: missing_content
+    note: The gazette applies the chargeable gains provisions to assets sold or transferred in a business restructuring;
+      the National Assembly text omits this item.
+  nta2025:s190(2)-(7)|nass|1:
+    register_id: DR-099
+    diff: or … 31 => 31st
+    type: wording
+  nta2025:s190(2)-(7)|nass|2:
+    register_id: DR-100
+    diff: ' => of this section'
+    type: wording
+  nta2025:s190(2)-(7)|nass|3:
+    register_id: DR-101
+    diff: '2025 => '
+    type: wording
+  nta2025:s191|nass|1:
+    register_id: DR-102
+    diff: '2025 => '
+    type: wording
+  nta2025:s196|nass|1:
+    register_id: DR-103
+    diff: laws of the federation of nigeria … laws of the federation of nigeria … laws of the federation of nigeria
+      … laws of the federation of nigeria … laws of the federation of nigeria … laws of the federation of nigeria
+      … laws of the federation of nigeria … laws of the federation of nigeria … laws of the federation of nigeria
+      2004 and l … laws of the federation of nigeria => lfn … lfn … lfn … lfn … lfn … lfn … lfn … lfn … lfn 2004
+      and k … lfn
+    type: wording
+  nta2025:s196|nass|2:
+    register_id: DR-104
+    diff: laws of the federation of nigeria 2004 j taxes and levies approved list for collection act cap t2 law
+      of the federation of nigeria 2004 k => lfn 2004 j
+    type: missing_content
+    note: The gazette also repeals the Taxes and Levies (Approved List for Collection) Act; the National Assembly
+      text does not.
+  nta2025:s197(1)-(9)|nass|1:
+    register_id: DR-105
+    diff: and d paragraph 14 6 => d subparagraph 6 of paragraph 14
+    type: wording
+  nta2025:s197(1)-(9)|nass|2:
+    register_id: DR-106
+    diff: laws of the federation of nigeria => lfn
+    type: wording
+  nta2025:s197(1)-(9)|nass|3:
+    register_id: DR-107
+    diff: laws of the federation of nigeria => lfn
+    type: wording
+  nta2025:s197(1)-(9)|nass|4:
+    register_id: DR-108
+    diff: laws of the federation of nigeria … b i and => lfn … paragraphs b i and b
+    type: wording
+  nta2025:s197(1)-(9)|nass|5:
+    register_id: DR-109
+    diff: laws of the federation of nigeria => lfn
+    type: wording
+  nta2025:s197(10)-(14)|nass|1:
+    register_id: DR-110
+    diff: laws of the federation of nigeria => lfn
+    type: wording
+  nta2025:s197(10)-(14)|nass|2:
+    register_id: DR-111
+    diff: laws of the federation of nigerian 2004 => no 7 2002
+    type: wording
+  nta2025:s197(10)-(14)|nass|3:
+    register_id: DR-112
+    diff: 2024 => no 69 2023
+    type: substantive
+    note: The gazette amends section 17(1) of the Students Loans (Access to Higher Education) Act, 2024; the National
+      Assembly text deletes paragraphs (c) and (d) of section 12 of the Act No. 69 of 2023.
+  nta2025:s197(10)-(14)|nass|4:
+    diff: section 17 1 => paragraphs c and d of section 12
+    merge_into: nta2025:s197(10)-(14)|nass|3
+  nta2025:s197(10)-(14)|nass|5:
+    register_id: DR-113
+    diff: section 44 => subsections
+    type: wording
+    note: Same deletion, worded differently.
+  nta2025:s197(10)-(14)|nass|6:
+    diff: ' => of section 44'
+    merge_into: nta2025:s197(10)-(14)|nass|5
+  nta2025:s198|nass|1:
+    diff: ' => the following orders are revoked a'
+    merge_into: nta2025:s198|nass|3
+  nta2025:s198|nass|2:
+    register_id: DR-114
+    diff: is revoked 2 => b oil and gas companies tax incentives exemptions remissions etc order s i no 21 2024
+      and c oil and gas companies tax incentives exemptions remissions etc order s i no 1 2024 d
+    type: missing_content
+    note: The National Assembly text also revokes the Oil and Gas Companies (Tax Incentives, Exemptions, Remissions,
+      etc.) Orders, S.I. No. 21 of 2024 and S.I. No. 1 of 2024; the gazette does not.
+  nta2025:s198|nass|3:
+    register_id: DR-115
+    diff: 3 => and e
+    type: numbering
+    note: The gazette sets out s198 as subsections (1) to (3); the National Assembly text as one subsection with
+      paragraphs (a) to (e).
+    refs: 2b-2 s198
+  nta2025:s199|nass|1:
+    register_id: DR-116
+    diff: 196 => 197
+    type: numbering
+    note: 'Cross-reference: the savings clause cites sections 196 and 197 (gazette) against 197 and 198 (National
+      Assembly), which do not match that text''s own repeal and amendment sections.'
+  nta2025:s199|nass|2:
+    diff: 197 => 198
+    merge_into: nta2025:s199|nass|1
+  nta2025:s200|nass|1:
+    register_id: DR-117
+    diff: discharge … 2025 => performance
+    type: wording
+  nta2025:s201|nass|1:
+    register_id: DR-118
+    diff: 'and => '
+    type: wording
+  nta2025:s201|nass|2:
+    register_id: DR-119
+    diff: official => federal government
+    type: wording
+    note: '''Official Gazette'' against ''Federal Government Gazette''.'
+  nta2025:s201|nass|3:
+    register_id: DR-120
+    diff: discharge => carry out
+    type: wording
+  nta2025:s202:def:authorised-officer|nass|1:
+    register_id: DR-121
+    diff: ' => or in pursuant to'
+    type: wording
+  nta2025:s202:def:bank|nass|1:
+    register_id: DR-122
+    diff: act no 3 2020 => cap b3 laws of the federation of nigeria 2004
+    type: substantive
+    note: The gazette defines "bank" by reference to the Banks and Other Financial Institutions Act, Act No. 3,
+      2020, whereas the National Assembly text references Cap. B3, Laws of the Federation of Nigeria, 2004.
+  nta2025:s202:def:borrower|nass|1:
+    register_id: DR-123
+    diff: borrower means an approved => means an approved borrower
+    type: wording
+  nta2025:s202:def:company|nass|1:
+    register_id: DR-124
+    diff: 'including limited liability partnership => '
+    type: substantive
+    note: The gazette's 'company' includes a limited liability partnership; the National Assembly text's does not.
+  nta2025:s202:def:communication-infrastructure|nass|1:
+    register_id: DR-125
+    diff: 'definition communication-infrastructure => '
+    type: missing_content
+    note: Only the gazette defines 'communication infrastructure'.
+  nta2025:s202:def:digital-assets|nass|1:
+    register_id: DR-126
+    diff: ' => but not limited to'
+    type: wording
+  nta2025:s202:def:family-income|nass|1:
+    register_id: DR-127
+    diff: refers to => means
+    type: wording
+  nta2025:s202:def:lender|nass|1:
+    register_id: DR-128
+    diff: lender means an approved => means an approved lender
+    type: wording
+  nta2025:s202:def:minister|nass|1:
+    register_id: DR-129
+    diff: responsible for => in charge of
+    type: wording
+  nta2025:s202:def:mortgage|nass|1:
+    register_id: DR-130
+    diff: ' => as aforesaid'
+    type: wording
+  nta2025:s202:def:national-minimum-wage|nass|1:
+    register_id: DR-131
+    diff: amendment act 2024 => act cap n61 laws of the federation of nigeria 2004
+    type: substantive
+    note: The gazette defines the national minimum wage by reference to the National Minimum Wage (Amendment) Act
+      2024, whereas the National Assembly text references the National Minimum Wage Act Cap. N61, Laws of the Federation
+      of Nigeria, 2004.
+  nta2025:s202:def:nigeria|nass|1:
+    register_id: DR-132
+    diff: ' => hereafter'
+    type: wording
+  nta2025:s202:def:official-market-rate|nass|1:
+    register_id: DR-133
+    diff: exchanged market => exchange market rate
+    type: wording
+  nta2025:s202:def:participation-directly-or-indirectly-in-the-management-control-or-capital-of-the-other-person|nass|1:
+    register_id: DR-134
+    diff: 'definition participation-directly-or-indirectly-in-the-management-control-or-capital-of-the-other-person
+      => '
+    type: missing_content
+    note: Only the gazette defines when a person participates in the management, control or capital of another (a
+      30% control test).
+  nta2025:s202:def:policy-of-insurance|nass|1:
+    register_id: DR-135
+    diff: 'and the expression insurance includes assurance => '
+    type: wording
+    note: The gazette also says insurance includes assurance in its separate definition of 'insurance'.
+  nta2025:s202:def:policy-of-marine-insurance|nass|1:
+    register_id: DR-136
+    diff: while => whilst
+    type: wording
+  nta2025:s202:def:priority-product|nass|1:
+    register_id: DR-137
+    diff: ' => definition practical-ability-to-control'
+    type: missing_content
+    note: Only the National Assembly text defines 'practical ability to control'.
+  nta2025:s202:def:professional-services|nass|1:
+    register_id: DR-138
+    diff: 'definition professional-services => '
+    type: missing_content
+    note: Only the gazette defines 'professional services', the term that excludes a business from being a small
+      company.
+  nta2025:s202:def:public-fund|nass|1:
+    register_id: DR-139
+    diff: 'means => '
+    type: wording
+  nta2025:s202:def:real-estate-investment-company|nass|1:
+    register_id: DR-140
+    diff: 'company means => '
+    type: wording
+    note: The National Assembly text prints the term as 'real estate investment'.
+  nta2025:s202:def:regulated-securities-lending-transaction|nass|1:
+    register_id: DR-141
+    diff: means any tenth schedule => any
+    type: substantive
+    note: The gazette limits the term to a 'Tenth Schedule' securities lending transaction; the National Assembly
+      text covers any securities lending transaction conducted under SEC rules.
+  nta2025:s202:def:related-parties|nass|1:
+    register_id: DR-142
+    diff: 'and unconnected non related or unrelated party shall be construed accordingly => '
+    type: wording
+  nta2025:s202:def:relevant-tax-authority|nass|1:
+    register_id: DR-143
+    diff: provision of … 2025 => thirteenth schedule to
+    type: numbering
+    note: 'Cross-reference: the relevant tax authority is determined by ''the provision of this Act'' (gazette)
+      against ''the Thirteenth Schedule to this Act'' (National Assembly).'
+  nta2025:s202:def:remainder-of-assessable-income|nass|1:
+    register_id: DR-144
+    diff: 'definition remainder-of-assessable-income => '
+    type: missing_content
+    note: The National Assembly text has no definition of 'remainder of assessable income'; it prints that definition
+      under the term 'remainder of assessable profit'.
+  nta2025:s202:def:remainder-of-assessable-profit|nass|1:
+    register_id: DR-145
+    diff: profit of a company => income of an individual
+    type: substantive
+    note: 'The National Assembly text defines ''remainder of assessable profit'' twice: once as an individual''s
+      assessable income less section 28(2) deductions, once as a company''s assessable profit less section 27(5)
+      deductions.'
+  nta2025:s202:def:remainder-of-assessable-profit|nass|2:
+    diff: 27 5 of this act in the case of a company => 28 2 of this act
+    merge_into: nta2025:s202:def:remainder-of-assessable-profit|nass|1
+  nta2025:s202:def:remainder-of-assessable-profit|nass|3:
+    diff: ' => definition remainder-of-assessable-profit'
+    merge_into: nta2025:s202:def:remainder-of-assessable-profit|nass|1
+  nta2025:s202:def:resident|nass|1:
+    register_id: DR-146
+    diff: ' => the context requires'
+    type: wording
+  nta2025:s202:def:royalties|nass|1:
+    register_id: DR-147
+    diff: 'definition royalties => '
+    type: missing_content
+    note: Only the gazette defines 'royalties'.
+  nta2025:s202:def:service|nass|1:
+    register_id: DR-148
+    diff: means the nigeria … 2025 => the nigerian … the
+    type: wording
+  nta2025:s202:def:services|nass|1:
+    register_id: DR-149
+    diff: 'definition services => '
+    type: missing_content
+    note: Only the gazette defines 'services' for the VAT Part.
+  nta2025:s202:def:small-company|nass|1:
+    diff: means a company => a business
+    merge_into: nta2025:s202:def:small-company|nass|2
+  nta2025:s202:def:small-company|nass|2:
+    register_id: DR-150
+    diff: 50 => 100
+    type: substantive
+    note: A small company has gross turnover of ₦50,000,000 or less in the gazette and ₦100,000,000 or less in the
+      National Assembly text, which also says 'business' instead of 'company'.
+    refs: DQ-01
+  nta2025:s202:def:small-company|nass|3:
+    register_id: DR-151
+    diff: 'provided that any business providing professional services shall not be classified as a small company
+      => '
+    type: missing_content
+    note: The gazette excludes any business providing professional services from being a small company; the National
+      Assembly text has no such exclusion.
+    refs: DQ-01
+  nta2025:s202:def:supplies|nass|1:
+    register_id: DR-152
+    diff: 'definition supplies => '
+    type: missing_content
+    note: Only the gazette defines 'supplies'.
+  nta2025:s202:def:supply-of-goods|nass|1:
+    register_id: DR-153
+    diff: 'definition supply-of-goods => '
+    type: missing_content
+    note: Only the gazette defines 'supply of goods'.
+  nta2025:s202:def:supply-of-services|nass|1:
+    register_id: DR-154
+    diff: 'definition supply-of-services => '
+    type: missing_content
+    note: Only the gazette defines 'supply of services'.
+  nta2025:s202:def:tax|nass|1:
+    register_id: DR-155
+    diff: 'means => '
+    type: wording
+  nta2025:s202:def:tax-id|nass|1:
+    register_id: DR-156
+    diff: '2025 => '
+    type: wording
+  nta2025:s202:def:taxable-person|nass|1:
+    register_id: DR-157
+    diff: any person who earns income or => a person who
+    type: substantive
+    note: The gazette's 'taxable person' includes any person who earns income; the National Assembly text's only
+      a person who carries out an economic activity.
+  nta2025:s202:def:taxable-person|nass|2:
+    register_id: DR-158
+    diff: any => a
+    type: wording
+  nta2025:s202:def:trade-or-business|nass|1:
+    register_id: DR-159
+    diff: 'means => '
+    type: wording
+  nta2025:s202:def:transaction-at-arm-s-length|nass|1:
+    register_id: DR-160
+    diff: 'means => '
+    type: wording
+  nta2025:s202:def:venture-capitalist|nass|1:
+    register_id: DR-161
+    diff: 'definition venture-capitalist => '
+    type: missing_content
+    note: Only the gazette defines 'venture capitalist'.
+  nta2025:s202:def:vessel|nass|1:
+    register_id: DR-162
+    diff: 'and => '
+    type: wording
+  nta2025:s202:def:year-of-assessment|nass|1:
+    register_id: DR-163
+    diff: 'means => '
+    type: wording
+  nta2025:s203|nass|1:
+    register_id: DR-164
+    diff: 'and shall come into effect on the first day of january 2026 => '
+    type: missing_content
+    note: The gazette's citation section says the Act comes into effect on 1 January 2026; the National Assembly
+      text's gives no date.
+  nta2025:sch1:pt1:para1:def:mining-operation|nass|1:
+    register_id: DR-165
+    diff: 'and => '
+    type: wording
+  nta2025:sch1:pt1:para1:def:qualifying-capital-expenditure(a)-(d)|nass|1:
+    register_id: DR-166
+    diff: 'and => '
+    type: wording
+  nta2025:sch1:pt1:para1:def:qualifying-capital-expenditure(e)-(i)|nass|1:
+    register_id: DR-167
+    diff: 1 => a
+    type: wording
+    note: Sub-items numbered (1) to (3) in the gazette and (A) to (C) in the National Assembly text.
+  nta2025:sch1:pt1:para1:def:qualifying-capital-expenditure(e)-(i)|nass|2:
+    diff: 2 => b
+    merge_into: nta2025:sch1:pt1:para1:def:qualifying-capital-expenditure(e)-(i)|nass|1
+  nta2025:sch1:pt1:para1:def:qualifying-capital-expenditure(e)-(i)|nass|3:
+    diff: 3 => c
+    merge_into: nta2025:sch1:pt1:para1:def:qualifying-capital-expenditure(e)-(i)|nass|1
+  nta2025:sch1:pt1:para1:def:qualifying-capital-expenditure(e)-(i)|nass|4:
+    register_id: DR-168
+    diff: five … 25 … or => 5 … twentyfive
+    type: wording
+  nta2025:sch1:pt1:para6-8|nass|1:
+    register_id: DR-169
+    diff: 'where => '
+    type: wording
+  nta2025:sch1:pt1:para9|nass|1:
+    register_id: DR-170
+    diff: in => under
+    type: wording
+  nta2025:sch1:pt1:para10|nass|1:
+    register_id: DR-171
+    diff: ' => of this paragraph'
+    type: wording
+  nta2025:sch1:pt1:para11-12|nass|1:
+    register_id: DR-172
+    diff: ' => of this paragraph'
+    type: wording
+  nta2025:sch1:pt1:para13-14|nass|1:
+    register_id: DR-173
+    diff: ' => of this paragraph'
+    type: wording
+  nta2025:sch1:pt1:para18-20|nass|1:
+    register_id: DR-174
+    diff: ' => of this paragraph'
+    type: wording
+  nta2025:sch1:pt1:para21-22|nass|1:
+    register_id: DR-175
+    diff: ' => s'
+    type: wording
+  nta2025:sch3|nass|1:
+    register_id: DR-176
+    diff: '5 for the purposes of this schedule the expression debt means any loan financial instrument finance lease
+      financial derivative or any arrangement that gives rise to interest discounts or other finance charges that
+      are deductible in the computation of income chargeable under the head profits and gains of business or profession
+      => '
+    type: missing_content
+    note: Only the gazette defines 'debt' for the deductible-interest rule (loan, financial instrument, finance
+      lease, financial derivative or similar).
+  nta2025:sch11|nass|1:
+    diff: ' => section 185 of'
+    merge_into: nta2025:sch11|nass|2
+  nta2025:sch11|nass|2:
+    register_id: DR-177
+    diff: vat … all a => value added tax … a all … all
+    type: wording
+  nta2025:sch13:table1|nass|1:
+    register_id: DR-178
+    diff: ' => all crops cattle swine pigs sheep goat poultry including pro cessed eggs meat and poultry latex and
+      gum arabic and fresh liquid milk pasteurised sterilised homogenised and or ultra heat treated dried or concentrated
+      milk cream from fresh liquid milk pasteurised sterilised homogenised milk or cream in solid form cheese curd
+      and lactose processing cocoa cocoa butter cocoa fat cocoa cocoa oil processing chocolate animal manufacture
+      of animal feed edible oils and animal feeds by products concentrates feeds grain mill products and feed supplements'
+    type: missing_content
+    note: The gazette's 'EXEMPTED PRODUCTS' column is empty. The National Assembly text populates the exempted products
+      for each activity, adds the sub-sector name for 'Cocoa processing', and adds an 'Animal feeds' row.
+    refs: DQ-06
+    cited_reading: 'Exempted products: (none printed)'
+    comparison_reading: 'Crop Production: All crops; Livestock: Cattle, swine/pigs, sheep, goat, and poultry, including
+      processed eggs; Livestock processing: Meat and poultry processing; Forestry: Latex and gum arabic; Dairy:
+      Fresh liquid milk … Cheese, curd and lactose; Cocoa processing: Cocoa, cocoa butter, cocoa fat, cocoa oil;
+      Chocolate; Animal feeds (Manufacture of animal feeds): Animal feed, edible oils and by-products, concentrates,
+      grain mill products, and feed supplements (cells as printed, joined row by row)'
+  ntaa2025:s3(1)|nass|1:
+    register_id: DR-179
+    diff: in this act referred to as … surcharge on fossil fuels … exemptions … stamp duties iii tax incentives
+      and … 2025 => as contained in this act … exemption … taxation of income from petroleum iii stamp duties iv
+      value added tax and v tax incentives
+    type: substantive
+    note: In the cited text the Service has exclusive responsibility for the surcharge on fossil fuels; the National
+      Assembly text omits it, and adds taxation of income from petroleum and value added tax to the taxes the Service
+      has power to administer.
+  ntaa2025:s3(2)-(4)|nass|1:
+    register_id: DR-180
+    diff: pursuant => under
+    type: wording
+  ntaa2025:s3(2)-(4)|nass|2:
+    register_id: DR-181
+    diff: and => of this section
+    type: wording
+  ntaa2025:s3(2)-(4)|nass|3:
+    register_id: DR-182
+    diff: 2025 => of this section
+    type: wording
+  ntaa2025:s4|nass|1:
+    register_id: DR-183
+    diff: purpose => purposes
+    type: wording
+  ntaa2025:s7|nass|1:
+    register_id: DR-184
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s7|nass|2:
+    register_id: DR-185
+    diff: ' => this section of'
+    type: wording
+  ntaa2025:s8|nass|1:
+    register_id: DR-186
+    diff: ensure that every taxable person provides a tax id => make the provision of a tax id precondition for
+      opening any account or operating an exiting account
+    type: substantive
+    note: The cited text requires financial institutions to ensure every taxable person provides a Tax ID; the National
+      Assembly text makes a Tax ID a precondition for opening or operating any account.
+  ntaa2025:s9|nass|1:
+    register_id: DR-187
+    diff: and => of this section
+    type: wording
+  ntaa2025:s9|nass|2:
+    register_id: DR-188
+    diff: a person => persons
+    type: wording
+  ntaa2025:s9|nass|3:
+    register_id: DR-189
+    diff: and => or
+    type: wording
+    note: The items listed are alternatives either way.
+  ntaa2025:s10|nass|1:
+    register_id: DR-191
+    diff: the a => a the … the
+    type: wording
+  ntaa2025:s11(1)-(2)|nass|1:
+    register_id: DR-192
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s11(1)-(2)|nass|2:
+    register_id: DR-193
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s11(3)-(6)|nass|1:
+    register_id: DR-194
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s11(3)-(6)|nass|2:
+    register_id: DR-195
+    diff: pursuant to paragraph a of this subsection => under paragraph a
+    type: wording
+  ntaa2025:s22(1)-(10)|nass|1:
+    register_id: DR-196
+    diff: ' => vat'
+    type: wording
+  ntaa2025:s22(1)-(10)|nass|2:
+    register_id: DR-197
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s22(1)-(10)|nass|3:
+    register_id: DR-198
+    diff: 4 => 5 of this section
+    type: numbering
+    note: 'Cross-references: subsection (4), sections 105 and 107 (cited) against subsection (5), sections 100 and
+      102 (National Assembly).'
+  ntaa2025:s22(1)-(10)|nass|4:
+    diff: 105 and 107 => 100 and 102
+    merge_into: ntaa2025:s22(1)-(10)|nass|3
+  ntaa2025:s22(1)-(10)|nass|5:
+    diff: 152 => 151
+    drop: 'DR-000: the National Assembly NTAA cites the Nigeria Tax Act by the National Assembly numbering (section
+      151 is gazette section 152).'
+  ntaa2025:s22(1)-(10)|nass|6:
+    register_id: DR-199
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s22(1)-(10)|nass|7:
+    register_id: DR-200
+    diff: 2025 => of this section
+    type: wording
+  ntaa2025:s25|nass|1:
+    register_id: DR-201
+    diff: in => to
+    type: wording
+  ntaa2025:s25|nass|2:
+    register_id: DR-202
+    diff: subsections … on => subsection … by
+    type: wording
+  ntaa2025:s27|nass|1:
+    register_id: DR-203
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s27|nass|2:
+    register_id: DR-204
+    diff: 26 of the nigerian revenue service act 2025 => 23 of nigeria revenue service act
+    type: numbering
+    note: 'Cross-reference: section 26 (cited) against section 23 (National Assembly) of the Nigeria Revenue Service
+      (Establishment) Act.'
+  ntaa2025:s27|nass|3:
+    register_id: DR-205
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s29|gombe|1:
+    register_id: DR-206
+    diff: ' => a month'
+    type: wording
+    note: The cited print omits 'a month' in (b)(ii), most likely a typesetting slip; kept as printed.
+    refs: P1
+  ntaa2025:s29|nass|1:
+    diff: ' => 1 for the purposes of tax and'
+    merge_into: ntaa2025:s29|nass|2
+  ntaa2025:s29|nass|2:
+    register_id: DR-207
+    diff: relevant tax authority quarterly returns to the relevant tax authority specifying the names and addresses
+      of a new customers and b => service annual returns specifying the names customer location and transactions
+      of new and
+    type: substantive
+    note: The cited text requires quarterly returns to the relevant tax authority of the names and addresses of
+      new and existing customers; the National Assembly text requires annual returns to the Service of names, location
+      and transactions.
+    refs: DQ-02
+  ntaa2025:s29|nass|3:
+    diff: i an individual all transactions => a an individual
+    merge_into: ntaa2025:s29|nass|4
+  ntaa2025:s29|nass|4:
+    register_id: DR-208
+    diff: amonth amount to 25 000 000 or more or ii a body corporate all transactions => a month amount to 50 000
+      000 00 or more or b a body corporate
+    type: substantive
+    note: The individual threshold is cumulative transactions of ₦25,000,000 a month in the cited text and ₦50,000,000
+      in the National Assembly text.
+    refs: DQ-02
+  ntaa2025:s29|nass|5:
+    register_id: DR-209
+    diff: amount to 100 000 000 or more => a month amount to 250 000 000 00 or more 2 every bank insurance company
+      stock broking firm other financial institution or any other legal arrangement shall as may be prescribed by
+      way of notice rules regulations guidelines or circulars issued by the relevant tax authority prepare and submit
+      returns of a transactions involving the specified sum b names addresses including foreign addresses or any
+      other information of its customers connected with those transactions or c names addresses or any other information
+      of new or existing customers 3 without prejudice to subsections 1 and 2 of this section for the purpose of
+      obtaining information relative to taxation the relevant tax authority may give notice to any person including
+      a person engaged in banking business in nigeria to provide within the time stipulated in the notice information
+      including the name and address of any person specified in the notice 4 notwithstanding the provision of subsection
+      3 of this section a person engaged in banking business in nigeria shall not be required to disclose any additional
+      information about his customer or his bank under this section unless such additional disclosure is required
+      by a notice signed by the chief executive officer of the relevant tax authority
+    type: substantive
+    note: The body corporate threshold is ₦100,000,000 in the cited text (printed without 'a month') and ₦250,000,000
+      a month in the National Assembly text, which also adds subsections (2) to (4) on prescribed returns and information
+      notices.
+    refs: DQ-02
+  ntaa2025:s30|nass|1:
+    register_id: DR-210
+    diff: disclosable => discloseable … of this section
+    type: wording
+  ntaa2025:s30|nass|2:
+    register_id: DR-211
+    diff: 'and => '
+    type: wording
+  ntaa2025:s31|nass|1:
+    register_id: DR-212
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s34|nass|1:
+    register_id: DR-213
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s35|nass|1:
+    register_id: DR-214
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s36|nass|1:
+    register_id: DR-215
+    diff: the => an
+    type: wording
+  ntaa2025:s36|nass|2:
+    register_id: DR-216
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s36|nass|3:
+    register_id: DR-217
+    diff: 2025 => of this section
+    type: wording
+  ntaa2025:s36|nass|4:
+    register_id: DR-218
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s38|nass|1:
+    register_id: DR-219
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s39|gombe|1:
+    register_id: DR-220
+    diff: 'or the nigerian naira at the prevailing exchange rate in the official foreign exchange market => '
+    type: substantive
+    note: The cited print lets tax assessed in a foreign currency be paid in Naira at the official exchange rate;
+      the Gombe print requires payment in that currency.
+    refs: P3
+  ntaa2025:s39|gombe|2:
+    register_id: DR-221
+    diff: 'and payments => '
+    type: substantive
+    note: For petroleum operations the cited print puts both tax computations and payments in US Dollars; the Gombe
+      print only computations.
+    refs: P4
+  ntaa2025:s39|nass|1:
+    register_id: DR-222
+    diff: 'or the nigerian naira at the prevailing exchange rate in the official foreign exchange market => '
+    type: substantive
+    note: The cited print lets tax assessed in a foreign currency be paid in Naira at the official exchange rate;
+      the National Assembly text requires payment in that currency.
+  ntaa2025:s39|nass|2:
+    register_id: DR-223
+    diff: relating to tax and payments shall be in us dollars => shall be in currency of transaction
+    type: substantive
+    note: For petroleum operations the cited print puts tax computations and payments in US Dollars; the National
+      Assembly text puts computations in the currency of transaction.
+  ntaa2025:s40|nass|1:
+    register_id: DR-224
+    diff: 42 and 43 => 40 and 41
+    type: numbering
+    note: 'Cross-reference: sections 42 and 43 (cited) against sections 40 and 41 (National Assembly).'
+  ntaa2025:s41(1)-(4)|nass|1:
+    register_id: DR-225
+    diff: on => upon
+    type: wording
+  ntaa2025:s41(1)-(4)|nass|2:
+    register_id: DR-226
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s41(1)-(4)|nass|3:
+    register_id: DR-227
+    diff: ' => of this section … of this section'
+    type: wording
+  ntaa2025:s41(1)-(4)|nass|4:
+    register_id: DR-228
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s41(5)-(8)|gombe|1:
+    register_id: DR-229
+    diff: ' => where a taxpayer is dissatisfied with the judgement of the tax appeal tribunal it may appeal to the
+      high court provided that it shall pay 20% of the disputed amount into an account designated by the high court
+      as security before the hearing of the appeal and include the evidence of payment while filing the notice of
+      the appeal 9'
+    type: missing_content
+    note: The Gombe print requires a taxpayer appealing from the Tax Appeal Tribunal to the High Court to pay 20%
+      of the disputed amount first; the cited print has no deposit clause, and Gombe's (9) is its (8).
+    refs: P5
+  ntaa2025:s41(5)-(8)|nass|1:
+    register_id: DR-230
+    diff: on => upon
+    type: wording
+  ntaa2025:s41(5)-(8)|nass|2:
+    register_id: DR-231
+    diff: '8 a party dissatisfied with the decision of the high court may appeal to the court of appeal while an
+      appeal against the judgement of the court of appeal shall be to the supreme court => '
+    type: missing_content
+    note: The cited print's s41(8) provides appeals from the High Court to the Court of Appeal and then the Supreme
+      Court; the National Assembly text has no such subsection.
+  ntaa2025:s43|nass|1:
+    register_id: DR-232
+    diff: 41 => 40
+    type: numbering
+    note: 'Cross-references: sections 41, 65 and 67 (cited) against sections 40, 64 and 66 (National Assembly).'
+  ntaa2025:s43|nass|2:
+    diff: 65 and 67 => 64 and 66
+    merge_into: ntaa2025:s43|nass|1
+  ntaa2025:s43|nass|3:
+    register_id: DR-233
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s43|nass|4:
+    diff: 41 => 40
+    merge_into: ntaa2025:s43|nass|1
+  ntaa2025:s43|nass|5:
+    diff: 41 => 40
+    merge_into: ntaa2025:s43|nass|1
+  ntaa2025:s46|nass|1:
+    register_id: DR-234
+    diff: 191 of nigeria tax act 2025 => 193 of the nigeria tax act
+    type: numbering
+    note: 'Cross-reference: section 191 of the Nigeria Tax Act (cited) against section 193 (National Assembly, which
+      is gazette section 194).'
+  ntaa2025:s47|nass|1:
+    register_id: DR-235
+    diff: 'and => '
+    type: wording
+  ntaa2025:s51(8)-(9)|nass|1:
+    register_id: DR-236
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s55|nass|1:
+    register_id: DR-237
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s55|nass|2:
+    register_id: DR-238
+    diff: pursuant to subsection 2 => under subsection 2 of this section
+    type: wording
+  ntaa2025:s55|nass|3:
+    register_id: DR-239
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s55|nass|4:
+    register_id: DR-240
+    diff: pursuant to subsection 4 => under subsection 4 of this section
+    type: wording
+  ntaa2025:s56|nass|1:
+    register_id: DR-241
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s65|nass|1:
+    register_id: DR-242
+    diff: 10% … be added to it => ten percent … beadded thereto
+    type: wording
+  ntaa2025:s65|nass|2:
+    register_id: DR-243
+    diff: or any successor rate plus 10% or such other => orany successor rate plus
+    type: substantive
+    note: Interest is SOFR plus 10% or such other spread as the authority determines in the cited text; the National
+      Assembly text says SOFR plus a spread to be determined, without the 10%.
+  ntaa2025:s65|nass|3:
+    register_id: DR-244
+    diff: on => upon
+    type: wording
+  ntaa2025:s65|nass|4:
+    register_id: DR-245
+    diff: '4 for the purpose of this section the interest specified in subsection 1 b and c shall be compound interest
+      and shall apply to all tax debts that remain unpaid as at the commencement of this act => '
+    type: missing_content
+    note: Only the cited text makes the interest in subsection (1)(b) and (c) compound and applies it to tax debts
+      unpaid at commencement.
+  ntaa2025:s72|nass|1:
+    register_id: DR-246
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s72|nass|2:
+    register_id: DR-247
+    diff: ' => of this section'
+    type: wording
+  ntaa2025:s101|nass|1:
+    register_id: DR-248
+    diff: ' => 00 … 00'
+    type: wording
+  ntaa2025:s102|nass|1:
+    register_id: DR-249
+    diff: and ii => 00 and ii in the case of
+    type: wording
+  ntaa2025:s102|nass|2:
+    register_id: DR-250
+    diff: ' => 00'
+    type: wording
+  ntaa2025:s103|nass|1:
+    register_id: DR-251
+    diff: ' => 00 … 00'
+    type: wording
+  ntaa2025:s108|nass|1:
+    register_id: DR-252
+    diff: ' => 00'
+    type: wording
+  ntaa2025:s108|nass|2:
+    register_id: DR-253
+    diff: ' => 00'
+    type: wording
+  ntaa2025:s121|nass|1:
+    diff: ' => 1'
+    merge_into: ntaa2025:s121|nass|2
+  ntaa2025:s121|nass|2:
+    register_id: DR-254
+    diff: ' => 2 the provision in subsection 1 of this section shall not be construed as preventing the relevant
+      tax authority from prosecuting that person in accordance with the relevant provisions of this act'
+    type: missing_content
+    note: 'The National Assembly text adds s121(2): the penalty does not stop the tax authority prosecuting the
+      person.'
+  ntaa2025:s124|nass|1:
+    register_id: DR-255
+    diff: on => 00 … upon … 00
+    type: wording
+  ntaa2025:s127|nass|1:
+    register_id: DR-256
+    diff: any provisions or commits an offence against => the provisions of
+    type: wording
+    note: Same general penalty; the cited text also names 'commits an offence against' the Act.
+  ntaa2025:s127|nass|2:
+    diff: is provided … to => was provided commits an offence
+    merge_into: ntaa2025:s127|nass|1
+  ntaa2025:s147:def:advance-ruling|nass|1:
+    register_id: DR-257
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s147:def:assessable-income|nass|1:
+    register_id: DR-258
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s147:def:assessable-profit|nass|1:
+    register_id: DR-259
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s147:def:authorised-officer|nass|1:
+    register_id: DR-260
+    diff: authorised => authority
+    type: wording
+    note: The National Assembly text prints the term as 'Authority Officer'.
+  ntaa2025:s147:def:authorised-officer|nass|2:
+    register_id: DR-261
+    diff: chairman … 2025 => chief executive officer
+    type: substantive
+    note: The definition term is "authorised officer" in the cited text and "Authority Officer" in the National
+      Assembly text; additionally, officers are authorised by the Board or the Chairman in the cited text, and by
+      the Board or the Chief Executive Officer in the National Assembly text.
+  ntaa2025:s147:def:calendar-year|nass|1:
+    register_id: DR-262
+    diff: ' => definition chief-executive-officer'
+    type: missing_content
+    note: Only the National Assembly text defines 'Chief Executive Officer'.
+  ntaa2025:s147:def:dispute|nass|1:
+    register_id: DR-263
+    diff: pursuant to => under
+    type: wording
+  ntaa2025:s147:def:distrain|nass|1:
+    register_id: DR-264
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s147:def:employee-of-the-tax-authority|nass|1:
+    register_id: DR-265
+    diff: chairman => chief executive officer
+    type: substantive
+    note: The cited text's employees of the tax authority include the Chairman; the National Assembly text's the
+      Chief Executive Officer.
+  ntaa2025:s147:def:service|nass|1:
+    register_id: DR-266
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s147:def:small-business|gombe|1:
+    register_id: DR-267
+    diff: 100 => 50
+    type: substantive
+    note: A small business has gross turnover of ₦100,000,000 or less in the cited print and ₦50,000,000 or less
+      in the Gombe print.
+    refs: P6
+  ntaa2025:s147:def:small-business|gombe|2:
+    register_id: DR-268
+    diff: 'a => '
+    type: wording
+    note: The cited print reads 'with a total fixed assets'.
+    refs: P7
+  ntaa2025:s147:def:small-business|nass|1:
+    register_id: DR-269
+    diff: ' => 00 … 00'
+    type: wording
+  ntaa2025:s147:def:small-business|nass|2:
+    register_id: DR-270
+    diff: a total fixed assets less => total fixed assets not more
+    type: substantive
+    note: Total fixed assets must be less than ₦250,000,000 in the cited text and not more than ₦250,000,000 in
+      the National Assembly text, so exactly ₦250,000,000 qualifies only under the National Assembly text.
+  ntaa2025:s147:def:stamp-duty|nass|1:
+    register_id: DR-271
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s147:def:tax|nass|1:
+    register_id: DR-272
+    diff: '2025 => '
+    type: wording
+  ntaa2025:s147:def:taxable-goods-and-services|nass|1:
+    register_id: DR-273
+    diff: seven … 2025 => 7
+    type: wording
+manual_rows:
+- register_id: DR-000
+  act_id: nta2025
+  cited_unit: ''
+  gazette_section: '89'
+  comparison_text: nass
+  comparison_section: ''
+  type: numbering
+  refs: DR-000
+  cited_reading: 89. Petroleum royalty
+  comparison_reading: (no counterpart; National Assembly section 89 is gazette section 90)
+  note: Rule row. The National Assembly text has no counterpart of gazette s89 (Petroleum royalty), so from s90
+    on each gazette section n is National Assembly section n - 1 (data/derived/section_map.csv). Section-number
+    differences that follow this rule, including cross-references, are not listed separately.
+- register_id: DR-055
+  act_id: nta2025
+  cited_unit: nta2025:s57
+  gazette_section: '57'
+  comparison_text: nass
+  comparison_section: '57'
+  type: numbering
+  refs: DQ-07; 2b-2 s57
+  cited_reading: (2) The provisions of this section shall apply to – … (4) For the purposes of this section –
+  comparison_reading: (2) The provisions of this section shall apply to — … (3) The provisions of subsection (1)
+    (a) of this section shall not apply to … (4) The service may issue regulations
+  note: The gazette numbers the subsections (1), (2) and (4), with no (3); the labels are kept as printed. The National
+    Assembly text has (1) to (4).
+- register_id: DR-190
+  act_id: ntaa2025
+  cited_unit: ntaa2025:s10
+  gazette_section: '10'
+  comparison_text: gombe
+  comparison_section: '10'
+  type: numbering
+  refs: DQ-13
+  cited_reading: s10 sits in Chapter One, Part II (Registration); the Chapter Two heading follows it
+  comparison_reading: CHAPTER TWO—RETURNS, ASSESSMENT AND PAYMENTS / PART I—RETURNS printed before s10
+  note: 'Structure only: the Gombe print starts Chapter Two, Part I (Returns) before s10; the cited NRS print and
+    the National Assembly print after it. The text of s10 is the same.'

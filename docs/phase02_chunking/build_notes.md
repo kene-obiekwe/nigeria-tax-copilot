@@ -482,3 +482,198 @@ test pins the list.
 
 The full test suite runs in about 90 seconds (313 tests). Each print is parsed once per session
 through `parse_cached`, and the chunk build runs once in process.
+
+## 2b-6: Discrepancy register and flagged chunk rebuild
+
+```
+.venv\Scripts\python python\ingest\build_register.py
+.venv\Scripts\python python\ingest\build_chunks.py
+.venv\Scripts\python python\ingest\register_pack.py
+```
+
+| File | Content |
+|---|---|
+| `data/derived/register_candidates.csv` | Every candidate difference, with its key, suggested type (`auto_class`), the differing words and readings |
+| `data/curated/register_decisions.yml` | The review decision for each candidate, plus the rows taken from the data-quality log |
+| `data/curated/discrepancy_register.csv` | The register: built from the candidates and the decisions |
+
+`build_register.py` writes the first and third files. It stops if any candidate has no decision,
+or if a candidate's differing words changed after it was reviewed. The chunk build then flags
+each chunk that a register row names. `register_pack.py` renders the page crops for the review
+(see [register review](register_review.md)).
+
+### Method
+
+The cited text is exactly the chunk text:
+- the gazette for the NTA;
+- for the NTAA, the Gombe-identical or proofread text.
+
+It is compared with each comparison print through the section map:
+- the National Assembly NTA (gazette s89 has no counterpart; from s90 on, section n against
+  n - 1);
+- the Gombe and the National Assembly NTAA, section for section.
+
+Comparison rules:
+- Only letters, digits and "%" are compared, word by word (difflib). Differences separated by up
+  to three equal words are joined into one.
+- A difference that disappears when spaces are removed is not recorded (design Section 6).
+- A National Assembly NTA section number exactly one lower than the gazette's, from 89 on, is
+  left to the offset rule (DR-000).
+- Interpretation sections are compared definition by definition, matched by term (a term spelt
+  slightly differently, at least 0.8 similar, counts as the same definition). The lead-in is
+  compared on its own, so a change in definition order is not a difference.
+- In the schedules, the "Sections …" reference block at the head is left out. The First
+  Schedule is compared for Part I only. The two tables are compared as word multisets.
+
+Each difference is placed in the cited chunk and subsection it falls in, and given an
+`auto_class`:
+- **missing_content:** one side has 8 or more words the other lacks.
+- **substantive:** a figure, "%", a month, shall / may / not, "and" / "or", a party (Service,
+  Minister, court, company, person and similar), or a rewrite of 25 or more words.
+- **wording:** otherwise. Drafting-style variants of the National Assembly print are suggested
+  as wording:
+  - "of this section" added;
+  - ", 2025" dropped;
+  - "LFN";
+  - "per cent" against "%", and number words against digits;
+  - kobo figures (₦100,000.00);
+  - a lone list conjunction.
+
+  Wording differences in the same chunk, subsection and comparison print are merged into one
+  candidate.
+
+### Counts
+
+303 candidates (200 NTA, 103 NTAA: 6 against Gombe, 97 against the National Assembly) became 274
+register rows, as reviewed:
+
+| Act | Type | Candidates (auto_class) | Register rows (final type) |
+|---|---|---|---|
+| NTA | substantive | 58 | 15 |
+| NTA | missing_content | 34 | 28 |
+| NTA | numbering | 0 | 20 |
+| NTA | wording | 108 | 116 |
+| NTAA | substantive | 27 | 14 |
+| NTAA | missing_content | 7 | 5 |
+| NTAA | numbering | 0 | 6 |
+| NTAA | wording | 69 | 70 |
+
+How the candidates moved:
+- 31 were merged into another row about the same point, for example the three s57 lead-in
+  candidates into one effective-tax-rate row.
+- 1 was dropped (below).
+- 23 were reclassified as numbering: cross-reference numbers that differ beyond the offset, and
+  subsection renumbering. One of them, DR-029, was moved from wording at review.
+- 21 suggested substantive were wording (Gazette names, "and so on", "etc." after "including").
+- 5 suggested wording were substantive, for example "Chairman" against "Chief Executive Officer"
+  in NTAA s147.
+- 3 rows were added from the data-quality log: DR-000 (the offset rule), DR-055 (s57 printed
+  without (3), DQ-07) and DR-190 (NTAA Chapter Two placement, DQ-13).
+
+### Chunks flagged
+
+181 of 400 chunks are flagged: 130 of 274 NTA and 51 of 126 NTAA. 49 of them (38 NTA, 11 NTAA)
+carry at least one substantive or missing-content row. Wording rows flag their chunks too, as
+design Section 6 says. Two consecutive rebuilds are byte-identical.
+
+### Pre-review check against the PDFs
+
+Every reading was matched against its pages by `python/ingest/register_check.py`:
+- **Text PDFs:** read straight from the PDF with pdfplumber, word by word in order, with the
+  running head removed and up to eight words of marginal note between two words.
+- **NRS scan:** read from the committed re-OCR, with at least 90% of the letters aligned.
+
+Five readings in four rows could not be matched automatically. They were checked against page
+images, and `test_readings_occur_on_their_pages` pins them:
+- DR-075 and DR-117: a marginal note is printed inside a word ("Pen- Cap. A23, sions Act").
+- DR-192 and DR-194: the OCR of NRS page 11 is weak, which is why s11 was proofread.
+
+The NRS-side readings of every group A NTAA row were checked against the scan images: s3, s8,
+s29, s39, s41, s65, s121 and s147.
+
+### Review
+
+Kene reviewed the register on 2026-10-31 ([register review](register_review.md)) and approved
+groups A, B and C with these corrections:
+- **Legal-effect notes reworded:** DR-122 (bank), DR-131 (national minimum wage), DR-178
+  (Thirteenth Schedule) and DR-261 (authorised officer).
+- **DR-029 moved to numbering:** the gazette's "Part IX of Chapter Two" in s20(1) is a printing
+  slip for Part XI, as the National Assembly text reads. It was added to DQ-14.
+- **DR-269 unchanged (wording):** it covers the kobo figures only. The fixed-assets point ("less
+  than" against "not more than" ₦250,000,000) is already DR-270, a substantive row.
+- **DQ-16 logged:** NTA s191(2) refers objections and appeals to Chapter Four of the NTAA, which
+  in the cited print is Offences and Penalties. Both NTA texts read the same, so no row covers it.
+- **D-17:** the construction defaults of the review pack were kept.
+- **D-18:** register ids were pinned: each reviewed row's id is stored with its decision.
+
+Every row now records `reviewed_by` Kene and `reviewed_on` 2026-10-31.
+
+### False candidates and dropped rows
+
+Found during pre-review and removed at the source, so that the candidate file does not contain
+them:
+
+| Artefact | Cause | Fix |
+|---|---|---|
+| s189 and s202 lead-in lines ("189. For the purposes of this Part …") compared as part of the first definition | The lead-in split matched the line before a definition | Split at the first line that itself opens a definition |
+| "authority officer" (NTAA) and "real estate investment" (NTA) each counted as one missing and one extra definition | Misprinted terms in the National Assembly prints | Terms at least 0.8 similar are paired |
+| The "SCHEDULES" banner compared as the end of NTA s203 | The parser attached the banner between s203 and the First Schedule to s203 | Parser fix; the s203 chunk text no longer ends with "SCHEDULES" |
+| Table I title words ("CAPITAL ALLOWANCE") counted as table content | The comparison table region started at its title | The table body now starts after the column-heading line |
+| About 30 kobo, "of this section", ", 2025" and "LFN" candidates suggested as substantive | Drafting style of the National Assembly prints | Style rules in `style_only` |
+
+Dropped at review: one candidate, `ntaa2025:s22(1)-(10)|nass|5`. The National Assembly NTAA cites
+"section 151 of the Nigeria Tax Act", which is gazette s152 under the offset (DR-000).
+
+Not recorded:
+- P2 ("amonth" against "a month") is a spacing difference only.
+- Gazette s13's numbering difference is out of scope (no chunk).
+- DQ-12 concerns NTAA s148, which is out of scope.
+
+### Deviations from the design and the prompt
+
+- **Register fields.** `cited_pages`, `comparison_pages` and `refs` (the DQ, P or 2b-2 item a row
+  comes from) are added. The design's `gazette_section` holds the cited section number for both
+  Acts.
+- **Two new files.** `register_candidates.csv` (derived) and `register_decisions.yml` (curated)
+  make the register reproducible and keep each review decision next to its candidate.
+- **Numbering rows** cover cross-reference numbers that differ beyond the offset, and DQ-13 (a
+  structure difference). Each names its chunk, so that chunk is flagged.
+- **Readings.** A merged row joins its readings with " … ". DR-178 (Thirteenth Schedule) gives the
+  National Assembly cells joined row by row, not one verbatim line.
+- **Pinned ids (D-18).** `register_id` is stored in each decision and manual row. A row added
+  later takes the next free number, one above the highest id in use, so ids no longer follow
+  chunk order once rows are added.
+- **Extraction fix.** `extract.py` turned "N" before a figure into the naira sign even in a Laws
+  of the Federation chapter number. "Cap. N107" and "Cap. N3" (gazette s197) and "Cap. N61"
+  (National Assembly s201) read "Cap. ₦…". These references are now left as printed. The fix
+  changed the s197 chunk text and the readings of DR-106, DR-108 and DR-131; no row was added or
+  removed.
+- **Chunker.** `apply_register` matches `cited_unit` to the full chunk id only. The parser change
+  for the "SCHEDULES" banner changed the s203 chunk (and the JSONL hash, now
+  `780467e7d27c38aadd727596db9ecdee87c14c4b66d30bf11e7e1e7a7198e9c0`).
+
+### Surprising
+
+- **The National Assembly NTA leaves out six definitions in s202:** royalties, services,
+  supplies, supply of goods, supply of services and venture capitalist. It also defines
+  "remainder of assessable profit" twice and "remainder of assessable income" not at all.
+- **s57 (minimum effective tax rate) is a different provision in the two texts.** They differ in
+  the computation base, the MNE threshold, the turnover threshold and a free-zone exception
+  (DR-051 to DR-055).
+- **Some provisions exist only in the gazette:**
+  - the s163(1)(v) export-profits exemption;
+  - the s187 zero rating of electric vehicles;
+  - the s196(j) repeal of the Taxes and Levies (Approved List for Collection) Act;
+  - the s203 commencement date.
+- **Cross-references in the National Assembly prints do not match their own numbering.** For
+  example, NTA s154 (its s153) cites section 146 for the VAT rate, which is in its section 147. NTAA s43
+  cites sections 40, 64 and 66 where 41, 65 and 67 are meant (DQ-15).
+- **The cited gazette has printing slips:** "treasury Acts" and "commercial Acts" for bills
+  (s4(6)(d)), "Part IX" for Part XI (s20(1)), a "Thirtenth Schedule" paragraph 2 that does not exist (s187) and "Tenth Schedule
+  securities lending transaction" (s202). They are cited as printed (DQ-14).
+
+### Run time
+
+`build_register.py` takes about 100 seconds, most of it parsing the five prints. The register
+tests take about 2 minutes on their own, of which the page check is about 30 seconds; in the full
+suite the parses are shared.

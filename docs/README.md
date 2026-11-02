@@ -18,6 +18,7 @@ document is added, moved or renamed.
 | [phase01_corpus/v1_corpus_definition.md](phase01_corpus/v1_corpus_definition.md) | Exact in-scope chapters, parts and sections of both Acts, which text is cited (D-09), known gaps and source files. |
 | [phase02_chunking/chunking_design.md](phase02_chunking/chunking_design.md) | Probe-backed design for text extraction, the NTAA scan strategy, structure detection, tables, chunk schema, the discrepancy register, derived data, the fetch script, the spot-check protocol and the Phase 2b plan. |
 | [phase02_chunking/proofread_report.md](phase02_chunking/proofread_report.md) | Proofreading of the six NTAA sections where the NRS print differs from the Gombe print: every difference with three readings, print differences for the register, and review steps. |
+| [phase02_chunking/register_review.md](phase02_chunking/register_review.md) | Review pack and review outcome for the discrepancy register: how the rows were produced and checked, where each known item is, review steps and reply format, and every row grouped as substantive and missing content, numbering, and wording. |
 | [phase02_chunking/build_notes.md](phase02_chunking/build_notes.md) | Phase 2b build record: deviations from the design, per-file parser tolerances, pinned anomalies, chunk counts and token distribution, the golden-chunk check method and new data-quality findings. |
 
 The source-document inventory (files, hashes, provenance, snapshot date) is in

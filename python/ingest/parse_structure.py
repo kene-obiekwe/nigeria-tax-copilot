@@ -532,6 +532,9 @@ def parse(pdf_path: str | Path, profile: FileProfile | None = None) -> ParsedAct
             elif sched.paragraphs:
                 sched.paragraphs[-1].lines.append(ln)
             continue
+        # The "SCHEDULES" banner after the last section belongs to no section.
+        if expected > profile.expected_sections and text.strip().upper() == "SCHEDULES":
+            continue
 
         # Chapter and Part headings (upper case only; "Chapter Two of this Act" is a reference).
         m = CHAPTER.match(text)

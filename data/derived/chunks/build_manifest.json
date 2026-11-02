@@ -17,7 +17,8 @@
   "data/curated/ntaa_nrs_proofread/s147.txt": "ee7e35e3d4963dc2686d3da7a5c4bfbef1ee7cf746f3ef14b5aaca40586514ff",
   "python/ingest/tables.yml": "1ee43a333d90deeba496ff66369e5cc91bc83e721b099f1e7512a71bbeccc7a3",
   "python/ingest/assets/bge-small-en-v1.5.tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
-  "data/manifest.csv": "3feab69246f8b3f6a437d7a529fc4a05ae316c0e19a6f749d90e2e5d7e56db39"
+  "data/manifest.csv": "3feab69246f8b3f6a437d7a529fc4a05ae316c0e19a6f749d90e2e5d7e56db39",
+  "data/curated/discrepancy_register.csv": "291748b2a3df22733c084fac7c48f5257a29b56f8e4f047f9be7deb6642102b9"
  },
  "python": "3.12.2",
  "libraries": {
@@ -64,6 +65,6 @@
   "p90": 358,
   "max": 447
  },
- "jsonl_sha256": "fcd14d97a4293bbbeb661d11ea6e3f38c4783a24b6c0d96b25b0c728359e8078",
+ "jsonl_sha256": "780467e7d27c38aadd727596db9ecdee87c14c4b66d30bf11e7e1e7a7198e9c0",
  "notes": []
 }

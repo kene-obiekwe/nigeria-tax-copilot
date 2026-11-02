@@ -828,26 +828,20 @@ def ntaa_heading(n_sec: Section, g_sec: Section, proof_row: dict | None) -> tupl
 def apply_register(chunks: list[dict]) -> None:
     """Set discrepancy flags from data/curated/discrepancy_register.csv when it exists (2b-6).
 
-    A row applies to a chunk of the same Act when its cited_unit names the chunk (its id without
-    the Act prefix), the chunk's section, or a subsection the chunk contains.
+    A row applies to the chunk its cited_unit names (a full chunk_id). The rule row DR-000 names
+    no chunk and flags none.
     """
     if not REGISTER.is_file():
         return
     with REGISTER.open(newline="", encoding="utf-8") as fh:
         rows = list(csv.DictReader(fh))
+    by_unit: dict[str, list[str]] = {}
+    for r in rows:
+        if r["cited_unit"]:
+            by_unit.setdefault(r["cited_unit"], []).append(r["register_id"])
     for c in chunks:
-        unit_id = c["chunk_id"].split(":", 1)[1]
-        for r in rows:
-            if r.get("act_id") != c["act_id"]:
-                continue
-            unit = r.get("cited_unit", "")
-            m = re.match(r"^s(\d+)(\(\d+\))?$", unit)
-            hit = unit == unit_id or (m and c["section"] == m.group(1)
-                                      and (not m.group(2) or not c["subsections"]
-                                           or m.group(2) in c["subsections"]))
-            if hit and r["register_id"] not in c["discrepancy"]["register_ids"]:
-                c["discrepancy"]["register_ids"].append(r["register_id"])
-        c["discrepancy"]["flag"] = bool(c["discrepancy"]["register_ids"])
+        ids = by_unit.get(c["chunk_id"], [])
+        c["discrepancy"] = {"flag": bool(ids), "register_ids": sorted(ids)}
 
 
 def to_jsonl(chunks: list[dict]) -> bytes:

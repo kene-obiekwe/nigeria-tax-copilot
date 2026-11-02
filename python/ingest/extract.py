@@ -25,7 +25,8 @@ MARGIN_MAX_SIZE = 10.0  # marginal notes are set in 9 pt, body text in 11 pt
 COLUMN_TOLERANCE = 1.0  # points of overlap allowed between a margin char and the body column
 
 PAGE_LABEL = re.compile(r"(?<![A-Za-z])A\s*(\d{3})\b")
-NAIRA = re.compile(r"(?<![A-Za-z0-9])N\s?(?=\d)")
+# not a Laws of the Federation chapter number: "Cap. N61" stays as printed
+NAIRA = re.compile(r"(?<![A-Za-z0-9])(?<!Cap\. )(?<!Cap\.)N\s?(?=\d)")
 SPACES = re.compile(r"[ \t ]+")
 
 
@@ -54,8 +55,9 @@ def normalise_line(text: str) -> str:
     """Apply the design's normalisation rules to one line.
 
     NFKC; U+FFFD (an unmapped dash glyph in these CID fonts) to an en dash; "N" drawn before a
-    figure to the naira sign; runs of spaces collapsed. Words, figures and punctuation are
-    otherwise left exactly as extracted.
+    figure to the naira sign, except in a Laws of the Federation chapter number ("Cap. N61");
+    runs of spaces collapsed. Words, figures and punctuation are otherwise left exactly as
+    extracted.
     """
     text = unicodedata.normalize("NFKC", text)
     text = text.replace("�", "–")
