@@ -677,3 +677,26 @@ Not recorded:
 `build_register.py` takes about 100 seconds, most of it parsing the five prints. The register
 tests take about 2 minutes on their own, of which the page check is about 30 seconds; in the full
 suite the parses are shared.
+
+## 2b-7a: Spot-check sample and review pack
+
+`python/ingest/spot_check_sample.py` draws the 20-chunk sample (seed 20261018) and builds the
+review pack; method and pass rule are in [spot_check.md](spot_check.md).
+
+### Deviations from the design
+
+- **Definition caps.** Design section 9 sets no limit on definition chunks. The sample allows at
+  most 3 in the NTA stratum and at most 2 in the NTAA stratum, so most of it tests section
+  numbering. The schedule stratum has no definitions.
+- **Stratum rules kept from the design:** at least 2 NTAA chunks with a verified text source, at
+  least 1 schedule_table chunk, and at least 2 flagged chunks in each stratum.
+- **Selection order:** required picks (table, verified source, flagged) are drawn first, then the
+  rest of the stratum is filled at random. Candidates are always taken from the sorted chunk ids.
+
+## 2b-7b: Spot-check results
+
+The review of the 20 chunks is recorded in `spot_check_results.csv` and summarised in
+[spot_check.md](spot_check.md): 20/20 Pass on all seven checks, so the Phase 2 exit gate is
+passed. `spot_check_sample.py` no longer overwrites a results file that holds review data, and
+the review sheet now shows a subsection cross-reference target with the chunk that contains that
+subsection. DQ-17 is logged.

@@ -1,0 +1,21 @@
+chunk_id,seed,stratum,check1_number,check2_text,check3_heading,check4_pages,check5_chapter_part,check6_discrepancy,check7_cross_refs,reviewer,date,note
+nta2025:s155,20261018,nta_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+nta2025:s189:def:machinery,20261018,nta_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+nta2025:s202:def:aggregate-covered-tax-paid,20261018,nta_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+nta2025:s202:def:hire-purchase,20261018,nta_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+nta2025:s203,20261018,nta_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+nta2025:s26,20261018,nta_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer; confirmed by Kene,2026-11-02,Heading matches the print; the gazette margin repeats the heading of section 22 (DQ-17).
+nta2025:s27(5)-(6),20261018,nta_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,Range 'sections 22 to 25' is stored as its two endpoints.
+nta2025:s36(5)-(8),20261018,nta_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+nta2025:s42(1)-(4),20261018,nta_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer; confirmed by Kene,2026-11-02,
+nta2025:s48,20261018,nta_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+ntaa2025:s103,20261018,ntaa_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+ntaa2025:s122,20261018,ntaa_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer; confirmed by Kene,2026-11-02,
+ntaa2025:s147:def:calendar-year,20261018,ntaa_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,Flag consistent with the register; DR-262 (missing Chief Executive Officer definition) is anchored on this chunk by position only.
+ntaa2025:s147:def:entertainer-sportsperson-or-competitor-fees,20261018,ntaa_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+ntaa2025:s29,20261018,ntaa_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer; confirmed by Kene,2026-11-02,
+ntaa2025:s45,20261018,ntaa_sections,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+nta2025:sch1:pt1:para10,20261018,nta_schedules,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+nta2025:sch1:pt1:para21-22,20261018,nta_schedules,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+nta2025:sch1:pt1:para4-5,20261018,nta_schedules,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer,2026-11-02,
+nta2025:sch1:pt1:table1,20261018,nta_schedules,Pass,Pass,Pass,Pass,Pass,Pass,Pass,independent reviewer; confirmed by Kene,2026-11-02,

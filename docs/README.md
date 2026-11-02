@@ -20,6 +20,7 @@ document is added, moved or renamed.
 | [phase02_chunking/proofread_report.md](phase02_chunking/proofread_report.md) | Proofreading of the six NTAA sections where the NRS print differs from the Gombe print: every difference with three readings, print differences for the register, and review steps. |
 | [phase02_chunking/register_review.md](phase02_chunking/register_review.md) | Review pack and review outcome for the discrepancy register: how the rows were produced and checked, where each known item is, review steps and reply format, and every row grouped as substantive and missing content, numbering, and wording. |
 | [phase02_chunking/build_notes.md](phase02_chunking/build_notes.md) | Phase 2b build record: deviations from the design, per-file parser tolerances, pinned anomalies, chunk counts and token distribution, the golden-chunk check method and new data-quality findings. |
+| [phase02_chunking/spot_check.md](phase02_chunking/spot_check.md) | Method, strata, seed, pass rule and reviewers for the 20-chunk exit-gate spot-check, with its results (pending review). |
 
 The source-document inventory (files, hashes, provenance, snapshot date) is in
 [../data/README.md](../data/README.md) and [../data/manifest.csv](../data/manifest.csv).
