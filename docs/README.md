@@ -23,6 +23,7 @@ document is added, moved or renamed.
 | [phase02_chunking/spot_check.md](phase02_chunking/spot_check.md) | Method, strata, seed, pass rule and reviewers for the 20-chunk exit-gate spot-check, with its results (pending review). |
 | [phase03_embedding/vector_store_design.md](phase03_embedding/vector_store_design.md) | Approved design for the vector store (D-19): schema, embedded text, index choice, loader, cache, re-embedding procedure, tests and the pinned SDK. |
 | [phase03_embedding/vector_store.md](phase03_embedding/vector_store.md) | The built vector store: final schema, model and dimensions, measured cost, how to run, re-embedding procedure, smoke-check results (exit gate) and tests. |
+| [phase04_retrieval/question_set.md](phase04_retrieval/question_set.md) | The labelled 50-question retrieval set (v1): schema, labelling method, wording and overlap check, coverage by category and split, the seeded split, the hit rule, gate G1 (D-20) and the frozen sha256. |
 
 The source-document inventory (files, hashes, provenance, snapshot date) is in
 [../data/README.md](../data/README.md) and [../data/manifest.csv](../data/manifest.csv).
