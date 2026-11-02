@@ -21,6 +21,8 @@ document is added, moved or renamed.
 | [phase02_chunking/register_review.md](phase02_chunking/register_review.md) | Review pack and review outcome for the discrepancy register: how the rows were produced and checked, where each known item is, review steps and reply format, and every row grouped as substantive and missing content, numbering, and wording. |
 | [phase02_chunking/build_notes.md](phase02_chunking/build_notes.md) | Phase 2b build record: deviations from the design, per-file parser tolerances, pinned anomalies, chunk counts and token distribution, the golden-chunk check method and new data-quality findings. |
 | [phase02_chunking/spot_check.md](phase02_chunking/spot_check.md) | Method, strata, seed, pass rule and reviewers for the 20-chunk exit-gate spot-check, with its results (pending review). |
+| [phase03_embedding/vector_store_design.md](phase03_embedding/vector_store_design.md) | Approved design for the vector store (D-19): schema, embedded text, index choice, loader, cache, re-embedding procedure, tests and the pinned SDK. |
+| [phase03_embedding/vector_store.md](phase03_embedding/vector_store.md) | The built vector store: final schema, model and dimensions, measured cost, how to run, re-embedding procedure, smoke-check results (exit gate) and tests. |
 
 The source-document inventory (files, hashes, provenance, snapshot date) is in
 [../data/README.md](../data/README.md) and [../data/manifest.csv](../data/manifest.csv).

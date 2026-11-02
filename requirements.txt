@@ -1,4 +1,4 @@
-# Direct dependencies, pinned. LLM and embedding SDKs are added after the D-03 model choice.
+# Direct dependencies, pinned. The LLM SDK is added in Phase 5.
 psycopg[binary]==3.3.6
 pgvector==0.5.1
 python-dotenv==1.2.4
@@ -11,3 +11,5 @@ tiktoken==0.8.0
 # Chunk build (Phase 2b-5): table config and the 512-token baseline tokenizer check.
 PyYAML==6.0.2
 tokenizers==0.21.0
+# Embedding client (Phase 3, D-19): text-embedding-3-small.
+openai==3.35.1
