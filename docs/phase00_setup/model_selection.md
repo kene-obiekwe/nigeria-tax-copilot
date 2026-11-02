@@ -1,7 +1,7 @@
 # LLM and Embedding Model Selection (D-03)
 
 Status: **approved by Kene on 2026-10-18 (D-03).** The embedding choice stays provisional until
-the Phase 4 hit-rate results.
+the Phase 4 hit-rate results. The embedding choice was confirmed in Phase 4 (D-21).
 
 All prices are USD per 1M tokens, taken from the providers' official pricing pages on
 **2026-10-18** (access date). Standard tier, no batch or cache discounts. Prices change; re-check
@@ -89,7 +89,7 @@ deployment simplicity, not on price.
    most is the cheapest place to spend. The cheap tier is enough to try for verification; Phase 6
    decides whether it is. Fall back to Sonnet for both calls ($0.014) if verification quality is
    weak. This is a judgement, not a measured result. Phase 8 may change it.
-2. **Embeddings (provisional until Phase 4): `text-embedding-3-small`**, 1536 dimensions. It is
+2. **Embeddings (provisional until Phase 4; confirmed by D-21): `text-embedding-3-small`**, 1536 dimensions. It is
    effectively free at this scale, needs no PyTorch in the deployed image, and has a long input
    limit (8192 tokens) so no legal section gets truncated. Phase 4 should also run
    `bge-small-en-v1.5` as the free local baseline and keep whichever gives the better hit-rate@k.

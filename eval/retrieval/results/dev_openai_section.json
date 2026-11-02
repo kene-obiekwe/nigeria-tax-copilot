@@ -1,0 +1,1326 @@
+{
+ "split": "dev",
+ "final": false,
+ "config_name": "openai_section",
+ "config": {
+  "name": "openai_section",
+  "model": "openai/text-embedding-3-small",
+  "section_lookup": true,
+  "keyword": false,
+  "candidates": 50,
+  "rrf_k": 60,
+  "filters": null
+ },
+ "config_file": "eval/retrieval/configs/openai_section.json",
+ "config_sha256": "baec60dca9bdc8266cc41f074bd04acf200a05ec4561c51375b0fe79227d94f7",
+ "questions_sha256": "48daa9fa13afdec2183b62185dbae20400ec0f3ef9d677623c7ac6199987ba45",
+ "chunks_sha256": "780467e7d27c38aadd727596db9ecdee87c14c4b66d30bf11e7e1e7a7198e9c0",
+ "run_at": "2026-11-02T18:58:25+00:00",
+ "k": 5,
+ "depth": 20,
+ "query_embeddings": {
+  "from_cache": 20,
+  "embedded": 0,
+  "tokens": 0
+ },
+ "summary": {
+  "overall": {
+   "questions": 20,
+   "hit@1": 16,
+   "hit@1_rate": 0.8,
+   "hit@3": 19,
+   "hit@3_rate": 0.95,
+   "hit@5": 20,
+   "hit@5_rate": 1.0,
+   "mrr": 0.8792
+  },
+  "by_category": {
+   "cit_rates_levy": {
+    "questions": 2,
+    "hit@1": 2,
+    "hit@1_rate": 1.0,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 1.0
+   },
+   "deductions_gains": {
+    "questions": 2,
+    "hit@1": 1,
+    "hit@1_rate": 0.5,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 0.6666
+   },
+   "definitions": {
+    "questions": 2,
+    "hit@1": 2,
+    "hit@1_rate": 1.0,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 1.0
+   },
+   "exemptions_incentives": {
+    "questions": 2,
+    "hit@1": 2,
+    "hit@1_rate": 1.0,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 1.0
+   },
+   "ntaa_assessment_objection": {
+    "questions": 2,
+    "hit@1": 2,
+    "hit@1_rate": 1.0,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 1.0
+   },
+   "ntaa_payment_penalties": {
+    "questions": 2,
+    "hit@1": 1,
+    "hit@1_rate": 0.5,
+    "hit@3": 1,
+    "hit@3_rate": 0.5,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 0.625
+   },
+   "ntaa_registration_returns": {
+    "questions": 2,
+    "hit@1": 2,
+    "hit@1_rate": 1.0,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 1.0
+   },
+   "schedules": {
+    "questions": 2,
+    "hit@1": 1,
+    "hit@1_rate": 0.5,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 0.75
+   },
+   "section_reference": {
+    "questions": 2,
+    "hit@1": 2,
+    "hit@1_rate": 1.0,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 1.0
+   },
+   "vat": {
+    "questions": 2,
+    "hit@1": 1,
+    "hit@1_rate": 0.5,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 0.75
+   }
+  }
+ },
+ "questions": [
+  {
+   "id": "Q003",
+   "category": "cit_rates_levy",
+   "gold_units": [
+    "nta2025:s59"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s59",
+     "score": 0.574197,
+     "distance": 0.425803,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4258)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s202:def:small-company",
+     "score": 0.436898,
+     "distance": 0.563102,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5631)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s165",
+     "score": 0.420526,
+     "distance": 0.579474,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5795)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s56",
+     "score": 0.407998,
+     "distance": 0.592002,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5920)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s51(8)-(9)",
+     "score": 0.393959,
+     "distance": 0.606041,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.6060)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q004",
+   "category": "cit_rates_levy",
+   "gold_units": [
+    "nta2025:s9"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s9",
+     "score": 0.603239,
+     "distance": 0.396761,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3968)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s8",
+     "score": 0.597612,
+     "distance": 0.402388,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4024)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s4(6)(b)-(e)",
+     "score": 0.539657,
+     "distance": 0.460343,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4603)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s19",
+     "score": 0.534289,
+     "distance": 0.465711,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4657)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s7",
+     "score": 0.530145,
+     "distance": 0.469855,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4699)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q007",
+   "category": "deductions_gains",
+   "gold_units": [
+    "nta2025:s21(a)-(o)"
+   ],
+   "first_gold_rank": 3,
+   "hit@1": false,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 0.3333,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s20(1)(i)-(m)",
+     "score": 0.458478,
+     "distance": 0.541522,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5415)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s20(1)(a)-(h)",
+     "score": 0.420181,
+     "distance": 0.579819,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5798)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s21(a)-(o)",
+     "score": 0.410786,
+     "distance": 0.589214,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5892)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s20(2)-(4)",
+     "score": 0.395496,
+     "distance": 0.604504,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.6045)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s164",
+     "score": 0.387553,
+     "distance": 0.612447,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.6124)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q010",
+   "category": "deductions_gains",
+   "gold_units": [
+    "nta2025:s51"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s51",
+     "score": 0.54043,
+     "distance": 0.45957,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4596)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s4(6)(b)-(e)",
+     "score": 0.414308,
+     "distance": 0.585692,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5857)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s42(5)",
+     "score": 0.411082,
+     "distance": 0.588918,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5889)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s41",
+     "score": 0.409713,
+     "distance": 0.590287,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5903)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s25",
+     "score": 0.407244,
+     "distance": 0.592756,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5928)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q014",
+   "category": "vat",
+   "gold_units": [
+    "nta2025:s156"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s156",
+     "score": 0.48268,
+     "distance": 0.51732,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5173)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s155",
+     "score": 0.470424,
+     "distance": 0.529576,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5296)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s154",
+     "score": 0.464335,
+     "distance": 0.535665,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5357)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s149",
+     "score": 0.464253,
+     "distance": 0.535747,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5357)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s152",
+     "score": 0.457351,
+     "distance": 0.542649,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5426)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q015",
+   "category": "vat",
+   "gold_units": [
+    "nta2025:s151"
+   ],
+   "first_gold_rank": 2,
+   "hit@1": false,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 0.5,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s155",
+     "score": 0.57537,
+     "distance": 0.42463,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4246)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s151",
+     "score": 0.563578,
+     "distance": 0.436422,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4364)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s147:def:foreign-company",
+     "score": 0.55058,
+     "distance": 0.44942,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4494)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s158",
+     "score": 0.548151,
+     "distance": 0.451849,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4518)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s202:def:foreign-company",
+     "score": 0.545406,
+     "distance": 0.454594,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4546)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q018",
+   "category": "exemptions_incentives",
+   "gold_units": [
+    "nta2025:s187",
+    "nta2025:s189:def:basic-food-items(a)-(k)",
+    "nta2025:s189:def:basic-food-items(l)-(p)"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s187",
+     "score": 0.479486,
+     "distance": 0.520514,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5205)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s145",
+     "score": 0.462958,
+     "distance": 0.537042,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5370)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s148",
+     "score": 0.447737,
+     "distance": 0.552263,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5523)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s189:def:basic-food-items(l)-(p)",
+     "score": 0.446845,
+     "distance": 0.553155,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5532)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s186",
+     "score": 0.440627,
+     "distance": 0.559373,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5594)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q019",
+   "category": "exemptions_incentives",
+   "gold_units": [
+    "nta2025:s186",
+    "nta2025:s189:def:baby-products"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s189:def:baby-products",
+     "score": 0.502767,
+     "distance": 0.497233,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4972)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s186",
+     "score": 0.412531,
+     "distance": 0.587469,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5875)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s187",
+     "score": 0.403646,
+     "distance": 0.596354,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5964)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s153",
+     "score": 0.369367,
+     "distance": 0.630633,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.6306)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s145",
+     "score": 0.36282,
+     "distance": 0.63718,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.6372)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q025",
+   "category": "definitions",
+   "gold_units": [
+    "nta2025:s202:def:small-company",
+    "nta2025:s202:def:professional-services"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s202:def:small-company",
+     "score": 0.455486,
+     "distance": 0.544514,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5445)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "ntaa2025:s147:def:small-business",
+     "score": 0.40702,
+     "distance": 0.59298,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5930)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s56",
+     "score": 0.323629,
+     "distance": 0.676371,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.6764)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "ntaa2025:s147:def:nigerian-company",
+     "score": 0.316041,
+     "distance": 0.683959,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.6840)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s11(1)-(2)",
+     "score": 0.314569,
+     "distance": 0.685431,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.6854)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q026",
+   "category": "definitions",
+   "gold_units": [
+    "nta2025:s202:def:connected-persons"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s202:def:connected-persons",
+     "score": 0.540149,
+     "distance": 0.459851,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4599)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s11",
+     "score": 0.454929,
+     "distance": 0.545071,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5451)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s202:def:related-parties",
+     "score": 0.449123,
+     "distance": 0.550877,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5509)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:sch1:pt1:para11-12",
+     "score": 0.445069,
+     "distance": 0.554931,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5549)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s202:def:mne-group",
+     "score": 0.418197,
+     "distance": 0.581803,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5818)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q029",
+   "category": "schedules",
+   "gold_units": [
+    "nta2025:sch1:pt1:table1"
+   ],
+   "first_gold_rank": 2,
+   "hit@1": false,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 0.5,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:sch1:pt1:para21-22",
+     "score": 0.61457,
+     "distance": 0.38543,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3854)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:sch1:pt1:table1",
+     "score": 0.576414,
+     "distance": 0.423586,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4236)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:sch1:pt1:para6-8",
+     "score": 0.561632,
+     "distance": 0.438368,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4384)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:sch1:pt1:para10",
+     "score": 0.560994,
+     "distance": 0.439006,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4390)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:sch1:pt1:para23",
+     "score": 0.545701,
+     "distance": 0.454299,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4543)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q030",
+   "category": "schedules",
+   "gold_units": [
+    "nta2025:sch3"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:sch3",
+     "score": 0.503797,
+     "distance": 0.496203,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4962)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s20(1)(i)-(m)",
+     "score": 0.445153,
+     "distance": 0.554847,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5548)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s164",
+     "score": 0.390517,
+     "distance": 0.609483,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.6095)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s21(a)-(o)",
+     "score": 0.386483,
+     "distance": 0.613517,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.6135)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s20(1)(a)-(h)",
+     "score": 0.386129,
+     "distance": 0.613871,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.6139)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q034",
+   "category": "ntaa_registration_returns",
+   "gold_units": [
+    "ntaa2025:s11(3)-(6)"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s11(3)-(6)",
+     "score": 0.535273,
+     "distance": 0.464727,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4647)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "ntaa2025:s11(1)-(2)",
+     "score": 0.509541,
+     "distance": 0.490459,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4905)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s26",
+     "score": 0.489023,
+     "distance": 0.510977,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5110)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s25",
+     "score": 0.454214,
+     "distance": 0.545786,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5458)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s31",
+     "score": 0.437295,
+     "distance": 0.562705,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5627)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q035",
+   "category": "ntaa_registration_returns",
+   "gold_units": [
+    "ntaa2025:s11(1)-(2)"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s11(1)-(2)",
+     "score": 0.574724,
+     "distance": 0.425276,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4253)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "ntaa2025:s31",
+     "score": 0.497609,
+     "distance": 0.502391,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5024)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s11(3)-(6)",
+     "score": 0.483994,
+     "distance": 0.516006,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5160)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "ntaa2025:s26",
+     "score": 0.478476,
+     "distance": 0.521524,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5215)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s202:def:small-company",
+     "score": 0.476302,
+     "distance": 0.523698,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5237)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q039",
+   "category": "ntaa_assessment_objection",
+   "gold_units": [
+    "ntaa2025:s36"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s36",
+     "score": 0.471613,
+     "distance": 0.528387,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5284)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "ntaa2025:s55",
+     "score": 0.41781,
+     "distance": 0.58219,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5822)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s43",
+     "score": 0.412955,
+     "distance": 0.587045,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5870)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "ntaa2025:s49(1)-(6)",
+     "score": 0.412673,
+     "distance": 0.587327,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5873)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s41(5)-(8)",
+     "score": 0.412407,
+     "distance": 0.587593,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5876)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q041",
+   "category": "ntaa_assessment_objection",
+   "gold_units": [
+    "ntaa2025:s38"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s38",
+     "score": 0.485873,
+     "distance": 0.514127,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5141)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s20(1)(a)-(h)",
+     "score": 0.471124,
+     "distance": 0.528876,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5289)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s4(6)(b)-(e)",
+     "score": 0.456446,
+     "distance": 0.543554,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5436)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s10(1)-(6)",
+     "score": 0.454533,
+     "distance": 0.545467,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5455)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s147:def:assessable-profit",
+     "score": 0.447338,
+     "distance": 0.552662,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5527)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q043",
+   "category": "ntaa_payment_penalties",
+   "gold_units": [
+    "ntaa2025:s49(1)-(6)"
+   ],
+   "first_gold_rank": 4,
+   "hit@1": false,
+   "hit@3": false,
+   "hit@5": true,
+   "rr": 0.25,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s41(1)-(4)",
+     "score": 0.518039,
+     "distance": 0.481961,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4820)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "ntaa2025:s41(5)-(8)",
+     "score": 0.503476,
+     "distance": 0.496524,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4965)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s147:def:dispute",
+     "score": 0.476739,
+     "distance": 0.523261,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5233)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "ntaa2025:s49(1)-(6)",
+     "score": 0.469728,
+     "distance": 0.530272,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5303)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s49(7)",
+     "score": 0.457084,
+     "distance": 0.542916,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5429)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q044",
+   "category": "ntaa_payment_penalties",
+   "gold_units": [
+    "ntaa2025:s56"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s56",
+     "score": 0.627957,
+     "distance": 0.372043,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3720)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s156",
+     "score": 0.527055,
+     "distance": 0.472945,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4729)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s55",
+     "score": 0.523618,
+     "distance": 0.476382,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4764)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s155",
+     "score": 0.489345,
+     "distance": 0.510655,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5107)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s22(1)-(10)",
+     "score": 0.481445,
+     "distance": 0.518555,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5186)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q047",
+   "category": "section_reference",
+   "gold_units": [
+    "nta2025:s192"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s192",
+     "score": 0.56129,
+     "distance": 0.43871,
+     "reasons": [
+      "section lookup: Section 192, Nigeria Tax Act 2025 (cosine distance 0.4387)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s194",
+     "score": 0.662585,
+     "distance": 0.337415,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3374)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s202:def:tax-id",
+     "score": 0.6573,
+     "distance": 0.3427,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.3427)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s202:def:income-tax",
+     "score": 0.651786,
+     "distance": 0.348214,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.3482)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s202:def:tax",
+     "score": 0.644402,
+     "distance": 0.355598,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.3556)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q050",
+   "category": "section_reference",
+   "gold_units": [
+    "ntaa2025:s66"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s66",
+     "score": 0.626964,
+     "distance": 0.373036,
+     "reasons": [
+      "section lookup: Section 66, Nigeria Tax Administration Act 2025 (cosine distance 0.3730)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s202:def:tax-id",
+     "score": 0.672135,
+     "distance": 0.327865,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3279)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s147:def:tax-authority",
+     "score": 0.670168,
+     "distance": 0.329832,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.3298)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "ntaa2025:s147:def:relevant-tax-authority",
+     "score": 0.670002,
+     "distance": 0.329998,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.3300)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s147:def:tax",
+     "score": 0.665524,
+     "distance": 0.334476,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.3345)"
+     ]
+    }
+   ]
+  }
+ ]
+}

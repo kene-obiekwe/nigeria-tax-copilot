@@ -1,0 +1,9 @@
+{
+ "name": "bge_section_keyword",
+ "model": "BAAI/bge-small-en-v1.5",
+ "section_lookup": true,
+ "keyword": true,
+ "candidates": 50,
+ "rrf_k": 60,
+ "filters": null
+}

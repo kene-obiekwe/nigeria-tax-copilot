@@ -1,0 +1,9 @@
+{
+ "name": "bge_vector",
+ "model": "BAAI/bge-small-en-v1.5",
+ "section_lookup": false,
+ "keyword": false,
+ "candidates": 50,
+ "rrf_k": 60,
+ "filters": null
+}

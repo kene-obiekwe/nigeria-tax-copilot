@@ -1,0 +1,1424 @@
+{
+ "split": "dev",
+ "final": false,
+ "config_name": "openai_section_keyword",
+ "config": {
+  "name": "openai_section_keyword",
+  "model": "openai/text-embedding-3-small",
+  "section_lookup": true,
+  "keyword": true,
+  "candidates": 50,
+  "rrf_k": 60,
+  "filters": null
+ },
+ "config_file": "eval/retrieval/configs/openai_section_keyword.json",
+ "config_sha256": "527fbbbde9cf2f4b8f30af5979c2256a93b976e4676025bc8d4bc7d0002e4f32",
+ "questions_sha256": "48daa9fa13afdec2183b62185dbae20400ec0f3ef9d677623c7ac6199987ba45",
+ "chunks_sha256": "780467e7d27c38aadd727596db9ecdee87c14c4b66d30bf11e7e1e7a7198e9c0",
+ "run_at": "2026-11-02T18:58:28+00:00",
+ "k": 5,
+ "depth": 20,
+ "query_embeddings": {
+  "from_cache": 20,
+  "embedded": 0,
+  "tokens": 0
+ },
+ "summary": {
+  "overall": {
+   "questions": 20,
+   "hit@1": 14,
+   "hit@1_rate": 0.7,
+   "hit@3": 17,
+   "hit@3_rate": 0.85,
+   "hit@5": 19,
+   "hit@5_rate": 0.95,
+   "mrr": 0.7892
+  },
+  "by_category": {
+   "cit_rates_levy": {
+    "questions": 2,
+    "hit@1": 2,
+    "hit@1_rate": 1.0,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 1.0
+   },
+   "deductions_gains": {
+    "questions": 2,
+    "hit@1": 1,
+    "hit@1_rate": 0.5,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 0.75
+   },
+   "definitions": {
+    "questions": 2,
+    "hit@1": 2,
+    "hit@1_rate": 1.0,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 1.0
+   },
+   "exemptions_incentives": {
+    "questions": 2,
+    "hit@1": 1,
+    "hit@1_rate": 0.5,
+    "hit@3": 1,
+    "hit@3_rate": 0.5,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 0.6
+   },
+   "ntaa_assessment_objection": {
+    "questions": 2,
+    "hit@1": 1,
+    "hit@1_rate": 0.5,
+    "hit@3": 1,
+    "hit@3_rate": 0.5,
+    "hit@5": 1,
+    "hit@5_rate": 0.5,
+    "mrr": 0.5
+   },
+   "ntaa_payment_penalties": {
+    "questions": 2,
+    "hit@1": 1,
+    "hit@1_rate": 0.5,
+    "hit@3": 1,
+    "hit@3_rate": 0.5,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 0.625
+   },
+   "ntaa_registration_returns": {
+    "questions": 2,
+    "hit@1": 2,
+    "hit@1_rate": 1.0,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 1.0
+   },
+   "schedules": {
+    "questions": 2,
+    "hit@1": 1,
+    "hit@1_rate": 0.5,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 0.75
+   },
+   "section_reference": {
+    "questions": 2,
+    "hit@1": 2,
+    "hit@1_rate": 1.0,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 1.0
+   },
+   "vat": {
+    "questions": 2,
+    "hit@1": 1,
+    "hit@1_rate": 0.5,
+    "hit@3": 2,
+    "hit@3_rate": 1.0,
+    "hit@5": 2,
+    "hit@5_rate": 1.0,
+    "mrr": 0.6666
+   }
+  }
+ },
+ "questions": [
+  {
+   "id": "Q003",
+   "category": "cit_rates_levy",
+   "gold_units": [
+    "nta2025:s59"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s59",
+     "score": 0.032787,
+     "distance": 0.425803,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4258)",
+      "keyword rank 1 (BM25 17.698)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s202:def:small-company",
+     "score": 0.032002,
+     "distance": 0.563102,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5631)",
+      "keyword rank 3 (BM25 8.857)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s56",
+     "score": 0.031754,
+     "distance": 0.592002,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5920)",
+      "keyword rank 2 (BM25 11.738)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s165",
+     "score": 0.031258,
+     "distance": 0.579474,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5795)",
+      "keyword rank 5 (BM25 7.830)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s202:def:priority-company",
+     "score": 0.029851,
+     "distance": 0.620839,
+     "reasons": [
+      "vector rank 7 (cosine distance 0.6208)",
+      "keyword rank 7 (BM25 7.550)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q004",
+   "category": "cit_rates_levy",
+   "gold_units": [
+    "nta2025:s9"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s9",
+     "score": 0.032787,
+     "distance": 0.396761,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3968)",
+      "keyword rank 1 (BM25 17.226)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s8",
+     "score": 0.032258,
+     "distance": 0.402388,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4024)",
+      "keyword rank 2 (BM25 13.488)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s10(1)-(6)",
+     "score": 0.031025,
+     "distance": 0.485671,
+     "reasons": [
+      "vector rank 6 (cosine distance 0.4857)",
+      "keyword rank 3 (BM25 12.758)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s7",
+     "score": 0.030536,
+     "distance": 0.469855,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4699)",
+      "keyword rank 6 (BM25 10.180)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s19",
+     "score": 0.02971,
+     "distance": 0.465711,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4657)",
+      "keyword rank 11 (BM25 9.738)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q007",
+   "category": "deductions_gains",
+   "gold_units": [
+    "nta2025:s21(a)-(o)"
+   ],
+   "first_gold_rank": 2,
+   "hit@1": false,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 0.5,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s20(1)(i)-(m)",
+     "score": 0.032522,
+     "distance": 0.541522,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5415)",
+      "keyword rank 2 (BM25 13.005)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s21(a)-(o)",
+     "score": 0.032266,
+     "distance": 0.589214,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5892)",
+      "keyword rank 1 (BM25 14.331)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s20(1)(a)-(h)",
+     "score": 0.032002,
+     "distance": 0.579819,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5798)",
+      "keyword rank 3 (BM25 11.325)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:sch3",
+     "score": 0.029857,
+     "distance": 0.616434,
+     "reasons": [
+      "vector rank 6 (cosine distance 0.6164)",
+      "keyword rank 8 (BM25 8.834)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s20(2)-(4)",
+     "score": 0.02971,
+     "distance": 0.604504,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.6045)",
+      "keyword rank 11 (BM25 8.005)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q010",
+   "category": "deductions_gains",
+   "gold_units": [
+    "nta2025:s51"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s51",
+     "score": 0.032787,
+     "distance": 0.45957,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4596)",
+      "keyword rank 1 (BM25 7.505)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s9",
+     "score": 0.029211,
+     "distance": 0.599332,
+     "reasons": [
+      "vector rank 10 (cosine distance 0.5993)",
+      "keyword rank 7 (BM25 5.388)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s24",
+     "score": 0.029199,
+     "distance": 0.598661,
+     "reasons": [
+      "vector rank 9 (cosine distance 0.5987)",
+      "keyword rank 8 (BM25 5.333)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s8",
+     "score": 0.028043,
+     "distance": 0.613458,
+     "reasons": [
+      "vector rank 19 (cosine distance 0.6135)",
+      "keyword rank 5 (BM25 5.946)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s4(1)-(5)",
+     "score": 0.026553,
+     "distance": 0.597518,
+     "reasons": [
+      "vector rank 7 (cosine distance 0.5975)",
+      "keyword rank 26 (BM25 3.186)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q014",
+   "category": "vat",
+   "gold_units": [
+    "nta2025:s156"
+   ],
+   "first_gold_rank": 3,
+   "hit@1": false,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 0.3333,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s155",
+     "score": 0.032522,
+     "distance": 0.529576,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5296)",
+      "keyword rank 1 (BM25 13.186)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s154",
+     "score": 0.032002,
+     "distance": 0.535665,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5357)",
+      "keyword rank 2 (BM25 10.888)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s156",
+     "score": 0.030478,
+     "distance": 0.51732,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5173)",
+      "keyword rank 11 (BM25 8.078)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s186",
+     "score": 0.029851,
+     "distance": 0.557925,
+     "reasons": [
+      "vector rank 7 (cosine distance 0.5579)",
+      "keyword rank 7 (BM25 9.382)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s152",
+     "score": 0.02967,
+     "distance": 0.542649,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5426)",
+      "keyword rank 10 (BM25 8.242)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q015",
+   "category": "vat",
+   "gold_units": [
+    "nta2025:s151"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s151",
+     "score": 0.032258,
+     "distance": 0.436422,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4364)",
+      "keyword rank 2 (BM25 10.457)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s155",
+     "score": 0.032018,
+     "distance": 0.42463,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4246)",
+      "keyword rank 4 (BM25 10.326)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s158",
+     "score": 0.032018,
+     "distance": 0.451849,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4518)",
+      "keyword rank 1 (BM25 10.988)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s6",
+     "score": 0.030303,
+     "distance": 0.46683,
+     "reasons": [
+      "vector rank 6 (cosine distance 0.4668)",
+      "keyword rank 6 (BM25 9.915)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s147:def:foreign-company",
+     "score": 0.029387,
+     "distance": 0.44942,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4494)",
+      "keyword rank 14 (BM25 7.435)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q018",
+   "category": "exemptions_incentives",
+   "gold_units": [
+    "nta2025:s187",
+    "nta2025:s189:def:basic-food-items(a)-(k)",
+    "nta2025:s189:def:basic-food-items(l)-(p)"
+   ],
+   "first_gold_rank": 5,
+   "hit@1": false,
+   "hit@3": false,
+   "hit@5": true,
+   "rr": 0.2,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s145",
+     "score": 0.032522,
+     "distance": 0.537042,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5370)",
+      "keyword rank 1 (BM25 8.256)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s148",
+     "score": 0.032002,
+     "distance": 0.552263,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5523)",
+      "keyword rank 2 (BM25 8.158)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s150",
+     "score": 0.03031,
+     "distance": 0.56905,
+     "reasons": [
+      "vector rank 7 (cosine distance 0.5691)",
+      "keyword rank 5 (BM25 6.016)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s153",
+     "score": 0.029911,
+     "distance": 0.577057,
+     "reasons": [
+      "vector rank 10 (cosine distance 0.5771)",
+      "keyword rank 4 (BM25 7.062)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s187",
+     "score": 0.02938,
+     "distance": 0.520514,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5205)",
+      "keyword rank 17 (BM25 3.994)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q019",
+   "category": "exemptions_incentives",
+   "gold_units": [
+    "nta2025:s186",
+    "nta2025:s189:def:baby-products"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s189:def:baby-products",
+     "score": 0.032787,
+     "distance": 0.497233,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4972)",
+      "keyword rank 1 (BM25 15.686)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s153",
+     "score": 0.031754,
+     "distance": 0.630633,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.6306)",
+      "keyword rank 2 (BM25 10.095)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s145",
+     "score": 0.031258,
+     "distance": 0.63718,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.6372)",
+      "keyword rank 3 (BM25 8.256)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s186",
+     "score": 0.030415,
+     "distance": 0.587469,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5875)",
+      "keyword rank 10 (BM25 6.346)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s156",
+     "score": 0.030303,
+     "distance": 0.649098,
+     "reasons": [
+      "vector rank 6 (cosine distance 0.6491)",
+      "keyword rank 6 (BM25 7.713)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q025",
+   "category": "definitions",
+   "gold_units": [
+    "nta2025:s202:def:small-company",
+    "nta2025:s202:def:professional-services"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s202:def:small-company",
+     "score": 0.032787,
+     "distance": 0.544514,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5445)",
+      "keyword rank 1 (BM25 13.667)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "ntaa2025:s147:def:small-business",
+     "score": 0.032002,
+     "distance": 0.59298,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5930)",
+      "keyword rank 3 (BM25 11.241)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s56",
+     "score": 0.031258,
+     "distance": 0.676371,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.6764)",
+      "keyword rank 5 (BM25 7.546)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "ntaa2025:s11(1)-(2)",
+     "score": 0.03009,
+     "distance": 0.685431,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.6854)",
+      "keyword rank 8 (BM25 6.216)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s51(8)-(9)",
+     "score": 0.02885,
+     "distance": 0.71471,
+     "reasons": [
+      "vector rank 13 (cosine distance 0.7147)",
+      "keyword rank 6 (BM25 7.252)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q026",
+   "category": "definitions",
+   "gold_units": [
+    "nta2025:s202:def:connected-persons"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s202:def:connected-persons",
+     "score": 0.032787,
+     "distance": 0.459851,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4599)",
+      "keyword rank 1 (BM25 9.260)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:sch1:pt1:para18-20",
+     "score": 0.028814,
+     "distance": 0.585386,
+     "reasons": [
+      "vector rank 7 (cosine distance 0.5854)",
+      "keyword rank 12 (BM25 5.063)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s11",
+     "score": 0.028034,
+     "distance": 0.545071,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5451)",
+      "keyword rank 24 (BM25 3.972)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:sch1:pt1:para4-5",
+     "score": 0.027072,
+     "distance": 0.592752,
+     "reasons": [
+      "vector rank 11 (cosine distance 0.5928)",
+      "keyword rank 17 (BM25 4.341)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s44",
+     "score": 0.027013,
+     "distance": 0.613687,
+     "reasons": [
+      "vector rank 26 (cosine distance 0.6137)",
+      "keyword rank 5 (BM25 6.416)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q029",
+   "category": "schedules",
+   "gold_units": [
+    "nta2025:sch1:pt1:table1"
+   ],
+   "first_gold_rank": 2,
+   "hit@1": false,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 0.5,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:sch1:pt1:para21-22",
+     "score": 0.032787,
+     "distance": 0.38543,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3854)",
+      "keyword rank 1 (BM25 15.390)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:sch1:pt1:table1",
+     "score": 0.032002,
+     "distance": 0.423586,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4236)",
+      "keyword rank 3 (BM25 12.833)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:sch1:pt1:para6-8",
+     "score": 0.032002,
+     "distance": 0.438368,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4384)",
+      "keyword rank 2 (BM25 13.422)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:sch1:pt1:para23",
+     "score": 0.03101,
+     "distance": 0.454299,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4543)",
+      "keyword rank 4 (BM25 12.054)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:sch1:pt1:para1:def:basis-period",
+     "score": 0.029877,
+     "distance": 0.469658,
+     "reasons": [
+      "vector rank 9 (cosine distance 0.4697)",
+      "keyword rank 5 (BM25 11.332)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q030",
+   "category": "schedules",
+   "gold_units": [
+    "nta2025:sch3"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:sch3",
+     "score": 0.032522,
+     "distance": 0.496203,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4962)",
+      "keyword rank 2 (BM25 9.405)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s20(1)(i)-(m)",
+     "score": 0.032002,
+     "distance": 0.554847,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5548)",
+      "keyword rank 3 (BM25 8.456)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s21(a)-(o)",
+     "score": 0.03101,
+     "distance": 0.613517,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.6135)",
+      "keyword rank 5 (BM25 7.793)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s202:def:borrower",
+     "score": 0.028382,
+     "distance": 0.634001,
+     "reasons": [
+      "vector rank 9 (cosine distance 0.6340)",
+      "keyword rank 12 (BM25 6.874)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s164",
+     "score": 0.028373,
+     "distance": 0.609483,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.6095)",
+      "keyword rank 20 (BM25 5.649)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q034",
+   "category": "ntaa_registration_returns",
+   "gold_units": [
+    "ntaa2025:s11(3)-(6)"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s11(3)-(6)",
+     "score": 0.032787,
+     "distance": 0.464727,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4647)",
+      "keyword rank 1 (BM25 11.594)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "ntaa2025:s11(1)-(2)",
+     "score": 0.032002,
+     "distance": 0.490459,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4905)",
+      "keyword rank 3 (BM25 9.102)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s26",
+     "score": 0.032002,
+     "distance": 0.510977,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5110)",
+      "keyword rank 2 (BM25 9.854)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s25",
+     "score": 0.02971,
+     "distance": 0.545786,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5458)",
+      "keyword rank 11 (BM25 7.223)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:sch1:pt1:para1:def:basis-period",
+     "score": 0.029139,
+     "distance": 0.593006,
+     "reasons": [
+      "vector rank 14 (cosine distance 0.5930)",
+      "keyword rank 4 (BM25 9.027)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q035",
+   "category": "ntaa_registration_returns",
+   "gold_units": [
+    "ntaa2025:s11(1)-(2)"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s11(1)-(2)",
+     "score": 0.032787,
+     "distance": 0.425276,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4253)",
+      "keyword rank 1 (BM25 14.234)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "ntaa2025:s11(3)-(6)",
+     "score": 0.031025,
+     "distance": 0.516006,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5160)",
+      "keyword rank 6 (BM25 8.454)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s22(1)-(10)",
+     "score": 0.031025,
+     "distance": 0.532342,
+     "reasons": [
+      "vector rank 6 (cosine distance 0.5323)",
+      "keyword rank 3 (BM25 10.262)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s202:def:small-company",
+     "score": 0.03101,
+     "distance": 0.523698,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5237)",
+      "keyword rank 4 (BM25 8.858)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s31",
+     "score": 0.030214,
+     "distance": 0.502391,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5024)",
+      "keyword rank 11 (BM25 7.158)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q039",
+   "category": "ntaa_assessment_objection",
+   "gold_units": [
+    "ntaa2025:s36"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s36",
+     "score": 0.031545,
+     "distance": 0.528387,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5284)",
+      "keyword rank 6 (BM25 5.749)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s23",
+     "score": 0.02967,
+     "distance": 0.601331,
+     "reasons": [
+      "vector rank 10 (cosine distance 0.6013)",
+      "keyword rank 5 (BM25 5.806)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s101",
+     "score": 0.027973,
+     "distance": 0.602993,
+     "reasons": [
+      "vector rank 12 (cosine distance 0.6030)",
+      "keyword rank 11 (BM25 5.263)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "ntaa2025:s11(3)-(6)",
+     "score": 0.02739,
+     "distance": 0.62525,
+     "reasons": [
+      "vector rank 25 (cosine distance 0.6252)",
+      "keyword rank 4 (BM25 5.879)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s26",
+     "score": 0.025933,
+     "distance": 0.643471,
+     "reasons": [
+      "vector rank 42 (cosine distance 0.6435)",
+      "keyword rank 2 (BM25 6.162)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q041",
+   "category": "ntaa_assessment_objection",
+   "gold_units": [
+    "ntaa2025:s38"
+   ],
+   "first_gold_rank": 13,
+   "hit@1": false,
+   "hit@3": false,
+   "hit@5": false,
+   "rr": 0.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s4(6)(b)-(e)",
+     "score": 0.031746,
+     "distance": 0.543554,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5436)",
+      "keyword rank 3 (BM25 7.175)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s11",
+     "score": 0.029727,
+     "distance": 0.568634,
+     "reasons": [
+      "vector rank 15 (cosine distance 0.5686)",
+      "keyword rank 1 (BM25 7.800)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s8",
+     "score": 0.029437,
+     "distance": 0.562142,
+     "reasons": [
+      "vector rank 10 (cosine distance 0.5621)",
+      "keyword rank 6 (BM25 6.507)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s27(5)-(6)",
+     "score": 0.027027,
+     "distance": 0.56807,
+     "reasons": [
+      "vector rank 14 (cosine distance 0.5681)",
+      "keyword rank 14 (BM25 5.209)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s102",
+     "score": 0.026857,
+     "distance": 0.56652,
+     "reasons": [
+      "vector rank 13 (cosine distance 0.5665)",
+      "keyword rank 16 (BM25 4.991)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q043",
+   "category": "ntaa_payment_penalties",
+   "gold_units": [
+    "ntaa2025:s49(1)-(6)"
+   ],
+   "first_gold_rank": 4,
+   "hit@1": false,
+   "hit@3": false,
+   "hit@5": true,
+   "rr": 0.25,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s41(1)-(4)",
+     "score": 0.032787,
+     "distance": 0.481961,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4820)",
+      "keyword rank 1 (BM25 9.429)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "ntaa2025:s41(5)-(8)",
+     "score": 0.032258,
+     "distance": 0.496524,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4965)",
+      "keyword rank 2 (BM25 8.186)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s147:def:dispute",
+     "score": 0.031258,
+     "distance": 0.523261,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5233)",
+      "keyword rank 5 (BM25 5.629)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "ntaa2025:s49(1)-(6)",
+     "score": 0.03125,
+     "distance": 0.530272,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5303)",
+      "keyword rank 4 (BM25 5.711)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s49(7)",
+     "score": 0.029083,
+     "distance": 0.542916,
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5429)",
+      "keyword rank 13 (BM25 3.695)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q044",
+   "category": "ntaa_payment_penalties",
+   "gold_units": [
+    "ntaa2025:s56"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s56",
+     "score": 0.032522,
+     "distance": 0.372043,
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3720)",
+      "keyword rank 2 (BM25 12.076)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s156",
+     "score": 0.032522,
+     "distance": 0.472945,
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4729)",
+      "keyword rank 1 (BM25 13.880)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s155",
+     "score": 0.031498,
+     "distance": 0.510655,
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5107)",
+      "keyword rank 3 (BM25 9.157)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "ntaa2025:s55",
+     "score": 0.030579,
+     "distance": 0.476382,
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4764)",
+      "keyword rank 8 (BM25 7.107)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s152",
+     "score": 0.03055,
+     "distance": 0.545341,
+     "reasons": [
+      "vector rank 7 (cosine distance 0.5453)",
+      "keyword rank 4 (BM25 8.928)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q047",
+   "category": "section_reference",
+   "gold_units": [
+    "nta2025:s192"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "nta2025:s192",
+     "score": 0.56129,
+     "distance": 0.43871,
+     "reasons": [
+      "section lookup: Section 192, Nigeria Tax Act 2025 (cosine distance 0.4387)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s202:def:chargeable-gains",
+     "score": 0.028992,
+     "distance": 0.368595,
+     "reasons": [
+      "vector rank 10 (cosine distance 0.3686)",
+      "keyword rank 8 (BM25 2.157)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "nta2025:s202:def:relevant-tax-authority",
+     "score": 0.02879,
+     "distance": 0.362772,
+     "reasons": [
+      "vector rank 8 (cosine distance 0.3628)",
+      "keyword rank 11 (BM25 2.053)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s202:def:remainder-of-assessable-income",
+     "score": 0.027047,
+     "distance": 0.371986,
+     "reasons": [
+      "vector rank 16 (cosine distance 0.3720)",
+      "keyword rank 12 (BM25 2.036)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "nta2025:s10(7)",
+     "score": 0.025849,
+     "distance": 0.370586,
+     "reasons": [
+      "vector rank 11 (cosine distance 0.3706)",
+      "keyword rank 25 (BM25 1.845)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Q050",
+   "category": "section_reference",
+   "gold_units": [
+    "ntaa2025:s66"
+   ],
+   "first_gold_rank": 1,
+   "hit@1": true,
+   "hit@3": true,
+   "hit@5": true,
+   "rr": 1.0,
+   "top5": [
+    {
+     "rank": 1,
+     "chunk_id": "ntaa2025:s66",
+     "score": 0.626964,
+     "distance": 0.373036,
+     "reasons": [
+      "section lookup: Section 66, Nigeria Tax Administration Act 2025 (cosine distance 0.3730)"
+     ]
+    },
+    {
+     "rank": 2,
+     "chunk_id": "nta2025:s202:def:relevant-tax-authority",
+     "score": 0.030214,
+     "distance": 0.356556,
+     "reasons": [
+      "vector rank 11 (cosine distance 0.3566)",
+      "keyword rank 2 (BM25 3.428)"
+     ]
+    },
+    {
+     "rank": 3,
+     "chunk_id": "ntaa2025:s6",
+     "score": 0.025125,
+     "distance": 0.360486,
+     "reasons": [
+      "vector rank 12 (cosine distance 0.3605)",
+      "keyword rank 29 (BM25 2.429)"
+     ]
+    },
+    {
+     "rank": 4,
+     "chunk_id": "nta2025:s202:def:chargeable-gains",
+     "score": 0.024152,
+     "distance": 0.362282,
+     "reasons": [
+      "vector rank 14 (cosine distance 0.3623)",
+      "keyword rank 34 (BM25 2.157)"
+     ]
+    },
+    {
+     "rank": 5,
+     "chunk_id": "ntaa2025:s40",
+     "score": 0.023972,
+     "distance": 0.382066,
+     "reasons": [
+      "vector rank 34 (cosine distance 0.3821)",
+      "keyword rank 15 (BM25 2.707)"
+     ]
+    }
+   ]
+  }
+ ]
+}

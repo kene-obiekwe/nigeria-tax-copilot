@@ -1,0 +1,9 @@
+{
+ "name": "openai_section",
+ "model": "openai/text-embedding-3-small",
+ "section_lookup": true,
+ "keyword": false,
+ "candidates": 50,
+ "rrf_k": 60,
+ "filters": null
+}

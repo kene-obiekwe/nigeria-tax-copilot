@@ -24,6 +24,7 @@ document is added, moved or renamed.
 | [phase03_embedding/vector_store_design.md](phase03_embedding/vector_store_design.md) | Approved design for the vector store (D-19): schema, embedded text, index choice, loader, cache, re-embedding procedure, tests and the pinned SDK. |
 | [phase03_embedding/vector_store.md](phase03_embedding/vector_store.md) | The built vector store: final schema, model and dimensions, measured cost, how to run, re-embedding procedure, smoke-check results (exit gate) and tests. |
 | [phase04_retrieval/question_set.md](phase04_retrieval/question_set.md) | The labelled 50-question retrieval set (v1): schema, labelling method, wording and overlap check, coverage by category and split, the seeded split, the hit rule, gate G1 (D-20) and the frozen sha256. |
+| [phase04_retrieval/retrieval_report.md](phase04_retrieval/retrieval_report.md) | Retrieval layer (section lookup, vector, keyword fusion, filters), the bge baseline, the evaluation runner and test-split guard, dev results by configuration, misses, the frozen configuration and its sha256, and the test results (gate G1). |
 
 The source-document inventory (files, hashes, provenance, snapshot date) is in
 [../data/README.md](../data/README.md) and [../data/manifest.csv](../data/manifest.csv).
