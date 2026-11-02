@@ -1,0 +1,15 @@
+{"id": "Q004", "source": "questions_v1", "category": "cit_rates_levy", "expected": "answered", "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown"}
+{"id": "Q007", "source": "questions_v1", "category": "deductions_gains", "expected": "answered", "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown"}
+{"id": "Q015", "source": "questions_v1", "category": "vat", "expected": "answered", "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown"}
+{"id": "Q018", "source": "questions_v1", "category": "exemptions_incentives", "expected": "answered", "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown"}
+{"id": "Q025", "source": "questions_v1", "category": "definitions", "expected": "answered", "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown"}
+{"id": "Q029", "source": "questions_v1", "category": "schedules", "expected": "answered", "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown"}
+{"id": "Q035", "source": "questions_v1", "category": "ntaa_registration_returns", "expected": "answered", "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown"}
+{"id": "Q039", "source": "questions_v1", "category": "ntaa_assessment_objection", "expected": "answered", "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown"}
+{"id": "Q043", "source": "questions_v1", "category": "ntaa_payment_penalties", "expected": "answered", "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown"}
+{"id": "Q047", "source": "questions_v1", "category": "section_reference", "expected": "answered", "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown"}
+{"id": "G01", "source": "new", "question": "What is the company income tax rate in Ghana?", "expected": "not_covered", "checks": "out of corpus (other country): no factual claims"}
+{"id": "G02", "source": "new", "question": "How much stamp duty is charged on a tenancy agreement?", "expected": "not_covered", "checks": "out of v1 scope (stamp duties, D-10): declines, or makes only supported, cited claims"}
+{"id": "G03", "source": "new", "question": "My company made ₦120 million profit this year. How much company income tax will it pay?", "expected": "answered", "checks": "arithmetic bait: rate rules with citations, no computed amount, the calculation listed under gaps"}
+{"id": "G04", "source": "new", "question": "When did the Nigeria Tax Administration Act 2025 come into force?", "expected": "not_covered", "checks": "out of corpus (NTAA s148 and long title): declines, with the DQ-12 note citing both dates"}
+{"id": "G05", "source": "new", "question": "Under section 191 of the Nigeria Tax Act, where do objections and appeals go?", "expected": "answered", "checks": "cites section 191(2) as printed (Chapter Four), with the DQ-16 note"}

@@ -1,0 +1,2111 @@
+{
+ "run": 1,
+ "run_at": "2026-11-02T21:46:09+00:00",
+ "model": "claude-sonnet-5-5",
+ "retrieval_config_sha256": "6ce743b317a58260f7eb397c7a6e9a7e14afab86cbde2dbc296273131c9e3684",
+ "questions_file": "eval/generation/exit_questions.jsonl",
+ "query_embeddings": {
+  "from_cache": 10,
+  "embedded": 5,
+  "tokens": 74
+ },
+ "totals": {
+  "usage": {
+   "input_tokens": 31871,
+   "output_tokens": 6423,
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 18915
+  },
+  "cost_usd": 0.129863,
+  "cost_per_question_usd": 0.008658
+ },
+ "review": "pending",
+ "questions": [
+  {
+   "id": "Q004",
+   "source": "questions_v1",
+   "expected": "answered",
+   "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "If a Nigerian company declares a dividend out of profits on which no tax is payable because there are no total profits, the company paying the dividend is charged to tax.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s9"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "The same applies where total profits are less than the dividend declared, whether or not the recipient is a Nigerian company.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s9"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "The company is charged at the rate prescribed in section 56 of the Act, as if the dividend were the company's total profits for the year of assessment to which the accounts, out of which the dividend is declared, relate.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s9"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "This rule does not apply to dividends declared out of retained earnings, to the extent the profits or gains in them have been taxed under the Act.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s9"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "It also does not apply to dividends declared out of profits or gains that are exempt from income tax by the Act, or to franked investment income as provided in the Act.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s9"
+     ]
+    },
+    {
+     "no": 6,
+     "text": "It also does not apply to distributions by a real estate investment company to its shareholders from rental income and dividend income received on behalf of those shareholders, whether paid out of profits of the year of declaration or of previous reporting periods.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s9"
+     ]
+    }
+   ],
+   "gaps": [
+    "The rate in section 56 of the Act is not among the passages, so the rate cannot be stated.",
+    "The meaning of franked investment income is not given in the passages.",
+    "Any tax a recipient or the payer must deduct at source on the dividend under section 51 of the Nigeria Tax Administration Act 2025 is not set out in the passages."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:s9",
+     "citation": "Nigeria Tax Act 2025, section 9"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "nta2025:s8",
+     "citation": "Nigeria Tax Act 2025, section 8"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "nta2025:s4(6)(b)-(e)",
+     "citation": "Nigeria Tax Act 2025, section 4(6)(b) to (e)"
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "nta2025:s19",
+     "citation": "Nigeria Tax Act 2025, section 19"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "nta2025:s7",
+     "citation": "Nigeria Tax Act 2025, section 7"
+    }
+   ],
+   "cited_chunk_ids": [
+    "nta2025:s9"
+   ],
+   "rejected_citations": [],
+   "disclosures": [],
+   "rendered": "If a Nigerian company declares a dividend out of profits on which no tax is payable because there are no total profits, the company paying the dividend is charged to tax. [Nigeria Tax Act 2025, section 9]\n\nThe same applies where total profits are less than the dividend declared, whether or not the recipient is a Nigerian company. [Nigeria Tax Act 2025, section 9]\n\nThe company is charged at the rate prescribed in section 56 of the Act, as if the dividend were the company's total profits for the year of assessment to which the accounts, out of which the dividend is declared, relate. [Nigeria Tax Act 2025, section 9]\n\nThis rule does not apply to dividends declared out of retained earnings, to the extent the profits or gains in them have been taxed under the Act. [Nigeria Tax Act 2025, section 9]\n\nIt also does not apply to dividends declared out of profits or gains that are exempt from income tax by the Act, or to franked investment income as provided in the Act. [Nigeria Tax Act 2025, section 9]\n\nIt also does not apply to distributions by a real estate investment company to its shareholders from rental income and dividend income received on behalf of those shareholders, whether paid out of profits of the year of declaration or of previous reporting periods. [Nigeria Tax Act 2025, section 9]\n\nNot covered by the retrieved provisions: The rate in section 56 of the Act is not among the passages, so the rate cannot be stated.; The meaning of franked investment income is not given in the passages.; Any tax a recipient or the payer must deduct at source on the dividend under section 51 of the Nigeria Tax Administration Act 2025 is not set out in the passages.\n\nSources\n- Nigeria Tax Act 2025, section 9 (gazette page A 397)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 2042,
+    "output_tokens": 528,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.00949,
+   "record_id": "ac1351d7-e8d7-4a0a-8ebd-0f3df3981cda",
+   "error": null
+  },
+  {
+   "id": "Q007",
+   "source": "questions_v1",
+   "expected": "answered",
+   "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "When working out profits from a trade, business, profession or vocation, no deduction is allowed for a penalty or fine imposed under any law.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "nta2025:s21(a)-(o)"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "The general rule allows deduction of expenses wholly and exclusively incurred in producing the income, but section 21 separately lists items for which no deduction is allowed, and fines are on that list.",
+     "labels": [
+      "P2",
+      "P3"
+     ],
+     "chunk_ids": [
+      "nta2025:s20(1)(a)-(h)",
+      "nta2025:s21(a)-(o)"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "Section 21 also bars a deduction for any tax or penalty borne on behalf of another person.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "nta2025:s21(a)-(o)"
+     ]
+    }
+   ],
+   "gaps": [
+    "The passages do not say whether a particular payment to a regulator counts as a penalty or fine imposed under a law, so they do not settle how your specific payment is treated."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:s20(1)(i)-(m)",
+     "citation": "Nigeria Tax Act 2025, section 20(1)(i) to (m)"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "nta2025:s20(1)(a)-(h)",
+     "citation": "Nigeria Tax Act 2025, section 20(1)(a) to (h)"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "nta2025:s21(a)-(o)",
+     "citation": "Nigeria Tax Act 2025, section 21(a) to (o)"
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "nta2025:s20(2)-(4)",
+     "citation": "Nigeria Tax Act 2025, section 20(2) to (4)"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "nta2025:s164",
+     "citation": "Nigeria Tax Act 2025, section 164"
+    }
+   ],
+   "cited_chunk_ids": [
+    "nta2025:s21(a)-(o)",
+    "nta2025:s20(1)(a)-(h)"
+   ],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "register",
+     "ref": "DR-033",
+     "applies_to": "Nigeria Tax Act 2025, section 21(a) to (o)",
+     "reason": "cross_reference",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-029",
+     "applies_to": "Nigeria Tax Act 2025, section 20(1)(a) to (h)",
+     "reason": "always",
+     "merged": []
+    }
+   ],
+   "rendered": "When working out profits from a trade, business, profession or vocation, no deduction is allowed for a penalty or fine imposed under any law. [Nigeria Tax Act 2025, section 21(a) to (o)]\n\nThe general rule allows deduction of expenses wholly and exclusively incurred in producing the income, but section 21 separately lists items for which no deduction is allowed, and fines are on that list. [Nigeria Tax Act 2025, section 20(1)(a) to (h); Nigeria Tax Act 2025, section 21(a) to (o)]\n\nSection 21 also bars a deduction for any tax or penalty borne on behalf of another person. [Nigeria Tax Act 2025, section 21(a) to (o)]\n\nNot covered by the retrieved provisions: The passages do not say whether a particular payment to a regulator counts as a penalty or fine imposed under a law, so they do not settle how your specific payment is treated.\n\nSources\n- Nigeria Tax Act 2025, section 21(a) to (o) (gazette page A 410)\n- Nigeria Tax Act 2025, section 20(1)(a) to (h) (gazette pages A 408, A 409)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 21(a) to (o): Cross-reference: section 20(1)(h) (gazette) against section 20(j) (National Assembly). (DR-033)\n- Nigeria Tax Act 2025, section 20(1)(a) to (h): Cross-reference: the gazette cites Part IX of Chapter Two (Rates of Tax), the National Assembly text Part XI (Specialised Trade or Business), which is the intended reference; the gazette reading is a printing slip (DQ-14). Cited as printed. The other difference ('in the course of' / 'during') is wording. (DR-029)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 3253,
+    "output_tokens": 253,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.009162,
+   "record_id": "1305b5fe-0eb8-4593-ab25-541f25ffbfd1",
+   "error": null
+  },
+  {
+   "id": "Q015",
+   "source": "questions_v1",
+   "expected": "answered",
+   "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "A non-resident person who makes taxable supplies to Nigeria must register for tax and include VAT on its invoice for all taxable supplies.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "nta2025:s151"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "Where a non-resident makes taxable supplies from outside Nigeria to persons in Nigeria, the taxable person in Nigeria to whom the supply is made must withhold the VAT due on the supply and remit it to the Service.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "nta2025:s151"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "The Service may, by notice, appoint any person, including a non-resident supplier, to collect the VAT and remit it to the Service.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "nta2025:s151"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "If such an appointed person has made the supply to a taxable person in Nigeria, the Nigerian taxable person has no obligation to withhold the VAT, unless the appointed person has failed to collect it.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "nta2025:s151"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "A non-resident supplier may appoint a representative to handle its VAT compliance.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "nta2025:s151"
+     ]
+    },
+    {
+     "no": 6,
+     "text": "The Service may direct a taxable person who is issued an invoice on which VAT is not included to self-account for the VAT payable and remit it to the Service.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s155"
+     ]
+    },
+    {
+     "no": 7,
+     "text": "VAT that is collected, withheld or self-accounted under section 155 must be remitted on or before the 14th day of the month immediately following the month of the transaction, or as the Service prescribes.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s155"
+     ]
+    },
+    {
+     "no": 8,
+     "text": "The remittance must come with a schedule showing the name, Tax ID and address of the contractor or supplier, invoice number, gross amount of invoice, amount of the VAT and the month to which the return relates.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s155"
+     ]
+    },
+    {
+     "no": 9,
+     "text": "A person who must collect VAT must keep proper records and make returns and remittances, and the compliance rules apply to that person as though it were the taxable person.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s155"
+     ]
+    },
+    {
+     "no": 10,
+     "text": "A foreign company is defined as a company other than a Nigerian company, and in the Nigeria Tax Act it also includes a non-resident company.",
+     "labels": [
+      "P3",
+      "P5"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s147:def:foreign-company",
+      "nta2025:s202:def:foreign-company"
+     ]
+    }
+   ],
+   "gaps": [
+    "Whether your software supply is a taxable supply is not covered by these passages.",
+    "Whether the foreign company has been appointed by the Service under section 151(3) is not stated, so which party accounts depends on that fact.",
+    "Section 155 and section 158 are marked as disputed, meaning another official text reads differently somewhere in them; this answer follows the text as printed.",
+    "Any guidelines or notices issued by the Service are not among the passages."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:s155",
+     "citation": "Nigeria Tax Act 2025, section 155"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "nta2025:s151",
+     "citation": "Nigeria Tax Act 2025, section 151"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "ntaa2025:s147:def:foreign-company",
+     "citation": "Nigeria Tax Administration Act 2025, section 147, definition of \"foreign company\""
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "nta2025:s158",
+     "citation": "Nigeria Tax Act 2025, section 158"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "nta2025:s202:def:foreign-company",
+     "citation": "Nigeria Tax Act 2025, section 202, definition of \"foreign company\""
+    }
+   ],
+   "cited_chunk_ids": [
+    "nta2025:s151",
+    "nta2025:s155",
+    "ntaa2025:s147:def:foreign-company",
+    "nta2025:s202:def:foreign-company"
+   ],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "hidden",
+     "ref": "DR-063",
+     "applies_to": "Nigeria Tax Act 2025, section 155",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-064",
+     "applies_to": "Nigeria Tax Act 2025, section 155",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-065",
+     "applies_to": "Nigeria Tax Act 2025, section 155",
+     "reason": "wording",
+     "merged": []
+    }
+   ],
+   "rendered": "A non-resident person who makes taxable supplies to Nigeria must register for tax and include VAT on its invoice for all taxable supplies. [Nigeria Tax Act 2025, section 151]\n\nWhere a non-resident makes taxable supplies from outside Nigeria to persons in Nigeria, the taxable person in Nigeria to whom the supply is made must withhold the VAT due on the supply and remit it to the Service. [Nigeria Tax Act 2025, section 151]\n\nThe Service may, by notice, appoint any person, including a non-resident supplier, to collect the VAT and remit it to the Service. [Nigeria Tax Act 2025, section 151]\n\nIf such an appointed person has made the supply to a taxable person in Nigeria, the Nigerian taxable person has no obligation to withhold the VAT, unless the appointed person has failed to collect it. [Nigeria Tax Act 2025, section 151]\n\nA non-resident supplier may appoint a representative to handle its VAT compliance. [Nigeria Tax Act 2025, section 151]\n\nThe Service may direct a taxable person who is issued an invoice on which VAT is not included to self-account for the VAT payable and remit it to the Service. [Nigeria Tax Act 2025, section 155]\n\nVAT that is collected, withheld or self-accounted under section 155 must be remitted on or before the 14th day of the month immediately following the month of the transaction, or as the Service prescribes. [Nigeria Tax Act 2025, section 155]\n\nThe remittance must come with a schedule showing the name, Tax ID and address of the contractor or supplier, invoice number, gross amount of invoice, amount of the VAT and the month to which the return relates. [Nigeria Tax Act 2025, section 155]\n\nA person who must collect VAT must keep proper records and make returns and remittances, and the compliance rules apply to that person as though it were the taxable person. [Nigeria Tax Act 2025, section 155]\n\nA foreign company is defined as a company other than a Nigerian company, and in the Nigeria Tax Act it also includes a non-resident company. [Nigeria Tax Administration Act 2025, section 147, definition of \"foreign company\"; Nigeria Tax Act 2025, section 202, definition of \"foreign company\"]\n\nNot covered by the retrieved provisions: Whether your software supply is a taxable supply is not covered by these passages.; Whether the foreign company has been appointed by the Service under section 151(3) is not stated, so which party accounts depends on that fact.; Section 155 and section 158 are marked as disputed, meaning another official text reads differently somewhere in them; this answer follows the text as printed.; Any guidelines or notices issued by the Service are not among the passages.\n\nSources\n- Nigeria Tax Act 2025, section 151 (gazette pages A 472, A 473)\n- Nigeria Tax Act 2025, section 155 (gazette page A 474)\n- Nigeria Tax Administration Act 2025, section 147, definition of \"foreign company\" (gazette page A 329)\n- Nigeria Tax Act 2025, section 202, definition of \"foreign company\" (gazette page A 504)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 2066,
+    "output_tokens": 824,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.012498,
+   "record_id": "695025d0-2d4d-4ff9-a7ea-23ec7d87ad18",
+   "error": null
+  },
+  {
+   "id": "Q018",
+   "source": "questions_v1",
+   "expected": "answered",
+   "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "VAT is paid on all taxable supplies in Nigeria, subject to the exemptions in Part IV of Chapter Eight of the Act.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "nta2025:s145"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "The general VAT rate is 7.5% on the value of taxable supplies, subject to Part IV of Chapter Eight.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "nta2025:s148"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "Basic food items are taxable supplies charged to VAT at 0%, subject to paragraph 2 of the Thirtenth Schedule.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s187"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "The definition of basic food items includes tubers of yam, cocoyam, potatoes, water-yam and cassava, whether raw, in flakes or in flour, for human consumption. Garri is made from cassava, but the passages do not name garri.",
+     "labels": [
+      "P4"
+     ],
+     "chunk_ids": [
+      "nta2025:s189:def:basic-food-items(l)-(p)"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "The passages do not list rice among the basic food items. The part of the definition supplied covers only paragraphs (l) to (p), such as pulses, tubers, salt, vegetables and water.",
+     "labels": [
+      "P4"
+     ],
+     "chunk_ids": [
+      "nta2025:s189:def:basic-food-items(l)-(p)"
+     ]
+    }
+   ],
+   "gaps": [
+    "The rest of the definition of basic food items (paragraphs before (l) and after (p)) is not in the passages, so it is not shown whether rice is a basic food item.",
+    "The passages do not say whether garri counts as cassava flakes or flour under the tubers paragraph.",
+    "Paragraph 2 of the Thirtenth Schedule, which the 0% rate is subject to, is not in the passages.",
+    "Whether rice is charged at 0% or at 7.5% cannot be determined from the passages."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:s187",
+     "citation": "Nigeria Tax Act 2025, section 187"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "nta2025:s145",
+     "citation": "Nigeria Tax Act 2025, section 145"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "nta2025:s148",
+     "citation": "Nigeria Tax Act 2025, section 148"
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "nta2025:s189:def:basic-food-items(l)-(p)",
+     "citation": "Nigeria Tax Act 2025, section 189, definition of \"basic food items\", paragraphs (l) to (p)"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "nta2025:s186",
+     "citation": "Nigeria Tax Act 2025, section 186"
+    }
+   ],
+   "cited_chunk_ids": [
+    "nta2025:s145",
+    "nta2025:s148",
+    "nta2025:s187",
+    "nta2025:s189:def:basic-food-items(l)-(p)"
+   ],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "register",
+     "ref": "DR-059",
+     "applies_to": "Nigeria Tax Act 2025, section 148",
+     "reason": "cross_reference",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-081",
+     "applies_to": "Nigeria Tax Act 2025, section 187",
+     "reason": "always",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-082",
+     "applies_to": "Nigeria Tax Act 2025, section 187",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-086",
+     "applies_to": "Nigeria Tax Act 2025, section 189, definition of \"basic food items\", paragraphs (l) to (p)",
+     "reason": "wording",
+     "merged": []
+    }
+   ],
+   "rendered": "VAT is paid on all taxable supplies in Nigeria, subject to the exemptions in Part IV of Chapter Eight of the Act. [Nigeria Tax Act 2025, section 145]\n\nThe general VAT rate is 7.5% on the value of taxable supplies, subject to Part IV of Chapter Eight. [Nigeria Tax Act 2025, section 148]\n\nBasic food items are taxable supplies charged to VAT at 0%, subject to paragraph 2 of the Thirtenth Schedule. [Nigeria Tax Act 2025, section 187]\n\nThe definition of basic food items includes tubers of yam, cocoyam, potatoes, water-yam and cassava, whether raw, in flakes or in flour, for human consumption. Garri is made from cassava, but the passages do not name garri. [Nigeria Tax Act 2025, section 189, definition of \"basic food items\", paragraphs (l) to (p)]\n\nThe passages do not list rice among the basic food items. The part of the definition supplied covers only paragraphs (l) to (p), such as pulses, tubers, salt, vegetables and water. [Nigeria Tax Act 2025, section 189, definition of \"basic food items\", paragraphs (l) to (p)]\n\nNot covered by the retrieved provisions: The rest of the definition of basic food items (paragraphs before (l) and after (p)) is not in the passages, so it is not shown whether rice is a basic food item.; The passages do not say whether garri counts as cassava flakes or flour under the tubers paragraph.; Paragraph 2 of the Thirtenth Schedule, which the 0% rate is subject to, is not in the passages.; Whether rice is charged at 0% or at 7.5% cannot be determined from the passages.\n\nSources\n- Nigeria Tax Act 2025, section 145 (gazette page A 470)\n- Nigeria Tax Act 2025, section 148 (gazette page A 472)\n- Nigeria Tax Act 2025, section 187 (gazette pages A 490, A 491)\n- Nigeria Tax Act 2025, section 189, definition of \"basic food items\", paragraphs (l) to (p) (gazette page A 492)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 148: Cross-reference: VAT is charged subject to Part IV of Chapter Eight (gazette) against Part IX of this Chapter (National Assembly). (DR-059)\n- Nigeria Tax Act 2025, section 187: Cross-reference: the gazette refers to paragraph 2 of the 'Thirtenth' Schedule, which has no paragraph 2; the National Assembly text refers to the Tenth Schedule. (DR-081)\n- Nigeria Tax Act 2025, section 187: The gazette zero-rates electric vehicles and parts and semi-knock-down units for assembling them; the National Assembly text does not list them. (DR-082)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 2201,
+    "output_tokens": 524,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.009768,
+   "record_id": "8f1bcd0c-671a-4442-93f4-b6c101f5d35f",
+   "error": null
+  },
+  {
+   "id": "Q025",
+   "source": "questions_v1",
+   "expected": "answered",
+   "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "In the Nigeria Tax Act 2025, a small company is one with gross turnover of ₦50,000,000 or less per annum and total fixed assets not exceeding ₦250,000,000.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s202:def:small-company"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "The definition says any business providing professional services shall not be classified as a small company.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s202:def:small-company"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "So low turnover alone is not enough under that definition if the business provides professional services.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s202:def:small-company"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "The Nigeria Tax Administration Act 2025 has a similar definition of small business, with gross turnover of ₦100,000,000 or less and total fixed assets less than ₦250,000,000. It also excludes any business providing professional services.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s147:def:small-business"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "A small company is taxed at 0%, and any other company at 30 per cent from the commencement of the Act.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "nta2025:s56"
+     ]
+    },
+    {
+     "no": 6,
+     "text": "A small company's tax return may contain a statement of accounts attested to by the taxpayer instead of audited financial statements.",
+     "labels": [
+      "P5"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s11(1)-(2)"
+     ]
+    }
+   ],
+   "gaps": [
+    "The passages do not say what counts as professional services, so they do not settle whether a consulting firm is one.",
+    "The passages do not say whether consulting is a professional service, so the answer depends on that point.",
+    "The passages show the two Acts use different figures for small company and small business; the passages do not explain how they relate."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:s202:def:small-company",
+     "citation": "Nigeria Tax Act 2025, section 202, definition of \"small company\""
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "ntaa2025:s147:def:small-business",
+     "citation": "Nigeria Tax Administration Act 2025, section 147, definition of \"small business\""
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "nta2025:s56",
+     "citation": "Nigeria Tax Act 2025, section 56"
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "ntaa2025:s147:def:nigerian-company",
+     "citation": "Nigeria Tax Administration Act 2025, section 147, definition of \"Nigerian company\""
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "ntaa2025:s11(1)-(2)",
+     "citation": "Nigeria Tax Administration Act 2025, section 11(1) to (2)"
+    }
+   ],
+   "cited_chunk_ids": [
+    "nta2025:s202:def:small-company",
+    "ntaa2025:s147:def:small-business",
+    "nta2025:s56",
+    "ntaa2025:s11(1)-(2)"
+   ],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "register",
+     "ref": "DR-150",
+     "applies_to": "Nigeria Tax Act 2025, section 202, definition of \"small company\"",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-151",
+     "applies_to": "Nigeria Tax Act 2025, section 202, definition of \"small company\"",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-267",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 147, definition of \"small business\"",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-268",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 147, definition of \"small business\"",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-269",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 147, definition of \"small business\"",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-270",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 147, definition of \"small business\"",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-049",
+     "applies_to": "Nigeria Tax Act 2025, section 56",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-050",
+     "applies_to": "Nigeria Tax Act 2025, section 56",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-192",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 11(1) to (2)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-193",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 11(1) to (2)",
+     "reason": "wording",
+     "merged": []
+    }
+   ],
+   "rendered": "In the Nigeria Tax Act 2025, a small company is one with gross turnover of ₦50,000,000 or less per annum and total fixed assets not exceeding ₦250,000,000. [Nigeria Tax Act 2025, section 202, definition of \"small company\"]\n\nThe definition says any business providing professional services shall not be classified as a small company. [Nigeria Tax Act 2025, section 202, definition of \"small company\"]\n\nSo low turnover alone is not enough under that definition if the business provides professional services. [Nigeria Tax Act 2025, section 202, definition of \"small company\"]\n\nThe Nigeria Tax Administration Act 2025 has a similar definition of small business, with gross turnover of ₦100,000,000 or less and total fixed assets less than ₦250,000,000. It also excludes any business providing professional services. [Nigeria Tax Administration Act 2025, section 147, definition of \"small business\"]\n\nA small company is taxed at 0%, and any other company at 30 per cent from the commencement of the Act. [Nigeria Tax Act 2025, section 56]\n\nA small company's tax return may contain a statement of accounts attested to by the taxpayer instead of audited financial statements. [Nigeria Tax Administration Act 2025, section 11(1) to (2)]\n\nNot covered by the retrieved provisions: The passages do not say what counts as professional services, so they do not settle whether a consulting firm is one.; The passages do not say whether consulting is a professional service, so the answer depends on that point.; The passages show the two Acts use different figures for small company and small business; the passages do not explain how they relate.\n\nSources\n- Nigeria Tax Act 2025, section 202, definition of \"small company\" (gazette page A 510)\n- Nigeria Tax Administration Act 2025, section 147, definition of \"small business\" (gazette page A 331)\n- Nigeria Tax Act 2025, section 56 (gazette page A 426)\n- Nigeria Tax Administration Act 2025, section 11(1) to (2) (gazette page A 269)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": A small company has gross turnover of ₦50,000,000 or less in the gazette and ₦100,000,000 or less in the National Assembly text, which also says 'business' instead of 'company'. (DR-150)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": The gazette excludes any business providing professional services from being a small company; the National Assembly text has no such exclusion. (DR-151)\n- Nigeria Tax Administration Act 2025, section 147, definition of \"small business\": A small business has gross turnover of ₦100,000,000 or less in the cited print and ₦50,000,000 or less in the Gombe print. (DR-267)\n- Nigeria Tax Administration Act 2025, section 147, definition of \"small business\": Total fixed assets must be less than ₦250,000,000 in the cited text and not more than ₦250,000,000 in the National Assembly text, so exactly ₦250,000,000 qualifies only under the National Assembly text. (DR-270)\n- Nigeria Tax Act 2025, section 56: The National Assembly text lets the President, on the advice of the National Economic Council, reduce the 30% rate to 25% by order; the gazette has no such provision. (DR-050)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 1658,
+    "output_tokens": 461,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.008052,
+   "record_id": "74a8420d-6278-4b40-b4f0-ae2e74c98c95",
+   "error": null
+  },
+  {
+   "id": "Q029",
+   "source": "questions_v1",
+   "expected": "answered",
+   "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "Table I lists Motor Vehicle Expenditure under Class 3, which has a rate of 25%.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "nta2025:sch1:pt1:table1"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "Capital allowance is made at the rate specified in Table I for each year of assessment in the basis period for which the asset was used for the purposes of the trade or business, where the expenditure was incurred wholly and exclusively for that trade or business.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "nta2025:sch1:pt1:para6-8"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "The allowance is made only if, at the end of the basis period, the company owns the asset and used it for the purposes of its trade or business.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "nta2025:sch1:pt1:para6-8"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "If the basis period is less than one year, the allowance for that year is granted proportionately.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "nta2025:sch1:pt1:para6-8"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "An allowance is not made unless it is claimed for that year, or the relevant tax authority thinks it would be just to the taxpayer and reasonable to make it.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:sch1:pt1:para21-22"
+     ]
+    },
+    {
+     "no": 6,
+     "text": "The law says 1% of the qualifying capital expenditure is recorded in the capital allowance computation schedule for statistical purposes. This is a notional amount and does not increase or reduce the capital allowance claimable.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "nta2025:sch1:pt1:para6-8"
+     ]
+    }
+   ],
+   "gaps": [
+    "The passages do not define whether a particular company car falls within Motor Vehicle Expenditure, nor how many years the allowance runs.",
+    "The actual allowance amount for any year would need a calculation on the car's cost and residue, which is not done here."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:sch1:pt1:para21-22",
+     "citation": "Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 21 to 22"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "nta2025:sch1:pt1:table1",
+     "citation": "Nigeria Tax Act 2025, First Schedule, Part I, Table I, Capital Allowance"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "nta2025:sch1:pt1:para6-8",
+     "citation": "Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 6 to 8"
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "nta2025:sch1:pt1:para10",
+     "citation": "Nigeria Tax Act 2025, First Schedule, Part I, paragraph 10"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "nta2025:sch1:pt1:para23",
+     "citation": "Nigeria Tax Act 2025, First Schedule, Part I, paragraph 23"
+    }
+   ],
+   "cited_chunk_ids": [
+    "nta2025:sch1:pt1:table1",
+    "nta2025:sch1:pt1:para6-8",
+    "nta2025:sch1:pt1:para21-22"
+   ],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "hidden",
+     "ref": "DR-169",
+     "applies_to": "Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 6 to 8",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-175",
+     "applies_to": "Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 21 to 22",
+     "reason": "wording",
+     "merged": []
+    }
+   ],
+   "rendered": "Table I lists Motor Vehicle Expenditure under Class 3, which has a rate of 25%. [Nigeria Tax Act 2025, First Schedule, Part I, Table I, Capital Allowance]\n\nCapital allowance is made at the rate specified in Table I for each year of assessment in the basis period for which the asset was used for the purposes of the trade or business, where the expenditure was incurred wholly and exclusively for that trade or business. [Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 6 to 8]\n\nThe allowance is made only if, at the end of the basis period, the company owns the asset and used it for the purposes of its trade or business. [Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 6 to 8]\n\nIf the basis period is less than one year, the allowance for that year is granted proportionately. [Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 6 to 8]\n\nAn allowance is not made unless it is claimed for that year, or the relevant tax authority thinks it would be just to the taxpayer and reasonable to make it. [Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 21 to 22]\n\nThe law says 1% of the qualifying capital expenditure is recorded in the capital allowance computation schedule for statistical purposes. This is a notional amount and does not increase or reduce the capital allowance claimable. [Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 6 to 8]\n\nNot covered by the retrieved provisions: The passages do not define whether a particular company car falls within Motor Vehicle Expenditure, nor how many years the allowance runs.; The actual allowance amount for any year would need a calculation on the car's cost and residue, which is not done here.\n\nSources\n- Nigeria Tax Act 2025, First Schedule, Part I, Table I, Capital Allowance (gazette page A 521)\n- Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 6 to 8 (gazette page A 516)\n- Nigeria Tax Act 2025, First Schedule, Part I, paragraphs 21 to 22 (gazette pages A 520, A 521)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 3080,
+    "output_tokens": 481,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.011096,
+   "record_id": "d768c10b-a52c-4e74-9089-876aaa285864",
+   "error": null
+  },
+  {
+   "id": "Q035",
+   "source": "questions_v1",
+   "expected": "answered",
+   "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "Every company must file a self-assessment return with the Service at least once a year, and the return must contain the audited financial statements, tax and capital allowances computation for the year of assessment.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s11(1)-(2)"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "For a small company, the return may contain a statement of accounts attested to by the taxpayer in place of audited financial statements.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s11(1)-(2)"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "A small company is one with gross turnover of ₦50,000,000 or less per annum and total fixed assets not exceeding ₦250,000,000.",
+     "labels": [
+      "P5"
+     ],
+     "chunk_ids": [
+      "nta2025:s202:def:small-company"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "A business providing professional services is not classified as a small company, so the substitute statement of accounts does not apply to it.",
+     "labels": [
+      "P5",
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s202:def:small-company",
+      "ntaa2025:s11(1)-(2)"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "A small company's return must still include the other items listed, such as the completed self-assessment form, evidence of payment of the tax due, the effective tax rate computation where applicable, and an attestation signed by a principal officer.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s11(1)-(2)"
+     ]
+    }
+   ],
+   "gaps": [],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "ntaa2025:s11(1)-(2)",
+     "citation": "Nigeria Tax Administration Act 2025, section 11(1) to (2)"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "ntaa2025:s31",
+     "citation": "Nigeria Tax Administration Act 2025, section 31"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "ntaa2025:s11(3)-(6)",
+     "citation": "Nigeria Tax Administration Act 2025, section 11(3) to (6)"
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "ntaa2025:s26",
+     "citation": "Nigeria Tax Administration Act 2025, section 26"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "nta2025:s202:def:small-company",
+     "citation": "Nigeria Tax Act 2025, section 202, definition of \"small company\""
+    }
+   ],
+   "cited_chunk_ids": [
+    "ntaa2025:s11(1)-(2)",
+    "nta2025:s202:def:small-company"
+   ],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "hidden",
+     "ref": "DR-192",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 11(1) to (2)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-193",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 11(1) to (2)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-150",
+     "applies_to": "Nigeria Tax Act 2025, section 202, definition of \"small company\"",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-151",
+     "applies_to": "Nigeria Tax Act 2025, section 202, definition of \"small company\"",
+     "reason": "type",
+     "merged": []
+    }
+   ],
+   "rendered": "Every company must file a self-assessment return with the Service at least once a year, and the return must contain the audited financial statements, tax and capital allowances computation for the year of assessment. [Nigeria Tax Administration Act 2025, section 11(1) to (2)]\n\nFor a small company, the return may contain a statement of accounts attested to by the taxpayer in place of audited financial statements. [Nigeria Tax Administration Act 2025, section 11(1) to (2)]\n\nA small company is one with gross turnover of ₦50,000,000 or less per annum and total fixed assets not exceeding ₦250,000,000. [Nigeria Tax Act 2025, section 202, definition of \"small company\"]\n\nA business providing professional services is not classified as a small company, so the substitute statement of accounts does not apply to it. [Nigeria Tax Act 2025, section 202, definition of \"small company\"; Nigeria Tax Administration Act 2025, section 11(1) to (2)]\n\nA small company's return must still include the other items listed, such as the completed self-assessment form, evidence of payment of the tax due, the effective tax rate computation where applicable, and an attestation signed by a principal officer. [Nigeria Tax Administration Act 2025, section 11(1) to (2)]\n\nSources\n- Nigeria Tax Administration Act 2025, section 11(1) to (2) (gazette page A 269)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\" (gazette page A 510)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": A small company has gross turnover of ₦50,000,000 or less in the gazette and ₦100,000,000 or less in the National Assembly text, which also says 'business' instead of 'company'. (DR-150)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": The gazette excludes any business providing professional services from being a small company; the National Assembly text has no such exclusion. (DR-151)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 2193,
+    "output_tokens": 339,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.007902,
+   "record_id": "76220412-17a7-40a5-94ee-94890c7d9dff",
+   "error": null
+  },
+  {
+   "id": "Q039",
+   "source": "questions_v1",
+   "expected": "answered",
+   "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "If the relevant tax authority finds or thinks that a taxable person was not assessed, or was assessed at too little, it may assess the right amount or the additional amount within six years of the assessment.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s36"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "The six-year limit does not stop the tax authority from continuing a tax audit and raising an additional assessment, if the audit began before the six years ended.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s36"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "Where there is a deliberate misstatement connected with any tax under the Nigeria Tax Act, 2025 or any other tax law, the tax authority may assess at any time, and as often as needed, to make good the loss of tax caused by the misstatement.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s36"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "All relevant facts are considered when working out the extra tax, even if they were not known when an earlier assessment for the same year was made.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s36"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "Once an assessment is final and conclusive, the tax authority can still make an assessment or additional assessment for that year, as long as it does not re-open an issue on the same facts that was already settled by agreement or on appeal.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s43"
+     ]
+    }
+   ],
+   "gaps": [
+    "The passages print the period as running from \"the assessment\", not from the filing of the return. Which date applies to your case depends on when the assessment was made.",
+    "Section 36 is marked as disputed, meaning another official text reads differently somewhere in it. Section 43 is also marked as disputed."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "ntaa2025:s36",
+     "citation": "Nigeria Tax Administration Act 2025, section 36"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "ntaa2025:s55",
+     "citation": "Nigeria Tax Administration Act 2025, section 55"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "ntaa2025:s43",
+     "citation": "Nigeria Tax Administration Act 2025, section 43"
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "ntaa2025:s49(1)-(6)",
+     "citation": "Nigeria Tax Administration Act 2025, section 49(1) to (6)"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "ntaa2025:s41(5)-(8)",
+     "citation": "Nigeria Tax Administration Act 2025, section 41(5) to (8)"
+    }
+   ],
+   "cited_chunk_ids": [
+    "ntaa2025:s36",
+    "ntaa2025:s43"
+   ],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "hidden",
+     "ref": "DR-215",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 36",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-216",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 36",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-217",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 36",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-218",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 36",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-232",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 43",
+     "reason": "cross_reference",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-233",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 43",
+     "reason": "wording",
+     "merged": []
+    }
+   ],
+   "rendered": "If the relevant tax authority finds or thinks that a taxable person was not assessed, or was assessed at too little, it may assess the right amount or the additional amount within six years of the assessment. [Nigeria Tax Administration Act 2025, section 36]\n\nThe six-year limit does not stop the tax authority from continuing a tax audit and raising an additional assessment, if the audit began before the six years ended. [Nigeria Tax Administration Act 2025, section 36]\n\nWhere there is a deliberate misstatement connected with any tax under the Nigeria Tax Act, 2025 or any other tax law, the tax authority may assess at any time, and as often as needed, to make good the loss of tax caused by the misstatement. [Nigeria Tax Administration Act 2025, section 36]\n\nAll relevant facts are considered when working out the extra tax, even if they were not known when an earlier assessment for the same year was made. [Nigeria Tax Administration Act 2025, section 36]\n\nOnce an assessment is final and conclusive, the tax authority can still make an assessment or additional assessment for that year, as long as it does not re-open an issue on the same facts that was already settled by agreement or on appeal. [Nigeria Tax Administration Act 2025, section 43]\n\nNot covered by the retrieved provisions: The passages print the period as running from \"the assessment\", not from the filing of the return. Which date applies to your case depends on when the assessment was made.; Section 36 is marked as disputed, meaning another official text reads differently somewhere in it. Section 43 is also marked as disputed.\n\nSources\n- Nigeria Tax Administration Act 2025, section 36 (gazette pages A 282, A 283)\n- Nigeria Tax Administration Act 2025, section 43 (gazette pages A 286, A 287)\n\nDifferences between official texts\n- Nigeria Tax Administration Act 2025, section 43: Cross-references: sections 41, 65 and 67 (cited) against sections 40, 64 and 66 (National Assembly). (DR-232)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 3093,
+    "output_tokens": 480,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.011112,
+   "record_id": "28e2cd3e-1c22-41b1-a0c6-fa00a76d7a97",
+   "error": null
+  },
+  {
+   "id": "Q043",
+   "source": "questions_v1",
+   "expected": "answered",
+   "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "Where the taxable person has given notice of an objection or appeal, collection of the tax stays in abeyance until the objection or appeal is determined.",
+     "labels": [
+      "P4"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s49(1)-(6)"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "This rule is subject to section 11 of the Act, and the taxable person must still pay the tax that is not the subject of the objection or appeal.",
+     "labels": [
+      "P4"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s49(1)-(6)"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "So the disputed part of the tax is not collected while the objection is pending, but the undisputed part remains payable.",
+     "labels": [
+      "P4"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s49(1)-(6)"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "Once the objection or appeal is determined, the tax authority serves a notice of the tax payable as determined, and that tax is payable within 30 days of the date of service of the notice.",
+     "labels": [
+      "P4"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s49(1)-(6)"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "The tax authority may enforce recovery of the tax only where there is no objection or appeal.",
+     "labels": [
+      "P5"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s49(7)"
+     ]
+    },
+    {
+     "no": 6,
+     "text": "A valid objection must be a written notice delivered to the tax authority within 30 days from the date of service of the disputed notice of assessment, although the authority may extend that time for satisfactory and good cause shown.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s41(1)-(4)"
+     ]
+    },
+    {
+     "no": 7,
+     "text": "The tax authority must respond to an objection notice within 90 days, otherwise the objection is upheld.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s41(5)-(8)"
+     ]
+    }
+   ],
+   "gaps": [
+    "Section 11 of the Act, to which the abeyance rule is subject, is not among the passages, so its effect is not stated."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "ntaa2025:s41(1)-(4)",
+     "citation": "Nigeria Tax Administration Act 2025, section 41(1) to (4)"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "ntaa2025:s41(5)-(8)",
+     "citation": "Nigeria Tax Administration Act 2025, section 41(5) to (8)"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "ntaa2025:s147:def:dispute",
+     "citation": "Nigeria Tax Administration Act 2025, section 147, definition of \"dispute\""
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "ntaa2025:s49(1)-(6)",
+     "citation": "Nigeria Tax Administration Act 2025, section 49(1) to (6)"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "ntaa2025:s49(7)",
+     "citation": "Nigeria Tax Administration Act 2025, section 49(7)"
+    }
+   ],
+   "cited_chunk_ids": [
+    "ntaa2025:s49(1)-(6)",
+    "ntaa2025:s49(7)",
+    "ntaa2025:s41(1)-(4)",
+    "ntaa2025:s41(5)-(8)"
+   ],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "hidden",
+     "ref": "DR-225",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(1) to (4)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-226",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(1) to (4)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-227",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(1) to (4)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-228",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(1) to (4)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-229",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(5) to (8)",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-230",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(5) to (8)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-231",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(5) to (8)",
+     "reason": "type",
+     "merged": []
+    }
+   ],
+   "rendered": "Where the taxable person has given notice of an objection or appeal, collection of the tax stays in abeyance until the objection or appeal is determined. [Nigeria Tax Administration Act 2025, section 49(1) to (6)]\n\nThis rule is subject to section 11 of the Act, and the taxable person must still pay the tax that is not the subject of the objection or appeal. [Nigeria Tax Administration Act 2025, section 49(1) to (6)]\n\nSo the disputed part of the tax is not collected while the objection is pending, but the undisputed part remains payable. [Nigeria Tax Administration Act 2025, section 49(1) to (6)]\n\nOnce the objection or appeal is determined, the tax authority serves a notice of the tax payable as determined, and that tax is payable within 30 days of the date of service of the notice. [Nigeria Tax Administration Act 2025, section 49(1) to (6)]\n\nThe tax authority may enforce recovery of the tax only where there is no objection or appeal. [Nigeria Tax Administration Act 2025, section 49(7)]\n\nA valid objection must be a written notice delivered to the tax authority within 30 days from the date of service of the disputed notice of assessment, although the authority may extend that time for satisfactory and good cause shown. [Nigeria Tax Administration Act 2025, section 41(1) to (4)]\n\nThe tax authority must respond to an objection notice within 90 days, otherwise the objection is upheld. [Nigeria Tax Administration Act 2025, section 41(5) to (8)]\n\nNot covered by the retrieved provisions: Section 11 of the Act, to which the abeyance rule is subject, is not among the passages, so its effect is not stated.\n\nSources\n- Nigeria Tax Administration Act 2025, section 49(1) to (6) (gazette pages A 288, A 289)\n- Nigeria Tax Administration Act 2025, section 49(7) (gazette page A 289)\n- Nigeria Tax Administration Act 2025, section 41(1) to (4) (gazette pages A 284, A 285)\n- Nigeria Tax Administration Act 2025, section 41(5) to (8) (gazette page A 285)\n\nDifferences between official texts\n- Nigeria Tax Administration Act 2025, section 41(5) to (8): The Gombe print requires a taxpayer appealing from the Tax Appeal Tribunal to the High Court to pay 20% of the disputed amount first; the cited print has no deposit clause, and Gombe's (9) is its (8). (DR-229)\n- Nigeria Tax Administration Act 2025, section 41(5) to (8): The cited print's s41(8) provides appeals from the High Court to the Court of Appeal and then the Supreme Court; the National Assembly text has no such subsection. (DR-231)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 2390,
+    "output_tokens": 469,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.009596,
+   "record_id": "289afe25-db1e-463b-a6b2-6f2b34c59dbf",
+   "error": null
+  },
+  {
+   "id": "Q047",
+   "source": "questions_v1",
+   "expected": "answered",
+   "checks": "every claim supported by a cited chunk; disclosures for cited chunks shown",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "Section 192 deals with transactions between a company and related parties, which must be at arm's length.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s192"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "A company involved in an arrangement with a related party must ensure that the terms and conditions of the arrangement are at arm's length.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s192"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "The company must also report the arrangement in the form and manner prescribed by the relevant tax authority.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s192"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "If the relevant tax authority thinks an arrangement with a related party is not at arm's length, it may make the necessary adjustments to bring it to arm's length terms, as provided under the Transfer Pricing Regulations.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s192"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "The relevant tax authority may make rules or regulations for the administration of this section.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s192"
+     ]
+    },
+    {
+     "no": 6,
+     "text": "An \"arrangement\" includes any agreement, understanding, scheme, financial or commercial relation, transaction or series of transactions.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s192"
+     ]
+    },
+    {
+     "no": 7,
+     "text": "\"Arm's length terms and conditions\" means the terms and conditions obtainable if the transaction or arrangement was between unrelated parties dealing in comparative circumstances.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s192"
+     ]
+    }
+   ],
+   "gaps": [
+    "The Transfer Pricing Regulations, which section 192(2) refers to for how adjustments are made, are not among the passages.",
+    "The form and manner of reporting prescribed by the relevant tax authority are not in the passages."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:s192",
+     "citation": "Nigeria Tax Act 2025, section 192"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "nta2025:s194",
+     "citation": "Nigeria Tax Act 2025, section 194"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "nta2025:s202:def:tax-id",
+     "citation": "Nigeria Tax Act 2025, section 202, definition of \"tax ID\""
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "nta2025:s202:def:income-tax",
+     "citation": "Nigeria Tax Act 2025, section 202, definition of \"income tax\""
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "nta2025:s202:def:tax",
+     "citation": "Nigeria Tax Act 2025, section 202, definition of \"tax\""
+    }
+   ],
+   "cited_chunk_ids": [
+    "nta2025:s192"
+   ],
+   "rejected_citations": [],
+   "disclosures": [],
+   "rendered": "Section 192 deals with transactions between a company and related parties, which must be at arm's length. [Nigeria Tax Act 2025, section 192]\n\nA company involved in an arrangement with a related party must ensure that the terms and conditions of the arrangement are at arm's length. [Nigeria Tax Act 2025, section 192]\n\nThe company must also report the arrangement in the form and manner prescribed by the relevant tax authority. [Nigeria Tax Act 2025, section 192]\n\nIf the relevant tax authority thinks an arrangement with a related party is not at arm's length, it may make the necessary adjustments to bring it to arm's length terms, as provided under the Transfer Pricing Regulations. [Nigeria Tax Act 2025, section 192]\n\nThe relevant tax authority may make rules or regulations for the administration of this section. [Nigeria Tax Act 2025, section 192]\n\nAn \"arrangement\" includes any agreement, understanding, scheme, financial or commercial relation, transaction or series of transactions. [Nigeria Tax Act 2025, section 192]\n\n\"Arm's length terms and conditions\" means the terms and conditions obtainable if the transaction or arrangement was between unrelated parties dealing in comparative circumstances. [Nigeria Tax Act 2025, section 192]\n\nNot covered by the retrieved provisions: The Transfer Pricing Regulations, which section 192(2) refers to for how adjustments are made, are not among the passages.; The form and manner of reporting prescribed by the relevant tax authority are not in the passages.\n\nSources\n- Nigeria Tax Act 2025, section 192 (gazette page A 497)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 1214,
+    "output_tokens": 489,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.007444,
+   "record_id": "717badb9-7d8a-4019-87ab-af2651eabecd",
+   "error": null
+  },
+  {
+   "id": "G01",
+   "source": "new",
+   "expected": "not_covered",
+   "checks": "out of corpus (other country): no factual claims",
+   "question": "What is the company income tax rate in Ghana?",
+   "status": "not_covered",
+   "claims": [],
+   "gaps": [
+    "The passages cover only Nigerian tax law and give no company income tax rate for Ghana. Answering would need Ghanaian tax law, which is not among the passages."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:s56",
+     "citation": "Nigeria Tax Act 2025, section 56"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "nta2025:s57",
+     "citation": "Nigeria Tax Act 2025, section 57"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "nta2025:s6",
+     "citation": "Nigeria Tax Act 2025, section 6"
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "nta2025:s3",
+     "citation": "Nigeria Tax Act 2025, section 3"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "nta2025:s202:def:minimum-effective-tax-rate",
+     "citation": "Nigeria Tax Act 2025, section 202, definition of \"minimum effective tax rate\""
+    }
+   ],
+   "cited_chunk_ids": [],
+   "rejected_citations": [],
+   "disclosures": [],
+   "rendered": "The provisions retrieved from the corpus do not answer this question.\n\nNot covered by the retrieved provisions: The passages cover only Nigerian tax law and give no company income tax rate for Ghana. Answering would need Ghanaian tax law, which is not among the passages.\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 1564,
+    "output_tokens": 77,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.004024,
+   "record_id": "52c5713e-69e1-41f9-9797-60a50ea09ee5",
+   "error": null
+  },
+  {
+   "id": "G02",
+   "source": "new",
+   "expected": "not_covered",
+   "checks": "out of v1 scope (stamp duties, D-10): declines, or makes only supported, cited claims",
+   "question": "How much stamp duty is charged on a tenancy agreement?",
+   "status": "not_covered",
+   "claims": [],
+   "gaps": [
+    "The passages do not give any rate or amount of stamp duty on a tenancy agreement or lease. They do not include any schedule of dutiable instruments or stamp duty rates.",
+    "P1 only defines stamp duty as a duty levied on dutiable instruments under the Tax Administration Act, the Nigeria Tax Act, 2025, or any other laws. It does not say what is charged on any instrument.",
+    "P2 and P3 define rent and operating lease, but neither says anything about stamp duty."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "ntaa2025:s147:def:stamp-duty",
+     "citation": "Nigeria Tax Administration Act 2025, section 147, definition of \"Stamp Duty\""
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "nta2025:s202:def:rent",
+     "citation": "Nigeria Tax Act 2025, section 202, definition of \"rent\""
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "nta2025:s202:def:operating-lease",
+     "citation": "Nigeria Tax Act 2025, section 202, definition of \"operating lease\""
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "nta2025:s51",
+     "citation": "Nigeria Tax Act 2025, section 51"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "nta2025:s42(1)-(4)",
+     "citation": "Nigeria Tax Act 2025, section 42(1) to (4)"
+    }
+   ],
+   "cited_chunk_ids": [],
+   "rejected_citations": [],
+   "disclosures": [],
+   "rendered": "The provisions retrieved from the corpus do not answer this question.\n\nNot covered by the retrieved provisions: The passages do not give any rate or amount of stamp duty on a tenancy agreement or lease. They do not include any schedule of dutiable instruments or stamp duty rates.; P1 only defines stamp duty as a duty levied on dutiable instruments under the Tax Administration Act, the Nigeria Tax Act, 2025, or any other laws. It does not say what is charged on any instrument.; P2 and P3 define rent and operating lease, but neither says anything about stamp duty.\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 1566,
+    "output_tokens": 184,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.005098,
+   "record_id": "96b3cd8d-6ba3-42a5-914f-1a359f141e1a",
+   "error": null
+  },
+  {
+   "id": "G03",
+   "source": "new",
+   "expected": "answered",
+   "checks": "arithmetic bait: rate rules with citations, no computed amount, the calculation listed under gaps",
+   "question": "My company made ₦120 million profit this year. How much company income tax will it pay?",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "Company income tax is charged on the total profits of every company for each year of assessment.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "nta2025:s56"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "A small company is taxed at 0%.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "nta2025:s56"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "Any other company is taxed at 30 per cent from the commencement of the Act.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "nta2025:s56"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "Total profits are the total assessable profits from all sources, including chargeable gains, less any loss and less capital allowance.",
+     "labels": [
+      "P5"
+     ],
+     "chunk_ids": [
+      "nta2025:s27(1)-(4)"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "A company must include dividend income in its profits, gross of any tax paid or deducted at source. Dividends a Nigerian company receives by way of shares of the paying company are not included in its profits chargeable to tax.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "nta2025:s8"
+     ]
+    },
+    {
+     "no": 6,
+     "text": "If a company's effective tax rate for a year is less than 15%, it must recompute and pay additional tax to bring the rate to 15%. This applies to a constituent entity of an MNE group, and to any other company with aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.",
+     "labels": [
+      "P4"
+     ],
+     "chunk_ids": [
+      "nta2025:s57"
+     ]
+    }
+   ],
+   "gaps": [
+    "The passages do not say whether your company is a small company, so the applicable rate (0% or 30 per cent) cannot be determined. The definition of a small company is not in the passages.",
+    "The ₦120 million is described as profit, not total profits. Total profits depend on adjustments such as losses and capital allowances, and the passages do not give your figures.",
+    "Applying the rate to the profit figure is a calculation, which is not done here.",
+    "Whether the 15% effective tax rate rule applies depends on your company's turnover or group status, which is not stated."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:s6",
+     "citation": "Nigeria Tax Act 2025, section 6"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "nta2025:s56",
+     "citation": "Nigeria Tax Act 2025, section 56"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "nta2025:s8",
+     "citation": "Nigeria Tax Act 2025, section 8"
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "nta2025:s57",
+     "citation": "Nigeria Tax Act 2025, section 57"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "nta2025:s27(1)-(4)",
+     "citation": "Nigeria Tax Act 2025, section 27(1) to (4)"
+    }
+   ],
+   "cited_chunk_ids": [
+    "nta2025:s56",
+    "nta2025:s27(1)-(4)",
+    "nta2025:s8",
+    "nta2025:s57"
+   ],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "hidden",
+     "ref": "DR-049",
+     "applies_to": "Nigeria Tax Act 2025, section 56",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-050",
+     "applies_to": "Nigeria Tax Act 2025, section 56",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-038",
+     "applies_to": "Nigeria Tax Act 2025, section 27(1) to (4)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-039",
+     "applies_to": "Nigeria Tax Act 2025, section 27(1) to (4)",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-007",
+     "applies_to": "Nigeria Tax Act 2025, section 8",
+     "reason": "cross_reference",
+     "merged": [
+      "DR-008"
+     ]
+    },
+    {
+     "kind": "register",
+     "ref": "DR-051",
+     "applies_to": "Nigeria Tax Act 2025, section 57",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-052",
+     "applies_to": "Nigeria Tax Act 2025, section 57",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-053",
+     "applies_to": "Nigeria Tax Act 2025, section 57",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-054",
+     "applies_to": "Nigeria Tax Act 2025, section 57",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-055",
+     "applies_to": "Nigeria Tax Act 2025, section 57",
+     "reason": "type",
+     "merged": []
+    }
+   ],
+   "rendered": "Company income tax is charged on the total profits of every company for each year of assessment. [Nigeria Tax Act 2025, section 56]\n\nA small company is taxed at 0%. [Nigeria Tax Act 2025, section 56]\n\nAny other company is taxed at 30 per cent from the commencement of the Act. [Nigeria Tax Act 2025, section 56]\n\nTotal profits are the total assessable profits from all sources, including chargeable gains, less any loss and less capital allowance. [Nigeria Tax Act 2025, section 27(1) to (4)]\n\nA company must include dividend income in its profits, gross of any tax paid or deducted at source. Dividends a Nigerian company receives by way of shares of the paying company are not included in its profits chargeable to tax. [Nigeria Tax Act 2025, section 8]\n\nIf a company's effective tax rate for a year is less than 15%, it must recompute and pay additional tax to bring the rate to 15%. This applies to a constituent entity of an MNE group, and to any other company with aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment. [Nigeria Tax Act 2025, section 57]\n\nNot covered by the retrieved provisions: The passages do not say whether your company is a small company, so the applicable rate (0% or 30 per cent) cannot be determined. The definition of a small company is not in the passages.; The ₦120 million is described as profit, not total profits. Total profits depend on adjustments such as losses and capital allowances, and the passages do not give your figures.; Applying the rate to the profit figure is a calculation, which is not done here.; Whether the 15% effective tax rate rule applies depends on your company's turnover or group status, which is not stated.\n\nSources\n- Nigeria Tax Act 2025, section 56 (gazette page A 426)\n- Nigeria Tax Act 2025, section 27(1) to (4) (gazette pages A 412, A 413)\n- Nigeria Tax Act 2025, section 8 (gazette page A 397)\n- Nigeria Tax Act 2025, section 57 (gazette page A 426)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 56: The National Assembly text lets the President, on the advice of the National Economic Council, reduce the 30% rate to 25% by order; the gazette has no such provision. (DR-050)\n- Nigeria Tax Act 2025, section 27(1) to (4): The National Assembly text requires companies in the priority sector to obtain a certificate of acceptance from the Industrial Inspectorate Department for qualifying capital expenditure; the gazette has no such condition. (DR-039)\n- Nigeria Tax Act 2025, section 8: Cross-reference: the gazette cites section 51 of the Nigeria Tax Administration Act, the National Assembly text section 50. (DR-007, DR-008)\n- Nigeria Tax Act 2025, section 57: The minimum tax is measured differently. Gazette: covered tax paid divided by profits, where profits are net profit before tax less 5% of depreciation and personnel cost. National Assembly: covered taxes (companies income tax, petroleum profit tax, hydrocarbon tax, development levy, priority sector tax credit) as a percentage of net income, which excludes franked investment income and unrealised gains or losses. (DR-051)\n- Nigeria Tax Act 2025, section 57: The gazette applies the 15% minimum to every constituent entity of an MNE group; the National Assembly text only where the group's turnover is at least 750 million (printed with a pound sign) or its equivalent. (DR-052)\n- Nigeria Tax Act 2025, section 57: The 15% minimum effective tax rate applies from an aggregate turnover of ₦20,000,000,000 in the gazette and ₦50,000,000,000 in the National Assembly text. (DR-053)\n- Nigeria Tax Act 2025, section 57: The National Assembly text exempts approved free-zone enterprises (except for sales into the customs territory and MNE entities) and lets the Service set a higher turnover threshold by regulation; the gazette has neither and measures turnover in the relevant year of assessment rather than the financial year. (DR-054)\n- Nigeria Tax Act 2025, section 57: The gazette numbers the subsections (1), (2) and (4), with no (3); the labels are kept as printed. The National Assembly text has (1) to (4). (DR-055)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 2030,
+    "output_tokens": 543,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.009616,
+   "record_id": "4f06ecdc-09d2-4de3-89b8-52eaf8da4829",
+   "error": null
+  },
+  {
+   "id": "G04",
+   "source": "new",
+   "expected": "not_covered",
+   "checks": "out of corpus (NTAA s148 and long title): declines, with the DQ-12 note citing both dates",
+   "question": "When did the Nigeria Tax Administration Act 2025 come into force?",
+   "status": "not_covered",
+   "claims": [],
+   "gaps": [
+    "The passages do not contain the commencement provision of the Nigeria Tax Administration Act 2025. They cover its objective (section 1) and application (section 2) only.",
+    "The only commencement date given is for the Nigeria Tax Act 2025, not the Nigeria Tax Administration Act 2025."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:s203",
+     "citation": "Nigeria Tax Act 2025, section 203"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "ntaa2025:s2",
+     "citation": "Nigeria Tax Administration Act 2025, section 2"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "nta2025:s202:def:tax-id",
+     "citation": "Nigeria Tax Act 2025, section 202, definition of \"tax ID\""
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "nta2025:s2",
+     "citation": "Nigeria Tax Act 2025, section 2"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "ntaa2025:s1",
+     "citation": "Nigeria Tax Administration Act 2025, section 1"
+    }
+   ],
+   "cited_chunk_ids": [],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "note",
+     "ref": "DQ-12",
+     "applies_to": "question",
+     "reason": "question",
+     "merged": []
+    }
+   ],
+   "rendered": "The provisions retrieved from the corpus do not answer this question.\n\nNot covered by the retrieved provisions: The passages do not contain the commencement provision of the Nigeria Tax Administration Act 2025. They cover its objective (section 1) and application (section 2) only.; The only commencement date given is for the Nigeria Tax Act 2025, not the Nigeria Tax Administration Act 2025.\n\nDifferences between official texts\n- The NRS print of the Nigeria Tax Administration Act 2025 gives two commencement dates: its long title reads \"[1st Day of January, 2026]\" (page 7), while section 148 says the Act \"shall come into effect on the 1st day of January, 2025\" (page 74). Neither provision is in the v1 corpus. (DQ-12)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 986,
+    "output_tokens": 121,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.003308,
+   "record_id": "7e1d0244-481b-497c-aa0c-7fca255d7ae2",
+   "error": null
+  },
+  {
+   "id": "G05",
+   "source": "new",
+   "expected": "answered",
+   "checks": "cites section 191(2) as printed (Chapter Four), with the DQ-16 note",
+   "question": "Under section 191 of the Nigeria Tax Act, where do objections and appeals go?",
+   "status": "answered",
+   "claims": [
+    {
+     "no": 1,
+     "text": "Section 191 lets a relevant tax authority disregard a disposition or transaction it considers artificial or fictitious, or direct adjustments to tax liability, and issue an assessment or additional assessment.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s191"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "The provisions on objections and appeals under Chapter Four of the Nigeria Tax Administration Act, 2025 apply to a direction made under section 191.",
+     "labels": [
+      "P1"
+     ],
+     "chunk_ids": [
+      "nta2025:s191"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "The passages supplied from the Administration Act are in Chapter Two, section 41, not Chapter Four. Under that section, an objection goes to the relevant tax authority as a written notice, delivered in person, by courier service or by electronic means.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s41(1)-(4)"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "The objection is valid only if it is delivered within 30 days from the date of service of the disputed notice of assessment and contains the grounds of objection listed in section 41(2)(b).",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s41(1)-(4)"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "The relevant tax authority may extend that time for satisfactory and good cause shown.",
+     "labels": [
+      "P3"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s41(1)-(4)"
+     ]
+    },
+    {
+     "no": 6,
+     "text": "The relevant tax authority must respond to the objection notice within 90 days, otherwise the objection of the taxpayer is upheld.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s41(5)-(8)"
+     ]
+    },
+    {
+     "no": 7,
+     "text": "If the authority considers the objection invalid, or the two sides do not agree on the amount of tax, the taxpayer may exercise the right of appeal.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s41(5)-(8)"
+     ]
+    },
+    {
+     "no": 8,
+     "text": "A party unhappy with the High Court's decision may appeal to the Court of Appeal, and an appeal from the Court of Appeal goes to the Supreme Court.",
+     "labels": [
+      "P2"
+     ],
+     "chunk_ids": [
+      "ntaa2025:s41(5)-(8)"
+     ]
+    }
+   ],
+   "gaps": [
+    "Chapter Four of the Nigeria Tax Administration Act, 2025, which section 191(2) refers to, is not among the passages.",
+    "The passages do not say which body first hears an appeal before the High Court, so the route from the taxpayer's right of appeal to the High Court is not stated."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "rank": 1,
+     "chunk_id": "nta2025:s191",
+     "citation": "Nigeria Tax Act 2025, section 191"
+    },
+    {
+     "label": "P2",
+     "rank": 2,
+     "chunk_id": "ntaa2025:s41(5)-(8)",
+     "citation": "Nigeria Tax Administration Act 2025, section 41(5) to (8)"
+    },
+    {
+     "label": "P3",
+     "rank": 3,
+     "chunk_id": "ntaa2025:s41(1)-(4)",
+     "citation": "Nigeria Tax Administration Act 2025, section 41(1) to (4)"
+    },
+    {
+     "label": "P4",
+     "rank": 4,
+     "chunk_id": "ntaa2025:s49(7)",
+     "citation": "Nigeria Tax Administration Act 2025, section 49(7)"
+    },
+    {
+     "label": "P5",
+     "rank": 5,
+     "chunk_id": "ntaa2025:s43",
+     "citation": "Nigeria Tax Administration Act 2025, section 43"
+    }
+   ],
+   "cited_chunk_ids": [
+    "nta2025:s191",
+    "ntaa2025:s41(1)-(4)",
+    "ntaa2025:s41(5)-(8)"
+   ],
+   "rejected_citations": [],
+   "disclosures": [
+    {
+     "kind": "hidden",
+     "ref": "DR-102",
+     "applies_to": "Nigeria Tax Act 2025, section 191",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-225",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(1) to (4)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-226",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(1) to (4)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-227",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(1) to (4)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-228",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(1) to (4)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-229",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(5) to (8)",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "hidden",
+     "ref": "DR-230",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(5) to (8)",
+     "reason": "wording",
+     "merged": []
+    },
+    {
+     "kind": "register",
+     "ref": "DR-231",
+     "applies_to": "Nigeria Tax Administration Act 2025, section 41(5) to (8)",
+     "reason": "type",
+     "merged": []
+    },
+    {
+     "kind": "note",
+     "ref": "DQ-16",
+     "applies_to": "Nigeria Tax Act 2025, section 191",
+     "reason": "note",
+     "merged": []
+    }
+   ],
+   "rendered": "Section 191 lets a relevant tax authority disregard a disposition or transaction it considers artificial or fictitious, or direct adjustments to tax liability, and issue an assessment or additional assessment. [Nigeria Tax Act 2025, section 191]\n\nThe provisions on objections and appeals under Chapter Four of the Nigeria Tax Administration Act, 2025 apply to a direction made under section 191. [Nigeria Tax Act 2025, section 191]\n\nThe passages supplied from the Administration Act are in Chapter Two, section 41, not Chapter Four. Under that section, an objection goes to the relevant tax authority as a written notice, delivered in person, by courier service or by electronic means. [Nigeria Tax Administration Act 2025, section 41(1) to (4)]\n\nThe objection is valid only if it is delivered within 30 days from the date of service of the disputed notice of assessment and contains the grounds of objection listed in section 41(2)(b). [Nigeria Tax Administration Act 2025, section 41(1) to (4)]\n\nThe relevant tax authority may extend that time for satisfactory and good cause shown. [Nigeria Tax Administration Act 2025, section 41(1) to (4)]\n\nThe relevant tax authority must respond to the objection notice within 90 days, otherwise the objection of the taxpayer is upheld. [Nigeria Tax Administration Act 2025, section 41(5) to (8)]\n\nIf the authority considers the objection invalid, or the two sides do not agree on the amount of tax, the taxpayer may exercise the right of appeal. [Nigeria Tax Administration Act 2025, section 41(5) to (8)]\n\nA party unhappy with the High Court's decision may appeal to the Court of Appeal, and an appeal from the Court of Appeal goes to the Supreme Court. [Nigeria Tax Administration Act 2025, section 41(5) to (8)]\n\nNot covered by the retrieved provisions: Chapter Four of the Nigeria Tax Administration Act, 2025, which section 191(2) refers to, is not among the passages.; The passages do not say which body first hears an appeal before the High Court, so the route from the taxpayer's right of appeal to the High Court is not stated.\n\nSources\n- Nigeria Tax Act 2025, section 191 (gazette page A 497)\n- Nigeria Tax Administration Act 2025, section 41(1) to (4) (gazette pages A 284, A 285)\n- Nigeria Tax Administration Act 2025, section 41(5) to (8) (gazette page A 285)\n\nDifferences between official texts\n- Nigeria Tax Administration Act 2025, section 41(5) to (8): The Gombe print requires a taxpayer appealing from the Tax Appeal Tribunal to the High Court to pay 20% of the disputed amount first; the cited print has no deposit clause, and Gombe's (9) is its (8). (DR-229)\n- Nigeria Tax Administration Act 2025, section 41(5) to (8): The cited print's s41(8) provides appeals from the High Court to the Court of Appeal and then the Supreme Court; the National Assembly text has no such subsection. (DR-231)\n- Nigeria Tax Act 2025, section 191: As printed, section 191(2) refers objections and appeals to Chapter Four of the Nigeria Tax Administration Act 2025. In the cited NRS print of that Act, Chapter Four is Offences and Penalties; objections are in Chapter Two (section 41), which Nigeria Tax Act section 10(7) cites. (DQ-16)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "usage": {
+    "input_tokens": 2535,
+    "output_tokens": 650,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1261
+   },
+   "cost_usd": 0.011696,
+   "record_id": "51f85e6d-a272-41ce-b6c1-8969b997494a",
+   "error": null
+  }
+ ]
+}

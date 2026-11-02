@@ -1,0 +1,86 @@
+about: Pinned lists and texts for the answer disclosure rule (D-23 to D-25; generation design, section 5).
+  The rule itself is in python/generation/disclosure.py. This file only names the rows that the rule
+  treats specially and supplies display texts the register does not have. Every entry gives the
+  decision or data-quality id that justifies it. review.by and review.on are set only after the
+  project owner's review.
+review:
+  by: Kene
+  'on': 2026-11-02
+
+# Always disclosed, whatever the row type (D-23, need (b)).
+always:
+  DR-002: DQ-14 printing slip ("treasury Acts", "commercial Acts")
+  DR-029: DQ-14 printing slip (Part IX for Part XI of Chapter Two)
+  DR-081: DQ-14 printing slip (paragraph 2 of the "Thirtenth" Schedule)
+  DR-141: DQ-14 printing slip ("Tenth Schedule securities lending transaction")
+  DR-206: cited NRS print omits "a month" in NTAA s29(b)(ii)
+
+# Cross-reference rows: one class, disclosed whatever the type (D-25, need (c)). Every numbering row
+# whose note begins "Cross-reference", plus the three wording rows whose difference is a
+# cross-reference number.
+cross_reference:
+  - DR-007
+  - DR-008
+  - DR-011
+  - DR-013
+  - DR-014
+  - DR-027
+  - DR-029
+  - DR-032
+  - DR-033
+  - DR-059
+  - DR-061
+  - DR-069
+  - DR-071
+  - DR-081
+  - DR-116
+  - DR-143
+  - DR-198
+  - DR-199
+  - DR-204
+  - DR-224
+  - DR-232
+  - DR-234
+
+# Shown once, under the row they duplicate (same chunk, same cross-reference; D-25).
+merge:
+  DR-008: DR-007
+  DR-014: DR-013
+
+# Display text for disclosed rows whose register note is empty.
+display_text:
+  DR-199: "Cross-reference: section 152 of the Nigeria Tax Act (cited) against section 151 (National
+    Assembly text, the same section under its numbering, DR-000)."
+
+# Anchor rows (missing_content with no cited reading): shown only when the question names the
+# missing term, as a whole phrase, ignoring case (D-23, need (f)).
+anchor_terms:
+  DR-095: stake
+  DR-137: practical ability to control
+  DR-262: chief executive officer
+
+# Data-quality notes with no usable register row (D-23, needs (d) and (e)).
+notes:
+  DQ-16:
+    when_cited: nta2025:s191
+    text: "As printed, section 191(2) refers objections and appeals to Chapter Four of the Nigeria Tax
+      Administration Act 2025. In the cited NRS print of that Act, Chapter Four is Offences and
+      Penalties; objections are in Chapter Two (section 41), which Nigeria Tax Act section 10(7)
+      cites."
+  DQ-12:
+    when_question: commencement
+    # Shown when the question matches one of these patterns and does not name only the Nigeria Tax
+    # Act (it names the Administration Act, or no Act).
+    patterns:
+      - '\bcommenc\w*'
+      - '\bcomes? into (?:force|effect|operation)\b'
+      - '\bcame into (?:force|effect|operation)\b'
+      - '\bin force\b'
+      - '\beffective date\b'
+      - '\btakes? effect\b'
+      - '\btook effect\b'
+      - '\bstart(?:s|ed)? to apply\b'
+    text: "The NRS print of the Nigeria Tax Administration Act 2025 gives two commencement dates:
+      its long title reads \"[1st Day of January, 2026]\" (page 7), while section 148 says the Act
+      \"shall come into effect on the 1st day of January, 2025\" (page 74). Neither provision is in
+      the v1 corpus."

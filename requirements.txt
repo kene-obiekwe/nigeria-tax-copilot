@@ -1,4 +1,4 @@
-# Direct dependencies, pinned. The LLM SDK is added in Phase 5.
+# Direct dependencies, pinned.
 psycopg[binary]==3.3.6
 pgvector==0.5.1
 python-dotenv==1.2.4
@@ -13,3 +13,5 @@ PyYAML==6.0.2
 tokenizers==0.21.0
 # Embedding client (Phase 3, D-19): text-embedding-3-small.
 openai==3.35.1
+# Generation client (Phase 5, D-27): Claude Sonnet 5.5 via the Anthropic SDK.
+anthropic==2.3.0
