@@ -22,7 +22,7 @@ sys.modules.setdefault("run_eval", run_eval)
 spec.loader.exec_module(run_eval)
 
 STORE = gen.FileCorpusStore()
-SYSTEM_PROMPT_SHA256 = "57b5e3b2945b264715e486554d64a4916c1bd2c9fb7278300c3df6bcb8c4fb0f"  # gen-prompt/3
+SYSTEM_PROMPT_SHA256 = "00f726b3d7eb15aff6a8a7fbfade5cf6e49ed36433f6796b36dae0419671c011"  # gen-prompt/4
 RETRIEVAL_CONFIG_SHA256 = "6ce743b317a58260f7eb397c7a6e9a7e14afab86cbde2dbc296273131c9e3684"  # D-21
 QUESTION = "Does the development levy apply to a small company?"
 CHUNK_IDS = ["nta2025:s59", "nta2025:s202:def:small-company", "nta2025:s56"]
@@ -75,7 +75,8 @@ def run(output=ANSWER, tmp_path=None, **kw):
 
 def test_system_prompt_is_pinned():
     assert hashlib.sha256(prompt.SYSTEM_PROMPT.encode("utf-8")).hexdigest() == SYSTEM_PROMPT_SHA256
-    assert prompt.PROMPT_VERSION == "gen-prompt/3"
+    assert prompt.PROMPT_VERSION == "gen-prompt/4"
+    assert "exception, proviso or exclusion that bears on the question" in prompt.SYSTEM_PROMPT  # D-43(a)
     assert not re.search(r"\d{4}-\d{2}-\d{2}T|\{|\}", prompt.SYSTEM_PROMPT)  # no per-call content
 
 
@@ -223,7 +224,7 @@ def test_log_record_has_every_field_and_no_key(tmp_path, monkeypatch):
     assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/2"
     assert record["record_id"] == answer.record_id and record["verification"] is None
     assert record["request"]["system"][0]["text"] == prompt.SYSTEM_PROMPT
-    assert record["request"]["prompt_version"] == "gen-prompt/3"
+    assert record["request"]["prompt_version"] == "gen-prompt/4"
     assert [c["chunk_id"] for c in record["retrieval"]["chunks"]] == CHUNK_IDS
     assert record["retrieval"]["config_sha256"] == RETRIEVAL_CONFIG_SHA256
     assert record["response"]["usage"]["cache_read_input_tokens"] == 700

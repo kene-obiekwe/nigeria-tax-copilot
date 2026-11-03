@@ -237,10 +237,14 @@ DQ12 = load_policy()
 
 
 @pytest.mark.parametrize("question", [
-    "From when do the administration rules apply?", "Since when has the administration law been in place?",
-    "What is the start date of the Nigeria Tax Administration Act 2025?", "When does the NTAA begin to apply?",
-    "Is the NTAA operative yet?", "Is the administration law effective from January?",
-    "When will the new filing rules start?",
+    "For annual returns, from when are the procedures in the administration statute binding?",  # from when
+    "Since when have NRS assessment procedures been governed by the 2025 administration statute?",  # since when
+    "Which starting date governs the Nigeria Tax Administration Act 2025?",  # start(ing) date
+    "Is the administration statute only beginning to apply to returns filed this year?",  # begin(s|ning) to apply
+    "Are the NTAA record-keeping duties operative for small firms?",  # operative
+    "Are the new audit procedures effective on the first day of the year?",  # effective on
+    "Have the NTAA penalty provisions been effective since 2026?",  # effective since
+    "When did the tax administration provisions on objections take effect?",  # when did ... take effect
 ])
 def test_dq12_new_patterns(question):
     assert is_ntaa_commencement_question(question, DQ12)

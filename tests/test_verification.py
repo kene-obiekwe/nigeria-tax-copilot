@@ -157,6 +157,16 @@ def test_evidence_from_an_uncited_passage_or_a_paraphrase_is_unverified():
     assert (paraphrase.verdict, paraphrase.sub_reason) == ("unverified", "evidence_not_found")
 
 
+def test_evidence_label_with_a_section_suffix_is_read_as_its_passage():
+    # norm/2: the verifier sometimes writes "P1 s9(1)" or "P1 section 9(1)" as the label
+    assert [verify.passage_label(x) for x in ("P1 s9(1)", "P2 section 151(2)", "p3", "P1", "s9 P1", "")] \
+        == ["P1", "P2", "P3", "P1", "s9 P1", ""]
+    suffixed, _ = check(lambda p: output(quotes=(("P1 s9(1)", "levied at the rate of 30 per cent"),)))
+    assert suffixed.verdict == "supported" and suffixed.evidence[0]["label"] == "P1"
+    uncited, _ = check(lambda p: output(quotes=(("P3 s9(1)", "levied at the rate of 30 per cent"),)))
+    assert (uncited.verdict, uncited.sub_reason) == ("unverified", "evidence_not_found")
+
+
 # 4. Verifier parsing ---------------------------------------------------------------------------
 
 
@@ -396,9 +406,9 @@ def test_gen_log_2_record_has_every_field_and_verification(tmp_path, monkeypatch
     record = audit_log.read_records(path)[0]
     assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/2"
     v = record["verification"]
-    assert v["verifier_model"] == "claude-haiku-5-5" and v["prompt_version"] == "ver-prompt/1"
+    assert v["verifier_model"] == "claude-haiku-5-5" and v["prompt_version"] == "ver-prompt/3"
     assert v["summary"]["outcome"] == "passed" and v["claims"][0]["action"] == "kept"
-    assert v["claims"][0]["request"]["prompt_version"] == "ver-prompt/1" and v["claims"][0]["response"]["usage"]
+    assert v["claims"][0]["request"]["prompt_version"] == "ver-prompt/3" and v["claims"][0]["response"]["usage"]
     assert v["claims"][0]["evidence"][0]["found"] is True
     assert record["guardrails"]["policy_sha256"] == GPOLICY.sha256 and record["guardrails"]["floor_calibrated"] is False
     assert record["refusal"] is None and record["refusal_flag"] is False and record["notes"] == []

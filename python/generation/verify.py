@@ -38,7 +38,7 @@ from generation.prompt import (GAP_CLASSES, GAP_PROMPT_VERSION, GAP_SCHEMA, GAP_
                                VERIFIER_SCHEMA_VERSION, VERIFIER_SYSTEM_PROMPT, build_gap_message,
                                build_verifier_message)
 
-NORMALISER_VERSION = "norm/1"
+NORMALISER_VERSION = "norm/2"  # norm/2: evidence and citation labels read as their leading passage label
 MAX_WORKERS = 4
 MIN_QUOTE_CHARS = 12
 NO_PASSAGES_GAP = "No provisions were retrieved for this question."
@@ -92,6 +92,7 @@ _PAREN = re.compile(r"\((\d+[a-z]?|[a-z]{1,4})\)")
 _PAREN_RANGE = re.compile(r"\(([a-z])\)\s*(?:-|to)\s*\(([a-z])\)")
 _HEADER_SECTION = re.compile(r"\bs(\d+)\b")
 _INNER_PAREN = re.compile(r"\(([0-9a-z]+)\)")
+_PASSAGE_LABEL = re.compile(r"\s*(P\d+)\b", re.IGNORECASE)
 _LIST_NUM = re.compile(r"(?:,|and|or|to)\s*(\d+)")
 _UNIT_AFTER = re.compile(r"(?:\s+[a-z]+)?\s*(?:%|per\s*cent\b|percent\b|(?:calendar\s+)?(?:days?|weeks?|months?|"
                          r"years?|hours?)\b|million\b|billion\b|thousand\b|hundred\b|naira\b|kobo\b|times\b)")
@@ -328,6 +329,13 @@ def evidence_found(quote: str, chunk_text: str) -> bool:
     return len(quote) >= MIN_QUOTE_CHARS and quote in _evidence_form(chunk_text)
 
 
+def passage_label(label: str) -> str:
+    """The passage label the verifier meant: "P1 s11(1)(a)" or "P2 section 151(2)" -> "P1", "P2"
+    (calibration run 1). Anything else is returned unchanged, so it matches no cited passage."""
+    m = _PASSAGE_LABEL.match(label)
+    return m.group(1).upper() if m else label
+
+
 # LLM check ---------------------------------------------------------------------------------------
 
 
@@ -435,10 +443,11 @@ def check_claim(no: int, text: str, cited: list[tuple[str, dict]], verifier: LLM
     check.llm_verdict = data["verdict"]
     check.unsupported_part = data["unsupported_part"]
     by_label = dict(cited)
-    check.evidence = [{"label": e["label"], "quote": e["quote"],
-                       "found": e["label"] in by_label and evidence_found(e["quote"], by_label[e["label"]]["text"])}
-                      for e in data["evidence"]]
-    check.citations = [{"label": c["label"], "supports": c["supports"]} for c in data["citations"]]
+    evidence = [(passage_label(e["label"]), e["quote"]) for e in data["evidence"]]
+    check.evidence = [{"label": label, "quote": quote,
+                       "found": label in by_label and evidence_found(quote, by_label[label]["text"])}
+                      for label, quote in evidence]
+    check.citations = [{"label": passage_label(c["label"]), "supports": c["supports"]} for c in data["citations"]]
     if not check.rule.passed:
         return check  # the rule check decides; the LLM verdict is logged for calibration
     check.verdict, check.reason = data["verdict"], data["reason"]

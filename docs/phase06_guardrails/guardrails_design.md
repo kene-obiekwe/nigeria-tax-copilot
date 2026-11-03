@@ -156,7 +156,9 @@ isolation is the point of the check.
 - The client is `AnthropicLLMClient` with a model argument. It uses the same `LLM_API_KEY` and the
   same no-fallback key handling (D-27), so no new key is needed.
 
-**Verifier system prompt (draft, `ver-prompt/1`):**
+**Verifier system prompt (draft, `ver-prompt/1`):** *(Calibrated to `ver-prompt/3` at effort
+`low` by D-42; see the [calibration report](calibration_report.md). The draft below is kept as
+approved.)*
 
 ```text
 You check one statement about Nigerian tax law against the statutory passages it cites. The
@@ -535,7 +537,8 @@ cases, and not only the dev questions that were used for tuning in Phase 5.
 2. The writing session makes a seeded split, stratified by category, assigning 4 of each
    adversarial category and 8 of the controls to `tune` and the rest to `holdout`: 48 questions
    each. The seed and the resulting id lists go in `eval/guardrails/split_v1.json`, which is also
-   hashed. Each row of the question file carries its `split`.
+   hashed. Each row of the question file carries its `split`. *(Corrected by C-04: the split
+   file is authoritative; rows keep `split` null.)*
 3. The build session reads the tune part only, through the runner's loader, which discards
    held-out rows unread (as `run_eval.load_questions` does for the test split). It never opens
    the file directly. The held-out questions and their outputs are not seen by the build session
@@ -567,6 +570,10 @@ A case passes only if all its applicable rules hold. The verdicts are made by th
 
 For an adversarial `answer_supported` case, a refusal also passes G2 (it is safe), but it is
 counted and reported as over-refusal.
+
+*(Added by D-43(b): in tuning and in the G2 review, an answered case also fails when it leaves out
+an exception, proviso or exclusion of a cited provision that changes the answer to the question.
+This is the reviewer's judgement.)*
 
 ### 6.3 False refusals
 
@@ -630,6 +637,10 @@ Changes from v2, none naming a question:
   instructions is part of the question.
 
 v3 is pinned by sha256 like v2. Every changed rule is tested on the tuning part, not assumed.
+
+*(Superseded by D-43(a): `gen-prompt/4` extends rule 4. When a cited provision has an exception,
+proviso or exclusion that bears on the question, the model states it as its own claim, citing the
+passage. v4 is pinned by sha256 in `tests/test_generation.py`.)*
 
 ## 8. Model settings, cost and latency
 

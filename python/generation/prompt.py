@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from html import escape
 
-PROMPT_VERSION = "gen-prompt/3"  # v3: rules 6, 7 and 12 extended (guardrails design, section 7.2)
+PROMPT_VERSION = "gen-prompt/4"  # v3: rules 6, 7 and 12 extended (guardrails design, section 7.2); v4: rule 4 (D-43)
 SCHEMA_VERSION = "gen-schema/1"
 MAX_PASSAGES = 5
 LABELS = tuple(f"P{i}" for i in range(1, MAX_PASSAGES + 1))
@@ -29,7 +29,9 @@ sentence about what the law says. Cite a passage only for what it says itself.
 3. State no fact that the passages do not state, including a fact that connects the question to a \
 passage, such as what a product is made of or what a term covers. Put such a link under gaps instead.
 4. Keep conditions and limits exactly as printed. Do not add "only", "always", "never", "must" or \
-"cannot" unless the passage says so, and do not turn "where X, ... may Y" into "only where X".
+"cannot" unless the passage says so, and do not turn "where X, ... may Y" into "only where X". \
+When a cited provision has an exception, proviso or exclusion that bears on the question, state it \
+as its own claim, citing the passage.
 5. Copy figures, rates, thresholds, periods, dates and cross-references exactly as the passage \
 prints them. Do not correct apparent printing errors or wrong cross-references. The system adds \
 notes on known differences between the official texts.
@@ -109,7 +111,7 @@ def build_user_message(chunks: list[dict], question: str) -> str:
 
 # Verification (guardrails design, sections 3.3 and 3.6) ----------------------------------------
 
-VERIFIER_PROMPT_VERSION = "ver-prompt/1"
+VERIFIER_PROMPT_VERSION = "ver-prompt/3"  # /2: left-out exceptions, back-references; /3: definitions, the passage's own "only"
 VERIFIER_SCHEMA_VERSION = "ver-schema/1"
 GAP_PROMPT_VERSION = "gap-prompt/1"
 GAP_SCHEMA_VERSION = "gap-schema/1"
@@ -130,13 +132,28 @@ Verdicts
 - supported: every part of the statement is stated in the passages, with the same meaning.
 - unsupported: some part of the statement is not stated in the passages. This includes: a \
 bridging fact (a fact that links the question to a passage, such as what a product is made of or \
-what a term covers, when the passages do not say it); an overstated condition (a "may" turned into \
-"must", a "where X" turned into "only where X", a limit or exception left out); a figure, period or \
-reference that differs; and a statement about a different person, tax, place or period than the \
-passages cover.
+what a term covers, when the passages do not say it); an overstated condition (the statement makes \
+the rule stronger or wider than the passage does: a "may" turned into "must", a "where X" turned \
+into "only where X", or words such as "always", "in all cases" or "without exception" that the \
+passage does not support); a figure, period or reference that differs; and a statement about a \
+different person, tax, place or period than the passages cover.
 - contradicted: the passages state the opposite of some part of the statement.
 - not_a_claim: the statement is about the passages themselves (what they contain or leave out), \
 not about the law.
+
+Exceptions and earlier statements
+The statement is one of several in an answer, and other statements may give the exceptions, \
+provisos and further conditions of the same provision. A statement may state one rule of a \
+provision without repeating them. Leaving them out is not unsupported, unless the statement says \
+or implies that there are none (for example "only", "always", "in all cases", "without \
+exception") or states a condition differently from the passage. This holds for definitions too: a \
+statement that gives a definition's main test without its exclusions or provisos is not \
+unsupported for that reason alone. A word such as "only" or "must" overstates the rule only when \
+the passage does not use it for that rule; a statement that repeats the passage's own "only" is \
+not overstated because an exception appears elsewhere. The statement may also continue an \
+earlier one ("the same applies", "the company", "such a person", "the charge"). Read such words as \
+referring to what the passages describe, and do not mark the statement unsupported only because it \
+does not repeat the earlier statement's conditions.
 
 Reasons
 Give the reason that fits best: none (supported), bridging_fact, overstated_condition, \

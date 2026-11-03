@@ -30,7 +30,7 @@ TIMEOUT_S = 120.0
 MAX_RETRIES = 3
 
 VERIFIER_MODEL = "claude-haiku-5-5"
-VERIFIER_EFFORT = "medium"  # the starting point; calibration sets the final value (D-31)
+VERIFIER_EFFORT = "low"  # set by calibration (D-31): runs 5 and 6 met every target, low is the lowest
 VERIFIER_MAX_TOKENS = 16_000  # a ceiling, not a cost; a max_tokens stop removes the claim
 VERIFIER_TIMEOUT_S = 60.0
 
