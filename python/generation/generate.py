@@ -1,17 +1,19 @@
-"""Grounded generation (Phase 5; generation design, approved as D-22 to D-29).
+"""Grounded generation with guardrails (Phase 5, D-22 to D-29; Phase 6, D-30 to D-40).
 
     from generation.generate import generate
     answer = generate("Does a small company have to pay the development levy?")
     print(answer.rendered)
 
-Flow: retrieve the top 5 chunks with the frozen configuration (D-21), show them to the model as
-passages P1 to P5, get a JSON answer (claims citing passage labels, plus gaps), check the
-citations, work out the disclosures for the cited chunks (D-23), render the answer with its
-sources, disclosures and the disclaimer, and log the full call (D-28).
+Flow (guardrails design, section 2): pre-checks on the question (invalid question, section and
+Schedule references, other-Act and scope notes); retrieve the top 5 chunks with the frozen
+configuration (D-21); the relevance floor; show the chunks to the model as passages P1 to P5 and
+get a JSON answer (claims citing passage labels, plus gaps); check the citations; verify every
+claim and gap (generation.verify); work out the disclosures for the kept claims' supporting
+citations (D-23 as amended by D-32); render the answer with its notes, sources, disclosures and
+the disclaimer; and log the full call (gen-log/2, D-28).
 
 The parser checks only that every citation is a passage that was shown, and drops claims left
-with no citation. Whether a cited chunk supports its claim is checked by hand in the Phase 5 exit
-check and by the verification pass in Phase 6.
+with no citation. Whether a cited chunk supports its claim is checked by the verification pass.
 """
 from __future__ import annotations
 
@@ -27,13 +29,18 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "python"))
 
 from check_pgvector import connect  # noqa: E402
-from embed.load import BUILD_MANIFEST, CHUNKS, REGISTER, read_chunks, read_register, sha256_file  # noqa: E402
+from embed.load import (BUILD_MANIFEST, CHUNKS, REGISTER, read_chunks, read_register, schedule_no,  # noqa: E402
+                        sha256_file)
 from generation.audit_log import LOG_DIR, SCHEMA, write_record  # noqa: E402
 from generation.disclosure import Disclosure, Policy, disclose, load_policy  # noqa: E402
-from generation.llm import (EFFORT, MAX_TOKENS, MODEL, AnthropicLLMClient, GenerationError,  # noqa: E402
-                            LLMClient, LLMResponse, cost_usd, request_params)
+from generation.guardrails import (LOW_RELEVANCE_TEXT, POLICY as GUARDRAILS_POLICY,  # noqa: E402
+                                   GuardrailsPolicy, load_guardrails_policy, pre_check, relevance_floor)
+from generation.llm import (EFFORT, MAX_TOKENS, MODEL, VERIFIER_EFFORT, VERIFIER_MAX_TOKENS,  # noqa: E402
+                            VERIFIER_MODEL, AnthropicLLMClient, GenerationError, LLMClient, LLMResponse, cost_usd,
+                            request_params)
 from generation.prompt import (LABELS, OUTPUT_SCHEMA, PROMPT_VERSION, SCHEMA_VERSION, SYSTEM_PROMPT,  # noqa: E402
                                build_user_message)
+from generation.verify import NO_PASSAGES_GAP, VerificationResult, verify_answer  # noqa: E402
 from retrieval.retrieve import Retriever  # noqa: E402
 
 RETRIEVAL_CONFIG = ROOT / "eval" / "retrieval" / "config_final.json"
@@ -43,7 +50,9 @@ DISCLAIMER = ("This is a research and reference tool. It is not tax advice and i
               "Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).")
 DECLINE_TEXT = "The provisions retrieved from the corpus do not answer this question."
 ERROR_TEXT = "The system could not produce a grounded answer to this question."
-NO_PASSAGES_GAP = "No provisions were retrieved for this question."
+UNSUPPORTED_ANSWER_TEXT = ("The system could not check an answer to this question against the provisions it cited, "
+                           "so no answer is shown.")
+VERIFICATION_UNAVAILABLE_TEXT = "The answer could not be checked, so it is not shown. Please try again later."
 LABEL_IN_TEXT = re.compile(r"\[?\bP[1-9]\b\]?")
 REGISTER_FIELDS = ("register_id", "act_id", "cited_unit", "comparison_text", "type", "cited_reading",
                    "comparison_reading", "notes")
@@ -54,6 +63,10 @@ class GenerationConfig:
     model: str = MODEL
     effort: str = EFFORT
     max_tokens: int = MAX_TOKENS
+    verify: bool = True
+    verifier_model: str = VERIFIER_MODEL
+    verifier_effort: str = VERIFIER_EFFORT
+    verifier_max_tokens: int = VERIFIER_MAX_TOKENS
 
 
 @dataclass
@@ -76,7 +89,7 @@ class Claim:
 
 @dataclass
 class ParseResult:
-    status: str             # "answered" | "not_covered" | "error"
+    status: str             # "answered" | "not_covered" | "error" | "refused" (guardrail stage)
     claims: list[Claim] = field(default_factory=list)
     gaps: list[str] = field(default_factory=list)
     rejected: list[dict] = field(default_factory=list)
@@ -97,9 +110,18 @@ class Answer:
     rendered: str
     model: str
     usage: dict
-    cost_usd: float
+    cost_usd: float                     # generation only
     record_id: str
     error: str | None
+    refusal_reason: str | None = None
+    flags: list[str] = field(default_factory=list)
+    notes: list[Disclosure] = field(default_factory=list)
+    verification: VerificationResult | None = None
+    verification_cost_usd: float = 0.0
+
+    @property
+    def total_cost_usd(self) -> float:
+        return self.cost_usd + self.verification_cost_usd
 
 
 # Corpus stores -------------------------------------------------------------------------------
@@ -125,6 +147,18 @@ class DbCorpusStore:
             (list(chunk_ids), list(register_ids))).fetchall()
         return [{k: (v if v is not None else "") for k, v in zip(REGISTER_FIELDS, row)} for row in rows]
 
+    def sections(self) -> dict[str, dict[str, set]]:
+        """Per Act, the section numbers and Schedule numbers in the corpus (guardrail pre-checks)."""
+        out: dict[str, dict[str, set]] = {}
+        for act_id, section, schedule in self.conn.execute(
+                "SELECT DISTINCT act_id, section, schedule_no FROM corpus_chunks").fetchall():
+            entry = out.setdefault(act_id, {"sections": set(), "schedules": set()})
+            if section:
+                entry["sections"].add(section)
+            if schedule is not None:
+                entry["schedules"].add(int(schedule))
+        return out
+
     def corpus_info(self) -> dict:
         row = self.conn.execute(
             "SELECT load_id, corpus_snapshot, chunks_sha256, register_sha256, build_manifest_sha256 "
@@ -141,7 +175,13 @@ class FileCorpusStore:
     def __init__(self, chunks_path: Path = CHUNKS, register_path: Path = REGISTER):
         self.chunks_path, self.register_path = chunks_path, register_path
         self._chunks = {}
+        self._sections: dict[str, dict[str, set]] = {}
         for chunk in read_chunks(chunks_path):
+            entry = self._sections.setdefault(chunk["act_id"], {"sections": set(), "schedules": set()})
+            if chunk["section"]:
+                entry["sections"].add(chunk["section"])
+            if chunk["schedule"]:
+                entry["schedules"].add(schedule_no(chunk["schedule"]["number"]))
             self._chunks[chunk["chunk_id"]] = {
                 "chunk_id": chunk["chunk_id"], "act_id": chunk["act_id"], "citation": chunk["citation"],
                 "context_header": chunk["context_header"], "text": chunk["text"],
@@ -158,6 +198,9 @@ class FileCorpusStore:
 
     def all_register_rows(self) -> list[dict]:
         return list(self._register)
+
+    def sections(self) -> dict[str, dict[str, set]]:
+        return {act: {k: set(v) for k, v in entry.items()} for act, entry in self._sections.items()}
 
     def corpus_info(self) -> dict:
         snapshot = json.loads(BUILD_MANIFEST.read_text(encoding="utf-8"))["corpus_snapshot"]
@@ -253,17 +296,28 @@ def _pages(labels: list[str]) -> str:
 
 
 def render(status: str, claims: list[Claim], gaps: list[str], cited: list[str], chunks: dict[str, dict],
-           disclosures: list[Disclosure]) -> str:
-    """Markdown answer: claims with citations, gaps, sources, shown disclosures, disclaimer."""
+           disclosures: list[Disclosure], *, notes: list[Disclosure] | None = None, refusal_text: str | None = None,
+           removal_lines: list[str] | None = None) -> str:
+    """Markdown answer. Answered and declined: notes, then claims with citations (and the
+    removed-claims lines), gaps, sources, shown disclosures, disclaimer. Refused: the refusal text,
+    notes, question-triggered disclosures, disclaimer. Error: the error text and the disclaimer."""
     parts: list[str] = []
+    note_block = ("Notes\n" + "\n".join(f"- {n.text}" for n in notes)) if notes else None
+    if status in ("answered", "not_covered") and note_block:
+        parts.append(note_block)
     if status == "answered":
         for claim in claims:
             parts.append(f"{claim.text} [{'; '.join(chunks[c]['citation'] for c in claim.chunk_ids)}]")
+        parts.extend(removal_lines or [])
     elif status == "not_covered":
         parts.append(DECLINE_TEXT)
+    elif status == "refused":
+        parts.append(refusal_text or UNSUPPORTED_ANSWER_TEXT)
+        if note_block:
+            parts.append(note_block)
     else:
-        parts.append(ERROR_TEXT)
-    if status != "error" and gaps:
+        parts.append(refusal_text or ERROR_TEXT)
+    if status in ("answered", "not_covered") and gaps:
         parts.append("Not covered by the retrieved provisions:\n" + "\n".join(f"- {gap}" for gap in gaps))
     if status == "answered":
         parts.append("Sources\n" + "\n".join(f"- {chunks[c]['citation']}{_pages(chunks[c]['page_labels'])}"
@@ -289,29 +343,48 @@ def retrieval_config() -> dict:
 
 def generate(question: str, *, k: int = 5, retriever=None, llm: LLMClient | None = None, store=None,
              config: GenerationConfig | None = None, log_dir: Path | None = LOG_DIR,
-             query_vector: list[float] | None = None, policy: Policy | None = None) -> Answer:
+             query_vector: list[float] | None = None, policy: Policy | None = None,
+             verifier: LLMClient | None = None, guardrails_policy: GuardrailsPolicy | None = None) -> Answer:
     """Answer `question` from the top `k` retrieved chunks (design section 2.1). Opens its own
-    database connection when `retriever` or `store` is not given. `log_dir=None` turns logging
+    database connection when `retriever` or `store` is not given. `verifier` is the verification
+    client (Haiku 5.5 by default; unused when `config.verify` is off). `log_dir=None` turns logging
     off (unit tests only)."""
     config = config or GenerationConfig()
     policy = policy or load_policy()
+    guardrails_policy = guardrails_policy or load_guardrails_policy()
     llm = llm or AnthropicLLMClient(model=config.model)
+    if config.verify:
+        verifier = verifier or AnthropicLLMClient(model=config.verifier_model)
+
     conn = None
     if retriever is None or store is None:
         conn = connect()
     try:
         retriever = retriever or Retriever(conn, retrieval_config())
         store = store or DbCorpusStore(conn)
-        return _generate(question, k, retriever, llm, store, config, log_dir, query_vector, policy)
+        return _generate(question, k, retriever, llm, verifier, store, config, log_dir, query_vector, policy,
+                         guardrails_policy)
     finally:
         if conn is not None:
             conn.close()
 
 
-def _generate(question, k, retriever, llm, store, config, log_dir, query_vector, policy) -> Answer:
+def _refusal_text(reason: str, check) -> str:
+    if reason in ("invalid_question", "no_such_section", "section_outside_v1"):
+        return check.refusal_text
+    return {"low_relevance": LOW_RELEVANCE_TEXT, "unsupported_answer": UNSUPPORTED_ANSWER_TEXT,
+            "verification_unavailable": VERIFICATION_UNAVAILABLE_TEXT}[reason]
+
+
+def _generate(question, k, retriever, llm, verifier, store, config, log_dir, query_vector, policy,
+              guardrails_policy) -> Answer:
     timestamp = datetime.now(timezone.utc)
     record_id = str(uuid.uuid4())
-    retrieved = retriever.retrieve(question, k, query_vector=query_vector)[:len(LABELS)]
+    check = pre_check(question, guardrails_policy, store.sections())
+    retrieved, floor = [], None
+    if check.refusal is None:
+        retrieved = retriever.retrieve(question, k, query_vector=query_vector)[:len(LABELS)]
+        floor = relevance_floor(retrieved, guardrails_policy.tau)
     chunks = store.chunks([item.chunk_id for item in retrieved])
     passages = [Passage(label, item.chunk_id, chunks[item.chunk_id]["citation"],
                         chunks[item.chunk_id]["context_header"], item.rank, item.score,
@@ -320,7 +393,14 @@ def _generate(question, k, retriever, llm, store, config, log_dir, query_vector,
     label_map = {p.label: p.chunk_id for p in passages}
 
     request = response = None
-    if not passages:
+    refusal = None  # {status, reason, stage}
+    if check.refusal is not None:
+        refusal = {"status": "refused", "reason": check.refusal, "stage": "pre_check"}
+        parsed = ParseResult("refused")
+    elif floor is not None and floor.refuse:
+        refusal = {"status": "refused", "reason": "low_relevance", "stage": "relevance_floor"}
+        parsed = ParseResult("refused")
+    elif not passages:
         parsed = ParseResult("not_covered", gaps=[NO_PASSAGES_GAP])
     else:
         user = build_user_message([chunks[p.chunk_id] for p in passages], question)
@@ -332,13 +412,33 @@ def _generate(question, k, retriever, llm, store, config, log_dir, query_vector,
         except GenerationError as exc:
             parsed = ParseResult("error", error=str(exc))
 
-    cited = cited_in_order(parsed.claims)
-    if parsed.status == "error":
+    status, claims, gaps, error = parsed.status, parsed.claims, parsed.gaps, parsed.error
+    verification: VerificationResult | None = None
+    flags = list(check.flags)
+    if config.verify and status in ("answered", "not_covered") and (
+            claims or any(gap != NO_PASSAGES_GAP for gap in gaps)):
+        verification = verify_answer(question, status, claims, gaps, chunks,
+                                     {chunk_id: label for label, chunk_id in label_map.items()},
+                                     verifier, guardrails_policy.disputed_gap_patterns,
+                                     effort=config.verifier_effort, max_tokens=config.verifier_max_tokens)
+        status, gaps = verification.status, verification.gaps
+        claims = ([Claim(c.text, c.labels, c.kept_chunk_ids) for c in verification.kept]
+                  if status == "answered" else [])
+        flags += verification.flags
+        if verification.refusal_reason:
+            refusal = {"status": status, "reason": verification.refusal_reason, "stage": "verification"}
+            error = verification.refusal_reason if status == "error" else None
+
+    cited = cited_in_order(claims)
+    if status == "error":
         disclosures: list[Disclosure] = []
     else:
         rows = store.register_rows(cited, sorted(policy.anchor_terms))
-        disclosures = disclose(cited, rows, question, policy, {c: chunks[c]["citation"] for c in cited})
-    rendered = render(parsed.status, parsed.claims, parsed.gaps, cited, chunks, disclosures)
+        disclosures = disclose(cited, rows, question, policy, {c: chunks[c]["citation"] for c in cited},
+                               retrieved=[item.chunk_id for item in retrieved])
+    rendered = render(status, claims, gaps, cited, chunks, disclosures, notes=check.notes,
+                      refusal_text=_refusal_text(refusal["reason"], check) if refusal else None,
+                      removal_lines=verification.removal_lines if verification else None)
     usage = response.usage if response else {"input_tokens": 0, "output_tokens": 0,
                                              "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}
     cost = cost_usd(usage, config.model) if response else 0.0
@@ -347,11 +447,16 @@ def _generate(question, k, retriever, llm, store, config, log_dir, query_vector,
         record = {
             "schema": SCHEMA, "record_id": record_id, "timestamp": timestamp.isoformat(), "question": question,
             "corpus": store.corpus_info(),
-            "retrieval": {"config_file": RETRIEVAL_CONFIG.relative_to(ROOT).as_posix(),
-                          "config_sha256": sha256_file(RETRIEVAL_CONFIG), "k": k,
-                          "chunks": [{"rank": item.rank, "label": label, "chunk_id": item.chunk_id,
-                                      "score": item.score, "distance": item.distance, "reasons": item.reasons}
-                                     for label, item in zip(LABELS, retrieved)]},
+            "guardrails": {"policy_file": GUARDRAILS_POLICY.relative_to(ROOT).as_posix(),
+                           "policy_sha256": guardrails_policy.sha256, "pre_check": check.as_log(),
+                           "floor": None if floor is None else floor.as_log(),
+                           "floor_calibrated": guardrails_policy.tau is not None, "verify": config.verify},
+            "retrieval": None if check.refusal else {
+                "config_file": RETRIEVAL_CONFIG.relative_to(ROOT).as_posix(),
+                "config_sha256": sha256_file(RETRIEVAL_CONFIG), "k": k,
+                "chunks": [{"rank": item.rank, "label": label, "chunk_id": item.chunk_id,
+                            "score": item.score, "distance": item.distance, "reasons": item.reasons}
+                           for label, item in zip(LABELS, retrieved)]},
             "request": None if request is None else {"prompt_version": PROMPT_VERSION,
                                                      "schema_version": SCHEMA_VERSION, **request},
             "response": None if response is None else {
@@ -360,15 +465,19 @@ def _generate(question, k, retriever, llm, store, config, log_dir, query_vector,
                 "latency_ms": response.latency_ms, "cost_usd": round(cost, 6)},
             "parsed": {"status": parsed.status, "claims": [asdict(c) for c in parsed.claims], "gaps": parsed.gaps,
                        "rejected_citations": parsed.rejected, "flags": parsed.flags},
+            "verification": None if verification is None else verification.as_log(),
+            "refusal": refusal,
             "disclosures": [asdict(d) for d in disclosures],
+            "notes": [asdict(n) for n in check.notes],
             "rendered": rendered,
-            "refusal_flag": parsed.status == "not_covered",
-            "verification": None,
-            "error": parsed.error,
+            "refusal_flag": status in ("not_covered", "refused"),
+            "error": error,
         }
         write_record(record, timestamp, log_dir)
 
-    return Answer(question=question, status=parsed.status, claims=parsed.claims, gaps=parsed.gaps,
+    return Answer(question=question, status=status, claims=claims, gaps=gaps,
                   passages=passages, cited_chunk_ids=cited, rejected_citations=parsed.rejected,
                   disclosures=disclosures, rendered=rendered, model=config.model, usage=usage,
-                  cost_usd=cost, record_id=record_id, error=parsed.error)
+                  cost_usd=cost, record_id=record_id, error=error,
+                  refusal_reason=refusal["reason"] if refusal else None, flags=flags, notes=check.notes,
+                  verification=verification, verification_cost_usd=verification.cost_usd if verification else 0.0)

@@ -1,0 +1,274 @@
+{
+  "set": "eval/guardrails/adversarial_v1.jsonl",
+  "set_sha256": "2e3541c88db45e53fa50ec591e7b65d108e7bb79955608ac3f1c07632ff592dc",
+  "seed": 20261103,
+  "method": "Python 3.12 random.Random(seed); for each category in the order A1..A10, C, random.sample over the category's ids sorted ascending: 4 per adversarial category and 8 controls go to tune, the rest to holdout (design section 5.3).",
+  "counts": {
+    "tune": 48,
+    "holdout": 48
+  },
+  "per_category": {
+    "A1": {
+      "tune": [
+        "ADV-002",
+        "ADV-006",
+        "ADV-007",
+        "ADV-008"
+      ],
+      "holdout": [
+        "ADV-001",
+        "ADV-003",
+        "ADV-004",
+        "ADV-005"
+      ]
+    },
+    "A2": {
+      "tune": [
+        "ADV-010",
+        "ADV-012",
+        "ADV-013",
+        "ADV-015"
+      ],
+      "holdout": [
+        "ADV-009",
+        "ADV-011",
+        "ADV-014",
+        "ADV-016"
+      ]
+    },
+    "A3": {
+      "tune": [
+        "ADV-017",
+        "ADV-019",
+        "ADV-021",
+        "ADV-023"
+      ],
+      "holdout": [
+        "ADV-018",
+        "ADV-020",
+        "ADV-022",
+        "ADV-024"
+      ]
+    },
+    "A4": {
+      "tune": [
+        "ADV-026",
+        "ADV-028",
+        "ADV-031",
+        "ADV-032"
+      ],
+      "holdout": [
+        "ADV-025",
+        "ADV-027",
+        "ADV-029",
+        "ADV-030"
+      ]
+    },
+    "A5": {
+      "tune": [
+        "ADV-034",
+        "ADV-037",
+        "ADV-038",
+        "ADV-040"
+      ],
+      "holdout": [
+        "ADV-033",
+        "ADV-035",
+        "ADV-036",
+        "ADV-039"
+      ]
+    },
+    "A6": {
+      "tune": [
+        "ADV-043",
+        "ADV-044",
+        "ADV-046",
+        "ADV-047"
+      ],
+      "holdout": [
+        "ADV-041",
+        "ADV-042",
+        "ADV-045",
+        "ADV-048"
+      ]
+    },
+    "A7": {
+      "tune": [
+        "ADV-050",
+        "ADV-053",
+        "ADV-055",
+        "ADV-056"
+      ],
+      "holdout": [
+        "ADV-049",
+        "ADV-051",
+        "ADV-052",
+        "ADV-054"
+      ]
+    },
+    "A8": {
+      "tune": [
+        "ADV-057",
+        "ADV-058",
+        "ADV-059",
+        "ADV-063"
+      ],
+      "holdout": [
+        "ADV-060",
+        "ADV-061",
+        "ADV-062",
+        "ADV-064"
+      ]
+    },
+    "A9": {
+      "tune": [
+        "ADV-066",
+        "ADV-068",
+        "ADV-069",
+        "ADV-072"
+      ],
+      "holdout": [
+        "ADV-065",
+        "ADV-067",
+        "ADV-070",
+        "ADV-071"
+      ]
+    },
+    "A10": {
+      "tune": [
+        "ADV-073",
+        "ADV-074",
+        "ADV-075",
+        "ADV-076"
+      ],
+      "holdout": [
+        "ADV-077",
+        "ADV-078",
+        "ADV-079",
+        "ADV-080"
+      ]
+    },
+    "C": {
+      "tune": [
+        "ADV-083",
+        "ADV-084",
+        "ADV-085",
+        "ADV-088",
+        "ADV-090",
+        "ADV-091",
+        "ADV-093",
+        "ADV-096"
+      ],
+      "holdout": [
+        "ADV-081",
+        "ADV-082",
+        "ADV-086",
+        "ADV-087",
+        "ADV-089",
+        "ADV-092",
+        "ADV-094",
+        "ADV-095"
+      ]
+    }
+  },
+  "tune": [
+    "ADV-002",
+    "ADV-006",
+    "ADV-007",
+    "ADV-008",
+    "ADV-010",
+    "ADV-012",
+    "ADV-013",
+    "ADV-015",
+    "ADV-017",
+    "ADV-019",
+    "ADV-021",
+    "ADV-023",
+    "ADV-026",
+    "ADV-028",
+    "ADV-031",
+    "ADV-032",
+    "ADV-034",
+    "ADV-037",
+    "ADV-038",
+    "ADV-040",
+    "ADV-043",
+    "ADV-044",
+    "ADV-046",
+    "ADV-047",
+    "ADV-050",
+    "ADV-053",
+    "ADV-055",
+    "ADV-056",
+    "ADV-057",
+    "ADV-058",
+    "ADV-059",
+    "ADV-063",
+    "ADV-066",
+    "ADV-068",
+    "ADV-069",
+    "ADV-072",
+    "ADV-073",
+    "ADV-074",
+    "ADV-075",
+    "ADV-076",
+    "ADV-083",
+    "ADV-084",
+    "ADV-085",
+    "ADV-088",
+    "ADV-090",
+    "ADV-091",
+    "ADV-093",
+    "ADV-096"
+  ],
+  "holdout": [
+    "ADV-001",
+    "ADV-003",
+    "ADV-004",
+    "ADV-005",
+    "ADV-009",
+    "ADV-011",
+    "ADV-014",
+    "ADV-016",
+    "ADV-018",
+    "ADV-020",
+    "ADV-022",
+    "ADV-024",
+    "ADV-025",
+    "ADV-027",
+    "ADV-029",
+    "ADV-030",
+    "ADV-033",
+    "ADV-035",
+    "ADV-036",
+    "ADV-039",
+    "ADV-041",
+    "ADV-042",
+    "ADV-045",
+    "ADV-048",
+    "ADV-049",
+    "ADV-051",
+    "ADV-052",
+    "ADV-054",
+    "ADV-060",
+    "ADV-061",
+    "ADV-062",
+    "ADV-064",
+    "ADV-065",
+    "ADV-067",
+    "ADV-070",
+    "ADV-071",
+    "ADV-077",
+    "ADV-078",
+    "ADV-079",
+    "ADV-080",
+    "ADV-081",
+    "ADV-082",
+    "ADV-086",
+    "ADV-087",
+    "ADV-089",
+    "ADV-092",
+    "ADV-094",
+    "ADV-095"
+  ]
+}

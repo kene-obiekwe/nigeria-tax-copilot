@@ -1,0 +1,110 @@
+about: Pinned lists, texts and the relevance floor for the guardrail pre-checks and the gap filter
+  (D-33 to D-35, D-39; guardrails design, sections 3.6 and 4). The logic is in
+  python/generation/guardrails.py and python/generation/verify.py. Section existence and headings
+  come from data/derived/section_map.csv; whether a section is in the v1 corpus comes from the
+  corpus store. Every list gives the decision or document that justifies it.
+
+# Act lengths (guardrails design, section 4.3; scope verification; v1 corpus definition). Section
+# numbers are the cited print's: gazette for the Nigeria Tax Act, NRS print for the Administration
+# Act. The Administration Act's Schedule count is not recorded in the Phase 1 or Phase 2 documents,
+# so Schedule references naming it are not checked (null).
+acts:
+  nta2025:
+    name: Nigeria Tax Act 2025
+    sections: 203
+    schedules: 14
+  ntaa2025:
+    name: Nigeria Tax Administration Act 2025
+    sections: 148
+    schedules: null
+
+# Acts outside the corpus (D-34 as amended: a note, never a refusal). Patterns are matched ignoring
+# case unless marked; the name is what the note shows. The note's label is act:<name in lower case,
+# words joined by _>, for example act:companies_income_tax_act or act:nigeria_tax_act_2027. The last entry catches a Nigeria Tax Act or
+# Administration Act of a year other than 2025, which does not exist.
+other_acts:
+  - name: Companies Income Tax Act
+    pattern: '\bCompanies Income Tax Act\b|\b(?-i:CITA)\b'
+  - name: Personal Income Tax Act
+    pattern: '\bPersonal Income Tax Act\b|\b(?-i:PITA)\b'
+  - name: Value Added Tax Act
+    pattern: '\bValue Added Tax Act\b|\bVAT Act\b'
+  - name: Capital Gains Tax Act
+    pattern: '\bCapital Gains Tax Act\b|\b(?-i:CGTA)\b'
+  - name: Petroleum Profits Tax Act
+    pattern: '\bPetroleum Profits Tax Act\b|\b(?-i:PPTA)\b'
+  - name: Stamp Duties Act
+    pattern: '\bStamp Duties Act\b'
+  - name: Finance Act
+    pattern: '\bFinance Act\b'
+  - name: Federal Inland Revenue Service (Establishment) Act
+    pattern: '\bFederal Inland Revenue Service \(Establishment\) Act\b|\b(?-i:FIRSEA)\b'
+  - name: Industrial Development (Income Tax Relief) Act
+    pattern: '\bIndustrial Development \(Income Tax Relief\) Act\b'
+  - name: Customs and Excise Management Act
+    pattern: '\bCustoms and Excise Management Act\b|\bNigeria Customs Service Act\b'
+  - name: "{match}"
+    pattern: '\bNigeria Tax (?:Administration )?Act,? (?!2025\b)\d{4}\b'
+
+other_act_note: "The {name} is not in the corpus this tool covers. Section numbers in the answer refer
+  to the Nigeria Tax Act 2025 or the Nigeria Tax Administration Act 2025."
+
+# Scope notes (D-34: notes only, never a refusal). Topics from the known gaps in the v1 corpus
+# definition, section 4. Each note's label is scope:<topic>, as the adversarial set names them
+# (customs_and_excise is an extra topic the set does not use). Failed section references give
+# reference:no_such_section or reference:section_outside_v1 (python/generation/guardrails.py). Each pattern is checked against the 20 dev questions and G01 to G05 by a
+# unit test (it must not fire on an in-scope question).
+scope_topics:
+  personal_income_tax:
+    pattern: '\b(?-i:PAYE)\b|\bpay[- ]as[- ]you[- ]earn\b|\bpersonal income tax\b|\b(?-i:PIT)\b'
+    text: "Personal income tax and PAYE are outside the corpus this tool covers (v1)."
+  stamp_duties:
+    pattern: '\bstamp dut(?:y|ies)\b'
+    text: "Stamp duties are outside the corpus this tool covers (v1)."
+  petroleum_taxes:
+    pattern: '\bpetroleum\b|\boil and gas\b|\bhydrocarbon'
+    text: "Petroleum taxes are outside the corpus this tool covers (v1)."
+  state_local_taxes:
+    pattern: '\bstate (?:tax|taxes|levy|levies|revenue)\b|\blocal government (?:tax|taxes|levy|levies|rates?)\b|\bland use charge\b|\btenement rates?\b'
+    text: "State and local government taxes and levies are outside the corpus this tool covers (v1)."
+  surcharge:
+    pattern: '\bsurcharge\b'
+    text: "The surcharge is outside the corpus this tool covers (v1)."
+  economic_development_incentives:
+    pattern: '\bpioneer status\b|\beconomic development incentives?\b|\btax holidays?\b'
+    text: "Economic development incentives (such as pioneer status) are outside the corpus this tool
+      covers (v1)."
+  subsidiary_legislation:
+    pattern: '\bguidelines?\b|\bcirculars?\b|\b(?:Administration|Modification) Order\b'
+    text: "Subsidiary legislation and NRS guidance (orders, guidelines and circulars) are outside the
+      corpus this tool covers (v1)."
+  customs_and_excise:
+    pattern: '\bcustoms\b|\bexcise\b|\bimport dut(?:y|ies)\b'
+    text: "Customs and excise duties are outside the corpus this tool covers (v1)."
+  # Added 2026-11-03 (overseer fix 5): a year from 1900 to 2025 used as a period ("in 2024", "the
+  # 2023 year of assessment"), "before 2026", "pre-2026" or the repealed Acts' periods. A year inside
+  # an Act's name ("Nigeria Tax Act 2025") does not match.
+  pre_2026_periods:
+    pattern: '\b(?:in|for|during|before|until|since|from|of) (?:the )?(?:(?:tax |financial )?years? |year of assessment )?(?:19\d{2}|20(?:[01]\d|2[0-5]))\b(?!\s*(?:Act|Order))|\b(?:19\d{2}|20(?:[01]\d|2[0-5])) (?:tax year|year of assessment|financial year|accounts|returns?)\b|\bpre-?2026\b|\bbefore (?:1 )?(?:January )?2026\b|\bunder the (?:old|repealed|previous) (?:law|laws|Acts?)\b'
+    text: "Tax periods before 2026, under the repealed Acts, are outside the corpus this tool covers (v1)."
+
+scope_note_suffix: "Answers come only from the provisions that are in the corpus."
+
+# Gaps about the disputed flag are removed in code before the gap check (D-33). Ignoring case.
+disputed_gap_patterns:
+  - '\banother official text\b'
+  - '\bread(?:s)? differently\b'
+  - '\bdisputed\b'
+  - '\bmarked as\b'
+
+# Questions longer than this, empty, or with no letters are refused as invalid_question.
+max_question_chars: 2000
+
+# Relevance floor (D-35). tau stays empty, and the floor off, until calibration: tau = lowest top-1
+# vector score among the in-scope calibration questions minus the margin, rounded down to two
+# decimals. Never set from the test split.
+relevance_floor:
+  tau: null
+  margin: 0.05
+  calibrated_on: null
+  questions: null

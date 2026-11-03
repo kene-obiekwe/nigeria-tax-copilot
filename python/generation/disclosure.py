@@ -57,6 +57,8 @@ class Policy:
     dq16_text: str
     dq12_patterns: tuple[re.Pattern, ...]
     dq12_text: str
+    dq12_chunks: frozenset[str] = frozenset()
+    dq12_time_words: re.Pattern | None = None
 
 
 def load_policy(path: Path = POLICY) -> Policy:
@@ -72,6 +74,9 @@ def load_policy(path: Path = POLICY) -> Policy:
         dq16_text=" ".join(notes["DQ-16"]["text"].split()),
         dq12_patterns=tuple(re.compile(p, re.IGNORECASE) for p in notes["DQ-12"]["patterns"]),
         dq12_text=" ".join(notes["DQ-12"]["text"].split()),
+        dq12_chunks=frozenset(notes["DQ-12"].get("retrieved_chunks", [])),
+        dq12_time_words=(re.compile(notes["DQ-12"]["time_words"], re.IGNORECASE)
+                         if notes["DQ-12"].get("time_words") else None),
     )
 
 
@@ -109,19 +114,25 @@ def names_term(question: str, term: str) -> bool:
     return re.search(r"\b" + re.escape(term) + r"\b", question, re.IGNORECASE) is not None
 
 
-def is_ntaa_commencement_question(question: str, policy: Policy) -> bool:
-    if not any(p.search(question) for p in policy.dq12_patterns):
+def is_ntaa_commencement_question(question: str, policy: Policy, retrieved: list[str] | None = None) -> bool:
+    """A commencement pattern matches, or (D-39) a trigger chunk was retrieved and the question has
+    a time word; in both cases the question must not name only the Nigeria Tax Act."""
+    by_pattern = any(p.search(question) for p in policy.dq12_patterns)
+    by_retrieval = bool(retrieved and policy.dq12_time_words is not None
+                        and policy.dq12_chunks & set(retrieved) and policy.dq12_time_words.search(question))
+    if not (by_pattern or by_retrieval):
         return False
     acts = {_act_of(m.group(0)) for m in _ACT_NAME.finditer(question)}
     return not acts or "ntaa2025" in acts
 
 
 def disclose(cited: list[str], register_rows: list[dict], question: str, policy: Policy,
-             citations: dict[str, str] | None = None) -> list[Disclosure]:
+             citations: dict[str, str] | None = None, retrieved: list[str] | None = None) -> list[Disclosure]:
     """Disclosures for an answer citing `cited` (chunk ids, first-citation order).
 
     `register_rows` holds at least every row on the cited chunks and the anchor rows; other rows
     are ignored. `citations` maps chunk id to its human-readable citation (default: the id).
+    `retrieved` (all retrieved chunk ids) feeds the DQ-12 retrieval trigger only.
     """
     citations = citations or {}
     order = {chunk_id: i for i, chunk_id in enumerate(cited)}
@@ -163,6 +174,6 @@ def disclose(cited: list[str], register_rows: list[dict], question: str, policy:
             other = COMPARISON_NAMES.get(row["comparison_text"], row["comparison_text"])
             out.append(Disclosure("note", rid, "question", "question",
                                   f"{row_text(row, policy)} The {other} reads: {reading}"))
-    if is_ntaa_commencement_question(question, policy):
+    if is_ntaa_commencement_question(question, policy, retrieved):
         out.append(Disclosure("note", "DQ-12", "question", "question", policy.dq12_text))
     return out

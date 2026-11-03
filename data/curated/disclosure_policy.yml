@@ -80,6 +80,22 @@ notes:
       - '\btakes? effect\b'
       - '\btook effect\b'
       - '\bstart(?:s|ed)? to apply\b'
+      # Paraphrases added 2026-11-03 (D-39; guardrails design, section 7, weakness (e)).
+      - '\bfrom when\b'
+      - '\bsince when\b'
+      - '\bstart(?:ing)? date\b'
+      - '\bbegin(?:s|ning)? to apply\b'
+      - '\boperative\b'
+      - '\beffective (?:from|on|since)\b'
+      - '\bwhen (?:does|did|will) [\w\s]{0,60}\b(?:start|begin|apply|take effect)\b'
+    # Retrieval trigger (D-39): also shown when one of these chunks is retrieved (the Nigeria Tax
+    # Act commencement section and the Administration Act application section), the question has
+    # a time word, and it does not name only the Nigeria Tax Act. A false note costs one line; a
+    # missed one leaves a known dispute undisclosed.
+    retrieved_chunks:
+      - nta2025:s203
+      - ntaa2025:s2
+    time_words: '\b(?:when|date|from|since|year)\b'
     text: "The NRS print of the Nigeria Tax Administration Act 2025 gives two commencement dates:
       its long title reads \"[1st Day of January, 2026]\" (page 7), while section 148 says the Act
       \"shall come into effect on the 1st day of January, 2025\" (page 74). Neither provision is in

@@ -1,7 +1,10 @@
-"""Generation model client (D-26, D-27; generation design, sections 7 and 8).
+"""Model client for generation and verification (D-26, D-27, D-31; generation design, sections 7
+and 8; guardrails design, section 3.3).
 
 A client takes the request parameters built by `request_params` and returns an `LLMResponse`.
-`AnthropicLLMClient` calls the Claude API; tests pass a fake with the same `create` method.
+`AnthropicLLMClient` calls the Claude API; tests pass a fake with the same `create` method. The
+generator (Sonnet 5.5) and the verifier (Haiku 5.5) use the same key handling; their settings are
+in SETTINGS.
 
 The key is read from .env (LLM_API_KEY) and passed to the SDK explicitly, together with the API
 base URL, so the SDK never falls back to ANTHROPIC_API_KEY, a saved profile or an
@@ -26,10 +29,23 @@ MAX_TOKENS = 16_000
 TIMEOUT_S = 120.0
 MAX_RETRIES = 3
 
-# USD per million tokens, Claude API standard tier, accessed 2026-11-02 from
-# https://platform.claude.com/docs/en/about-claude/pricing (D-26).
+VERIFIER_MODEL = "claude-haiku-5-5"
+VERIFIER_EFFORT = "medium"  # the starting point; calibration sets the final value (D-31)
+VERIFIER_MAX_TOKENS = 16_000  # a ceiling, not a cost; a max_tokens stop removes the claim
+VERIFIER_TIMEOUT_S = 60.0
+
+# Per-model request settings: generation (D-26) and verification (D-31).
+SETTINGS = {
+    MODEL: {"effort": EFFORT, "max_tokens": MAX_TOKENS, "timeout": TIMEOUT_S},
+    VERIFIER_MODEL: {"effort": VERIFIER_EFFORT, "max_tokens": VERIFIER_MAX_TOKENS, "timeout": VERIFIER_TIMEOUT_S},
+}
+
+# USD per million tokens, Claude API standard tier, from
+# https://platform.claude.com/docs/en/about-claude/pricing: Sonnet 5.5 accessed 2026-11-02 (D-26),
+# Haiku 5.5 (prompts up to 100,000 tokens) accessed 2026-11-03 (D-31).
 PRICES = {
     "claude-sonnet-5-5": {"input": 2.00, "cache_write_5m": 2.50, "cache_read": 0.10, "output": 10.00},
+    "claude-haiku-5-5": {"input": 0.10, "cache_write_5m": 0.125, "cache_read": 0.01, "output": 0.50},
 }
 
 
@@ -89,8 +105,9 @@ def cost_usd(usage: dict, model: str = MODEL) -> float:
 class AnthropicLLMClient:
     """Claude API client for one model. The SDK retries 408, 409, 429, 5xx and connection errors."""
 
-    def __init__(self, api_key: str | None = None, *, model: str = MODEL, timeout: float = TIMEOUT_S,
+    def __init__(self, api_key: str | None = None, *, model: str = MODEL, timeout: float | None = None,
                  max_retries: int = MAX_RETRIES, http_client=None):
+        timeout = timeout if timeout is not None else SETTINGS.get(model, {}).get("timeout", TIMEOUT_S)
         import anthropic
 
         if api_key is None:

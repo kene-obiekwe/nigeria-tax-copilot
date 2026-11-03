@@ -1,10 +1,11 @@
-"""Generation log (D-28; generation design, section 9).
+"""Generation log (D-28, D-39; generation design, section 9; guardrails design, section 9).
 
-One JSON object per model call, including failed calls, appended to
-logs/generation/YYYY-MM-DD.jsonl (UTC date). logs/ is git-ignored. Schema `gen-log/1`; its fields
-map onto the Phase 9 audit table (timestamp, question, retrieved chunk ids, generated answer,
-verification outcome, refusal flag). Records never hold the API key, request headers or a
-provider error message.
+One JSON object per question, including refused and failed ones, appended to
+logs/generation/YYYY-MM-DD.jsonl (UTC date). logs/ is git-ignored. New records use schema
+`gen-log/2`, which adds the guardrail pre-checks, the refusal and the filled verification field to
+`gen-log/1`; Phase 5 records stay as written and still read. The fields map onto the Phase 9
+audit table (timestamp, question, retrieved chunk ids, generated answer, verification outcome,
+refusal flag). Records never hold the API key, request headers or a provider error message.
 """
 from __future__ import annotations
 
@@ -14,9 +15,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 LOG_DIR = ROOT / "logs" / "generation"
-SCHEMA = "gen-log/1"
-FIELDS = ("schema", "record_id", "timestamp", "question", "corpus", "retrieval", "request", "response",
-          "parsed", "disclosures", "rendered", "refusal_flag", "verification", "error")
+SCHEMA = "gen-log/2"
+FIELDS_V1 = ("schema", "record_id", "timestamp", "question", "corpus", "retrieval", "request", "response",
+             "parsed", "disclosures", "rendered", "refusal_flag", "verification", "error")
+FIELDS = ("schema", "record_id", "timestamp", "question", "corpus", "guardrails", "retrieval", "request",
+          "response", "parsed", "verification", "refusal", "disclosures", "notes", "rendered", "refusal_flag",
+          "error")
+FIELDS_BY_SCHEMA = {"gen-log/1": FIELDS_V1, "gen-log/2": FIELDS}
 
 
 def log_path(timestamp: datetime, log_dir: Path = LOG_DIR) -> Path:
@@ -36,5 +41,10 @@ def write_record(record: dict, timestamp: datetime, log_dir: Path = LOG_DIR) -> 
 
 
 def read_records(path: Path) -> list[dict]:
+    """Every record in `path`, of either schema version. Unknown versions raise an error."""
     with path.open(encoding="utf-8") as fh:
-        return [json.loads(line) for line in fh if line.strip()]
+        records = [json.loads(line) for line in fh if line.strip()]
+    for record in records:
+        if record.get("schema") not in FIELDS_BY_SCHEMA:
+            raise ValueError(f"unknown log schema {record.get('schema')!r}")
+    return records

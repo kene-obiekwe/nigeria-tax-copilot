@@ -22,7 +22,7 @@ sys.modules.setdefault("run_eval", run_eval)
 spec.loader.exec_module(run_eval)
 
 STORE = gen.FileCorpusStore()
-SYSTEM_PROMPT_SHA256 = "210b16b9b0b2be7491aa5f5789211367c33cf63497d0ee985b3aa6727eb4caf0"  # gen-prompt/2
+SYSTEM_PROMPT_SHA256 = "57b5e3b2945b264715e486554d64a4916c1bd2c9fb7278300c3df6bcb8c4fb0f"  # gen-prompt/3
 RETRIEVAL_CONFIG_SHA256 = "6ce743b317a58260f7eb397c7a6e9a7e14afab86cbde2dbc296273131c9e3684"  # D-21
 QUESTION = "Does the development levy apply to a small company?"
 CHUNK_IDS = ["nta2025:s59", "nta2025:s202:def:small-company", "nta2025:s56"]
@@ -60,10 +60,13 @@ ANSWER = {"status": "answered",
           "gaps": []}
 
 
+NO_VERIFY = gen.GenerationConfig(verify=False)  # the verification pass is tested in test_verification.py
+
+
 def run(output=ANSWER, tmp_path=None, **kw):
     fake = kw.pop("fake", None) or FakeLLM(output)
     answer = gen.generate(QUESTION, retriever=kw.pop("retriever", FakeRetriever()), llm=fake, store=STORE,
-                          log_dir=tmp_path, **kw)
+                          log_dir=tmp_path, config=kw.pop("config", NO_VERIFY), **kw)
     return answer, fake
 
 
@@ -72,7 +75,7 @@ def run(output=ANSWER, tmp_path=None, **kw):
 
 def test_system_prompt_is_pinned():
     assert hashlib.sha256(prompt.SYSTEM_PROMPT.encode("utf-8")).hexdigest() == SYSTEM_PROMPT_SHA256
-    assert prompt.PROMPT_VERSION == "gen-prompt/2"
+    assert prompt.PROMPT_VERSION == "gen-prompt/3"
     assert not re.search(r"\d{4}-\d{2}-\d{2}T|\{|\}", prompt.SYSTEM_PROMPT)  # no per-call content
 
 
@@ -206,7 +209,7 @@ def test_no_passages_declines_without_a_model_call(tmp_path):
 def test_dq12_note_reaches_a_decline():
     fake = FakeLLM({"status": "not_covered", "claims": [], "gaps": ["the commencement provision"]})
     answer = gen.generate("When did the Nigeria Tax Administration Act 2025 come into force?",
-                          retriever=FakeRetriever(), llm=fake, store=STORE, log_dir=None)
+                          retriever=FakeRetriever(), llm=fake, store=STORE, log_dir=None, config=NO_VERIFY)
     assert any(d.ref == "DQ-12" for d in answer.disclosures) and "1st day of January, 2025" in answer.rendered
 
 
@@ -217,10 +220,10 @@ def test_log_record_has_every_field_and_no_key(tmp_path, monkeypatch):
     text = path.read_text(encoding="utf-8")
     assert "NEVER-LOGGED" not in text
     record = audit_log.read_records(path)[0]
-    assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/1"
+    assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/2"
     assert record["record_id"] == answer.record_id and record["verification"] is None
     assert record["request"]["system"][0]["text"] == prompt.SYSTEM_PROMPT
-    assert record["request"]["prompt_version"] == "gen-prompt/2"
+    assert record["request"]["prompt_version"] == "gen-prompt/3"
     assert [c["chunk_id"] for c in record["retrieval"]["chunks"]] == CHUNK_IDS
     assert record["retrieval"]["config_sha256"] == RETRIEVAL_CONFIG_SHA256
     assert record["response"]["usage"]["cache_read_input_tokens"] == 700
@@ -297,6 +300,8 @@ def test_missing_key_never_falls_back_to_ambient_credentials(monkeypatch):
         llm.AnthropicLLMClient()
     with pytest.raises(llm.GenerationError):
         gen.generate(QUESTION, retriever=FakeRetriever(), store=STORE, log_dir=None)
+    with pytest.raises(llm.GenerationError):  # the verifier client too
+        gen.generate(QUESTION, retriever=FakeRetriever(), llm=FakeLLM(ANSWER), store=STORE, log_dir=None)
 
 
 # No test-split question in a Phase 5 artefact (D-29) --------------------------------------------
