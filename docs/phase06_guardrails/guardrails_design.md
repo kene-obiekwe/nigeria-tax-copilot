@@ -160,6 +160,12 @@ isolation is the point of the check.
 `low` by D-42; see the [calibration report](calibration_report.md). The draft below is kept as
 approved.)*
 
+*(D-46: `ver-schema/2` puts a `reasoning` field before `verdict`, and every `contradicted`
+verdict gets a second, independent call; section 3.7 says how a disagreement is read.)*
+
+*(D-47: the settings now in use are `ver-prompt/4`, `ver-schema/2` with the second call, `norm/3`,
+effort `low`, re-calibrated in run 8; see the calibration report, section 8.)*
+
 ```text
 You check one statement about Nigerian tax law against the statutory passages it cites. The
 passages are provisions of the Official Gazette text of the Nigeria Tax Act 2025 or the Nigeria
@@ -275,6 +281,9 @@ wins:
 
 1. Any claim is `contradicted`: **refuse** the whole answer (`unsupported_answer`). A
    contradiction means the model misread the law, so its other claims are not trusted either.
+   *(D-46: a claim counts as `contradicted` only when both verifier calls say so; when the
+   second call disagrees, the claim's final verdict is `unsupported`, so it is removed under
+   per-claim rule 4 and the answer is not refused for it.)*
 2. The answer would be refused under rule 3 or 4 below, but would not be if the call failures
    were left out: status `error`, reason `verification_unavailable`. A verifier outage is
    reported as an outage, never as a finding about the answer. No unchecked claim is shown (fail
@@ -478,6 +487,10 @@ them.
 All texts are pinned in a unit test, like the Phase 5 disclaimer. Question-triggered notes (DQ-12,
 anchor rows, scope notes, reference notes) are shown on refusals too.
 
+*(D-44: these notes are shown whatever the status: `answered`, `not_covered`, `refused` and
+`error`. DQ-12 also gains commencement-day wording and a period trigger (the Administration Act
+named with a date before 2026); the `pre_2026_periods` note also matches month-and-year dates.)*
+
 ### 4.6 Question escaping (prompt injection)
 
 Today `build_user_message` escapes passage attributes but inserts the question text raw. A
@@ -641,6 +654,10 @@ v3 is pinned by sha256 like v2. Every changed rule is tested on the tuning part,
 *(Superseded by D-43(a): `gen-prompt/4` extends rule 4. When a cited provision has an exception,
 proviso or exclusion that bears on the question, the model states it as its own claim, citing the
 passage. v4 is pinned by sha256 in `tests/test_generation.py`.)*
+
+*(D-45: `gen-prompt/5` adds to rule 4 that each claim must be true on its own: a rule's scope
+conditions and alternatives stay inside the claim that states the rule; exceptions, provisos and
+exclusions stay as their own claim. v5 is pinned by sha256 in `tests/test_generation.py`.)*
 
 ## 8. Model settings, cost and latency
 

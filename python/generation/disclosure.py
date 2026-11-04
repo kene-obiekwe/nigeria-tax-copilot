@@ -15,7 +15,7 @@ under a duplicate, or hidden:
 
 Hidden rows are returned with kind "hidden" so they reach the log, but the renderer skips them.
 Two data-quality notes are added: DQ-16 when NTA s191 is cited, and DQ-12 on Administration Act
-commencement questions. The lists and texts are pinned in data/curated/disclosure_policy.yml.
+commencement questions (D-39, D-44). The lists and texts are pinned in data/curated/disclosure_policy.yml.
 """
 from __future__ import annotations
 
@@ -59,6 +59,8 @@ class Policy:
     dq12_text: str
     dq12_chunks: frozenset[str] = frozenset()
     dq12_time_words: re.Pattern | None = None
+    dq12_period_act: re.Pattern | None = None
+    dq12_period: re.Pattern | None = None
 
 
 def load_policy(path: Path = POLICY) -> Policy:
@@ -77,7 +79,13 @@ def load_policy(path: Path = POLICY) -> Policy:
         dq12_chunks=frozenset(notes["DQ-12"].get("retrieved_chunks", [])),
         dq12_time_words=(re.compile(notes["DQ-12"]["time_words"], re.IGNORECASE)
                          if notes["DQ-12"].get("time_words") else None),
+        dq12_period_act=_optional(notes["DQ-12"].get("period_trigger", {}).get("act")),
+        dq12_period=_optional(notes["DQ-12"].get("period_trigger", {}).get("period")),
     )
+
+
+def _optional(pattern: str | None) -> re.Pattern | None:
+    return re.compile(pattern, re.IGNORECASE) if pattern else None
 
 
 def is_anchor(row: dict) -> bool:
@@ -116,7 +124,12 @@ def names_term(question: str, term: str) -> bool:
 
 def is_ntaa_commencement_question(question: str, policy: Policy, retrieved: list[str] | None = None) -> bool:
     """A commencement pattern matches, or (D-39) a trigger chunk was retrieved and the question has
-    a time word; in both cases the question must not name only the Nigeria Tax Act."""
+    a time word, or (D-44) the question names the Administration Act and a period before 2026. The
+    question must not name only the Nigeria Tax Act (the period trigger names the Administration Act,
+    so it always passes that test)."""
+    if (policy.dq12_period_act is not None and policy.dq12_period is not None
+            and policy.dq12_period_act.search(question) and policy.dq12_period.search(question)):
+        return True
     by_pattern = any(p.search(question) for p in policy.dq12_patterns)
     by_retrieval = bool(retrieved and policy.dq12_time_words is not None
                         and policy.dq12_chunks & set(retrieved) and policy.dq12_time_words.search(question))

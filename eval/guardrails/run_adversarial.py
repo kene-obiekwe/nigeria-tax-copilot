@@ -46,7 +46,7 @@ from generation.generate import DISCLAIMER, RETRIEVAL_CONFIG, DbCorpusStore, gen
 from generation.guardrails import POLICY as GUARDRAILS_POLICY, load_guardrails_policy, note_labels  # noqa: E402
 from generation.llm import EFFORT, MODEL, VERIFIER_EFFORT, VERIFIER_MODEL, AnthropicLLMClient  # noqa: E402
 from generation.prompt import (GAP_PROMPT_VERSION, GAP_SYSTEM_PROMPT, PROMPT_VERSION, SYSTEM_PROMPT,  # noqa: E402
-                               VERIFIER_PROMPT_VERSION, VERIFIER_SYSTEM_PROMPT)
+                               VERIFIER_PROMPT_VERSION, VERIFIER_SCHEMA_VERSION, VERIFIER_SYSTEM_PROMPT)
 from generation.verify import NORMALISER_VERSION  # noqa: E402
 from retrieval.retrieve import Retriever  # noqa: E402
 
@@ -137,6 +137,7 @@ def current_config() -> dict:
         "generation": {"model": MODEL, "effort": EFFORT, "prompt_version": PROMPT_VERSION,
                        "system_prompt_sha256": sha256_text(SYSTEM_PROMPT)},
         "verifier": {"model": VERIFIER_MODEL, "effort": VERIFIER_EFFORT, "prompt_version": VERIFIER_PROMPT_VERSION,
+                     "schema_version": VERIFIER_SCHEMA_VERSION,
                      "system_prompt_sha256": sha256_text(VERIFIER_SYSTEM_PROMPT),
                      "gap_prompt_version": GAP_PROMPT_VERSION, "gap_prompt_sha256": sha256_text(GAP_SYSTEM_PROMPT)},
         "normaliser": NORMALISER_VERSION,

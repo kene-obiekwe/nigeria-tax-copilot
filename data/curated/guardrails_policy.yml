@@ -83,9 +83,10 @@ scope_topics:
     text: "Customs and excise duties are outside the corpus this tool covers (v1)."
   # Added 2026-11-03 (overseer fix 5): a year from 1900 to 2025 used as a period ("in 2024", "the
   # 2023 year of assessment"), "before 2026", "pre-2026" or the repealed Acts' periods. A year inside
-  # an Act's name ("Nigeria Tax Act 2025") does not match.
+  # an Act's name ("Nigeria Tax Act 2025") does not match. Month-and-year dates ("March 2025",
+  # "15 March 2025", "Mar. 3, 2024") also match (D-44).
   pre_2026_periods:
-    pattern: '\b(?:in|for|during|before|until|since|from|of) (?:the )?(?:(?:tax |financial )?years? |year of assessment )?(?:19\d{2}|20(?:[01]\d|2[0-5]))\b(?!\s*(?:Act|Order))|\b(?:19\d{2}|20(?:[01]\d|2[0-5])) (?:tax year|year of assessment|financial year|accounts|returns?)\b|\bpre-?2026\b|\bbefore (?:1 )?(?:January )?2026\b|\bunder the (?:old|repealed|previous) (?:law|laws|Acts?)\b'
+    pattern: '\b(?:in|for|during|before|until|since|from|of) (?:the )?(?:(?:tax |financial )?years? |year of assessment )?(?:19\d{2}|20(?:[01]\d|2[0-5]))\b(?!\s*(?:Act|Order))|\b(?:19\d{2}|20(?:[01]\d|2[0-5])) (?:tax year|year of assessment|financial year|accounts|returns?)\b|\bpre-?2026\b|\bbefore (?:1 )?(?:January )?2026\b|\bunder the (?:old|repealed|previous) (?:law|laws|Acts?)\b|\b(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)\.?,?\s+(?:\d{1,2}(?:st|nd|rd|th)?,?\s+)?(?:19\d{2}|20(?:[01]\d|2[0-5]))\b'
     text: "Tax periods before 2026, under the repealed Acts, are outside the corpus this tool covers (v1)."
 
 scope_note_suffix: "Answers come only from the provisions that are in the corpus."
@@ -94,7 +95,11 @@ scope_note_suffix: "Answers come only from the provisions that are in the corpus
 disputed_gap_patterns:
   - '\banother official text\b'
   - '\bread(?:s)? differently\b'
-  - '\bdisputed\b'
+  # "disputed" only where it describes a text or passage (tuning run 1: the bare word removed a gap
+  # about "the tax disputed" under an objection). The gap classifier still sees every other gap.
+  - '\bdisputed (?:texts?|passages?|provisions?|readings?|wording|prints?)\b'
+  - '\b(?:passages?|provisions?|texts?|P[1-5])\b[^.]{0,40}\b(?:is|are|was|were)\s+(?:marked\s+|flagged\s+)?(?:as\s+)?disputed\b'
+  - '\bdisputed\s*=\s*"?(?:yes|no)\b'
   - '\bmarked as\b'
 
 # Questions longer than this, empty, or with no letters are refused as invalid_question.
@@ -103,8 +108,11 @@ max_question_chars: 2000
 # Relevance floor (D-35). tau stays empty, and the floor off, until calibration: tau = lowest top-1
 # vector score among the in-scope calibration questions minus the margin, rounded down to two
 # decimals. Never set from the test split.
+# Set 2026-11-03 on 26 scored questions (18 dev, G03, 7 tune-part controls; 4 section lookups
+# exempt: Q047, Q050, G05, one control). Lowest top-1 vector score 0.4555 (Q025); 0.4555 - 0.05,
+# rounded down, gives 0.40.
 relevance_floor:
-  tau: null
+  tau: 0.40
   margin: 0.05
-  calibrated_on: null
-  questions: null
+  calibrated_on: 2026-11-03
+  questions: 26

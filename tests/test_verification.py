@@ -3,6 +3,7 @@ normaliser, the rule check, the evidence check, verifier parsing, the action rul
 question escaping and gen-log/2. A fake verifier client, a fake retriever and the committed chunk
 files stand in for the API and the database, so no key and no database are needed. Assertion
 messages name ids only, never question text."""
+import hashlib
 import json
 import threading
 
@@ -18,6 +19,7 @@ GPOLICY = load_guardrails_policy()
 CALIBRATION = ROOT / "eval" / "guardrails" / "verifier_calibration_v1.jsonl"
 QUESTION = "Does the development levy apply to a small company?"
 CHUNK_IDS = ["nta2025:s59", "nta2025:s202:def:small-company", "nta2025:s56"]
+VERIFIER_PROMPT_SHA256 = "b5e2f49c4c7002876e47297b465ddaed8ef2c9f0ddd8df471d07b0be72e3d918"  # ver-prompt/4
 
 
 def chunk(text, citation="Nigeria Tax Act 2025, section 56", header="Nigeria Tax Act 2025 > Chapter TWO > s56 Rates",
@@ -31,8 +33,8 @@ RATE = chunk("56. Tax shall be levied at the rate of 30 per cent on the total pr
 
 
 def output(verdict="supported", reason="none", quotes=(("P1", "levied at the rate of 30 per cent"),),
-           citations=(("P1", True),), part=""):
-    return {"verdict": verdict, "reason": reason, "unsupported_part": part,
+           citations=(("P1", True),), part="", reasoning="The passage states the statement."):
+    return {"reasoning": reasoning, "verdict": verdict, "reason": reason, "unsupported_part": part,
             "evidence": [{"label": label, "quote": quote} for label, quote in quotes],
             "citations": [{"label": label, "supports": s} for label, s in citations]}
 
@@ -80,6 +82,16 @@ def statement(params):
 ])
 def test_normaliser_table(text, tokens):
     assert verify.extract_tokens(text) == tokens
+
+
+def test_schedule_paragraph_numbering_counts_as_a_paragraph():
+    """norm/3: Schedules number paragraphs "1.", "2." at the start of a line (tuning run 1)."""
+    sch = STORE.chunks(["nta2025:sch11"])["nta2025:sch11"]
+    assert {"para:1", "para:2", "sch:11"} <= verify.source_tokens(sch)
+    assert verify.rule_check("Paragraph 1 of the Eleventh Schedule lists petroleum products.", [sch]).passed
+    section = chunk("56. Tax is levied.\n1. A list item.", chunk_id="test:s56")
+    assert "para:1" not in verify.source_tokens(section)  # only Schedule chunks
+    assert verify.NORMALISER_VERSION == "norm/3"
 
 
 def test_normaliser_source_side_is_generous():
@@ -175,16 +187,20 @@ def test_evidence_label_with_a_section_suffix_is_read_as_its_passage():
 def test_each_verdict_is_parsed(verdict, reason):
     result, fake = check(lambda p: output(verdict, reason))
     assert (result.verdict, result.reason, result.llm_verdict) == (verdict, reason, verdict)
-    assert len(fake.requests) == 1 and result.response["stop_reason"] == "end_turn"
+    assert result.reasoning == "The passage states the statement."
+    # D-46: a contradiction is asked a second time; here both calls agree
+    assert len(fake.requests) == (2 if verdict == "contradicted" else 1)
+    assert result.response["stop_reason"] == "end_turn"
 
 
 @pytest.mark.parametrize("kw", [{"handler": lambda p: "not json"},
                                 {"handler": lambda p: {"verdict": "supported"}},
+                                {"handler": lambda p: {k: v for k, v in output().items() if k != "reasoning"}},
                                 {"handler": lambda p: output("maybe")},
                                 {"fake": FakeVerifier(stop_reason="refusal")},
                                 {"fake": FakeVerifier(stop_reason="max_tokens")},
                                 {"fake": FakeVerifier(raises=llm.GenerationError("APITimeoutError"))}],
-                         ids=["malformed", "schema", "enum", "refusal", "max_tokens", "timeout"])
+                         ids=["malformed", "schema", "no-reasoning", "enum", "refusal", "max_tokens", "timeout"])
 def test_call_failures_are_unverified(kw):
     result, _ = check(**kw)
     assert (result.verdict, result.sub_reason) == ("unverified", "call_failed") and result.error
@@ -195,6 +211,58 @@ def test_rule_failure_skips_the_call_unless_always_call():
     assert (result.verdict, result.reason) == ("unsupported", "figure_not_in_source") and fake.requests == []
     result, fake = check(text="Tax is levied at 25 per cent.", always_call=True)
     assert result.verdict == "unsupported" and result.llm_verdict == "supported" and len(fake.requests) == 1
+
+
+def test_verifier_schema_2_puts_reasoning_before_the_verdict():
+    assert prompt.VERIFIER_SCHEMA_VERSION == "ver-schema/2" and prompt.VERIFIER_PROMPT_VERSION == "ver-prompt/4"
+    assert list(prompt.VERIFIER_SCHEMA["properties"])[:2] == ["reasoning", "verdict"]
+    assert prompt.VERIFIER_SCHEMA["required"][:2] == ["reasoning", "verdict"]
+    assert hashlib.sha256(prompt.VERIFIER_SYSTEM_PROMPT.encode("utf-8")).hexdigest() == VERIFIER_PROMPT_SHA256
+    assert "Write your reasoning first, in reasoning" in prompt.VERIFIER_SYSTEM_PROMPT
+
+
+def second_call_handler(second):
+    """First call says contradicted; the second answers with `second` (a dict or raw text)."""
+    calls = []
+
+    def handler(params):
+        calls.append(params)
+        if len(calls) == 1:
+            return output("contradicted", "misread", quotes=(), part="all")
+        return second
+    return handler
+
+
+def test_contradiction_confirmed_by_the_second_call_stands():
+    result, fake = check(second_call_handler(output("contradicted", "misread", quotes=(), part="all")))
+    assert result.verdict == "contradicted" and result.second["verdict"] == "contradicted"
+    assert len(fake.requests) == 2 and fake.requests[0] == fake.requests[1]  # the same request, asked again
+    assert result.usage["input_tokens"] == 800 and result.latency_ms == 18
+
+
+@pytest.mark.parametrize("second", [output("supported"), output("unsupported", "not_in_passages", quotes=()),
+                                    "not json"], ids=["supported", "unsupported", "failed"])
+def test_contradiction_the_second_call_disagrees_with_becomes_unsupported(second):
+    result, fake = check(second_call_handler(second))
+    assert (result.verdict, result.reason, result.llm_verdict) == ("unsupported", "misread", "contradicted")
+    assert len(fake.requests) == 2 and result.second["verdict"] != "contradicted"
+    assert (result.second["error"] is not None) == (second == "not json")
+
+
+def test_only_contradictions_get_a_second_call():
+    for verdict in ("supported", "unsupported", "not_a_claim"):
+        _, fake = check(lambda p, v=verdict: output(v, "none" if v == "supported" else "not_in_passages"))
+        assert len(fake.requests) == 1, verdict
+
+
+def test_a_disagreed_contradiction_removes_the_claim_without_refusing():
+    """D-46: in tuning run 1 one self-inconsistent `contradicted` call refused a whole answer."""
+    claims = [verify.check_claim(i, "Tax is levied at 30 per cent.", [("P1", RATE)], FakeVerifier())
+              for i in (1, 2, 3)]
+    claims.append(verify.check_claim(4, "Tax is levied at 30 per cent.", [("P1", RATE)],
+                                     FakeVerifier(second_call_handler(output("supported")))))
+    assert verify.apply_action_rule("answered", claims) == ("answered", None, [verify.FAILED_LINE[0]],
+                                                             ["claims_removed"])
 
 
 def test_verifier_sees_only_cited_passages_with_their_labels_and_the_hint():
@@ -406,14 +474,29 @@ def test_gen_log_2_record_has_every_field_and_verification(tmp_path, monkeypatch
     record = audit_log.read_records(path)[0]
     assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/2"
     v = record["verification"]
-    assert v["verifier_model"] == "claude-haiku-5-5" and v["prompt_version"] == "ver-prompt/3"
+    assert v["verifier_model"] == "claude-haiku-5-5" and v["prompt_version"] == "ver-prompt/4"
+    assert v["schema_version"] == "ver-schema/2" and v["normaliser"] == "norm/3"
     assert v["summary"]["outcome"] == "passed" and v["claims"][0]["action"] == "kept"
-    assert v["claims"][0]["request"]["prompt_version"] == "ver-prompt/3" and v["claims"][0]["response"]["usage"]
+    assert v["claims"][0]["request"]["prompt_version"] == "ver-prompt/4" and v["claims"][0]["response"]["usage"]
+    assert v["claims"][0]["request"]["schema_version"] == "ver-schema/2"
+    assert v["claims"][0]["reasoning"] and v["claims"][0]["second"] is None
     assert v["claims"][0]["evidence"][0]["found"] is True
-    assert record["guardrails"]["policy_sha256"] == GPOLICY.sha256 and record["guardrails"]["floor_calibrated"] is False
+    assert record["guardrails"]["policy_sha256"] == GPOLICY.sha256 and record["guardrails"]["floor_calibrated"] is True
     assert record["refusal"] is None and record["refusal_flag"] is False and record["notes"] == []
     assert answer.verification_cost_usd == pytest.approx(v["cost_usd"], abs=1e-6)
     assert answer.total_cost_usd == pytest.approx(answer.cost_usd + answer.verification_cost_usd)
+
+
+@pytest.mark.parametrize("gap,removed", [
+    ("P2 is marked as disputed in the register.", True),
+    ("The passage is disputed in another official text.", True),
+    ("Which disputed passages apply is not stated.", True),
+    ('The provision shown with disputed="yes" is not explained.', True),
+    ("Which part of an assessment counts as the tax disputed is not stated in the passages.", False),
+    ("Whether an amount under objection is disputed tax depends on facts not given.", False),
+])
+def test_disputed_gap_pattern_needs_a_text_or_passage(gap, removed):
+    assert any(p.search(gap) for p in GPOLICY.disputed_gap_patterns) is removed
 
 
 def test_gen_log_1_records_still_read_and_unknown_schemas_do_not(tmp_path):

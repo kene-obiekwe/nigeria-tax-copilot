@@ -299,8 +299,9 @@ def render(status: str, claims: list[Claim], gaps: list[str], cited: list[str], 
            disclosures: list[Disclosure], *, notes: list[Disclosure] | None = None, refusal_text: str | None = None,
            removal_lines: list[str] | None = None) -> str:
     """Markdown answer. Answered and declined: notes, then claims with citations (and the
-    removed-claims lines), gaps, sources, shown disclosures, disclaimer. Refused: the refusal text,
-    notes, question-triggered disclosures, disclaimer. Error: the error text and the disclaimer."""
+    removed-claims lines), gaps, sources, shown disclosures, disclaimer. Refused and error: the
+    refusal or error text, notes, question-triggered disclosures, disclaimer (D-44: notes are shown
+    whatever the status)."""
     parts: list[str] = []
     note_block = ("Notes\n" + "\n".join(f"- {n.text}" for n in notes)) if notes else None
     if status in ("answered", "not_covered") and note_block:
@@ -311,19 +312,17 @@ def render(status: str, claims: list[Claim], gaps: list[str], cited: list[str], 
         parts.extend(removal_lines or [])
     elif status == "not_covered":
         parts.append(DECLINE_TEXT)
-    elif status == "refused":
-        parts.append(refusal_text or UNSUPPORTED_ANSWER_TEXT)
+    else:
+        parts.append(refusal_text or (UNSUPPORTED_ANSWER_TEXT if status == "refused" else ERROR_TEXT))
         if note_block:
             parts.append(note_block)
-    else:
-        parts.append(refusal_text or ERROR_TEXT)
     if status in ("answered", "not_covered") and gaps:
         parts.append("Not covered by the retrieved provisions:\n" + "\n".join(f"- {gap}" for gap in gaps))
     if status == "answered":
         parts.append("Sources\n" + "\n".join(f"- {chunks[c]['citation']}{_pages(chunks[c]['page_labels'])}"
                                               for c in cited))
     shown = [d for d in disclosures if d.kind != "hidden"]
-    if status != "error" and shown:
+    if shown:
         lines = []
         for d in shown:
             refs = ", ".join([d.ref] + d.merged)
@@ -429,13 +428,10 @@ def _generate(question, k, retriever, llm, verifier, store, config, log_dir, que
             refusal = {"status": status, "reason": verification.refusal_reason, "stage": "verification"}
             error = verification.refusal_reason if status == "error" else None
 
-    cited = cited_in_order(claims)
-    if status == "error":
-        disclosures: list[Disclosure] = []
-    else:
-        rows = store.register_rows(cited, sorted(policy.anchor_terms))
-        disclosures = disclose(cited, rows, question, policy, {c: chunks[c]["citation"] for c in cited},
-                               retrieved=[item.chunk_id for item in retrieved])
+    cited = cited_in_order(claims)  # empty unless answered, so other statuses get question notes only
+    rows = store.register_rows(cited, sorted(policy.anchor_terms))
+    disclosures = disclose(cited, rows, question, policy, {c: chunks[c]["citation"] for c in cited},
+                           retrieved=[item.chunk_id for item in retrieved])
     rendered = render(status, claims, gaps, cited, chunks, disclosures, notes=check.notes,
                       refusal_text=_refusal_text(refusal["reason"], check) if refusal else None,
                       removal_lines=verification.removal_lines if verification else None)

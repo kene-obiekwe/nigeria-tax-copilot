@@ -11,7 +11,7 @@ import sys
 import pytest
 
 from generation import generate as gen, guardrails, llm
-from generation.disclosure import is_ntaa_commencement_question, load_policy
+from generation.disclosure import Disclosure, is_ntaa_commencement_question, load_policy
 from retrieval.retrieve import Retrieved
 
 ROOT = gen.ROOT
@@ -86,6 +86,13 @@ def test_no_act_named_and_both_acts_have_the_section_names_both():
     assert "Section 125 of the Nigeria Tax Act 2025" in text and "Section 125 of the Nigeria Tax Administration Act 2025" in text
 
 
+def test_tax_administration_act_without_nigeria_names_the_administration_act():
+    result = check("Explain section 160 of the Tax Administration Act.")
+    assert result.refusal == "no_such_section"
+    assert result.refusal_text == "The Nigeria Tax Administration Act 2025 has no section 160. It has 148 sections."
+    assert [r.act for r in result.references] == ["ntaa2025"]
+
+
 def test_another_act_is_a_note_and_never_a_refusal():
     result = check("Does section 24 of CITA still apply after the new law?")
     assert result.refusal is None and result.flags == ["act_note"]
@@ -129,11 +136,11 @@ def test_floor():
 
 
 def test_tau_is_read_from_the_policy_file(tmp_path):
-    assert POLICY.tau is None  # empty until calibration (D-35)
+    assert POLICY.tau == 0.40  # set by calibration on 2026-11-03 (D-35)
     text = (ROOT / "data" / "curated" / "guardrails_policy.yml").read_text(encoding="utf-8")
     path = tmp_path / "policy.yml"
-    path.write_text(text.replace("  tau: null", "  tau: 0.40"), encoding="utf-8")
-    assert guardrails.load_guardrails_policy(path).tau == 0.40
+    path.write_text(text.replace("  tau: 0.40", "  tau: null"), encoding="utf-8")
+    assert guardrails.load_guardrails_policy(path).tau is None  # an empty tau turns the floor off
 
 
 class CountingRetriever:
@@ -157,12 +164,10 @@ class CountingLLM:
 
 
 def test_floor_refuses_after_retrieval_and_before_any_model_call(tmp_path):
-    text = (ROOT / "data" / "curated" / "guardrails_policy.yml").read_text(encoding="utf-8")
-    path = tmp_path / "policy.yml"
-    path.write_text(text.replace("  tau: null", "  tau: 0.40"), encoding="utf-8")
+    assert POLICY.tau == 0.40
     retriever, model, verifier = CountingRetriever(0.30), CountingLLM(), CountingLLM()
     answer = gen.generate("How do I bake bread?", retriever=retriever, llm=model, verifier=verifier, store=STORE,
-                          log_dir=None, guardrails_policy=guardrails.load_guardrails_policy(path))
+                          log_dir=None, guardrails_policy=POLICY)
     assert (answer.status, answer.refusal_reason) == ("refused", "low_relevance")
     assert retriever.calls == 1 and model.requests == [] and verifier.requests == []
 
@@ -193,6 +198,10 @@ def test_pre_check_refusal_makes_no_retrieval_or_model_call(tmp_path):
     ("pre_2026_periods", "How was my company taxed in 2024?"),
     ("pre_2026_periods", "What rate applied for the 2023 year of assessment?"),
     ("pre_2026_periods", "Which rules covered profits earned before January 2026?"),
+    # D-44: month-and-year dates
+    ("pre_2026_periods", "Was a VAT return lodged in October 2024 on time?"),
+    ("pre_2026_periods", "What applied to a sale made on 15 June 2023?"),
+    ("pre_2026_periods", "Do the Dec. 2025 accounts follow the new rules?"),
 ])
 def test_scope_notes_fire_on_their_patterns(topic, question):
     result = check(question)
@@ -202,7 +211,8 @@ def test_scope_notes_fire_on_their_patterns(topic, question):
 
 @pytest.mark.parametrize("question", ["What does the Nigeria Tax Act 2025 say about VAT?",
                                       "Is section 9 of the Nigeria Tax Act, 2025 in force?",
-                                      "What is due in 2026?"])
+                                      "What is due in 2026?",
+                                      "Is a return due by 31 March 2026?"])
 def test_pre_2026_note_ignores_the_acts_own_year_and_later_years(question):
     assert "scope:pre_2026_periods" not in [n.ref for n in check(question).notes]
 
@@ -250,6 +260,22 @@ def test_dq12_new_patterns(question):
     assert is_ntaa_commencement_question(question, DQ12)
 
 
+@pytest.mark.parametrize("question,shown", [
+    # commencement-day wording (D-44)
+    ("On what date do the reformed tax rules become binding on traders?", True),
+    ("Which date must firms comply with the new administration rules from?", True),
+    ("As of what day are returns governed by the administration statute?", True),
+    ("What date must a VAT return be filed?", False),
+    # period trigger (D-44): the Administration Act named with a date or year before 2026
+    ("Can the NTAA penalties reach a return lodged in 2024?", True),
+    ("Is a late return from Oct 2025 caught by the Tax Administration Act?", True),
+    ("What penalty does the Nigeria Tax Administration Act 2025 set for late returns?", False),
+    ("What penalty does the Nigeria Tax Act set for a return lodged in 2024?", False),
+])
+def test_dq12_commencement_day_and_period_triggers(question, shown):
+    assert is_ntaa_commencement_question(question, DQ12) is shown
+
+
 def test_dq12_retrieval_trigger():
     question = "What year do the tax administration rules cover?"  # no pattern matches
     assert not is_ntaa_commencement_question(question, DQ12)
@@ -293,6 +319,22 @@ def test_answer_renders_notes_first_and_removal_lines_after_the_claims():
     assert parts[0].startswith("Notes\n- The Companies Income Tax Act") and parts[1].startswith(claim.text)
     assert parts[2] == "1 statement was removed because the cited provisions did not support it."
     assert parts[3].startswith("Sources\n") and rendered.endswith(gen.DISCLAIMER)
+
+
+@pytest.mark.parametrize("status", ["answered", "not_covered", "refused", "error"])
+def test_notes_and_question_disclosures_render_whatever_the_status(status):
+    """D-44: a note the question triggers is shown on every status."""
+    notes = check("How was my company taxed in 2024?").notes
+    dq12 = Disclosure("note", "DQ-12", "question", "question", DQ12.dq12_text)
+    chunks = STORE.chunks(["nta2025:s56"])
+    claims = [gen.Claim("Tax is levied on total profits.", ["P1"], ["nta2025:s56"])] if status == "answered" else []
+    cited = ["nta2025:s56"] if claims else []
+    rendered = gen.render(status, claims, [], cited, chunks, [dq12], notes=notes,
+                          refusal_text="x" if status in ("refused", "error") else None)
+    assert "Notes\n- " + notes[0].text in rendered and DQ12.dq12_text in rendered
+    assert rendered.endswith(gen.DISCLAIMER)
+    if status in ("refused", "error"):
+        assert rendered.startswith("x\n\nNotes\n")
 
 
 @pytest.mark.parametrize("status,text", [("refused", "x"), ("error", None), ("not_covered", None)])

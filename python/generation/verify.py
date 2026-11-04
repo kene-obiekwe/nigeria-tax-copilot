@@ -38,7 +38,8 @@ from generation.prompt import (GAP_CLASSES, GAP_PROMPT_VERSION, GAP_SCHEMA, GAP_
                                VERIFIER_SCHEMA_VERSION, VERIFIER_SYSTEM_PROMPT, build_gap_message,
                                build_verifier_message)
 
-NORMALISER_VERSION = "norm/2"  # norm/2: evidence and citation labels read as their leading passage label
+NORMALISER_VERSION = "norm/3"  # norm/2: evidence and citation labels read as their leading passage label;
+# norm/3: a Schedule chunk's line-start "N." numbering counts as paragraph N
 MAX_WORKERS = 4
 MIN_QUOTE_CHARS = 12
 NO_PASSAGES_GAP = "No provisions were retrieved for this question."
@@ -93,6 +94,7 @@ _PAREN_RANGE = re.compile(r"\(([a-z])\)\s*(?:-|to)\s*\(([a-z])\)")
 _HEADER_SECTION = re.compile(r"\bs(\d+)\b")
 _INNER_PAREN = re.compile(r"\(([0-9a-z]+)\)")
 _PASSAGE_LABEL = re.compile(r"\s*(P\d+)\b", re.IGNORECASE)
+_LINE_NUMBER = re.compile(r"^[ \t]*(\d{1,3})\.(?=\s)", re.MULTILINE)
 _LIST_NUM = re.compile(r"(?:,|and|or|to)\s*(\d+)")
 _UNIT_AFTER = re.compile(r"(?:\s+[a-z]+)?\s*(?:%|per\s*cent\b|percent\b|(?:calendar\s+)?(?:days?|weeks?|months?|"
                          r"years?|hours?)\b|million\b|billion\b|thousand\b|hundred\b|naira\b|kobo\b|times\b)")
@@ -272,6 +274,9 @@ def source_tokens(chunk: dict) -> set[str]:
     tokens |= extract_tokens(chunk["context_header"], source=True)
     tokens.update(f"sec:{n}" for n in _HEADER_SECTION.findall(chunk["context_header"]))
     tokens.update(f"num:{n}" for n in _HEADER_SECTION.findall(chunk["context_header"]))
+    if ":sch" in chunk["chunk_id"]:  # norm/3: Schedules number their paragraphs "1.", "2.", ...
+        for n in _LINE_NUMBER.findall(chunk["text"]):
+            tokens.update({f"para:{int(n)}", f"num:{int(n)}"})
     return tokens
 
 
@@ -350,6 +355,8 @@ class ClaimCheck:
     reason: str | None = None
     sub_reason: str | None = None       # call_failed | evidence_not_found (unverified only)
     llm_verdict: str | None = None      # as returned, before the rule and evidence checks
+    reasoning: str = ""
+    second: dict | None = None          # D-46: the second call on a `contradicted` verdict
     unsupported_part: str = ""
     evidence: list[dict] = field(default_factory=list)
     citations: list[dict] = field(default_factory=list)
@@ -365,8 +372,8 @@ class ClaimCheck:
     def as_log(self) -> dict:
         return {"no": self.no, "text": self.text, "labels": self.labels, "chunk_ids": self.chunk_ids,
                 "rule": self.rule.as_log(), "verdict": self.verdict, "reason": self.reason,
-                "sub_reason": self.sub_reason, "llm_verdict": self.llm_verdict,
-                "unsupported_part": self.unsupported_part, "evidence": self.evidence, "citations": self.citations,
+                "sub_reason": self.sub_reason, "llm_verdict": self.llm_verdict, "reasoning": self.reasoning,
+                "second": self.second, "unsupported_part": self.unsupported_part, "evidence": self.evidence, "citations": self.citations,
                 "kept_chunk_ids": self.kept_chunk_ids, "action": self.action, "request": self.request,
                 "response": self.response, "error": self.error, "usage": self.usage,
                 "cost_usd": round(self.cost_usd, 6), "latency_ms": self.latency_ms}
@@ -379,8 +386,11 @@ def _response_log(response: LLMResponse, model: str) -> dict:
 
 
 def _verdict_problem(data) -> str | None:
-    if not isinstance(data, dict) or set(data) != {"verdict", "reason", "unsupported_part", "evidence", "citations"}:
+    if not isinstance(data, dict) or set(data) != {"reasoning", "verdict", "reason", "unsupported_part", "evidence",
+                                                   "citations"}:
         return "top-level keys"
+    if not isinstance(data["reasoning"], str):
+        return "reasoning"
     if data["verdict"] not in VERDICTS or data["reason"] not in REASONS:
         return "verdict or reason"
     if not isinstance(data["unsupported_part"], str):
@@ -408,6 +418,25 @@ def _call(client: LLMClient, params: dict) -> tuple[LLMResponse | None, dict | N
         return response, json.loads(response.text), None
     except json.JSONDecodeError:
         return response, None, "output is not valid JSON"
+
+
+def _second_look(check: ClaimCheck, verifier: LLMClient, params: dict) -> None:
+    """D-46: a `contradicted` verdict refuses the whole answer, so it is asked again with the same
+    request. It stands only if the second call also says `contradicted`; any other answer, or a
+    failed call, makes the claim `unsupported` (removed, and the answer not refused for it)."""
+    response, data, error = _call(verifier, params)
+    if error is None and _verdict_problem(data):
+        error = f"output does not match the schema ({_verdict_problem(data)})"
+    second = {"verdict": None if error else data["verdict"], "reason": None if error else data["reason"],
+              "reasoning": None if error else data["reasoning"], "error": error,
+              "response": None if response is None else _response_log(response, verifier.model)}
+    if response is not None:
+        check.usage = {k: check.usage.get(k, 0) + response.usage.get(k, 0) for k in ZERO_USAGE}
+        check.cost_usd += cost_usd(response.usage, verifier.model)
+        check.latency_ms += response.latency_ms
+    check.second = second
+    if second["verdict"] != "contradicted":
+        check.verdict = "unsupported"  # the reason stays the first call's
 
 
 def check_claim(no: int, text: str, cited: list[tuple[str, dict]], verifier: LLMClient, *,
@@ -441,6 +470,7 @@ def check_claim(no: int, text: str, cited: list[tuple[str, dict]], verifier: LLM
         return check
 
     check.llm_verdict = data["verdict"]
+    check.reasoning = data["reasoning"]
     check.unsupported_part = data["unsupported_part"]
     by_label = dict(cited)
     evidence = [(passage_label(e["label"]), e["quote"]) for e in data["evidence"]]
@@ -451,6 +481,8 @@ def check_claim(no: int, text: str, cited: list[tuple[str, dict]], verifier: LLM
     if not check.rule.passed:
         return check  # the rule check decides; the LLM verdict is logged for calibration
     check.verdict, check.reason = data["verdict"], data["reason"]
+    if check.verdict == "contradicted":
+        _second_look(check, verifier, params)
     if check.verdict == "supported":
         found = [e["label"] for e in check.evidence if e["found"]]
         if not found:

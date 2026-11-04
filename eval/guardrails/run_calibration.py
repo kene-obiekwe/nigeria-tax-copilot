@@ -35,7 +35,7 @@ sys.path.insert(0, str(ROOT / "python"))
 
 from generation.generate import FileCorpusStore  # noqa: E402
 from generation.llm import VERIFIER_EFFORT, VERIFIER_MAX_TOKENS, VERIFIER_MODEL, AnthropicLLMClient  # noqa: E402
-from generation.prompt import VERIFIER_PROMPT_VERSION, VERIFIER_SYSTEM_PROMPT  # noqa: E402
+from generation.prompt import VERIFIER_PROMPT_VERSION, VERIFIER_SCHEMA_VERSION, VERIFIER_SYSTEM_PROMPT  # noqa: E402
 from generation.verify import NORMALISER_VERSION, check_claim  # noqa: E402
 
 CALIBRATION = HERE / "verifier_calibration_v1.jsonl"
@@ -128,7 +128,8 @@ def run(run_no: int, passes: int, effort: str, workers: int) -> dict:
                            "max": max(c.latency_ms for c in checks)},
             "verdict_counts": dict(Counter(verdicts.values())),
             "rows": [{"id": row["id"], "verdict": c.verdict, "reason": c.reason, "sub_reason": c.sub_reason,
-                      "llm_verdict": c.llm_verdict, "rule": c.rule.as_log(), "unsupported_part": c.unsupported_part,
+                      "llm_verdict": c.llm_verdict, "reasoning": c.reasoning, "second": c.second,
+                      "rule": c.rule.as_log(), "unsupported_part": c.unsupported_part,
                       "evidence": c.evidence, "citations": c.citations, "error": c.error,
                       "usage": c.usage, "cost_usd": round(c.cost_usd, 6), "latency_ms": c.latency_ms}
                      for row, c in zip(rows, checks)],
@@ -147,7 +148,7 @@ def run(run_no: int, passes: int, effort: str, workers: int) -> dict:
     record = {"run": run_no, "run_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
               "calibration_file": CALIBRATION.relative_to(ROOT).as_posix(), "calibration_sha256": CALIBRATION_SHA256,
               "verifier_model": verifier.model, "effort": effort, "normaliser": NORMALISER_VERSION,
-              "prompt_version": VERIFIER_PROMPT_VERSION,
+              "prompt_version": VERIFIER_PROMPT_VERSION, "schema_version": VERIFIER_SCHEMA_VERSION,
               "system_prompt_sha256": hashlib.sha256(VERIFIER_SYSTEM_PROMPT.encode("utf-8")).hexdigest(),
               "rows_run": len(rows), "passes": passes_out, "stability": stability}
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)

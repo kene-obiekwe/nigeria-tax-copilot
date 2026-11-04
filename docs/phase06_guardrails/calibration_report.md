@@ -1,7 +1,7 @@
 # Verifier Calibration (Phase 6, step B2)
 
 Status: calibration complete on 2026-11-03; every target in design section 3.8 is met on the final
-settings. These are tuning numbers on the calibration set (design section 3.8), not a test of the
+settings. Re-calibrated on 2026-11-04 after tuning run 1 (run 8, section 8): every target still met. These are tuning numbers on the calibration set (design section 3.8), not a test of the
 whole system; gate G2 (design section 6) is that test.
 
 This is a research and reference tool, not tax advice.
@@ -42,6 +42,10 @@ changes between two passes reported, above 3% a risk to review.
 | 6 | ver-prompt/3 | norm/2 | low | 60 / 60 | 2 / 2 | 4 / 131 | 0 | $0.0301 | 1.5 s / 4.1 s |
 | 7, pass 1 | ver-prompt/3 | norm/2 | low | 60 / 60 | 2 / 2 | 3 / 131 | 0 | $0.0307 | 1.5 s / 4.1 s |
 | 7, pass 2 | ver-prompt/3 | norm/2 | low | 60 / 60 | 2 / 2 | 3 / 131 | 0 | $0.0304 | 1.5 s / 4.1 s |
+| 8, pass 1 | ver-prompt/4, ver-schema/2 | norm/3 | low | 60 / 60 | 2 / 2 | 3 / 131 | 0 | $0.0465 | 2.1 s / 5.7 s |
+| 8, pass 2 | ver-prompt/4, ver-schema/2 | norm/3 | low | 60 / 60 | 2 / 2 | 1 / 131 | 0 | $0.0464 | 2.1 s / 5.2 s |
+
+Run 8 is the re-calibration after tuning run 1 (section 8).
 
 Bold marks a missed target. In every run, every mutation type was caught 10 of 10, both real
 unsupported claims (run 1 Q018 claim 4, Q043 claim 5) were caught, both real "not a factual claim"
@@ -212,3 +216,40 @@ roughly 3 to 5 s on top of generation. The tuning runs measure it.
 - **Follow-up (D-43):** the left-out-exception risk above is handled by a generator rule
   (`gen-prompt/4`) and by the reviewer's pass rule (design section 6.2), with an automated
   answer-level check only if tuning shows it is needed.
+
+## 8. Re-calibration after tuning run 1 (run 8, 2026-11-04)
+
+Tuning run 1 led to three verifier changes: `ver-schema/2` with `ver-prompt/4` (the verifier
+writes its reasoning before the verdict) and a second call on every `contradicted` verdict (D-46),
+and `norm/3` (a Schedule chunk's line-start "1.", "2." numbering counts as paragraph 1, 2). Run 8
+measures them on the same frozen set, at effort `low`, two passes
+(`eval/guardrails/results/calibration_run8.json`). These settings are recorded as D-47.
+
+| Measure | Target | Pass 1 | Pass 2 |
+|---|---|---|---|
+| Mutations caught | at least 57 of 60 | 60 of 60 | 60 of 60 |
+| Per type | at least 9 of 10 each | 10 of 10 each | 10 of 10 each |
+| Real unsupported claims caught | both | 2 of 2 | 2 of 2 |
+| False removals | at most 6 of 131 | 3 (2.3%) | 1 (0.8%) |
+| Evidence quotes not found | reported | 3 of 215 (no claim lost) | 3 of 218 (no claim lost) |
+| Verdict stability | report; above 3% is a risk | 6 of 195 changed (**3.08%**) | |
+
+- **Every target is met.** False removals: pass 1 CAL-R1-Q029-3 (`overstated_condition`),
+  CAL-R1-G05-3 (rule check, `chap:4`, as in every run) and CAL-R2-Q039-1 (`not_a_claim`); pass 2
+  only CAL-R1-G05-3.
+- **Second calls (D-46).** Pass 1 had 11 first-call `contradicted` verdicts and pass 2 had 11; the
+  second call confirmed 9 and 10 of them. The 3 it did not confirm (CAL-M-subject_swap-08 in both
+  passes, CAL-M-negation-04 in pass 1) became `unsupported`, so they are still caught. No
+  human-supported claim was `contradicted` by either call in either pass.
+- **Stability is above the 3% line (risk to review).** Of the 6 changes, 3 are mutations moving
+  between `unsupported` and `contradicted` (caught both times; the difference matters only at
+  answer level, where `contradicted` refuses), 2 are human-supported claims removed in pass 1 and
+  kept in pass 2 (CAL-R1-Q029-3, CAL-R2-Q039-1), and 1 is the real unsupported claim
+  CAL-R1-Q018-4, `unsupported` in pass 1 and `not_a_claim` in pass 2. Changes that alter whether a
+  claim is shown: 2 of 195 (1.0%). In the answer flow a `not_a_claim` verdict moves the text to
+  gaps, where the gap check judges it, so CAL-R1-Q018-4 would not be shown as a claim in either
+  pass.
+- **Cost and latency.** Writing the reasoning roughly doubles output tokens (about 61,000 per
+  pass, against about 31,000 in run 7), so a pass costs $0.0465 against $0.0307, about $0.00024
+  per claim. Median latency per claim call rose from 1.5 s to 2.1 s. Runs 1 to 8 spent $0.3964 in
+  all.

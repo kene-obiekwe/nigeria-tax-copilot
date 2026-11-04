@@ -49,7 +49,8 @@ ORDINALS["thirtenth"] = 13  # as misprinted in the gazette (DQ-14)
 _SCHEDULE_REF = re.compile(
     r"\b(" + "|".join(sorted(ORDINALS, key=len, reverse=True)) + r"|\d+(?:st|nd|rd|th))\s+schedule\b"
     r"|\bschedule\s+(\d+)\b", re.IGNORECASE)
-_CORPUS_ACT = re.compile(r"\bNigeria\s+Tax\s+Administration\s+Act\b|\bNigeria\s+Tax\s+Act\b|"
+# "Tax Administration Act" without "Nigeria" also names the Administration Act (tuning run 1).
+_CORPUS_ACT = re.compile(r"\b(?:Nigeria\s+)?Tax\s+Administration\s+Act\b|\bNigeria\s+Tax\s+Act\b|"
                          r"\b(?-i:NTAA)\b|\b(?-i:NTA)\b", re.IGNORECASE)
 
 INVALID_TEXT = ("The question could not be read. Please ask about the Nigeria Tax Act 2025 or the Nigeria "
