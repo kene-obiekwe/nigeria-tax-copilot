@@ -568,6 +568,7 @@ numbered, as in Phase 5. Tuning ends when one full tuning run passes every rule 
 **twice in a row**. Then a guardrails configuration file, `eval/guardrails/config_g2.json`
 (prompt versions, verifier model and effort, τ, policy file sha256, normaliser version), is
 frozen with its sha256.
+*(Tuning ended after runs 2 and 3 (C-05); `config_g2.json` was frozen on 2026-11-04, D-49.)*
 
 ### 6.2 Pass rule per case
 

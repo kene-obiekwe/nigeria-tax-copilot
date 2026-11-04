@@ -367,10 +367,20 @@ def test_holdout_guard(tmp_path):
         run_adversarial.check_holdout_guard(config_sha256=sha, **kw)
 
 
-def test_holdout_guard_on_the_real_files_refuses_until_frozen():
-    assert run_adversarial.CONFIG_G2_SHA256 is None
-    with pytest.raises(run_adversarial.GuardError):
-        run_adversarial.check_holdout_guard()
+def test_holdout_guard_on_the_real_files_matches_the_frozen_config(tmp_path):
+    """D-49 (frozen 2026-11-04): the recorded hash is the on-disk config_g2.json, the live configuration
+    equals it, it cannot be frozen again, and the guard refuses once a held-out marker exists. Only the
+    guard is called; nothing from the held-out part is read."""
+    assert run_adversarial.CONFIG_G2_SHA256 == "6faad20a1864fabfb8b812c612e4bc5ce5cbfdaa2060152fe98ca05f5eb965d9"
+    assert hashlib.sha256(run_adversarial.CONFIG_G2.read_bytes()).hexdigest() == run_adversarial.CONFIG_G2_SHA256
+    frozen = json.loads(run_adversarial.CONFIG_G2.read_text(encoding="utf-8"))
+    assert frozen == run_adversarial.current_config()
+    with pytest.raises(run_adversarial.GuardError, match="frozen once"):
+        run_adversarial.freeze_config()
+    marker = tmp_path / "marker.json"
+    marker.write_text("{}", encoding="utf-8")
+    with pytest.raises(run_adversarial.GuardError, match="runs once"):
+        run_adversarial.check_holdout_guard(marker=marker, result=tmp_path / "result.json")
 
 
 def test_adversarial_loader_keeps_one_split_and_checks_both_hashes(tmp_path):

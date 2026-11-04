@@ -1,0 +1,22 @@
+{
+ "generation": {
+  "model": "claude-sonnet-5-5",
+  "effort": "medium",
+  "prompt_version": "gen-prompt/5",
+  "system_prompt_sha256": "85ee84b03edb19cef01de8e8ea79262bda822a2a85e3ec2e6066d34c789e5444"
+ },
+ "verifier": {
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "prompt_version": "ver-prompt/4",
+  "schema_version": "ver-schema/2",
+  "system_prompt_sha256": "b5e2f49c4c7002876e47297b465ddaed8ef2c9f0ddd8df471d07b0be72e3d918",
+  "gap_prompt_version": "gap-prompt/1",
+  "gap_prompt_sha256": "83eab953e39dffe9286b88cd749270bfcde4fba1ce7a827908671f2a2625f05b"
+ },
+ "normaliser": "norm/4",
+ "tau": 0.4,
+ "guardrails_policy_sha256": "0d48c90abf57e771401f2d9bfafe4d170f8152d70aa8974584c51b9ec3eef9a5",
+ "disclosure_policy_sha256": "d0ceb7869c014fbe660d98712a3b79db6204c830d67d1dfee8e50e4a560b812d",
+ "retrieval_config_sha256": "6ce743b317a58260f7eb397c7a6e9a7e14afab86cbde2dbc296273131c9e3684"
+}
