@@ -616,6 +616,8 @@ removals stay at or under 5% on the calibration set (section 3.8).
   reviewed in the same way) is used for the next decision run. A held-out set is never re-run
   after its outputs have been seen.
 
+*(G2 decision run 1 failed on 2026-11-04, D-50. The next decision run uses adversarial_v2, D-52.)*
+
 ## 7. Fixes for the known weaknesses
 
 | Weakness | Fix | Where |
