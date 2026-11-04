@@ -253,3 +253,24 @@ measures them on the same frozen set, at effort `low`, two passes
   pass, against about 31,000 in run 7), so a pass costs $0.0465 against $0.0307, about $0.00024
   per claim. Median latency per claim call rose from 1.5 s to 2.1 s. Runs 1 to 8 spent $0.3964 in
   all.
+
+## 9. Case-insensitive evidence check (`norm/4`, D-48, 2026-11-04)
+
+Tuning run 2 lost one correct claim (Q029 claim 3, First Schedule paragraph 7) to the evidence check: the
+verifier's quote began "a capital allowance" and the passage reads "A capital allowance". `norm/4` compares
+the case-folded quote with the case-folded passage; whitespace, punctuation handling and the 12-character
+minimum are unchanged.
+
+**Offline re-check, no API calls.** `verify.evidence_found` (`norm/4`) was re-applied to every stored quote
+against the chunk of its cited label, and a final verdict was counted as changed where a claim removed as
+`unverified/evidence_not_found` would now have a quote found. Counts are over every stored quote of every
+row and pass, so they differ from the section 5 counts, which were taken differently.
+
+| Run | Quotes not found before | Found now | Final verdicts that change |
+|---|---|---|---|
+| Calibration run 7 (2 passes) | 3 | 0 | none |
+| Calibration run 8 (2 passes) | 6 | 2 | none (both are CAL-R1-Q029-3, which had another quote found in each pass) |
+| Tuning run 2 | 1 | 1 | Q029 claim 3: `unverified` to `supported` |
+
+No re-calibration run and no tuning run 3 were made (D-48): the change can only recover claims the verifier
+already judged `supported`.

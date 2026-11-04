@@ -91,7 +91,6 @@ def test_schedule_paragraph_numbering_counts_as_a_paragraph():
     assert verify.rule_check("Paragraph 1 of the Eleventh Schedule lists petroleum products.", [sch]).passed
     section = chunk("56. Tax is levied.\n1. A list item.", chunk_id="test:s56")
     assert "para:1" not in verify.source_tokens(section)  # only Schedule chunks
-    assert verify.NORMALISER_VERSION == "norm/3"
 
 
 def test_normaliser_source_side_is_generous():
@@ -146,6 +145,15 @@ def test_rule_check_on_the_real_supported_claims():
 
 
 # 3. Evidence check -----------------------------------------------------------------------------
+
+
+def test_evidence_check_ignores_letter_case_only():
+    """norm/4 (D-48): tuning run 2 lost a correct claim to a lower-case first letter."""
+    text = "7. A capital allowance in respect of qualifying expenditure shall be made to a person."
+    assert verify.evidence_found("a capital allowance in respect of qualifying expenditure", text)
+    assert verify.evidence_found("A CAPITAL ALLOWANCE in respect of qualifying expenditure", text)
+    assert not verify.evidence_found("a capital allowance in respect of eligible expenditure", text)  # one word changed
+    assert verify.NORMALISER_VERSION == "norm/4"
 
 
 def test_evidence_check():
@@ -475,7 +483,7 @@ def test_gen_log_2_record_has_every_field_and_verification(tmp_path, monkeypatch
     assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/2"
     v = record["verification"]
     assert v["verifier_model"] == "claude-haiku-5-5" and v["prompt_version"] == "ver-prompt/4"
-    assert v["schema_version"] == "ver-schema/2" and v["normaliser"] == "norm/3"
+    assert v["schema_version"] == "ver-schema/2" and v["normaliser"] == "norm/4"
     assert v["summary"]["outcome"] == "passed" and v["claims"][0]["action"] == "kept"
     assert v["claims"][0]["request"]["prompt_version"] == "ver-prompt/4" and v["claims"][0]["response"]["usage"]
     assert v["claims"][0]["request"]["schema_version"] == "ver-schema/2"

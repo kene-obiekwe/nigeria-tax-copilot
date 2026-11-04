@@ -38,8 +38,9 @@ from generation.prompt import (GAP_CLASSES, GAP_PROMPT_VERSION, GAP_SCHEMA, GAP_
                                VERIFIER_SCHEMA_VERSION, VERIFIER_SYSTEM_PROMPT, build_gap_message,
                                build_verifier_message)
 
-NORMALISER_VERSION = "norm/3"  # norm/2: evidence and citation labels read as their leading passage label;
-# norm/3: a Schedule chunk's line-start "N." numbering counts as paragraph N
+NORMALISER_VERSION = "norm/4"  # norm/2: evidence and citation labels read as their leading passage label;
+# norm/3: a Schedule chunk's line-start "N." numbering counts as paragraph N;
+# norm/4: the evidence check ignores letter case (D-48)
 MAX_WORKERS = 4
 MIN_QUOTE_CHARS = 12
 NO_PASSAGES_GAP = "No provisions were retrieved for this question."
@@ -330,8 +331,8 @@ def _evidence_form(text: str) -> str:
 
 
 def evidence_found(quote: str, chunk_text: str) -> bool:
-    quote = _evidence_form(quote)
-    return len(quote) >= MIN_QUOTE_CHARS and quote in _evidence_form(chunk_text)
+    quote = _evidence_form(quote).casefold()  # norm/4 (D-48)
+    return len(quote) >= MIN_QUOTE_CHARS and quote in _evidence_form(chunk_text).casefold()
 
 
 def passage_label(label: str) -> str:
