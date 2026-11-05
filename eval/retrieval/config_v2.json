@@ -1,0 +1,14 @@
+{
+ "name": "v2",
+ "based_on": "final",
+ "model": "openai/text-embedding-3-small",
+ "section_lookup": true,
+ "keyword": false,
+ "candidates": 50,
+ "rrf_k": 60,
+ "filters": null,
+ "other_act_refs": "skip",
+ "act_lookup": {"max_chunks": 2},
+ "keyword_slots": 1,
+ "passages": 6
+}

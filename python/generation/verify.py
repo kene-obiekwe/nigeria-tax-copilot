@@ -12,11 +12,15 @@ both pass:
    the LLM check, never a failure.
 2. **LLM check (Claude Haiku 5.5):** one call per claim, at most 4 at a time, with only that
    claim's cited passages. A `supported` verdict counts only when one of its evidence quotes is
-   found verbatim (after whitespace and quote marks are normalised) in a passage the claim cites.
+   found verbatim (after whitespace, dashes and quote marks are normalised, ignoring case) in the
+   text or context header of a passage the claim cites (norm/5, D-55).
 
 Gaps are filtered for the disputed flag in code, then classified in one call. The action rule
-(design section 3.7) then keeps, moves or removes each claim and decides whether the answer is
-shown, refused (`unsupported_answer`) or reported as an outage (`verification_unavailable`).
+(design section 3.7) then keeps or removes each claim and decides whether the answer is shown,
+refused (`unsupported_answer`) or reported as an outage (`verification_unavailable`). A claim
+judged `not_a_claim` (a statement about the passages) is dropped and logged as
+`moved_not_rendered`: it is never rendered, not even as a gap, and counts neither as checked nor
+as removed (D-59).
 """
 from __future__ import annotations
 
@@ -38,10 +42,12 @@ from generation.prompt import (GAP_CLASSES, GAP_PROMPT_VERSION, GAP_SCHEMA, GAP_
                                VERIFIER_SCHEMA_VERSION, VERIFIER_SYSTEM_PROMPT, build_gap_message,
                                build_verifier_message)
 
-NORMALISER_VERSION = "norm/4"  # norm/2: evidence and citation labels read as their leading passage label;
+NORMALISER_VERSION = "norm/5"  # norm/2: evidence and citation labels read as their leading passage label;
 # norm/3: a Schedule chunk's line-start "N." numbering counts as paragraph N;
-# norm/4: the evidence check ignores letter case (D-48)
+# norm/4: the evidence check ignores letter case (D-48);
+# norm/5: the evidence check ignores whitespace next to a dash and also searches the context header (D-55)
 MAX_WORKERS = 4
+MOVED_NOT_RENDERED = "moved_not_rendered"  # D-59
 MIN_QUOTE_CHARS = 12
 NO_PASSAGES_GAP = "No provisions were retrieved for this question."
 HARDENING = ("only", "always", "never", "solely", "exclusively", "in all cases")
@@ -326,13 +332,23 @@ def hint_note(word: str) -> str:
 # Evidence check ----------------------------------------------------------------------------------
 
 
+_DASH_SPACE = re.compile(r"\s*-\s*")
+
+
 def _evidence_form(text: str) -> str:
-    return re.sub(r"\s+", " ", _clean(text)).strip()
+    """Quote marks and dashes unified, whitespace collapsed, whitespace next to a dash removed on both
+    sides (norm/5: a dash at a line end, "of-" then "(a)" on the next line, reads as "of-(a)"), letter
+    case folded (norm/4)."""
+    return _DASH_SPACE.sub("-", re.sub(r"\s+", " ", _clean(text)).strip()).casefold()
 
 
-def evidence_found(quote: str, chunk_text: str) -> bool:
-    quote = _evidence_form(quote).casefold()  # norm/4 (D-48)
-    return len(quote) >= MIN_QUOTE_CHARS and quote in _evidence_form(chunk_text).casefold()
+def evidence_found(quote: str, chunk_text: str, context_header: str = "") -> bool:
+    """True if `quote` (at least MIN_QUOTE_CHARS after normalising) is in the passage's text or its
+    context header (norm/5, D-55: the verifier is shown the header as the passage's location)."""
+    quote = _evidence_form(quote)
+    if len(quote) < MIN_QUOTE_CHARS:
+        return False
+    return any(quote in _evidence_form(source) for source in (chunk_text, context_header) if source)
 
 
 def passage_label(label: str) -> str:
@@ -362,7 +378,7 @@ class ClaimCheck:
     evidence: list[dict] = field(default_factory=list)
     citations: list[dict] = field(default_factory=list)
     kept_chunk_ids: list[str] = field(default_factory=list)
-    action: str = "removed"             # kept | moved | removed
+    action: str = "removed"             # kept | moved_not_rendered (D-59) | removed
     request: dict | None = None
     response: dict | None = None
     error: str | None = None
@@ -476,7 +492,8 @@ def check_claim(no: int, text: str, cited: list[tuple[str, dict]], verifier: LLM
     by_label = dict(cited)
     evidence = [(passage_label(e["label"]), e["quote"]) for e in data["evidence"]]
     check.evidence = [{"label": label, "quote": quote,
-                       "found": label in by_label and evidence_found(quote, by_label[label]["text"])}
+                       "found": label in by_label and evidence_found(quote, by_label[label]["text"],
+                                                                     by_label[label].get("context_header", ""))}
                       for label, quote in evidence]
     check.citations = [{"label": passage_label(c["label"]), "supports": c["supports"]} for c in data["citations"]]
     if not check.rule.passed:
@@ -500,7 +517,7 @@ def check_claim(no: int, text: str, cited: list[tuple[str, dict]], verifier: LLM
 @dataclass
 class GapCheck:
     text: str
-    origin: str             # model | moved (a claim moved under rule 2)
+    origin: str             # model (claims judged not_a_claim are no longer moved here, D-59)
     gap_class: str | None
     kept: bool
     reason: str | None      # disputed_flag_repeat | legal_content | advice | unclassified | check_failed | fixed
@@ -623,10 +640,12 @@ def _refuses(removed: int, n: int, kept: int) -> bool:
 
 def apply_action_rule(model_status: str, checks: list[ClaimCheck]) -> tuple[str, str | None, list[str], list[str]]:
     """(status, refusal reason, removal lines, flags) for the checked claims, by design section
-    3.7. Sets each check's action. Claims moved to gaps count neither as checked nor as removed."""
+    3.7. Sets each check's action. A claim judged not_a_claim is dropped as `moved_not_rendered`
+    and counts neither as checked nor as removed (D-59)."""
     for c in checks:
-        c.action = "moved" if c.verdict == "not_a_claim" else "kept" if c.verdict == "supported" else "removed"
-    judged = [c for c in checks if c.action != "moved"]
+        c.action = (MOVED_NOT_RENDERED if c.verdict == "not_a_claim" else "kept" if c.verdict == "supported"
+                    else "removed")
+    judged = [c for c in checks if c.action != MOVED_NOT_RENDERED]
     n = len(judged)
     kept = sum(c.action == "kept" for c in judged)
     failed = sum(c.verdict in ("unsupported", "contradicted") for c in judged)
@@ -640,7 +659,7 @@ def apply_action_rule(model_status: str, checks: list[ClaimCheck]) -> tuple[str,
         return "error", "verification_unavailable", [], []
     if _refuses(removed, n, kept):
         return "refused", "unsupported_answer", [], []
-    if kept == 0:  # nothing was judged: the model declined, or every claim moved to gaps
+    if kept == 0:  # nothing was judged: the model declined, or every claim was not_a_claim
         return "not_covered", None, [], []
     lines, flags = [], []
     if failed:
@@ -669,7 +688,7 @@ def verify_answer(question: str, model_status: str, claims: list, gaps: list[str
         checks = list(pool.map(one, enumerate(claims, start=1)))
     status, reason, lines, flags = apply_action_rule(model_status, checks)
 
-    gap_input = [(g, "model") for g in gaps] + [(c.text, "moved") for c in checks if c.action == "moved"]
+    gap_input = [(g, "model") for g in gaps]  # D-59: not_a_claim statements are never rendered
     gap_result = None
     kept_gaps: list[str] = []
     if gap_input and status in ("answered", "not_covered"):
@@ -690,10 +709,10 @@ def verify_answer(question: str, model_status: str, claims: list, gaps: list[str
     outcome = {"answered": "claims_removed" if lines else "passed", "not_covered": "passed",
                "refused": "refused", "error": "unavailable"}[status]
     summary = {"outcome": outcome, "status": status, "refusal_reason": reason, "verdicts": verdicts,
-               "claims_checked": sum(c.action != "moved" for c in checks),
+               "claims_checked": sum(c.action != MOVED_NOT_RENDERED for c in checks),
                "claims_kept": sum(c.action == "kept" for c in checks),
                "claims_removed": sum(c.action == "removed" for c in checks),
-               "claims_moved": sum(c.action == "moved" for c in checks),
+               "claims_moved": sum(c.action == MOVED_NOT_RENDERED for c in checks),  # moved_not_rendered
                "gaps_kept": len(kept_gaps),
                "gaps_removed": 0 if gap_result is None else sum(not g.kept for g in gap_result.gaps)}
     return VerificationResult(status, reason, [c for c in checks if c.action == "kept"], kept_gaps, lines, flags,

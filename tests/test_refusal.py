@@ -2,6 +2,7 @@
 section validator, other-Act and scope notes, the relevance floor, the DQ-12 trigger, the pinned
 texts and the runner guards, plus the D-29 and held-out text guards. No key and no database are
 needed. Questions written here are new wording for the tests; dev questions are named by id only."""
+import dataclasses
 import hashlib
 import importlib.util
 import json
@@ -118,6 +119,60 @@ def test_invalid_questions(question):
 def test_no_dev_or_in_scope_question_is_refused_or_noted_at_pre_check():
     flagged = [qid for qid, q in in_scope() if check(q).refusal or check(q).notes]
     assert not flagged, flagged
+
+
+# D-60 (DQ-18): heading corrections and the refusal-text dedupe -----------------------------------
+
+HEADING_FIXES = {("ntaa2025", 37): "Making of assessments of tax in upstream petroleum operations",
+                 ("ntaa2025", 61): "Power to distrain",
+                 ("nta2025", 113): "Chargeable tax petroleum operations"}
+
+
+def test_heading_corrections_replace_exactly_the_three_wrong_headings():
+    rows = guardrails.load_heading_corrections()
+    assert {(r["act_id"], r["section"]): r["heading"] for r in rows} == HEADING_FIXES
+    assert all(isinstance(r["pdf_page"], int) and (ROOT / r["source"]).name.endswith(".pdf") for r in rows)
+    derived = guardrails.load_section_headings(corrections=None)
+    for key, heading in HEADING_FIXES.items():
+        assert POLICY.headings[key] == heading and derived[key] != heading
+    assert {k: v for k, v in POLICY.headings.items() if k not in HEADING_FIXES} == \
+        {k: v for k, v in derived.items() if k not in HEADING_FIXES}
+
+
+def test_corrected_heading_names_the_section_in_a_refusal():
+    result = check("Which powers does section 61 of the NTAA give the Service?")
+    assert result.refusal_text == ('Section 61 of the Nigeria Tax Administration Act 2025 ("Power to distrain") '
+                                   "is outside the corpus this tool covers (v1).")
+
+
+def test_a_stale_or_wrong_print_heading_correction_fails_to_load(tmp_path):
+    stale = tmp_path / "stale.yml"
+    stale.write_text("corrections:\n  - {act_id: ntaa2025, print: nrs, section: 61, derived: 'Power to distraint', "
+                     "heading: 'Power to distrain'}\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="expects the derived heading"):
+        guardrails.load_section_headings(corrections=stale)
+    other_print = tmp_path / "print.yml"
+    other_print.write_text("corrections:\n  - {act_id: nta2025, print: nass, section: 113, derived: x, heading: y}\n",
+                           encoding="utf-8")
+    with pytest.raises(ValueError, match="cited print"):
+        guardrails.load_section_headings(corrections=other_print)
+
+
+def test_section_named_with_and_without_an_act_is_stated_once():
+    """D-60: one sentence, naming the Act (the unnamed reference alone would name both Acts)."""
+    result = check("Is section 125 still in force? What does section 125 of the Nigeria Tax Act say?")
+    assert [(r.number, r.act) for r in result.references] == [(125, None), (125, "nta2025")]
+    assert result.refusal_text == ('Section 125 of the Nigeria Tax Act 2025 ("Manner of denoting duty") is outside '
+                                   "the corpus this tool covers (v1).")
+    missing = check("Is section 290 still law? What does section 290 of the Nigeria Tax Act require?")
+    assert missing.refusal_text == "The Nigeria Tax Act 2025 has no section 290. It has 203 sections."
+
+
+def test_dedupe_keeps_an_unnamed_reference_with_another_number():
+    result = check("Is section 310 still law? Does section 290 of the Nigeria Tax Act match it?")
+    assert result.refusal_text == ("Neither the Nigeria Tax Act 2025 (203 sections) nor the Nigeria Tax "
+                                   "Administration Act 2025 (148 sections) has a section 310. The Nigeria Tax Act "
+                                   "2025 has no section 290. It has 203 sections.")
 
 
 # 8. Relevance floor ----------------------------------------------------------------------------
@@ -287,6 +342,126 @@ def test_dq12_retrieval_trigger():
                                              retrieved=["nta2025:s203"])  # names only the Nigeria Tax Act
 
 
+# D-56 note families (G2 fix design, section 4.5). Questions are the build session's own words. ------
+
+
+@pytest.mark.parametrize("question", [
+    "Do the share certificates need stamping?",                      # stamping
+    "Our receipts are stamped by the bank. Is that enough?",         # stamped
+    "Where do I buy stamps for a tenancy agreement?",                # stamps
+    "Can the office stamp an unsigned deed?",                        # stamp
+    "Is a guarantee letter treated as a dutiable instrument?",       # dutiable instrument
+])
+def test_stamp_family(question):
+    assert "scope:stamp_duties" in [n.ref for n in check(question).notes]
+
+
+@pytest.mark.parametrize("question", [
+    "Does the local government tax my kiosk?",                       # local government on its own
+    "What can a city council charge a restaurant?",                  # city council
+    "Is the municipal council allowed to bill my pharmacy?",         # municipal council
+    "My LGA sent a demand notice. Is it valid?",                     # LGA
+    "Does the state government take a share of my profits?",        # state government
+    "Should I register with the state board for my workers?",        # state board
+    "What does state inland revenue charge a hair salon?",           # state inland revenue
+    "Does KWIRS assess sole traders?",                               # [A-Z]{1,4}IRS
+    "Is the signage permit a federal tax?",                          # signage ... permit
+    "Who sets the levy on hawking near the station?",                # levy ... hawking
+    "Are street trading tickets a tax under this law?",              # street trading ... tickets
+    "Is the fee for my billboard deductible?",                       # fee ... billboard
+])
+def test_state_and_local_family(question):
+    assert "scope:state_local_taxes" in [n.ref for n in check(question).notes]
+
+
+@pytest.mark.parametrize("question", [
+    "Is the FIRS the same body as the new revenue service?",         # FIRS is excluded
+    "What is the market value rule for gains on shares?",            # market value, no fee word
+    "Do company councils pay tax on fees?",                          # council without local/area/...
+    "Is a government grant taxable income?",                         # government without local/state
+])
+def test_state_and_local_family_near_misses(question):
+    assert "scope:state_local_taxes" not in [n.ref for n in check(question).notes]
+
+
+@pytest.mark.parametrize("question", [
+    "Since which month have the administration provisions bound employers?",   # since which month
+    "As of what year do the reformed filing duties count?",                   # as of what year
+    "By which date must traders follow the new administration statute?",      # by which date
+    "What year did the new audit procedures start?",                          # what year ... start
+    "Which month do the revised penalty rules come into effect?",             # which month ... come into effect
+    "Have the administration rules become binding on cooperatives?",          # become binding
+    "Is the administration statute operative yet?",                           # operative yet
+    "Are the reformed objection steps already in force?",                     # already in force
+    "When will the revised assessment rules be live?",                        # when will ... live
+    "When is the new filing duty enforceable against partnerships?",          # when is ... enforceable
+    "Do the tax administration penalties cover a late filing from 2023?",     # tax administration + period
+])
+def test_dq12_start_of_law_family(question):
+    assert is_ntaa_commencement_question(question, DQ12)
+
+
+@pytest.mark.parametrize("question", [
+    "Since which year has the Nigeria Tax Act been binding on companies?",     # names only the Nigeria Tax Act
+    "What year of assessment does a dividend belong to?",                     # no start verb
+    "Is effective management in Nigeria enough for residence?",               # effective management
+    "Is a signed lease binding on the landlord?",                             # binding, no start-of-law form
+    "When must a company pay its instalments?",                               # when, no start verb
+])
+def test_dq12_start_of_law_family_near_misses(question):
+    assert not is_ntaa_commencement_question(question, DQ12)
+
+
+PROBES = json.loads((ROOT / "tests" / "data" / "note_probes.json").read_text(encoding="utf-8"))
+_TRIGGER = ("scope:", "act:")
+
+
+def probe_labels(question):
+    labels = [n.ref for n in check(question).notes]
+    if is_ntaa_commencement_question(question, DQ12):
+        labels.append("DQ-12")
+    return labels
+
+
+def test_note_probes_fire():
+    """The 18 probes that should fire (G2 fix design, section 4.3), as fixtures."""
+    assert len(PROBES["fire"]) == 18
+    missed = [p["id"] for p in PROBES["fire"] if not set(p["expect"]) <= set(probe_labels(p["question"]))]
+    assert not missed, missed
+
+
+def test_note_probe_near_misses_do_not_fire():
+    """D-57: 0 of the 16 negative probes get a scope, other-Act or DQ-12 note."""
+    assert len(PROBES["near_miss"]) == 16
+    fired = [(p["id"], probe_labels(p["question"])) for p in PROBES["near_miss"]]
+    fired = [(i, ls) for i, ls in fired if any(l.startswith(_TRIGGER) or l == "DQ-12" for l in ls)]
+    assert not fired, fired
+
+
+def test_no_dev_question_gets_a_scope_or_dq12_note_under_the_new_families():
+    """D-57: 0 of the 20 dev questions (the retrieval trigger is covered by the note measure)."""
+    fired = [(qid, probe_labels(q)) for qid, q in in_scope() if qid.startswith("Q")]
+    fired = [(i, ls) for i, ls in fired if any(l.startswith("scope:") or l == "DQ-12" for l in ls)]
+    assert not fired, fired
+
+
+def test_notes_render_on_a_relevance_floor_refusal():
+    """Section 4.5, item 3: a fake retriever below tau; the scope note and DQ-12 are rendered on the
+    low_relevance refusal and listed in note_labels, with no model call."""
+    question = "Since which month has the NTAA applied, and must our invoices be stamped?"
+    retriever, model, verifier = CountingRetriever(0.30), CountingLLM(), CountingLLM()
+    answer = gen.generate(question, retriever=retriever, llm=model, verifier=verifier, store=STORE, log_dir=None,
+                          guardrails_policy=POLICY)
+    assert (answer.status, answer.refusal_reason) == ("refused", "low_relevance")
+    assert model.requests == [] and verifier.requests == []
+    labels = guardrails.note_labels(answer.notes, answer.refusal_reason, answer.disclosures)
+    assert "scope:stamp_duties" in labels and "DQ-12" in labels
+    stamp = next(n for n in answer.notes if n.ref == "scope:stamp_duties")
+    assert answer.rendered.startswith(guardrails.LOW_RELEVANCE_TEXT + "\n\nNotes\n")
+    assert stamp.text in answer.rendered and DQ12.dq12_text in answer.rendered
+    assert answer.rendered.endswith(gen.DISCLAIMER)
+
+
 # 12. Rendering ---------------------------------------------------------------------------------
 
 
@@ -350,73 +525,254 @@ def write(path, text):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def test_holdout_guard(tmp_path):
-    config, marker, result = tmp_path / "config_g2.json", tmp_path / "marker.json", tmp_path / "result.json"
-    live = {"tau": 0.4}
-    sha = write(config, json.dumps(live))
-    kw = {"config_path": config, "marker": marker, "result": result, "live": live}
-    assert run_adversarial.check_holdout_guard(config_sha256=sha, **kw) == live
-    with pytest.raises(run_adversarial.GuardError, match="no frozen configuration"):
-        run_adversarial.check_holdout_guard(config_sha256=None, **kw)
-    with pytest.raises(run_adversarial.GuardError, match="does not match"):
-        run_adversarial.check_holdout_guard(config_sha256="0" * 64, **kw)
-    with pytest.raises(run_adversarial.GuardError, match="live configuration differs"):
-        run_adversarial.check_holdout_guard(config_sha256=sha, **{**kw, "live": {"tau": 0.5}})
-    marker.write_text("{}", encoding="utf-8")
-    with pytest.raises(run_adversarial.GuardError, match="runs once"):
-        run_adversarial.check_holdout_guard(config_sha256=sha, **kw)
-
-
-def test_holdout_guard_on_the_real_files_matches_the_frozen_config(tmp_path):
-    """D-49 (frozen 2026-11-04): the recorded hash is the on-disk config_g2.json, the live configuration
-    equals it, it cannot be frozen again, and the guard refuses once a held-out marker exists. Only the
-    guard is called; nothing from the held-out part is read."""
-    assert run_adversarial.CONFIG_G2_SHA256 == "6faad20a1864fabfb8b812c612e4bc5ce5cbfdaa2060152fe98ca05f5eb965d9"
-    assert hashlib.sha256(run_adversarial.CONFIG_G2.read_bytes()).hexdigest() == run_adversarial.CONFIG_G2_SHA256
-    frozen = json.loads(run_adversarial.CONFIG_G2.read_text(encoding="utf-8"))
-    assert frozen == run_adversarial.current_config()
-    with pytest.raises(run_adversarial.GuardError, match="frozen once"):
-        run_adversarial.freeze_config()
-    marker = tmp_path / "marker.json"
-    marker.write_text("{}", encoding="utf-8")
-    with pytest.raises(run_adversarial.GuardError, match="runs once"):
-        run_adversarial.check_holdout_guard(marker=marker, result=tmp_path / "result.json")
-
-
-def test_adversarial_loader_keeps_one_split_and_checks_both_hashes(tmp_path):
-    # Rows keep split null: the split file is authoritative (check_adversarial.py).
-    rows = [{"id": "ADV-T", "split": None, "question": "t"}, {"id": "ADV-H", "split": None, "question": "h"}]
-    data, split = tmp_path / "adv.jsonl", tmp_path / "split.json"
+def fixture_set(tmp_path, rows, split=True, name="fx", config_records_set=True):
+    """A temporary adversarial set (D-58 tests use fixture sets only, never adversarial_v2)."""
+    data = tmp_path / f"{name}.jsonl"
     data_sha = write(data, "".join(json.dumps(r) + "\n" for r in rows))
-    split_sha = write(split, json.dumps({"set_sha256": data_sha, "tune": ["ADV-T"], "holdout": ["ADV-H"]}))
-    kept = run_adversarial.load_adversarial("tune", data, data_sha, split, split_sha)
-    assert [(r["id"], r["split"]) for r in kept] == [("ADV-T", "tune")]
-    for bad in ((None, split_sha), ("0" * 64, split_sha), (data_sha, "0" * 64)):
-        with pytest.raises(run_adversarial.GuardError):
-            run_adversarial.load_adversarial("tune", data, bad[0], split, bad[1])
-    other = write(split, json.dumps({"set_sha256": data_sha, "tune": ["ADV-X"], "holdout": ["ADV-H"]}))
-    with pytest.raises(run_adversarial.GuardError, match="do not match"):
-        run_adversarial.load_adversarial("tune", data, data_sha, split, other)
-    stale = write(split, json.dumps({"set_sha256": "0" * 64, "tune": ["ADV-T"], "holdout": ["ADV-H"]}))
-    with pytest.raises(run_adversarial.GuardError, match="not made for this adversarial set"):
-        run_adversarial.load_adversarial("tune", data, data_sha, split, stale)
+    split_path = split_sha = None
+    if split:
+        split_path = tmp_path / f"{name}_split.json"
+        split_sha = write(split_path, json.dumps({"set_sha256": data_sha,
+                                                  "tune": [r["id"] for r in rows if r["id"].endswith("T")],
+                                                  "holdout": [r["id"] for r in rows if r["id"].endswith("H")]}))
+    return run_adversarial.AdversarialSet(
+        name=name, questions=data, questions_sha256=data_sha, split=split_path, split_sha256=split_sha,
+        config=tmp_path / f"config_{name}.json", config_sha256=None, marker=tmp_path / name / "marker.json",
+        result=tmp_path / name / "result.json", pack_prefix=f"{name}_holdout_repeat",
+        config_records_set=config_records_set)
 
 
-def test_adversarial_hashes_are_pinned_and_the_loader_keeps_only_the_tune_part():
-    """D-36 hashes (frozen 2026-11-03). The tune part is read only through the runner's loader;
-    the assertions report counts and ids, never question text."""
-    assert run_adversarial.ADVERSARIAL_SHA256 == "2e3541c88db45e53fa50ec591e7b65d108e7bb79955608ac3f1c07632ff592dc"
-    assert run_adversarial.SPLIT_SHA256 == "0143e246fd23e98569001bcdafd5b771d5c4fa628a305a37c36d74937227f6fc"
-    tune = run_adversarial.load_adversarial("tune")
-    assert len(tune) == 48 and all(row["split"] == "tune" for row in tune)
-    assert len({row["id"] for row in tune}) == 48
+ROWS = [{"id": "ADV-1T", "split": None, "question": "t"}, {"id": "ADV-2H", "split": None, "question": "h"}]
 
 
-def test_freeze_config_runs_once(tmp_path):
-    path = tmp_path / "config_g2.json"
-    path.write_text("{}", encoding="utf-8")
+def test_v1_holdout_and_freeze_refuse_forever():
+    """D-58 test 1: the v1 marker exists, so --holdout --set v1 refuses; config_g2.json exists, so
+    --freeze-config --set v1 refuses. Only the guards are called."""
+    v1 = run_adversarial.SETS["v1"]
+    assert v1.marker == run_adversarial.RESULTS_DIR / "holdout_started.json" and v1.marker.exists()
+    assert v1.config == run_adversarial.HERE / "config_g2.json"
+    with pytest.raises(run_adversarial.GuardError, match="runs once"):
+        run_adversarial.check_holdout_guard("v1")
     with pytest.raises(run_adversarial.GuardError, match="frozen once"):
-        run_adversarial.freeze_config(path)
+        run_adversarial.freeze_config("v1")
+    assert run_adversarial.main(["--holdout", "--set", "v1"]) == 2
+    assert run_adversarial.main(["--freeze-config", "--set", "v1"]) == 2
+
+
+def test_v1_frozen_config_is_kept_as_the_record():
+    """D-49 record: the recorded hash is the on-disk config_g2.json, made for the D-21 retrieval
+    configuration. Since D-54 to D-56 the live configuration differs from it, so v1 stays a record."""
+    v1 = run_adversarial.SETS["v1"]
+    assert v1.config_sha256 == "6faad20a1864fabfb8b812c612e4bc5ce5cbfdaa2060152fe98ca05f5eb965d9"
+    assert hashlib.sha256(v1.config.read_bytes()).hexdigest() == v1.config_sha256
+    frozen = json.loads(v1.config.read_text(encoding="utf-8"))
+    assert "adversarial_set" not in frozen and frozen["retrieval_config_sha256"] == hashlib.sha256(
+        (ROOT / "eval" / "retrieval" / "config_final.json").read_bytes()).hexdigest()
+    assert frozen != run_adversarial.current_config("v1")
+
+
+V2_SHA256 = "350905729640400eb77eeba6d32e6284ea5a7b06110bb6d46ce3fbd306cf35b4"  # D-58, overseer, 2026-11-05
+
+
+def test_v2_entry_is_pinned_and_refused_until_frozen(tmp_path):
+    """D-58: the v2 entry has its own files and its questions sha256 pinned; it has no split file and
+    no frozen configuration yet. Every v2 command refuses before the v2 questions file is opened;
+    freezing is checked on a temporary copy of the entry, never on the real configuration path."""
+    v2 = run_adversarial.SETS["v2"]
+    assert (v2.questions.name, v2.split, v2.config.name) == ("adversarial_v2.jsonl", None, "config_g2_v2.json")
+    assert v2.marker == run_adversarial.RESULTS_DIR / "v2" / "holdout_started.json"
+    assert v2.result == run_adversarial.RESULTS_DIR / "v2" / "holdout_final.json"
+    assert v2.pack_prefix == "v2_holdout_repeat" and v2.config_records_set
+    assert (v2.questions_sha256, v2.split_sha256, v2.config_sha256) == (V2_SHA256, None, None)
+    assert not v2.config.exists() and not v2.marker.exists()
+    for call, message in ((lambda: run_adversarial.load_adversarial("v2", "holdout"), "has not been run"),
+                          (lambda: run_adversarial.load_adversarial("v2", "tune"), "no split file"),
+                          (lambda: run_adversarial.check_holdout_guard("v2"), "no frozen configuration hash")):
+        with pytest.raises(run_adversarial.GuardError, match=message):
+            call()
+    copy = dataclasses.replace(v2, config=tmp_path / "config_g2_v2.json")
+    run_adversarial.freeze_config(copy)
+    frozen = json.loads(copy.config.read_text(encoding="utf-8"))
+    assert frozen["adversarial_set"] == {"version": "v2", "sha256": V2_SHA256}
+    assert not v2.config.exists()
+
+
+def test_fixture_set_guard_and_marker(tmp_path, monkeypatch):
+    """D-58 test 2: refuses with no hashes; refuses a configuration made for another set; writes its
+    marker first; refuses a second run; freezes once."""
+    fx = fixture_set(tmp_path, ROWS)
+
+    def live(s=None):
+        config = {"tau": 0.4}
+        if s is not None:
+            s = run_adversarial.get_set(s)
+            config["adversarial_set"] = {"version": s.name, "sha256": s.questions_sha256}
+        return config
+
+    monkeypatch.setattr(run_adversarial, "current_config", live)
+    with pytest.raises(run_adversarial.GuardError, match="no frozen sha256"):
+        run_adversarial.check_holdout_guard(dataclasses.replace(fx, questions_sha256=None))
+    with pytest.raises(run_adversarial.GuardError, match="no frozen sha256"):
+        run_adversarial.freeze_config(dataclasses.replace(fx, split_sha256=None))
+    assert not fx.config.exists()
+    with pytest.raises(run_adversarial.GuardError, match="no frozen configuration hash"):
+        run_adversarial.check_holdout_guard(fx)
+    sha = run_adversarial.freeze_config(fx)
+    frozen = json.loads(fx.config.read_text(encoding="utf-8"))
+    assert frozen["adversarial_set"] == {"version": "fx", "sha256": fx.questions_sha256}
+    with pytest.raises(run_adversarial.GuardError, match="frozen once"):
+        run_adversarial.freeze_config(fx)
+    fx = dataclasses.replace(fx, config_sha256=sha)
+    assert run_adversarial.check_holdout_guard(fx) == frozen
+    with pytest.raises(run_adversarial.GuardError, match="does not match the recorded sha256"):
+        run_adversarial.check_holdout_guard(dataclasses.replace(fx, config_sha256="0" * 64))
+    with pytest.raises(run_adversarial.GuardError, match="live configuration differs"):
+        run_adversarial.check_holdout_guard(fx, live={"tau": 0.5})
+    # The same frozen file presented for another set is refused.
+    with pytest.raises(run_adversarial.GuardError, match="made for another adversarial set"):
+        run_adversarial.check_holdout_guard(dataclasses.replace(fx, name="other"))
+    # The decision run writes its marker before any work: stop it at the first case.
+    calls = []
+
+    def stop(cases, repeats):
+        calls.append((fx.marker.exists(), [c["id"] for c in cases], repeats))
+        raise RuntimeError("stop")
+
+    monkeypatch.setattr(run_adversarial, "run_cases", stop)
+    monkeypatch.setattr(run_adversarial, "in_scope_questions", lambda include: [])
+    with pytest.raises(RuntimeError, match="stop"):
+        run_adversarial.run_holdout(fx)
+    assert calls == [(True, ["ADV-2H"], 3)]
+    assert json.loads(fx.marker.read_text(encoding="utf-8"))["set"] == "fx"
+    with pytest.raises(run_adversarial.GuardError, match="runs once"):
+        run_adversarial.check_holdout_guard(fx)
+    fx.marker.unlink()
+    fx.result.write_text("{}", encoding="utf-8")
+    with pytest.raises(run_adversarial.GuardError, match="runs once"):
+        run_adversarial.check_holdout_guard(fx)
+
+
+def test_held_out_part_loads_for_tuning_only_once_its_marker_exists(tmp_path):
+    """D-58 test 3 (D-52 in code)."""
+    fx = fixture_set(tmp_path, ROWS)
+    assert [(r["id"], r["split"], r["set"]) for r in run_adversarial.load_adversarial(fx, "tune")] == \
+        [("ADV-1T", "tune", "fx")]
+    with pytest.raises(run_adversarial.GuardError, match="has not been run"):
+        run_adversarial.load_adversarial(fx, "holdout")
+    with pytest.raises(run_adversarial.GuardError, match="has not been run"):
+        run_adversarial.tune_cases(fx, ["tune", "holdout"])
+    fx.marker.parent.mkdir(parents=True)
+    fx.marker.write_text("{}", encoding="utf-8")
+    assert [r["id"] for r in run_adversarial.load_adversarial(fx, "holdout")] == ["ADV-2H"]
+
+
+def test_set_with_no_split_file_is_all_held_out(tmp_path, monkeypatch):
+    """D-58 test 3: with no split file every row is held out, --split tune refuses, and the rows load
+    for tuning only after the set's marker exists."""
+    fx = fixture_set(tmp_path, ROWS, split=False)
+    monkeypatch.setitem(run_adversarial.SETS, "fx", fx)
+    monkeypatch.setattr(run_adversarial, "next_tune_run", lambda results_dir=None: 9)
+    monkeypatch.setattr(run_adversarial, "run_cases", lambda *a: pytest.fail("ran cases"))
+    with pytest.raises(run_adversarial.GuardError, match="no split file"):
+        run_adversarial.load_adversarial(fx, "tune")
+    with pytest.raises(run_adversarial.GuardError, match="has not been run"):
+        run_adversarial.load_adversarial(fx, "holdout")
+    assert run_adversarial.main(["--split", "tune", "--set", "fx", "--run", "9"]) == 2
+    assert run_adversarial.main(["--split", "tune", "--set", "fx", "--parts", "holdout", "--run", "9"]) == 2
+    fx.marker.parent.mkdir(parents=True)
+    fx.marker.write_text("{}", encoding="utf-8")
+    rows = run_adversarial.load_adversarial(fx, "holdout")
+    assert [(r["id"], r["split"]) for r in rows] == [("ADV-1T", "holdout"), ("ADV-2H", "holdout")]
+    with pytest.raises(run_adversarial.GuardError, match="no split file"):
+        run_adversarial.load_adversarial(fx, "tune")
+
+
+@pytest.mark.parametrize("argv", [["--holdout"], ["--freeze-config"], ["--split", "tune", "--run", "4"],
+                                  ["--holdout", "--set", "v9"]])
+def test_set_is_required(argv, capsys):
+    """D-58 test 4: no default set; a missing or unknown --set is a usage error."""
+    with pytest.raises(SystemExit) as exc:
+        run_adversarial.main(argv)
+    assert exc.value.code == 2 and "--set" in capsys.readouterr().err
+
+
+def test_tuning_runs_continue_the_numbers(tmp_path, monkeypatch):
+    """Tuning runs continue from the last tune_run<N>.json (4 after runs 1 to 3) and refuse any other
+    number before loading anything."""
+    assert run_adversarial.next_tune_run() == 4
+    assert run_adversarial.next_tune_run(tmp_path) == 1
+    (tmp_path / "tune_run7.json").write_text("{}", encoding="utf-8")
+    assert run_adversarial.next_tune_run(tmp_path) == 8
+    monkeypatch.setattr(run_adversarial, "tune_cases", lambda *a: pytest.fail("loaded before the number check"))
+    for n in (3, 5):
+        with pytest.raises(run_adversarial.GuardError, match="next tuning run is number 4"):
+            run_adversarial.run_tune("v1", ["tune"], n)
+    assert run_adversarial.parse_parts("tune,holdout") == ["tune", "holdout"]
+    with pytest.raises(run_adversarial.GuardError, match="--parts"):
+        run_adversarial.parse_parts("tune,test")
+
+
+def test_tuning_report_counts_d61_per_set():
+    """D-61: false refusals on the in-scope questions (dev, G03, G05, controls), required notes
+    missed and notes not required, per set and part, by case id; controls are also listed apart."""
+    def row(id_, source, status, *, expected="answer_supported", category=None, split=None, set_=None,
+            required=(), shown=()):
+        r = {"id": id_, "source": source, "status": status, "expected": expected, "category": category,
+             "required_notes": list(required), "notes_shown": list(shown)}
+        return r | ({"split": split, "set": set_} if source == "adversarial" else {})
+    rows = [
+        row("Q001", "dev", "answered"),
+        row("Q002", "dev", "refused", shown=["DQ-12"]),
+        row("G03", "exit_check", "not_covered"),
+        row("G01", "exit_check", "refused", expected="refuse"),
+        row("ADV-1", "adversarial", "answered", category="C", split="tune", set_="v1",
+            shown=["scope:stamp_duties", "DR-150"]),
+        row("ADV-2", "adversarial", "error", category="C", split="holdout", set_="v1"),
+        row("ADV-3", "adversarial", "refused", expected="refuse", category="A", split="tune", set_="v1",
+            required=["scope:state_local_taxes", "DQ-12"], shown=["DQ-12", "act:value_added_tax_act"]),
+        row("ADV-4", "adversarial", "refused", category="B", split="tune", set_="v2"),
+    ]
+    report = run_adversarial.tuning_report(rows)
+    assert report["in_scope_questions"] == 5
+    assert report["false_refusals"] == ["Q002", "G03", "ADV-2"]
+    assert report["over_refusals"] == ["ADV-4"]
+    assert report["required_notes_missed"] == 1 and report["notes_not_required"] == 3
+    by_set = report["by_set"]
+    assert set(by_set) == {"dev", "G01-G05", "v1 tune", "v1 holdout", "v2 tune", "controls"}
+    assert (by_set["dev"]["cases"], by_set["dev"]["in_scope"], by_set["dev"]["false_refusals"]) == (2, 2, ["Q002"])
+    assert by_set["dev"]["notes_not_required"] == {"Q002": ["DQ-12"]}
+    assert by_set["G01-G05"]["false_refusals"] == ["G03"] and by_set["G01-G05"]["in_scope"] == 1
+    assert by_set["v1 tune"]["required_notes_missed"] == {"ADV-3": ["scope:state_local_taxes"]}
+    assert by_set["v1 tune"]["notes_not_required"] == {"ADV-1": ["scope:stamp_duties"],
+                                                      "ADV-3": ["act:value_added_tax_act"]}
+    assert by_set["controls"]["cases"] == 2 and by_set["controls"]["false_refusals"] == ["ADV-2"]
+    text = run_adversarial.report_markdown(report)
+    assert "falsely refused: 3 (Q002, G03, ADV-2)" in text and "| v2 tune | 1 | 0 | 0 | 0 | 0 |" in text
+
+
+def test_adversarial_loader_checks_both_hashes(tmp_path):
+    fx = fixture_set(tmp_path, ROWS)
+    for bad in ({"questions_sha256": None}, {"questions_sha256": "0" * 64}, {"split_sha256": "0" * 64}):
+        with pytest.raises(run_adversarial.GuardError):
+            run_adversarial.load_adversarial(dataclasses.replace(fx, **bad), "tune")
+    other = write(fx.split, json.dumps({"set_sha256": fx.questions_sha256, "tune": ["ADV-X"], "holdout": ["ADV-2H"]}))
+    with pytest.raises(run_adversarial.GuardError, match="do not match"):
+        run_adversarial.load_adversarial(dataclasses.replace(fx, split_sha256=other), "tune")
+    stale = write(fx.split, json.dumps({"set_sha256": "0" * 64, "tune": ["ADV-1T"], "holdout": ["ADV-2H"]}))
+    with pytest.raises(run_adversarial.GuardError, match="not made for this adversarial set"):
+        run_adversarial.load_adversarial(dataclasses.replace(fx, split_sha256=stale), "tune")
+
+
+def test_adversarial_hashes_are_pinned_and_v1_loads_both_parts():
+    """D-36 hashes (frozen 2026-11-03). v1's held-out part is spent (D-52) and loads for tuning, since
+    its marker exists. The assertions report counts and ids, never question text."""
+    v1 = run_adversarial.SETS["v1"]
+    assert v1.questions_sha256 == "2e3541c88db45e53fa50ec591e7b65d108e7bb79955608ac3f1c07632ff592dc"
+    assert v1.split_sha256 == "0143e246fd23e98569001bcdafd5b771d5c4fa628a305a37c36d74937227f6fc"
+    tune, holdout = run_adversarial.load_adversarial("v1", "tune"), run_adversarial.load_adversarial("v1", "holdout")
+    assert len(tune) == 48 and all(row["split"] == "tune" for row in tune)
+    assert len(holdout) == 48 and all(row["split"] == "holdout" for row in holdout)
+    assert len({row["id"] for row in tune + holdout}) == 96
 
 
 def test_calibration_guards(tmp_path):
@@ -484,9 +840,12 @@ def _artefacts():
     paths = [ROOT / "data" / "curated" / "guardrails_policy.yml", ROOT / "data" / "curated" / "disclosure_policy.yml"]
     paths += sorted((ROOT / "docs" / "phase06_guardrails").glob("*.md"))
     paths += sorted((ROOT / "python" / "generation").glob("*.py"))
+    # The writing sessions check their own files; anything named v2 is written by the adversarial_v2
+    # session and is never opened here (D-40, D-58).
     paths += [p for p in sorted((ROOT / "eval" / "guardrails").rglob("*.*"))
-              if p.name not in ("adversarial_v1.jsonl", "split_v1.json")]  # the writing session checks its own file
-    paths += sorted((ROOT / "tests").glob("test_*.py"))
+              if p.name not in ("adversarial_v1.jsonl", "split_v1.json") and "v2" not in p.name
+              and "v2" not in p.relative_to(ROOT / "eval" / "guardrails").parts]
+    paths += sorted((ROOT / "tests").glob("test_*.py")) + sorted((ROOT / "tests" / "data").glob("*.json"))
     return [p for p in paths if p.is_file() and p.suffix in {".py", ".md", ".yml", ".json", ".jsonl", ".csv"}]
 
 
@@ -503,10 +862,15 @@ def test_no_test_question_text_in_phase6_artefacts():
 @pytest.mark.skipif(os.getenv("TAXY_OVERSEER_HOLDOUT_CHECK") != "1",
                     reason="overseer-only check: set TAXY_OVERSEER_HOLDOUT_CHECK=1 (Kene, 2026-11-03)")
 def test_no_held_out_question_text_in_tests_or_fixtures():
-    """Design section 10. Reads the held-out rows (in memory, ids only reported), so it runs only in
-    the overseer's session when the flag is set (D-40: the build session never sees held-out
-    questions)."""
-    held_out = run_adversarial.load_adversarial("holdout")
+    """Design section 10, on the v2 set (D-62: the v1 held-out part is tuning data since D-52). Reads
+    adversarial_v2.jsonl directly, because load_adversarial refuses a held-out part before its
+    marker exists; checks the bytes against the pinned sha256 first, keeps the rows in memory and
+    reports ids only. It runs only in the overseer's session when the flag is set (D-40: the build
+    session never sees held-out questions)."""
+    v2 = run_adversarial.SETS["v2"]
+    data = v2.questions.read_bytes()
+    assert hashlib.sha256(data).hexdigest() == v2.questions_sha256 == V2_SHA256
+    held_out = [json.loads(line) for line in data.decode("utf-8").splitlines() if line.strip()]
     leaks = []
     for path in _artefacts():
         text = path.read_text(encoding="utf-8").lower()

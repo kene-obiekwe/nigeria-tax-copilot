@@ -1,0 +1,41 @@
+{
+ "about": "Note-trigger probes for D-56 (G2 fix design, sections 4.3 and 4.5). Written by the build session for these tests, in its own words, after the five missed notes of G2 decision run 1 were known; not taken from any adversarial set. Probes that should fire must show every label in 'expect'; near misses must show no scope, other-Act or DQ-12 note. Matched on the question alone (no retrieval). Because they were written with the patterns in view, they check that the families work as intended; they are not a held-out measure.",
+ "fire": [
+  {"id": "NP-01", "family": "stamp", "question": "Must our lease deed be stamped before the land registry accepts it?", "expect": ["scope:stamp_duties"]},
+  {"id": "NP-02", "family": "stamp", "question": "Who pays for stamping a mortgage document, the bank or the borrower?", "expect": ["scope:stamp_duties"]},
+  {"id": "NP-03", "family": "stamp", "question": "Is a supplier loan agreement a dutiable instrument?", "expect": ["scope:stamp_duties"]},
+  {"id": "NP-04", "family": "state_local", "question": "Can the local government make my bakery pay for a trading licence?", "expect": ["scope:state_local_taxes"]},
+  {"id": "NP-05", "family": "state_local", "question": "Our area council wants money for the advert board on the roof. Is that allowed?", "expect": ["scope:state_local_taxes"]},
+  {"id": "NP-06", "family": "state_local", "question": "Does the LGA have power to collect daily tickets from market traders?", "expect": ["scope:state_local_taxes"]},
+  {"id": "NP-07", "family": "state_local", "question": "How much does LIRS take from the salaries of my two cleaners?", "expect": ["scope:state_local_taxes"]},
+  {"id": "NP-08", "family": "state_local", "question": "Should I settle the state board of internal revenue for my shop assistants?", "expect": ["scope:state_local_taxes"]},
+  {"id": "NP-09", "family": "state_local", "question": "Is the motor park ticket my bus drivers pay each morning a lawful levy?", "expect": ["scope:state_local_taxes"]},
+  {"id": "NP-10", "family": "dq12_intent", "question": "From which month are traders bound by the administration rules?", "expect": ["DQ-12"]},
+  {"id": "NP-11", "family": "dq12_intent", "question": "In what year did the new administration law begin to bind businesses?", "expect": ["DQ-12"]},
+  {"id": "NP-12", "family": "dq12_intent", "question": "Is the administration statute already law?", "expect": ["DQ-12"]},
+  {"id": "NP-13", "family": "dq12_intent", "question": "Has the NTAA become enforceable?", "expect": ["DQ-12"]},
+  {"id": "NP-14", "family": "dq12_intent", "question": "Which year does the administration statute start for small firms?", "expect": ["DQ-12"]},
+  {"id": "NP-15", "family": "dq12_intent", "question": "When will the new filing law be live for traders?", "expect": ["DQ-12"]},
+  {"id": "NP-16", "family": "dq12_intent", "question": "Are the new record-keeping rules binding yet?", "expect": ["DQ-12"]},
+  {"id": "NP-17", "family": "dq12_intent", "question": "Has the administration statute been effective since January for monthly returns?", "expect": ["DQ-12"]},
+  {"id": "NP-18", "family": "dq12_period", "question": "Do the tax administration rules reach a return I filed for 2024?", "expect": ["DQ-12"]}
+ ],
+ "near_miss": [
+  {"id": "NN-01", "question": "Does the Nigeria Tax Act define a local company?"},
+  {"id": "NN-02", "question": "Is a government agency exempt from company income tax?"},
+  {"id": "NN-03", "question": "Is the FIRS now called the Nigeria Revenue Service?"},
+  {"id": "NN-04", "question": "How is the market value of shares used for chargeable gains?"},
+  {"id": "NN-05", "question": "Are the directors on a company's advisory council taxed on their fees?"},
+  {"id": "NN-06", "question": "When must a company file its VAT return each month?"},
+  {"id": "NN-07", "question": "What date is a company's annual return due?"},
+  {"id": "NN-08", "question": "Which year of assessment can an unused loss be carried to?"},
+  {"id": "NN-09", "question": "Is VAT charged on live goats sold at a farm gate?"},
+  {"id": "NN-10", "question": "Is a sales contract binding on the buyer if it is signed electronically?"},
+  {"id": "NN-11", "question": "Is the development levy already deducted before profits are taxed?"},
+  {"id": "NN-12", "question": "What effect does a merger have on capital allowances?"},
+  {"id": "NN-13", "question": "From what amount of turnover does a company stop being small?"},
+  {"id": "NN-14", "question": "Which month must withheld VAT be paid over?"},
+  {"id": "NN-15", "question": "Do state-owned companies pay company income tax?"},
+  {"id": "NN-16", "question": "Is rent from a town house taxed differently from rent from an office?"}
+ ]
+}

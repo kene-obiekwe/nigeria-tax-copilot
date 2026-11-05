@@ -5,8 +5,8 @@
     print(answer.rendered)
 
 Flow (guardrails design, section 2): pre-checks on the question (invalid question, section and
-Schedule references, other-Act and scope notes); retrieve the top 5 chunks with the frozen
-configuration (D-21); the relevance floor; show the chunks to the model as passages P1 to P5 and
+Schedule references, other-Act and scope notes); retrieve the top 5 chunks plus one keyword slot
+with config_v2.json (D-54); the relevance floor; show the chunks to the model as passages P1 to P6 and
 get a JSON answer (claims citing passage labels, plus gaps); check the citations; verify every
 claim and gap (generation.verify); work out the disclosures for the kept claims' supporting
 citations (D-23 as amended by D-32); render the answer with its notes, sources, disclosures and
@@ -43,7 +43,7 @@ from generation.prompt import (LABELS, OUTPUT_SCHEMA, PROMPT_VERSION, SCHEMA_VER
 from generation.verify import NO_PASSAGES_GAP, VerificationResult, verify_answer  # noqa: E402
 from retrieval.retrieve import Retriever  # noqa: E402
 
-RETRIEVAL_CONFIG = ROOT / "eval" / "retrieval" / "config_final.json"
+RETRIEVAL_CONFIG = ROOT / "eval" / "retrieval" / "config_v2.json"  # D-54; config_final.json stays the G1 record (D-21)
 DISCLAIMER = ("This is a research and reference tool. It is not tax advice and is not a substitute for a "
               "licensed tax professional. It must not be used for an actual filing or compliance decision. "
               "Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax "

@@ -27,6 +27,20 @@ Components, in the order they shape the ranking:
    never inferred from the question.
 
 Without lookup or keyword search the ranking is the Phase 3 vector search exactly.
+
+**Revision for generation (D-54, `config_v2.json`).** Three options, all off in `config_final.json`
+(D-21, gate G1), which therefore ranks exactly as before:
+
+- `other_act_refs: "skip"`: references are read by the shared parser (`retrieval.references`), and a
+  section reference attributed to an Act outside the corpus ("section 23 of CITA") is not looked up.
+- `act_lookup: {"max_chunks": N}`: when the question names an Act outside the corpus (the names in
+  data/curated/guardrails_policy.yml, `other_acts`), the corpus chunks whose text names that Act come
+  next after the section lookup, nearest first, at most N. An Act-name lookup result that is also a
+  vector result keeps its vector rank as a reason, so the relevance floor still reads the top vector
+  score; it is not exempt from the floor the way a section lookup is.
+- `keyword_slots: N`: after the first `k` results, the best N BM25 chunks not already among them
+  are appended (rank k+1, ...). They never displace or reorder the first `k`, and the relevance
+  floor never reads them.
 """
 from __future__ import annotations
 
@@ -43,6 +57,8 @@ sys.path.insert(0, str(ROOT / "python"))
 from check_pgvector import connect  # noqa: E402
 from embed.clients import DEFAULT_MODEL, EmbeddingClient, get_client  # noqa: E402
 from embed.load import vector_literal  # noqa: E402
+from retrieval.references import (CORPUS_ACT_D21, LIST_NUMBER, SECTION_REF, act_of, load_other_acts,  # noqa: E402
+                                  named_other_acts, parse_references, parse_section_refs_d21)
 
 ACT_NAMES = {"nta2025": "Nigeria Tax Act 2025", "ntaa2025": "Nigeria Tax Administration Act 2025"}
 DEFAULT_CANDIDATES = 50
@@ -60,14 +76,10 @@ TAX_AREAS = {
     "administration": "act_id = 'ntaa2025'",
 }
 
-# "section 148", "sections 20 and 21", "Section 41(5)", "s. 66", "s148", "sec. 9"
-_SECTION_REF = re.compile(
-    r"(?<!\.)\b(?:sections?|secs?\.|s\.|s(?=\d))\s*(\d+)((?:\s*\([0-9a-z]+\))*(?:\s*(?:,|and|or)\s*\d+(?:\s*\([0-9a-z]+\))*)*)",
-    re.IGNORECASE)
-_LIST_NUMBER = re.compile(r"(?:,|and|or)\s*(\d+)", re.IGNORECASE)
-# The administration Act first, so "Nigeria Tax Administration Act" is never read as the Tax Act.
-_ACT_NAME = re.compile(r"\bNigeria\s+Tax\s+Administration\s+Act\b|\bNigeria\s+Tax\s+Act\b|"
-                       r"\b(?-i:NTAA)\b|\b(?-i:NTA)\b", re.IGNORECASE)
+# The reference patterns live in retrieval.references (one parser for retrieval and the guardrails,
+# D-54). These names are kept for existing callers; _ACT_NAME is the D-21 corpus-Act pattern.
+_SECTION_REF, _LIST_NUMBER, _ACT_NAME, _act_of = SECTION_REF, LIST_NUMBER, CORPUS_ACT_D21, act_of
+OTHER_ACT_REFS = (None, "skip")
 
 
 @dataclass(frozen=True)
@@ -85,26 +97,25 @@ class Retrieved:
     reasons: list[str] = field(default_factory=list)
 
 
-def _act_of(match_text: str) -> str:
-    return "ntaa2025" if "administration" in match_text.lower() or match_text == "NTAA" else "nta2025"
+def parse_section_refs(question: str, other_acts=None) -> list[SectionRef]:
+    """Section references to look up, each with its corpus Act (None if unnamed).
 
-
-def parse_section_refs(question: str) -> list[SectionRef]:
-    """Section references in `question`, each with the Act it belongs to (None if unnamed)."""
-    refs = list(_SECTION_REF.finditer(question))
-    acts = [(m.start(), _act_of(m.group(0))) for m in _ACT_NAME.finditer(question)]
+    With `other_acts` None this is the D-21 reading. With an `other_acts` list (D-54) the shared
+    parser is used, and a reference attributed to an Act outside the corpus is left out."""
+    if other_acts is None:
+        refs = parse_section_refs_d21(question)
+    else:
+        refs = [r for r in parse_references(question, other_acts) if r.kind == "section" and not r.other_act]
     out: list[SectionRef] = []
-    for i, ref in enumerate(refs):
-        next_start = refs[i + 1].start() if i + 1 < len(refs) else len(question)
-        after = [act for pos, act in acts if ref.end() <= pos < next_start]
-        before = [act for pos, act in acts if pos < ref.start()]
-        act = after[0] if after else (before[-1] if before else None)
-        numbers = [ref.group(1)] + _LIST_NUMBER.findall(ref.group(2))
-        for number in numbers:
-            item = SectionRef(str(int(number)), act)
-            if item not in out:
-                out.append(item)
+    for ref in refs:
+        item = SectionRef(str(ref.number), ref.act)
+        if item not in out:
+            out.append(item)
     return out
+
+
+def _collapse(text: str) -> str:
+    return " ".join(text.split())
 
 
 def filter_clause(filters: dict | None) -> tuple[str, list]:
@@ -192,9 +203,11 @@ class KeywordIndex:
 
 class Retriever:
     """One retrieval configuration over one connection. `config` keys: model, section_lookup,
-    keyword, candidates, rrf_k, filters (all optional; see the module docstring)."""
+    keyword, candidates, rrf_k, filters, other_act_refs, act_lookup, keyword_slots, passages (all
+    optional; see the module docstring). `other_acts` overrides the policy's list (tests)."""
 
-    def __init__(self, conn, config: dict | None = None, client: EmbeddingClient | None = None):
+    def __init__(self, conn, config: dict | None = None, client: EmbeddingClient | None = None,
+                 other_acts=None):
         config = dict(config or {})
         self.model = config.get("model", DEFAULT_MODEL)
         self.section_lookup = bool(config.get("section_lookup", True))
@@ -202,6 +215,16 @@ class Retriever:
         self.candidates = int(config.get("candidates", DEFAULT_CANDIDATES))
         self.rrf_k = int(config.get("rrf_k", DEFAULT_RRF_K))
         self.filters = config.get("filters")
+        self.other_act_refs = config.get("other_act_refs")
+        if self.other_act_refs not in OTHER_ACT_REFS:
+            raise ValueError(f"other_act_refs must be one of {OTHER_ACT_REFS}, got {self.other_act_refs!r}")
+        self.act_lookup = int((config.get("act_lookup") or {}).get("max_chunks", 0))
+        self.keyword_slots = int(config.get("keyword_slots", 0))
+        self.passages = config.get("passages")
+        self.other_acts = None
+        if self.other_act_refs or self.act_lookup:
+            self.other_acts = tuple(other_acts) if other_acts is not None else load_other_acts()
+        self._chunk_text: dict[str, str] | None = None
         self.conn = conn
         self._client = client
         self._keyword_index: KeywordIndex | None = None
@@ -243,6 +266,41 @@ class Retriever:
         return sorted(((cid, d, ref, act) for cid, (d, ref, act) in found.items()),
                       key=lambda item: (item[1], item[0]))
 
+    def keyword_index(self) -> KeywordIndex:
+        if self._keyword_index is None:
+            self._keyword_index = KeywordIndex(self.conn)
+        return self._keyword_index
+
+    def chunk_text(self) -> dict[str, str]:
+        """Every chunk's text, whitespace collapsed (for the Act-name lookup)."""
+        if self._chunk_text is None:
+            rows = self.conn.execute("SELECT chunk_id, text FROM corpus_chunks ORDER BY chunk_id").fetchall()
+            self._chunk_text = {chunk_id: _collapse(text) for chunk_id, text in rows}
+        return self._chunk_text
+
+    def act_name_lookup(self, question: str, query_vector: list[float], allowed: list[str] | None = None,
+                        exclude: set[str] = frozenset()):
+        """Corpus chunks whose text names an Act outside the corpus that the question names, nearest
+        first, at most `act_lookup`: [(chunk_id, distance, act name)]."""
+        names = named_other_acts(question, self.other_acts or ())
+        if not names or not self.act_lookup:
+            return []
+        allowed_set = set(allowed) if allowed is not None else None
+        naming: dict[str, str] = {}
+        for name, pattern in names.items():
+            for chunk_id, text in self.chunk_text().items():
+                if chunk_id in exclude or (allowed_set is not None and chunk_id not in allowed_set):
+                    continue
+                if pattern.search(text):
+                    naming.setdefault(chunk_id, name)
+        if not naming:
+            return []
+        rows = self.conn.execute(
+            "SELECT chunk_id, embedding <=> %s::vector FROM chunk_embeddings WHERE model = %s AND chunk_id = ANY(%s)",
+            (vector_literal(query_vector), self.model, sorted(naming))).fetchall()
+        ranked = sorted(((chunk_id, float(d)) for chunk_id, d in rows), key=lambda item: (item[1], item[0]))
+        return [(chunk_id, d, naming[chunk_id]) for chunk_id, d in ranked[:self.act_lookup]]
+
     def retrieve(self, question: str, k: int = 5, filters: dict | None = None,
                  query_vector: list[float] | None = None) -> list[Retrieved]:
         filters = filters if filters is not None else self.filters
@@ -251,24 +309,29 @@ class Retriever:
         allowed = self._allowed(filters)
         n = max(self.candidates, k)
 
+        vector = self.vector_search(query_vector, n, allowed)
+        distances = dict(vector)
+        vector_rank = {chunk_id: rank for rank, (chunk_id, _) in enumerate(vector, start=1)}
+
         results: list[Retrieved] = []
         seen: set[str] = set()
         if self.section_lookup:
-            refs = parse_section_refs(question)
+            refs = parse_section_refs(question, self.other_acts if self.other_act_refs == "skip" else None)
             for chunk_id, distance, ref, act_id in self.lookup(refs, query_vector, allowed):
                 how = ACT_NAMES[act_id] if ref.act_id else f"{ACT_NAMES[act_id]} (no Act named)"
                 results.append(Retrieved(chunk_id, 0, 1 - distance, distance,
                                          [f"section lookup: Section {ref.section}, {how} "
                                           f"(cosine distance {distance:.4f})"]))
                 seen.add(chunk_id)
+        for chunk_id, distance, name in self.act_name_lookup(question, query_vector, allowed, seen):
+            reasons = [f"act-name lookup: names the {name} (cosine distance {distance:.4f})"]
+            if chunk_id in vector_rank:
+                reasons.append(f"vector rank {vector_rank[chunk_id]} (cosine distance {distance:.4f})")
+            results.append(Retrieved(chunk_id, 0, 1 - distance, distance, reasons))
+            seen.add(chunk_id)
 
-        vector = self.vector_search(query_vector, n, allowed)
-        distances = dict(vector)
-        vector_rank = {chunk_id: rank for rank, (chunk_id, _) in enumerate(vector, start=1)}
         if self.keyword:
-            if self._keyword_index is None:
-                self._keyword_index = KeywordIndex(self.conn)
-            keyword = self._keyword_index.search(question, n, set(allowed) if allowed is not None else None)
+            keyword = self.keyword_index().search(question, n, set(allowed) if allowed is not None else None)
             keyword_rank = {chunk_id: rank for rank, (chunk_id, _) in enumerate(keyword, start=1)}
             keyword_score = dict(keyword)
             ranked = rrf_fuse([[c for c, _ in vector], [c for c, _ in keyword]], self.rrf_k)
@@ -293,9 +356,25 @@ class Retriever:
             results.append(Retrieved(chunk_id, 0, score, float(distances[chunk_id]), reasons))
             seen.add(chunk_id)
 
-        for rank, item in enumerate(results[:k], start=1):
+        results = results[:k]
+        if self.keyword_slots:
+            shown = {item.chunk_id for item in results}
+            bm25 = self.keyword_index().search(question, n + k, set(allowed) if allowed is not None else None)
+            slots = [(rank, chunk_id, s) for rank, (chunk_id, s) in enumerate(bm25, start=1)
+                     if chunk_id not in shown][:self.keyword_slots]
+            if slots:
+                extra = dict(self.conn.execute(
+                    "SELECT chunk_id, embedding <=> %s::vector FROM chunk_embeddings "
+                    "WHERE model = %s AND chunk_id = ANY(%s)",
+                    (vector_literal(query_vector), self.model, [chunk_id for _, chunk_id, _ in slots])).fetchall())
+                for bm25_rank, chunk_id, s in slots:
+                    distance = float(extra[chunk_id])
+                    results.append(Retrieved(chunk_id, 0, 1 - distance, distance,
+                                             [f"keyword slot: BM25 rank {bm25_rank} (BM25 {s:.3f}, "
+                                              f"cosine distance {distance:.4f})"]))
+        for rank, item in enumerate(results, start=1):
             item.rank = rank
-        return results[:k]
+        return results
 
 
 def retrieve(question: str, k: int = 5, model: str = DEFAULT_MODEL, filters: dict | None = None,

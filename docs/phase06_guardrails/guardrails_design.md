@@ -268,12 +268,13 @@ missing), the evidence quotes and the citation-level supports flags.
 Per claim, first match wins:
 
 1. Rule check fails: **remove** the claim (`unsupported`, reason from section 3.2).
-2. Verdict `not_a_claim`: **move** the text to gaps, where the gap check then applies to it.
+2. Verdict `not_a_claim`: **drop** the text. It is not rendered, not even as a gap, and is logged
+   with action `moved_not_rendered` (D-59; until then it was moved to gaps and gap-checked).
 3. Verdict `supported`: **keep** the claim. Drop any citation whose `supports` is false; a
    supported claim always keeps at least the cited passage its evidence quote came from.
 4. Verdict `unsupported`, `contradicted` or `unverified`: **remove** the claim.
 
-Then per answer. The counts leave out claims moved to gaps (rule 2), so a `not_a_claim` neither
+Then per answer. The counts leave out claims dropped under rule 2, so a `not_a_claim` neither
 counts as removed nor as checked. Let n be the claims checked, and count the removed ones in
 three groups: **failed** (`unsupported` or `contradicted`), **not checkable**
 (`unverified/evidence_not_found`) and **call failures** (`unverified/call_failed`). First match
@@ -624,7 +625,7 @@ removals stay at or under 5% on the calibration set (section 3.8).
 |---|---|---|
 | (a) Gaps carry uncited legal content (run 2 G05 gap 2) | Prompt v3 gap rule; gap classifier removes `legal_content` gaps | sections 3.6, 7.2 |
 | (b) Model repeats the disputed flag in gaps | Prompt v3 rule; pinned pattern filter in code; classifier class as backup | section 3.6 |
-| (c) Rule 10 slips (statements about passages in claims) | Verdict `not_a_claim` moves the text to gaps, where it is gap-checked | sections 3.5, 3.7 |
+| (c) Rule 10 slips (statements about passages in claims) | Verdict `not_a_claim` drops the text, logged as `moved_not_rendered` (D-59; it was moved to gaps before) | sections 3.5, 3.7 |
 | (d) Output not deterministic | G2 decided over 3 runs, all must pass; verifier stability measured; tuning ends on two passing runs in a row | sections 3.8, 6 |
 | (e) DQ-12 trigger is a keyword list | Patterns extended (`from when`, `since when`, `start date`, `begin(s) to apply`, `operative`, `effective from`), **plus** a retrieval trigger: the note is shown when `nta2025:s203` or `ntaa2025:s2` is among the retrieved chunks, the question has a time word (`when`, `date`, `from`, `since`, `year`), and it does not name only the Nigeria Tax Act. A false note costs one line; a missed note leaves a known dispute undisclosed, so the rule leans to showing it. A9 tests paraphrases | section 4, `disclosure_policy.yml` |
 | (f) Bridging facts (run 1 Q018) and overstated conditions (run 1 Q043) | Named verdict reasons in the verifier prompt; hardening-word hint; both real claims and 20 mutations of these two types in the calibration set | sections 3.2, 3.3, 3.8 |
@@ -731,7 +732,7 @@ Changes:
 | `guardrails` | config file and sha256; pre-check results (references found and their verdicts, scope notes); top-1 score; τ; whether the floor fired |
 | `refusal` | `null`, or `{status, reason, stage}` |
 | `verification` | `null` when no claim was checked (pre-check refusal, `not_covered` with no gaps); else `{verifier_model, prompt_version, schema_version, effort, claims: [...], gaps: [...], actions: [...], summary, usage, cost_usd, latency_ms}` |
-| `verification.claims[i]` | claim number, rule check (tokens found, tokens missing, hint), the request and raw response of the call, final verdict, reason, unsupported part, evidence quotes with `found` true or false, citation supports, action (`kept`, `moved`, `removed`) |
+| `verification.claims[i]` | claim number, rule check (tokens found, tokens missing, hint), the request and raw response of the call, final verdict, reason, unsupported part, evidence quotes with `found` true or false, citation supports, action (`kept`, `moved_not_rendered` since D-59 (was `moved`), `removed`) |
 | `verification.summary` | outcome (`passed`, `claims_removed`, `refused`, `unavailable`), counts per verdict, claims kept and removed, gaps kept and removed |
 | `refusal_flag` | true when status is `not_covered` or `refused` (Phase 9 meaning unchanged) |
 | `rendered` | the final answer as shown |

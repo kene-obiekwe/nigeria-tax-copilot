@@ -91,6 +91,14 @@ notes:
       # Commencement-day wording added 2026-11-04 (D-44), written from tuning cases only.
       - '\b(?:from|on|as (?:of|from)) (?:which|what) (?:day|date)\b'
       - '\b(?:which|what) (?:day|date) [\w\s'']{0,60}\b(?:follow|comply|obey|apply|applies|start|begin)\b'
+      # Start-of-law wording added 2026-11-05 (D-56; G2 fix design, section 4.2(a)), written from the
+      # five notes missed in G2 decision run 1 and the build session's own probes.
+      - '\b(?:since|from|on|as of|as from|in|by) (?:which|what) (?:day|date|year|month)\b'
+      - '\b(?:which|what) (?:day|date|year|month)\b[\w\s'']{0,60}\b(?:begin|began|begun|start|started|starts|apply|applies|applied|follow|binding|bind|take effect|took effect|come into effect|in force|into force|operative|become law|became law|be law|live)\b'
+      - '\b(?:become|becomes|became|been|is|was|are|were) (?:binding|law|operative|live|enforceable|effective(?! management| tax| rate| date| control))\b'
+      - '\b(?:live|in force|binding|operative|effective|enforceable|law) yet\b'
+      - '\balready (?:law|in force|binding|operative|effective|live|enforceable)\b'
+      - '\bwhen (?:does|did|will|is|was|do|are|were) [\w\s'']{0,60}\b(?:begin|start|apply|binding|bind|take effect|come into effect|in force|into force|operative|become law|be law|live|effective|enforceable)\b'
     # Retrieval trigger (D-39): also shown when one of these chunks is retrieved (the Nigeria Tax
     # Act commencement section and the Administration Act application section), the question has
     # a time word, and it does not name only the Nigeria Tax Act. A false note costs one line; a
@@ -103,7 +111,8 @@ notes:
     # or year before 2026, since whether the Act reaches that period turns on the disputed date. A
     # year printed right after an Act's name ("Act 2025") is not a period.
     period_trigger:
-      act: '\bTax\s+Administration\s+Act\b|\b(?-i:NTAA)\b'
+      # D-56: "tax administration" without "Act" also names the Administration Act here.
+      act: '\bTax\s+Administration\b|\b(?-i:NTAA)\b'
       period: '(?<!\bAct\s)(?<!\bAct,\s)\b(?:19\d{2}|20(?:[01]\d|2[0-5]))\b(?!\s*(?:Act|Order))'
     text: "The NRS print of the Nigeria Tax Administration Act 2025 gives two commencement dates:
       its long title reads \"[1st Day of January, 2026]\" (page 7), while section 148 says the Act

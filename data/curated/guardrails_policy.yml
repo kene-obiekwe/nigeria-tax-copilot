@@ -58,14 +58,20 @@ scope_topics:
   personal_income_tax:
     pattern: '\b(?-i:PAYE)\b|\bpay[- ]as[- ]you[- ]earn\b|\bpersonal income tax\b|\b(?-i:PIT)\b'
     text: "Personal income tax and PAYE are outside the corpus this tool covers (v1)."
+  # D-56: any form of "stamp" (a small business stamps a document rather than "pays stamp duty"),
+  # plus "dutiable instrument" (G2 fix design, section 4.2(a)).
   stamp_duties:
-    pattern: '\bstamp dut(?:y|ies)\b'
+    pattern: '\bstamp dut(?:y|ies)\b|\bstamp(?:s|ed|ing)?\b|\bdutiable instruments?\b'
     text: "Stamp duties are outside the corpus this tool covers (v1)."
   petroleum_taxes:
     pattern: '\bpetroleum\b|\boil and gas\b|\bhydrocarbon'
     text: "Petroleum taxes are outside the corpus this tool covers (v1)."
+  # D-56 adds: "local government" on its own; a local, area, municipal, town or city council; LGA;
+  # state government, a state board, state internal or inland revenue; a state revenue service
+  # acronym ([A-Z]{1,4}IRS, except FIRS); and fees, levies, permits, tickets or rates for signage,
+  # signboards, billboards, markets, motor parks, hawking or street trading. The existing terms stay.
   state_local_taxes:
-    pattern: '\bstate (?:tax|taxes|levy|levies|revenue)\b|\blocal government (?:tax|taxes|levy|levies|rates?)\b|\bland use charge\b|\btenement rates?\b'
+    pattern: '\bstate (?:tax|taxes|levy|levies|revenue)\b|\blocal government (?:tax|taxes|levy|levies|rates?)\b|\bland use charge\b|\btenement rates?\b|\blocal governments?\b|\b(?:local|area|municipal|town|city) councils?\b|\b(?-i:LGAs?)\b|\bstate (?:governments?|boards?)\b|\bstate (?:internal|inland) revenue\b|\b(?-i:(?!FIRS\b)[A-Z]{1,4}IRS)\b|\b(?:signage|sign ?boards?|billboards?|advert(?:isement)? boards?|markets?(?! value| price| rate)|market stalls?|motor parks?|hawking|street trading)\b[^.?!]{0,40}\b(?:fees?|levy|levies|permits?|tickets?|rates?)\b|\b(?:fees?|levy|levies|permits?|tickets?|rates?)\b[^.?!]{0,40}\b(?:signage|sign ?boards?|billboards?|advert(?:isement)? boards?|markets?(?! value| price| rate)|market traders?|market stalls?|motor parks?|hawking|street trading)\b'
     text: "State and local government taxes and levies are outside the corpus this tool covers (v1)."
   surcharge:
     pattern: '\bsurcharge\b'
@@ -98,7 +104,8 @@ disputed_gap_patterns:
   # "disputed" only where it describes a text or passage (tuning run 1: the bare word removed a gap
   # about "the tax disputed" under an objection). The gap classifier still sees every other gap.
   - '\bdisputed (?:texts?|passages?|provisions?|readings?|wording|prints?)\b'
-  - '\b(?:passages?|provisions?|texts?|P[1-5])\b[^.]{0,40}\b(?:is|are|was|were)\s+(?:marked\s+|flagged\s+)?(?:as\s+)?disputed\b'
+  # P1 to P6 since gen-prompt/6 (D-54).
+  - '\b(?:passages?|provisions?|texts?|P[1-6])\b[^.]{0,40}\b(?:is|are|was|were)\s+(?:marked\s+|flagged\s+)?(?:as\s+)?disputed\b'
   - '\bdisputed\s*=\s*"?(?:yes|no)\b'
   - '\bmarked as\b'
 

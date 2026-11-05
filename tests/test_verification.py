@@ -148,12 +148,12 @@ def test_rule_check_on_the_real_supported_claims():
 
 
 def test_evidence_check_ignores_letter_case_only():
-    """norm/4 (D-48): tuning run 2 lost a correct claim to a lower-case first letter."""
+    """norm/4 (D-48), kept in norm/5: tuning run 2 lost a correct claim to a lower-case first letter."""
     text = "7. A capital allowance in respect of qualifying expenditure shall be made to a person."
     assert verify.evidence_found("a capital allowance in respect of qualifying expenditure", text)
     assert verify.evidence_found("A CAPITAL ALLOWANCE in respect of qualifying expenditure", text)
     assert not verify.evidence_found("a capital allowance in respect of eligible expenditure", text)  # one word changed
-    assert verify.NORMALISER_VERSION == "norm/4"
+    assert verify.NORMALISER_VERSION == "norm/5"
 
 
 def test_evidence_check():
@@ -162,6 +162,51 @@ def test_evidence_check():
     assert verify.evidence_found('the "total profits" of a company', text)  # quote marks differ
     assert not verify.evidence_found("levied at a rate of thirty per cent", text)  # paraphrase
     assert not verify.evidence_found("30 per cent", text)  # under the minimum length
+
+
+# norm/5 (D-55; G2 fix design, section 3.4). Texts below are written for the tests.
+
+LIST = chunk("38. (1) The relevant authority may, in the case of—\n(a) a trader, accept the return; or\n"
+             "(b) any other person, refuse it.",
+             header="Nigeria Tax Administration Act 2025 > Chapter TWO > s38 Acceptance of returns")
+
+
+@pytest.mark.parametrize("quote,source", [
+    ("may, in the case of—(a) a trader, accept the return", LIST["text"]),     # space in the chunk only
+    ("may, in the case of — (a) a trader, accept the return", "may, in the case of—(a) a trader, "
+                                                                "accept the return"),  # space in the quote only
+    ("may, in the case of - (a) a trader", LIST["text"]),                           # hyphen for the dash
+    ("a non-resident person carrying on business", "a non- resident person carrying on business"),  # OCR split
+    ("a non- resident person carrying on business", "a non-resident person carrying on business"),
+])
+def test_norm5_whitespace_next_to_a_dash_is_ignored(quote, source):
+    assert verify.evidence_found(quote, source)
+
+
+def test_norm5_heading_quote_is_found_in_the_context_header():
+    assert verify.evidence_found("s38 Acceptance of returns", LIST["text"], LIST["context_header"])
+    assert not verify.evidence_found("s38 Acceptance of returns", LIST["text"])  # text alone: not there
+    assert not verify.evidence_found("s38 Refusal of returns", LIST["text"], LIST["context_header"])
+
+
+def test_norm5_keeps_the_other_rules():
+    text = LIST["text"]
+    assert not verify.evidence_found("the authority may accept any return", text)  # paraphrase
+    assert not verify.evidence_found("(a) trader", text)  # under the minimum length
+    assert not verify.evidence_found("s38 Accept", text, LIST["context_header"])  # minimum length in the header too
+    assert not verify.evidence_found("in the case of a trader", text)  # words still in order
+
+
+def test_norm5_heading_quote_counts_only_for_a_cited_passage():
+    other = chunk("40. Records shall be kept.", header="Nigeria Tax Administration Act 2025 > s40 Keeping records",
+                  chunk_id="test:s40")
+    cited_heading, _ = check(lambda p: output(quotes=(("P1", "s38 Acceptance of returns"),)),
+                             text="The section is headed acceptance of returns.", cited=[("P1", LIST)])
+    assert cited_heading.verdict == "supported" and cited_heading.evidence[0]["found"]
+    uncited, _ = check(lambda p: output(quotes=(("P2", "s40 Keeping records"),)),
+                       text="The section is headed acceptance of returns.", cited=[("P1", LIST)])
+    assert (uncited.verdict, uncited.sub_reason) == ("unverified", "evidence_not_found")
+    assert other["context_header"].endswith("Keeping records")
 
 
 def check(handler=None, text="Tax is levied at 30 per cent.", cited=None, **kw):
@@ -326,8 +371,8 @@ def test_action_rule(verdicts, expected):
     checks = [make(*v) if isinstance(v, tuple) else make(v) for v in verdicts]
     status = "not_covered" if not verdicts else "answered"
     assert verify.apply_action_rule(status, checks) == expected
-    assert [c.action for c in checks] == ["moved" if c.verdict == N else "kept" if c.verdict == S else "removed"
-                                          for c in checks]
+    assert [c.action for c in checks] == ["moved_not_rendered" if c.verdict == N else "kept" if c.verdict == S
+                                          else "removed" for c in checks]
 
 
 def test_removal_lines_are_pinned():
@@ -437,19 +482,44 @@ def test_gap_classes_and_fail_closed():
     assert failed.kept == [verify.NO_PASSAGES_GAP] and failed.error
 
 
-def test_not_a_claim_moves_to_gaps_and_is_gap_checked(tmp_path):
+def test_not_a_claim_is_dropped_and_never_rendered(tmp_path):
+    """D-59: a claim judged not_a_claim is logged as moved_not_rendered, is not sent to the gap
+    check and is not rendered, and counts neither as checked nor as removed."""
+    gap_calls = []
+
     def handler(params):
         if params["output_config"]["format"]["schema"] == prompt.GAP_SCHEMA:
+            gap_calls.append(params)
             return {"gaps": [{"index": 0, "class": "missing_information"}]}
         if "passages do not" in statement(params):
             return output("not_a_claim", "about_passages", quotes=(), citations=())
         return quote_first_words(params)
-    answer, _ = run_generate([("Small companies are not charged the levy.", ["P1"]),
-                              ("The passages do not give the levy rate.", ["P1"])], tmp_path=tmp_path,
-                             verifier=FakeVerifier(handler))
+    moved_text = "The passages do not give the levy rate."
+    answer, _ = run_generate([("Small companies are not charged the levy.", ["P1"]), (moved_text, ["P1"])],
+                             tmp_path=tmp_path, verifier=FakeVerifier(handler))
     assert answer.status == "answered" and [c.text for c in answer.claims] == ["Small companies are not charged the levy."]
-    assert answer.gaps == ["The passages do not give the levy rate."]
-    assert answer.verification.summary["claims_moved"] == 1 and answer.verification.summary["claims_checked"] == 1
+    assert answer.gaps == [] and gap_calls == [] and moved_text not in answer.rendered
+    assert [c.action for c in answer.verification.checks] == ["kept", "moved_not_rendered"]
+    summary = answer.verification.summary
+    assert (summary["claims_moved"], summary["claims_checked"], summary["claims_removed"]) == (1, 1, 0)
+    assert not any(line in answer.rendered for line in verify.FAILED_LINE + verify.UNVERIFIED_LINE)
+    record = json.loads(next(tmp_path.glob("*.jsonl")).read_text(encoding="utf-8"))
+    assert [c["action"] for c in record["verification"]["claims"]] == ["kept", "moved_not_rendered"]
+
+
+def test_not_a_claim_beside_model_gaps_leaves_only_the_model_gaps(tmp_path):
+    def handler(params):
+        if params["output_config"]["format"]["schema"] == prompt.GAP_SCHEMA:
+            return {"gaps": [{"index": i, "class": "missing_information"} for i in range(5)]}
+        if "passages do not" in statement(params):
+            return output("not_a_claim", "about_passages", quotes=(), citations=())
+        return quote_first_words(params)
+    answer, _ = run_generate([("Small companies are not charged the levy.", ["P1"]),
+                              ("The passages do not give the levy rate.", ["P1"])],
+                             gaps=["The company's turnover is not given."], tmp_path=tmp_path,
+                             verifier=FakeVerifier(handler))
+    assert answer.gaps == ["The company's turnover is not given."]
+    assert [g.origin for g in answer.verification.gap_result.gaps] == ["model"]
 
 
 # 11. Question escaping -------------------------------------------------------------------------
@@ -483,7 +553,7 @@ def test_gen_log_2_record_has_every_field_and_verification(tmp_path, monkeypatch
     assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/2"
     v = record["verification"]
     assert v["verifier_model"] == "claude-haiku-5-5" and v["prompt_version"] == "ver-prompt/4"
-    assert v["schema_version"] == "ver-schema/2" and v["normaliser"] == "norm/4"
+    assert v["schema_version"] == "ver-schema/2" and v["normaliser"] == "norm/5"
     assert v["summary"]["outcome"] == "passed" and v["claims"][0]["action"] == "kept"
     assert v["claims"][0]["request"]["prompt_version"] == "ver-prompt/4" and v["claims"][0]["response"]["usage"]
     assert v["claims"][0]["request"]["schema_version"] == "ver-schema/2"

@@ -8,19 +8,24 @@ Pre-checks run before retrieval and cost nothing. They refuse only where code ca
 1. **Invalid question:** empty, no letters, or longer than the pinned limit.
 2. **References:** a section number past the end of the Act (`no_such_section`), a Schedule the
    Nigeria Tax Act does not have (`no_such_section`), or a real section that is not in the v1
-   corpus (`section_outside_v1`, named by its heading from data/derived/section_map.csv). A
+   corpus (`section_outside_v1`, named by its heading from data/derived/section_map.csv, with the
+   checked corrections in data/curated/heading_corrections.yml applied, D-60). A
    question is refused only when it has at least one reference to the corpus Acts, every such
-   reference fails, and none is valid. Otherwise failed references become notes.
+   reference fails, and none is valid. Otherwise failed references become notes. When the same
+   section number is named with an Act and also without one, the unnamed reference is left out of
+   the refusal text, so the fact is stated once (D-60).
 3. **Notes, never refusals:** an Act outside the corpus (CITA, ...), and scope topics from the v1
    known gaps (stamp duties, PAYE, ...).
 
-References follow the retrieval pattern (`retrieve._SECTION_REF`) and its rule for which Act a
-reference belongs to (the Act named after it, else the one named before it), with Acts outside the
-corpus added. `retrieve()` itself is never changed (D-21): a question naming "section 24 of CITA"
-still retrieves as before, and the note tells the reader what the section numbers mean.
+References are read by the parser retrieval also uses (`retrieval.references`, D-54): the Act
+named after a reference, else the one named before it, with Acts outside the corpus included. Under
+`config_v2.json` retrieval does not look up a reference attributed to an Act outside the corpus,
+and adds the corpus chunks that name that Act; the note tells the reader what the section numbers
+mean.
 
 The relevance floor runs after retrieval: when tau is set, a question whose best vector score is
-below tau is refused (`low_relevance`); questions answered by a section lookup are exempt.
+below tau is refused (`low_relevance`); questions answered by a section lookup are exempt. Only
+vector results count: an Act-name lookup is not exempt and a keyword slot is never read (D-54).
 """
 from __future__ import annotations
 
@@ -36,22 +41,14 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "python"))
 
 from generation.disclosure import Disclosure  # noqa: E402
-from retrieval.retrieve import _LIST_NUMBER, _SECTION_REF  # noqa: E402
+from retrieval import references  # noqa: E402
+from retrieval.references import CORPUS_ACTS, ORDINAL_WORDS, ORDINALS  # noqa: E402
 
 POLICY = ROOT / "data" / "curated" / "guardrails_policy.yml"
 SECTION_MAP = ROOT / "data" / "derived" / "section_map.csv"
-CORPUS_ACTS = ("nta2025", "ntaa2025")
+HEADING_CORRECTIONS = ROOT / "data" / "curated" / "heading_corrections.yml"
 CITED_PRINT = {"nta2025": "gazette", "ntaa2025": "nrs"}
-ORDINAL_WORDS = ("first second third fourth fifth sixth seventh eighth ninth tenth eleventh twelfth "
-                 "thirteenth fourteenth fifteenth sixteenth seventeenth eighteenth nineteenth twentieth").split()
-ORDINALS = {word: i for i, word in enumerate(ORDINAL_WORDS, start=1)}
-ORDINALS["thirtenth"] = 13  # as misprinted in the gazette (DQ-14)
-_SCHEDULE_REF = re.compile(
-    r"\b(" + "|".join(sorted(ORDINALS, key=len, reverse=True)) + r"|\d+(?:st|nd|rd|th))\s+schedule\b"
-    r"|\bschedule\s+(\d+)\b", re.IGNORECASE)
-# "Tax Administration Act" without "Nigeria" also names the Administration Act (tuning run 1).
-_CORPUS_ACT = re.compile(r"\b(?:Nigeria\s+)?Tax\s+Administration\s+Act\b|\bNigeria\s+Tax\s+Act\b|"
-                         r"\b(?-i:NTAA)\b|\b(?-i:NTA)\b", re.IGNORECASE)
+_SCHEDULE_REF, _CORPUS_ACT = references.SCHEDULE_REF, references.CORPUS_ACT  # kept for existing callers
 
 INVALID_TEXT = ("The question could not be read. Please ask about the Nigeria Tax Act 2025 or the Nigeria "
                 "Tax Administration Act 2025.")
@@ -79,18 +76,38 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def load_section_headings(path: Path = SECTION_MAP) -> dict[tuple[str, int], str]:
-    """Every section of the cited print of each Act, with its heading."""
+def load_heading_corrections(path: Path | None = HEADING_CORRECTIONS) -> list[dict]:
+    """The checked heading corrections (DQ-18, D-60); none when `path` is None."""
+    if path is None:
+        return []
+    rows = yaml.safe_load(path.read_text(encoding="utf-8"))["corrections"]
+    for row in rows:
+        if CITED_PRINT.get(row["act_id"]) != row["print"]:
+            raise ValueError(f"heading correction for {row['act_id']} s{row['section']} is not for the cited print")
+    return rows
+
+
+def load_section_headings(path: Path = SECTION_MAP,
+                          corrections: Path | None = HEADING_CORRECTIONS) -> dict[tuple[str, int], str]:
+    """Every section of the cited print of each Act, with its heading. A correction replaces a
+    derived heading only while the derived file still holds the heading it was written against."""
     out = {}
     with path.open(encoding="utf-8") as fh:
         for row in csv.DictReader(fh):
             if row["act_id"] in CITED_PRINT and row["cited_print"] == CITED_PRINT[row["act_id"]] \
                     and row["cited_section"].isdigit():
                 out.setdefault((row["act_id"], int(row["cited_section"])), row["cited_heading"].strip())
+    for row in load_heading_corrections(corrections):
+        key = (row["act_id"], int(row["section"]))
+        if out.get(key) != row["derived"]:
+            raise ValueError(f"heading correction for {key[0]} s{key[1]} expects the derived heading "
+                             f"{row['derived']!r}, found {out.get(key)!r}")
+        out[key] = row["heading"]
     return out
 
 
-def load_guardrails_policy(path: Path = POLICY, section_map: Path = SECTION_MAP) -> GuardrailsPolicy:
+def load_guardrails_policy(path: Path = POLICY, section_map: Path = SECTION_MAP,
+                           heading_corrections: Path | None = HEADING_CORRECTIONS) -> GuardrailsPolicy:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     floor = data["relevance_floor"]
     return GuardrailsPolicy(
@@ -104,7 +121,7 @@ def load_guardrails_policy(path: Path = POLICY, section_map: Path = SECTION_MAP)
         max_question_chars=int(data["max_question_chars"]),
         tau=None if floor["tau"] is None else float(floor["tau"]),
         margin=float(floor["margin"]),
-        headings=load_section_headings(section_map),
+        headings=load_section_headings(section_map, heading_corrections),
         sha256=_sha256(path),
     )
 
@@ -139,41 +156,12 @@ class PreCheck:
 
 def _act_mentions(question: str, policy: GuardrailsPolicy) -> list[tuple[int, int, str]]:
     """(start, end, act) for every Act named; Acts outside the corpus win where spans overlap."""
-    others = []
-    for name, pattern in policy.other_acts:
-        for m in pattern.finditer(question):
-            label = " ".join(m.group(0).split()) if name == "{match}" else name
-            others.append((m.start(), m.end(), f"other:{label}"))
-    mentions = list(others)
-    for m in _CORPUS_ACT.finditer(question):
-        if not any(s < m.end() and m.start() < e for s, e, _ in others):
-            act = "ntaa2025" if "administration" in m.group(0).lower() or m.group(0) == "NTAA" else "nta2025"
-            mentions.append((m.start(), m.end(), act))
-    return sorted(mentions)
+    return references.act_mentions(question, policy.other_acts)
 
 
 def parse_references(question: str, policy: GuardrailsPolicy) -> list[Reference]:
-    """Section and Schedule references, each with its Act, by the retrieval rule."""
-    hits = [(m.start(), m.end(), "section", m) for m in _SECTION_REF.finditer(question)]
-    hits += [(m.start(), m.end(), "schedule", m) for m in _SCHEDULE_REF.finditer(question)]
-    hits.sort(key=lambda h: h[0])
-    acts = _act_mentions(question, policy)
-    out: list[Reference] = []
-    for i, (start, end, kind, m) in enumerate(hits):
-        next_start = hits[i + 1][0] if i + 1 < len(hits) else len(question)
-        after = [a for s, _, a in acts if end <= s < next_start]
-        before = [a for s, _, a in acts if s < start]
-        act = after[0] if after else (before[-1] if before else None)
-        if kind == "section":
-            numbers = [int(m.group(1))] + [int(n) for n in _LIST_NUMBER.findall(m.group(2))]
-        else:
-            word = (m.group(1) or "").lower()
-            numbers = [ORDINALS[word] if word in ORDINALS else int(re.sub(r"\D", "", word or m.group(2)))]
-        for number in numbers:
-            ref = Reference(kind, number, act)
-            if not any((r.kind, r.number, r.act) == (kind, number, act) for r in out):
-                out.append(ref)
-    return out
+    """Section and Schedule references, each with its Act, by the shared parser (D-54)."""
+    return [Reference(r.kind, r.number, r.act) for r in references.parse_references(question, policy.other_acts)]
 
 
 def _ordinal(n: int) -> str:
@@ -273,8 +261,11 @@ def pre_check(question: str, policy: GuardrailsPolicy, corpus: dict[str, dict[st
     corpus_refs = [r for r in result.references if r.verdict in ("ok", "no_such_section", "section_outside_v1")]
     failed = [r for r in corpus_refs if r.verdict != "ok"]
     if corpus_refs and len(failed) == len(corpus_refs):
-        result.refusal = failed[0].verdict
-        result.refusal_text = " ".join(dict.fromkeys(r.text for r in failed))
+        # D-60: a section number also named with an Act is stated once, under the named Act.
+        named = {(r.kind, r.number) for r in failed if r.act}
+        stated = [r for r in failed if r.act or (r.kind, r.number) not in named]
+        result.refusal = stated[0].verdict
+        result.refusal_text = " ".join(dict.fromkeys(r.text for r in stated))
     elif failed:
         for verdict, text in dict.fromkeys((r.verdict, r.text) for r in failed):
             result.notes.append(_note(f"reference:{verdict}", text))
@@ -312,9 +303,19 @@ class Floor:
         return {"status": self.status, "top1_vector_score": self.top1, "tau": self.tau}
 
 
+def _is_vector_result(item) -> bool:
+    """A result the floor reads: not a section lookup and not a keyword slot; an Act-name lookup
+    only where it is also a vector result (D-54)."""
+    if any(r.startswith(("section lookup", "keyword slot")) for r in item.reasons):
+        return False
+    if any(r.startswith("act-name lookup") for r in item.reasons):
+        return any(r.startswith("vector rank") for r in item.reasons)
+    return True
+
+
 def relevance_floor(retrieved: list, tau: float | None) -> Floor:
     """Floor check on the retrieval results (`Retrieved` items, rank order)."""
-    vector = [item.score for item in retrieved if not any(r.startswith("section lookup") for r in item.reasons)]
+    vector = [item.score for item in retrieved if _is_vector_result(item)]
     top1 = max(vector) if vector else None
     if any(r.startswith("section lookup") for item in retrieved for r in item.reasons):
         return Floor("exempt_lookup", top1, tau)

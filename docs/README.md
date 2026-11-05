@@ -33,6 +33,19 @@ document is added, moved or renamed.
 | [phase06_guardrails/g2_results.md](phase06_guardrails/g2_results.md) | Gate G2 decision run 1 (held-out part, 3 repeats): method, frozen config and result hashes, results by category, over-refusals, D-38 false refusals and their cause, ADV-071, missing-note cases (D-51), claim verdicts, removals and moves, cost and latency, owner sample, and the result (FAIL, D-50) with next steps; per-case and per-claim rows in `g2_results.csv`. |
 | [phase06_guardrails/g2_fix_design.md](phase06_guardrails/g2_fix_design.md) | Fix design after G2 decision run 1 (approved, D-54 to D-61): root causes and measured options for the retrieval misses (Act-name lookup plus one keyword slot), the evidence normaliser (`norm/5`, offline re-check), note triggers and a false-trigger limit, version-keyed decision runs, carried risks, and the re-tuning plan with cost and order of work. |
 
+## Scripts and data files added by the G2 fix build
+
+| File | Purpose |
+|---|---|
+| [../python/retrieval/references.py](../python/retrieval/references.py) | Shared reference parser for retrieval and the guardrails (D-54): section and Schedule references, the Act each belongs to, and the names of Acts outside the corpus. |
+| [../eval/retrieval/config_v2.json](../eval/retrieval/config_v2.json) | Retrieval configuration v2 (D-54): the frozen D-21 settings plus other-Act references skipped, the Act-name lookup (at most 2 chunks) and one keyword slot (P6). |
+| [../eval/retrieval/results/dev_v2.json](../eval/retrieval/results/dev_v2.json) | Dev-split retrieval result under `config_v2.json`, with the first five identical to `dev_final.json`. |
+| [../eval/retrieval/check_v1_retrieval.py](../eval/retrieval/check_v1_retrieval.py) | v1 retrieval check (G2 fix design, section 2.5): needed units under D-21 and D-54 over the 34 in-scope adversarial_v1 cases; writes nothing. |
+| [../eval/guardrails/recheck_evidence.py](../eval/guardrails/recheck_evidence.py) | Offline evidence re-check of `norm/5` against `norm/4` over the logged calibration, tuning and held-out runs (needs the local, git-ignored generation log). |
+| [../eval/guardrails/measure_notes.py](../eval/guardrails/measure_notes.py) | Note measure (G2 fix design, section 4.3): required notes missed and notes not required per set, and the probe counts; writes nothing. |
+| [../data/curated/heading_corrections.yml](../data/curated/heading_corrections.yml) | Checked corrections to three cited section headings (DQ-18, D-60), each with its PDF page, read by the guardrails' heading loader. |
+| [../tests/data/note_probes.json](../tests/data/note_probes.json) | Note-trigger probe fixtures (D-56, D-57): 18 questions that should get a note and 16 near misses that should not. |
+
 The source-document inventory (files, hashes, provenance, snapshot date) is in
 [../data/README.md](../data/README.md) and [../data/manifest.csv](../data/manifest.csv).
 

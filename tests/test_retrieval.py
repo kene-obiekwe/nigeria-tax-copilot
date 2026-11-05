@@ -10,7 +10,7 @@ import sys
 import pytest
 
 from embed import clients, load
-from retrieval import retrieve as rt
+from retrieval import references, retrieve as rt
 from retrieval.smoke_query import matches
 
 ROOT = clients.ROOT
@@ -170,6 +170,166 @@ def test_keyword_index_and_fusion(loaded):
     hit = next(x for x in fused if x.chunk_id == only)
     assert any(reason.startswith("keyword rank 1") for reason in hit.reasons)
     assert hit.distance is not None
+
+
+# D-54 revision: shared parser, Act-name lookup, keyword slot (G2 fix design, section 2.5) --------
+
+OTHER_ACTS = references.load_other_acts()
+V2 = json.loads((ROOT / "eval" / "retrieval" / "config_v2.json").read_text(encoding="utf-8"))
+NAMING_VAT_ACT = ["nta2025:s196", "nta2025:s198"]  # the corpus chunks that name the Value Added Tax Act
+
+
+def test_config_v2_settings():
+    assert {k: V2[k] for k in ("other_act_refs", "act_lookup", "keyword_slots", "passages")} == \
+        {"other_act_refs": "skip", "act_lookup": {"max_chunks": 2}, "keyword_slots": 1, "passages": 6}
+    final = json.loads(run_eval.FINAL_CONFIG.read_text(encoding="utf-8"))
+    assert {k: v for k, v in V2.items() if k in final and k not in ("name", "based_on")} == \
+        {k: v for k, v in final.items() if k not in ("name", "based_on")}
+
+
+def test_reference_to_another_act_is_not_looked_up():
+    question = "Is section 23 of the Companies Income Tax Act still in force?"
+    assert references.parse_references(question, OTHER_ACTS) == [
+        references.Reference("section", 23, "other:Companies Income Tax Act")]
+    assert rt.parse_section_refs(question, OTHER_ACTS) == []
+    assert rt.parse_section_refs(question) == [rt.SectionRef("23", None)]  # the D-21 reading, unchanged
+
+
+def test_same_number_with_a_corpus_act_is_looked_up():
+    question = "Is section 23 of the Nigeria Tax Act still in force?"
+    assert rt.parse_section_refs(question, OTHER_ACTS) == [rt.SectionRef("23", "nta2025")]
+
+
+def test_mixed_question_keeps_both_behaviours():
+    question = "Does section 196 of the Nigeria Tax Act replace section 40 of CITA?"
+    refs = references.parse_references(question, OTHER_ACTS)
+    assert [(r.number, r.act) for r in refs] == [(196, "nta2025"), (40, "other:Companies Income Tax Act")]
+    assert rt.parse_section_refs(question, OTHER_ACTS) == [rt.SectionRef("196", "nta2025")]
+
+
+def test_guardrails_read_references_with_the_same_parser():
+    from generation import guardrails
+
+    policy = guardrails.load_guardrails_policy()
+    for question in ("Is section 23 of the Companies Income Tax Act still in force?",
+                     "Does section 196 of the Nigeria Tax Act replace section 40 of CITA?",
+                     "What do sections 20 and 21 of the Tax Administration Act and the Third Schedule say?"):
+        assert [(r.kind, r.number, r.act) for r in guardrails.parse_references(question, policy)] == \
+            [(r.kind, r.number, r.act) for r in references.parse_references(question, OTHER_ACTS)]
+
+
+def test_other_act_reference_skipped_in_retrieval(loaded):
+    question = "What does section 17 of the Companies Income Tax Act say?"
+    d21 = retriever(loaded).retrieve(question, k=5, query_vector=QUERY)
+    assert all("section lookup: Section 17" in r.reasons[0] for r in d21)  # D-21 looked it up
+    skip = retriever(loaded, other_act_refs="skip").retrieve(question, k=5, query_vector=QUERY)
+    plain = retriever(loaded, section_lookup=False).retrieve(question, k=5, query_vector=QUERY)
+    assert [r.chunk_id for r in skip] == [r.chunk_id for r in plain]
+    assert not any(reason.startswith("section lookup") for r in skip for reason in r.reasons)
+
+
+def test_act_name_lookup_nearest_first_and_capped(loaded):
+    question = "Which law replaced the Value Added Tax Act?"
+    got = retriever(loaded, other_act_refs="skip", act_lookup={"max_chunks": 2}).retrieve(
+        question, k=5, query_vector=QUERY)
+    head = got[:2]
+    assert sorted(r.chunk_id for r in head) == NAMING_VAT_ACT
+    assert [r.distance for r in head] == sorted(r.distance for r in head)
+    assert all(r.reasons[0].startswith("act-name lookup: names the Value Added Tax Act") for r in head)
+    assert len(got) == 5 and len({r.chunk_id for r in got}) == 5
+    one = retriever(loaded, other_act_refs="skip", act_lookup={"max_chunks": 1}).retrieve(
+        question, k=5, query_vector=QUERY)
+    assert one[0].chunk_id == head[0].chunk_id and not one[1].reasons[0].startswith("act-name lookup")
+    # Two outside Acts named: still at most 2 chunks in all.
+    both = retriever(loaded, other_act_refs="skip", act_lookup={"max_chunks": 2}).retrieve(
+        "Did the new law repeal the VAT Act and CITA?", k=5, query_vector=QUERY)
+    assert sum(r.reasons[0].startswith("act-name lookup") for r in both) == 2
+    # An Act that no corpus chunk names adds nothing.
+    none = retriever(loaded, other_act_refs="skip", act_lookup={"max_chunks": 2}).retrieve(
+        "What does the Finance Act say about levies?", k=5, query_vector=QUERY)
+    assert not any(r.reasons[0].startswith("act-name lookup") for r in none)
+
+
+def test_act_name_lookup_follows_the_section_lookup(loaded):
+    question = "Does section 17 of the Nigeria Tax Act depend on section 9 of the VAT Act?"
+    got = retriever(loaded, other_act_refs="skip", act_lookup={"max_chunks": 2}).retrieve(
+        question, k=8, query_vector=QUERY)
+    section17 = sorted(c for c in CHUNKS if c.startswith("nta2025:s17("))
+    assert sorted(r.chunk_id for r in got[:5]) == section17
+    assert sorted(r.chunk_id for r in got[5:7]) == NAMING_VAT_ACT
+    assert not any("Section 9" in reason for r in got for reason in r.reasons)
+
+
+def test_keyword_slot_is_appended_and_never_reorders(loaded):
+    question = "registration of a taxable person for value added tax"
+    first = retriever(loaded).retrieve(question, k=5, query_vector=QUERY)
+    slotted = retriever(loaded, keyword_slots=1).retrieve(question, k=5, query_vector=QUERY)
+    assert [(r.chunk_id, r.rank, r.reasons) for r in slotted[:5]] == [(r.chunk_id, r.rank, r.reasons) for r in first]
+    assert len(slotted) == 6 and slotted[5].rank == 6
+    slot = slotted[5]
+    assert slot.chunk_id not in {r.chunk_id for r in first}
+    assert slot.reasons[0].startswith("keyword slot: BM25 rank")
+    best_unshown = next(c for c, _ in rt.KeywordIndex(loaded).search(question, 60) if c not in {r.chunk_id for r in first})
+    assert slot.chunk_id == best_unshown
+    two = retriever(loaded, keyword_slots=2).retrieve(question, k=5, query_vector=QUERY)
+    assert len(two) == 7 and len({r.chunk_id for r in two}) == 7 and two[5].chunk_id == slot.chunk_id
+
+
+@pytest.mark.parametrize("question", [
+    "What does section 17 of the Nigeria Tax Act say?",
+    "What does section 11 say?",
+    "Is section 23 of the Companies Income Tax Act still in force?",
+    "Which law replaced the Value Added Tax Act?",
+    "value added tax on exported services",
+])
+def test_options_off_rank_exactly_as_d21(loaded, question):
+    """With other_act_refs, act_lookup and keyword_slots off, ranking equals D-21 exactly."""
+    d21 = retriever(loaded).retrieve(question, k=8, query_vector=QUERY)
+    off = retriever(loaded, other_act_refs=None, act_lookup=None, keyword_slots=0).retrieve(
+        question, k=8, query_vector=QUERY)
+    assert [(r.chunk_id, r.score, r.reasons) for r in off] == [(r.chunk_id, r.score, r.reasons) for r in d21]
+
+
+def test_first_five_unchanged_by_v2_when_no_other_act_is_named(loaded):
+    for question in ("What does section 17 of the Nigeria Tax Act say?", "value added tax on exported services"):
+        d21 = retriever(loaded).retrieve(question, k=5, query_vector=QUERY)
+        v2 = rt.Retriever(loaded, {**V2, "model": FakeClient.model}, FakeClient()).retrieve(
+            question, k=5, query_vector=QUERY)
+        assert [r.chunk_id for r in v2[:5]] == [r.chunk_id for r in d21] and len(v2) == 6
+
+
+def test_unknown_other_act_refs_value_is_refused(loaded):
+    with pytest.raises(ValueError, match="other_act_refs"):
+        retriever(loaded, other_act_refs="ignore")
+
+
+# Relevance floor under D-54 (section 2.5, item 2) -------------------------------------------------
+
+
+def _item(chunk_id, score, *reasons):
+    return rt.Retrieved(chunk_id, 0, score, 1 - score, list(reasons))
+
+
+def test_floor_act_name_lookup_is_not_exempt():
+    from generation.guardrails import relevance_floor
+
+    items = [_item("nta2025:s196", 0.9, "act-name lookup: names the Companies Income Tax Act (cosine distance 0.1)"),
+             _item("a", 0.35, "vector rank 1 (cosine distance 0.65)"),
+             _item("b", 0.30, "vector rank 2 (cosine distance 0.70)")]
+    floor = relevance_floor(items, 0.40)
+    assert (floor.status, floor.top1) == ("below", 0.35)
+    # An Act-name result that is also the top vector result is read through its vector rank.
+    items[0].reasons.append("vector rank 1 (cosine distance 0.1)")
+    assert relevance_floor(items, 0.40).status == "pass"
+
+
+def test_floor_never_reads_the_keyword_slot():
+    from generation.guardrails import relevance_floor
+
+    items = [_item("a", 0.35, "vector rank 1 (cosine distance 0.65)"),
+             _item("k", 0.95, "keyword slot: BM25 rank 1 (BM25 9.000, cosine distance 0.05)")]
+    floor = relevance_floor(items, 0.40)
+    assert (floor.status, floor.top1) == ("below", 0.35)
 
 
 # Embedding clients ---------------------------------------------------------------------------

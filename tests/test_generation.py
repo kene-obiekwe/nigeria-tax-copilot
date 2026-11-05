@@ -22,8 +22,10 @@ sys.modules.setdefault("run_eval", run_eval)
 spec.loader.exec_module(run_eval)
 
 STORE = gen.FileCorpusStore()
-SYSTEM_PROMPT_SHA256 = "85ee84b03edb19cef01de8e8ea79262bda822a2a85e3ec2e6066d34c789e5444"  # gen-prompt/5
-RETRIEVAL_CONFIG_SHA256 = "6ce743b317a58260f7eb397c7a6e9a7e14afab86cbde2dbc296273131c9e3684"  # D-21
+SYSTEM_PROMPT_SHA256 = "34d4eb23fa0a7419acb5cbb309a030adaf4aab881b59d00107db3569debef084"  # gen-prompt/6 (D-54)
+PROMPT_V5_SHA256 = "85ee84b03edb19cef01de8e8ea79262bda822a2a85e3ec2e6066d34c789e5444"  # gen-prompt/5 (D-45)
+RETRIEVAL_CONFIG_SHA256 = "efb80815f3a98c51635a02557cc1dc8fadf1ebbd1fc1b9534a7827b4799ee274"  # config_v2.json (D-54)
+FINAL_CONFIG_SHA256 = "6ce743b317a58260f7eb397c7a6e9a7e14afab86cbde2dbc296273131c9e3684"  # config_final.json (D-21)
 QUESTION = "Does the development levy apply to a small company?"
 CHUNK_IDS = ["nta2025:s59", "nta2025:s202:def:small-company", "nta2025:s56"]
 
@@ -75,11 +77,43 @@ def run(output=ANSWER, tmp_path=None, **kw):
 
 def test_system_prompt_is_pinned():
     assert hashlib.sha256(prompt.SYSTEM_PROMPT.encode("utf-8")).hexdigest() == SYSTEM_PROMPT_SHA256
-    assert prompt.PROMPT_VERSION == "gen-prompt/5"
+    assert prompt.PROMPT_VERSION == "gen-prompt/6"
     assert "exception, proviso or exclusion that bears on the question" in prompt.SYSTEM_PROMPT  # D-43(a)
     assert "Every claim must be true when read on its own." in prompt.SYSTEM_PROMPT  # D-45
     assert "in the same claim as the rule" in prompt.SYSTEM_PROMPT
     assert not re.search(r"\d{4}-\d{2}-\d{2}T|\{|\}", prompt.SYSTEM_PROMPT)  # no per-call content
+
+
+def test_gen_prompt_6_changes_only_the_passage_labels():
+    """D-54: gen-prompt/6 is gen-prompt/5 with rule 2 citing P1 to P6; no other rule changes."""
+    assert prompt.SYSTEM_PROMPT.count("(P1 to P6)") == 1 and "P5)" not in prompt.SYSTEM_PROMPT
+    v5 = prompt.SYSTEM_PROMPT.replace("(P1 to P6)", "(P1 to P5)")
+    assert hashlib.sha256(v5.encode("utf-8")).hexdigest() == PROMPT_V5_SHA256
+
+
+def test_six_label_schema():
+    assert prompt.MAX_PASSAGES == 6 and prompt.LABELS == ("P1", "P2", "P3", "P4", "P5", "P6")
+    labels = prompt.OUTPUT_SCHEMA["properties"]["claims"]["items"]["properties"]["passages"]["items"]["enum"]
+    assert labels == ["P1", "P2", "P3", "P4", "P5", "P6"]
+    chunks = [STORE.chunks([c])[c] for c in ["nta2025:s59", "nta2025:s56", "nta2025:s57", "nta2025:s148",
+                                             "nta2025:s144", "nta2025:s196"]]
+    assert re.findall(r'label="(P\d)"', prompt.build_user_message(chunks, QUESTION)) == list(prompt.LABELS)
+    with pytest.raises(ValueError, match="at most 6 passages"):
+        prompt.build_user_message(chunks + chunks[:1], QUESTION)
+
+
+def test_generate_shows_six_passages(tmp_path):
+    ids = ["nta2025:s59", "nta2025:s56", "nta2025:s57", "nta2025:s148", "nta2025:s144", "nta2025:s196", "nta2025:s3"]
+
+    class SixRetriever:  # five ranked results plus one keyword slot, as config_v2.json returns them
+        def retrieve(self, question, k=5, filters=None, query_vector=None):
+            return [Retrieved(c, i, 0.6, 0.4, ["vector rank %d" % i]) for i, c in enumerate(ids[:k + 1], 1)]
+
+    answer, fake = run({"status": "answered", "claims": [{"text": "The rate is set.", "passages": ["P6"]}],
+                        "gaps": []}, retriever=SixRetriever())
+    assert [p.label for p in answer.passages] == list(prompt.LABELS)
+    assert answer.claims[0].chunk_ids == ["nta2025:s196"]
+    assert 'label="P6"' in fake.requests[0]["messages"][0]["content"]
 
 
 def test_user_message_labels_passages_in_rank_order_with_exact_text():
@@ -93,7 +127,7 @@ def test_user_message_labels_passages_in_rank_order_with_exact_text():
     assert message.endswith("<question>\n" + QUESTION + "\n</question>")
     assert 'disputed="yes"' in message
     with pytest.raises(ValueError):
-        prompt.build_user_message(chunks * 2, QUESTION)
+        prompt.build_user_message(chunks * 3, QUESTION)
 
 
 def test_request_shape():
@@ -106,8 +140,11 @@ def test_request_shape():
     assert not {"temperature", "top_p", "top_k"} & set(params)
 
 
-def test_retrieval_config_is_the_frozen_one():
+def test_retrieval_config_is_config_v2_and_final_stays_frozen():
+    """Generation reads config_v2.json (D-54); config_final.json stays the G1 record (D-21)."""
+    assert gen.RETRIEVAL_CONFIG == ROOT / "eval" / "retrieval" / "config_v2.json"
     assert hashlib.sha256(gen.RETRIEVAL_CONFIG.read_bytes()).hexdigest() == RETRIEVAL_CONFIG_SHA256
+    assert hashlib.sha256(run_eval.FINAL_CONFIG.read_bytes()).hexdigest() == FINAL_CONFIG_SHA256
 
 
 # Parser ----------------------------------------------------------------------------------------
@@ -226,7 +263,7 @@ def test_log_record_has_every_field_and_no_key(tmp_path, monkeypatch):
     assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/2"
     assert record["record_id"] == answer.record_id and record["verification"] is None
     assert record["request"]["system"][0]["text"] == prompt.SYSTEM_PROMPT
-    assert record["request"]["prompt_version"] == "gen-prompt/5"
+    assert record["request"]["prompt_version"] == "gen-prompt/6"
     assert [c["chunk_id"] for c in record["retrieval"]["chunks"]] == CHUNK_IDS
     assert record["retrieval"]["config_sha256"] == RETRIEVAL_CONFIG_SHA256
     assert record["response"]["usage"]["cache_read_input_tokens"] == 700

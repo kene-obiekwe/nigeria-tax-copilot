@@ -1,0 +1,48 @@
+# Corrections to cited section headings in data/derived/section_map.csv (DQ-18, D-60).
+#
+# section_map.csv is derived data and is never hand-edited. The guardrails' heading loader
+# (python/generation/guardrails.py, load_section_headings) reads this file and replaces the derived
+# heading of each row below. A row applies only while the derived file still holds `derived`
+# exactly; if the derived heading changes, loading fails, so a stale correction is never applied.
+#
+# Each heading was checked against the page image of the cited print on 2026-11-05.
+# `pdf_page` counts from 1 in the PDF file; `printed_page` is the gazette page number in the header.
+# The headings are the margin notes beside the section in the body of the Act.
+
+corrections:
+  - act_id: ntaa2025
+    print: nrs
+    section: 37
+    derived: "eMakingof assessments oftax in upstream petroleum operations"
+    heading: "Making of assessments of tax in upstream petroleum operations"
+    source: data/raw/nigeria_tax_administration_act_2025_gazette_nrs.pdf
+    pdf_page: 25
+    printed_page: "A 283"
+    reading: >-
+      Margin note beside section 37(1) reads "Making of assessments of tax in upstream petroleum
+      operations". The derived text joins OCR noise ("e") and drops two spaces.
+
+  - act_id: ntaa2025
+    print: nrs
+    section: 61
+    derived: "a Power to distrain"
+    heading: "Power to distrain"
+    source: data/raw/nigeria_tax_administration_act_2025_gazette_nrs.pdf
+    pdf_page: 37
+    printed_page: "A 295"
+    reading: >-
+      Margin note beside section 61(1) reads "Power to distrain". The leading "a" is the last word
+      of the body line beside it ("... final and conclusive and a").
+
+  - act_id: nta2025
+    print: gazette
+    section: 113
+    derived: "tax petroleum operations"
+    heading: "Chargeable tax petroleum operations"
+    source: data/raw/nigeria_tax_act_2025_gazette_lirs.pdf
+    pdf_page: 70
+    printed_page: "A 454"
+    reading: >-
+      Margin note beside section 113 reads "Chargeable tax petro- leum operations" over four lines;
+      the arrangement of sections (PDF page 6, A 390) reads "113. Chargeable tax petroleum
+      operations". The derived text lost the first word.
