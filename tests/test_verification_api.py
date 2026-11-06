@@ -92,3 +92,55 @@ def test_usage_and_cost_recorded_and_the_cache_read_on_the_second_call(supported
         assert result.usage["output_tokens"] > 0 and result.cost_usd > 0
         assert result.response["model"].startswith("claude-haiku-5-5")
     assert second.usage["cache_read_input_tokens"] > 0, second.usage
+
+
+# Gap classifier, gap-prompt/3 (D-66, D-67). Gap texts are from tuning runs 2 to 4 (adversarial_v1 tune part
+# and dev split), except the two wording probes, which are written for this test. A question "dev:<id>" is read
+# from the dev split. One Haiku call each.
+GAP_FIXTURES = [
+    # ADV-083, run 4: says what an absent provision sets (the rate), which section 51 itself leaves to regulations.
+    ("ADV-083", "Our parent company is in the Netherlands. When our Nigerian company pays it a dividend, is any tax "
+     "taken off?",
+     "The rate of tax deducted at source on dividends, and the rules for deduction, are in section 51 of the Nigeria "
+     "Tax Administration Act, 2025, which is not among the passages.", "legal_content"),
+    # ADV-028, run 4: names the absent provision only by the passage's link to it.
+    ("ADV-028", "What is the withholding tax on dividends paid by a company in Senegal?",
+     "The rate of withholding tax on dividends is not stated in the passages; section 51 of the Nigeria Tax "
+     "Administration Act 2025, which is referred to, is not among them.", "missing_information"),
+    # Probe: a link that also says what the absent provision is for.
+    ("probe-for", "Our parent company is in the Netherlands. When our Nigerian company pays it a dividend, is any "
+     "tax taken off?",
+     "Section 51 of the Nigeria Tax Administration Act, 2025, which sets the rate of tax deducted at source, is not "
+     "among the passages.", "legal_content"),
+    # Probe: a bare "subject to" link that names no subject matter.
+    ("probe-link", "We paid company tax late. What is added to it?",
+     "Section 67 of the Nigeria Tax Administration Act 2025, to which section 65(1) is subject, is not among the "
+     "passages.", "missing_information"),
+    # ADV-083, tune run 2: says what an absent provision sets (its rate and method).
+    ("ADV-083-run2", "Our parent company is in the Netherlands. When our Nigerian company pays it a dividend, is any "
+     "tax taken off?",
+     "The rate and method of the tax deducted at source under section 51 of the Nigeria Tax Administration Act, 2025 "
+     "are not in the passages.", "legal_content"),
+    # Q025, tune run 3: names what the passages do not define, and no provision.
+    ("Q025-run3", "dev:Q025", 'The passages do not define "professional services".', "missing_information"),
+]
+
+
+def gap_question(question: str) -> str:
+    if not question.startswith("dev:"):
+        return question
+    import importlib.util
+    import sys
+    spec = importlib.util.spec_from_file_location("run_eval", ROOT / "eval" / "retrieval" / "run_eval.py")
+    run_eval = importlib.util.module_from_spec(spec)
+    sys.modules.setdefault("run_eval", run_eval)
+    spec.loader.exec_module(run_eval)
+    return {q["id"]: q["question"] for q in run_eval.load_questions("dev")}[question.removeprefix("dev:")]
+
+
+@pytest.mark.parametrize("case_id, question, gap, expected", GAP_FIXTURES, ids=[f[0] for f in GAP_FIXTURES])
+def test_gap_prompt_3_classes(verifier, case_id, question, gap, expected):
+    result = verify.check_gaps(gap_question(question), [(gap, "model")], verifier, ())
+    assert result.error is None, result.error
+    assert result.request["prompt_version"] == "gap-prompt/3"
+    assert result.gaps[0].gap_class == expected, (case_id, result.gaps[0].gap_class)

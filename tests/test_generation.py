@@ -22,7 +22,8 @@ sys.modules.setdefault("run_eval", run_eval)
 spec.loader.exec_module(run_eval)
 
 STORE = gen.FileCorpusStore()
-SYSTEM_PROMPT_SHA256 = "34d4eb23fa0a7419acb5cbb309a030adaf4aab881b59d00107db3569debef084"  # gen-prompt/6 (D-54)
+SYSTEM_PROMPT_SHA256 = "d9119949ade1c378976b84f2386659a298c9b3ceef02e2c47feb7eebdf39b3ad"  # gen-prompt/7 (D-66)
+PROMPT_V6_SHA256 = "34d4eb23fa0a7419acb5cbb309a030adaf4aab881b59d00107db3569debef084"  # gen-prompt/6 (D-54)
 PROMPT_V5_SHA256 = "85ee84b03edb19cef01de8e8ea79262bda822a2a85e3ec2e6066d34c789e5444"  # gen-prompt/5 (D-45)
 RETRIEVAL_CONFIG_SHA256 = "efb80815f3a98c51635a02557cc1dc8fadf1ebbd1fc1b9534a7827b4799ee274"  # config_v2.json (D-54)
 FINAL_CONFIG_SHA256 = "6ce743b317a58260f7eb397c7a6e9a7e14afab86cbde2dbc296273131c9e3684"  # config_final.json (D-21)
@@ -77,17 +78,35 @@ def run(output=ANSWER, tmp_path=None, **kw):
 
 def test_system_prompt_is_pinned():
     assert hashlib.sha256(prompt.SYSTEM_PROMPT.encode("utf-8")).hexdigest() == SYSTEM_PROMPT_SHA256
-    assert prompt.PROMPT_VERSION == "gen-prompt/6"
+    assert prompt.PROMPT_VERSION == "gen-prompt/7"
     assert "exception, proviso or exclusion that bears on the question" in prompt.SYSTEM_PROMPT  # D-43(a)
     assert "Every claim must be true when read on its own." in prompt.SYSTEM_PROMPT  # D-45
     assert "in the same claim as the rule" in prompt.SYSTEM_PROMPT
     assert not re.search(r"\d{4}-\d{2}-\d{2}T|\{|\}", prompt.SYSTEM_PROMPT)  # no per-call content
 
 
+# D-66: the only text gen-prompt/7 adds to gen-prompt/6, at the end of rule 7.
+GEN_PROMPT_7_ADDITION = (
+    " A gap may say that a provision a passage names is not among the passages, using only the passage's "
+    "own link to it (\"section X, which section Y refers to, is not among the passages\"). It must not say "
+    "what that provision contains, sets, covers or provides, or what it is for, such as a rate, a rule, "
+    "a date or a procedure.")
+
+
+def test_gen_prompt_7_adds_only_the_rule_7_gap_sentence():
+    """D-66: gen-prompt/7 is gen-prompt/6 plus one passage at the end of rule 7."""
+    assert prompt.SYSTEM_PROMPT.count(GEN_PROMPT_7_ADDITION) == 1
+    rule7 = prompt.SYSTEM_PROMPT.split("\n7. ")[1].split("\n8. ")[0]
+    assert GEN_PROMPT_7_ADDITION in rule7
+    v6 = prompt.SYSTEM_PROMPT.replace(GEN_PROMPT_7_ADDITION, "")
+    assert hashlib.sha256(v6.encode("utf-8")).hexdigest() == PROMPT_V6_SHA256
+
+
 def test_gen_prompt_6_changes_only_the_passage_labels():
     """D-54: gen-prompt/6 is gen-prompt/5 with rule 2 citing P1 to P6; no other rule changes."""
-    assert prompt.SYSTEM_PROMPT.count("(P1 to P6)") == 1 and "P5)" not in prompt.SYSTEM_PROMPT
-    v5 = prompt.SYSTEM_PROMPT.replace("(P1 to P6)", "(P1 to P5)")
+    v6 = prompt.SYSTEM_PROMPT.replace(GEN_PROMPT_7_ADDITION, "")
+    assert v6.count("(P1 to P6)") == 1 and "P5)" not in v6
+    v5 = v6.replace("(P1 to P6)", "(P1 to P5)")
     assert hashlib.sha256(v5.encode("utf-8")).hexdigest() == PROMPT_V5_SHA256
 
 
@@ -263,7 +282,7 @@ def test_log_record_has_every_field_and_no_key(tmp_path, monkeypatch):
     assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/2"
     assert record["record_id"] == answer.record_id and record["verification"] is None
     assert record["request"]["system"][0]["text"] == prompt.SYSTEM_PROMPT
-    assert record["request"]["prompt_version"] == "gen-prompt/6"
+    assert record["request"]["prompt_version"] == "gen-prompt/7"
     assert [c["chunk_id"] for c in record["retrieval"]["chunks"]] == CHUNK_IDS
     assert record["retrieval"]["config_sha256"] == RETRIEVAL_CONFIG_SHA256
     assert record["response"]["usage"]["cache_read_input_tokens"] == 700

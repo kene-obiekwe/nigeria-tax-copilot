@@ -521,15 +521,7 @@ class GapCheck:
     gap_class: str | None
     kept: bool
     reason: str | None      # disputed_flag_repeat | legal_content | advice | unclassified | check_failed | fixed
-
-    def as_log(self) -> dict:
-        return {"text": self.text, "origin": self.origin, "class": self.gap_class, "kept": self.kept,
-                "reason": self.reason}
-
-
-@dataclass
-class GapResult:
-    gaps: list[GapCheck]
+    # The gap's own classifier call (D-68); None for the fixed gap and pattern-filtered gaps.
     request: dict | None = None
     response: dict | None = None
     error: str | None = None
@@ -537,20 +529,56 @@ class GapResult:
     cost_usd: float = 0.0
     latency_ms: int = 0
 
+    def as_log(self) -> dict:
+        return {"text": self.text, "origin": self.origin, "class": self.gap_class, "kept": self.kept,
+                "reason": self.reason, "request": self.request, "response": self.response, "error": self.error,
+                "usage": self.usage, "cost_usd": round(self.cost_usd, 6), "latency_ms": self.latency_ms}
+
+
+@dataclass
+class GapResult:
+    gaps: list[GapCheck]
+    request: dict | None = None     # versions and call count; each call's request is on its GapCheck (D-68)
+    error: str | None = None        # the first failed call's error; any failure removes every checked gap
+    usage: dict = field(default_factory=lambda: dict(ZERO_USAGE))
+    cost_usd: float = 0.0
+    latency_ms: int = 0             # the slowest call (calls run in parallel)
+
     @property
     def kept(self) -> list[str]:
         return [g.text for g in self.gaps if g.kept]
 
     def as_log(self) -> dict:
-        return {"gaps": [g.as_log() for g in self.gaps], "request": self.request, "response": self.response,
-                "error": self.error, "usage": self.usage, "cost_usd": round(self.cost_usd, 6),
-                "latency_ms": self.latency_ms}
+        return {"gaps": [g.as_log() for g in self.gaps], "request": self.request, "error": self.error,
+                "usage": self.usage, "cost_usd": round(self.cost_usd, 6), "latency_ms": self.latency_ms}
+
+
+def _classify_gap(question: str, gap: GapCheck, verifier: LLMClient, effort: str, max_tokens: int) -> None:
+    """One classifier call for one gap (D-68), sent as gap index 0 under the same prompt and schema."""
+    params = request_params(GAP_SYSTEM_PROMPT, build_gap_message(question, [gap.text]), GAP_SCHEMA,
+                            model=verifier.model, effort=effort, max_tokens=max_tokens)
+    gap.request = {"prompt_version": GAP_PROMPT_VERSION, "schema_version": GAP_SCHEMA_VERSION, **params}
+    response, data, error = _call(verifier, params)
+    if response is not None:
+        gap.response = _response_log(response, verifier.model)
+        gap.usage, gap.latency_ms = response.usage, response.latency_ms
+        gap.cost_usd = cost_usd(response.usage, verifier.model)
+    if error is None and not (isinstance(data, dict) and isinstance(data.get("gaps"), list)):
+        error = "output does not match the schema (gaps)"
+    if error is not None:
+        gap.error = error
+        return
+    classes = [item["class"] for item in data["gaps"]
+               if isinstance(item, dict) and item.get("index") == 0 and item.get("class") in GAP_CLASSES]
+    gap.gap_class = classes[0] if classes else None
 
 
 def check_gaps(question: str, gaps: list[tuple[str, str]], verifier: LLMClient | None, disputed_patterns, *,
-               effort: str = VERIFIER_EFFORT, max_tokens: int = VERIFIER_MAX_TOKENS) -> GapResult:
-    """Pattern filter, then one classifier call over the rest (design section 3.6). `gaps` holds
-    (text, origin) pairs. The fixed no-passages gap is never checked."""
+               effort: str = VERIFIER_EFFORT, max_tokens: int = VERIFIER_MAX_TOKENS,
+               max_workers: int = MAX_WORKERS) -> GapResult:
+    """Pattern filter, then one classifier call per remaining gap, in parallel (design section 3.6,
+    D-68). `gaps` holds (text, origin) pairs. The fixed no-passages gap is never checked. If any
+    call fails, every checked gap is removed (`check_failed`), as when the single call failed."""
     checks = []
     for text, origin in gaps:
         if text == NO_PASSAGES_GAP:
@@ -563,27 +591,22 @@ def check_gaps(question: str, gaps: list[tuple[str, str]], verifier: LLMClient |
     result = GapResult(checks)
     if not pending:
         return result
-    params = request_params(GAP_SYSTEM_PROMPT, build_gap_message(question, [g.text for g in pending]), GAP_SCHEMA,
-                            model=verifier.model, effort=effort, max_tokens=max_tokens)
-    result.request = {"prompt_version": GAP_PROMPT_VERSION, "schema_version": GAP_SCHEMA_VERSION, **params}
-    response, data, error = _call(verifier, params)
-    if response is not None:
-        result.response = _response_log(response, verifier.model)
-        result.usage, result.latency_ms = response.usage, response.latency_ms
-        result.cost_usd = cost_usd(response.usage, verifier.model)
-    if error is None and not (isinstance(data, dict) and isinstance(data.get("gaps"), list)):
-        error = "output does not match the schema (gaps)"
-    if error is not None:
-        result.error = error
-        for g in pending:
-            g.reason = "check_failed"
+    result.request = {"prompt_version": GAP_PROMPT_VERSION, "schema_version": GAP_SCHEMA_VERSION,
+                      "per_gap": True, "calls": len(pending)}
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        list(pool.map(lambda g: _classify_gap(question, g, verifier, effort, max_tokens), pending))
+    for g in pending:
+        for key in result.usage:
+            result.usage[key] += g.usage.get(key, 0)
+    result.cost_usd = sum(g.cost_usd for g in pending)
+    result.latency_ms = max(g.latency_ms for g in pending)
+    errors = [g.error for g in pending if g.error is not None]
+    if errors:
+        result.error = errors[0]
+        for g in pending:  # a class a successful call returned stays in the log, but nothing is kept
+            g.kept, g.reason = False, "check_failed"
         return result
-    classes = {}
-    for item in data["gaps"]:
-        if isinstance(item, dict) and isinstance(item.get("index"), int) and item.get("class") in GAP_CLASSES:
-            classes.setdefault(item["index"], item["class"])
-    for i, g in enumerate(pending):
-        g.gap_class = classes.get(i)
+    for g in pending:
         g.kept = g.gap_class == "missing_information"
         g.reason = None if g.kept else (g.gap_class or "unclassified")
     return result
@@ -693,7 +716,7 @@ def verify_answer(question: str, model_status: str, claims: list, gaps: list[str
     kept_gaps: list[str] = []
     if gap_input and status in ("answered", "not_covered"):
         gap_result = check_gaps(question, gap_input, verifier, disputed_patterns, effort=effort,
-                                max_tokens=max_tokens)
+                                max_tokens=max_tokens, max_workers=max_workers)
         kept_gaps = gap_result.kept
         if any(not g.kept for g in gap_result.gaps):
             flags.append("gaps_removed")

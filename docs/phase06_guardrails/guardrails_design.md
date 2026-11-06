@@ -257,6 +257,8 @@ missing), the evidence quotes and the citation-level supports flags.
   `legal_content` (states what the law says), `advice`, or `disputed_flag_repeat`. Only
   `missing_information` gaps are rendered. The others are removed and logged. A removed gap is
   never turned into a claim, because it has no citation to check.
+  *(Amended by D-68: each remaining gap now gets its own call, with the same prompt and schema,
+  run concurrently like the claim checks; if any call fails, every checked gap is removed.)*
 - Example from run 2: G05 gap 2 ("its objection steps (written notice ..., appeal to the High
   Court, then the Court of Appeal and the Supreme Court)") is `legal_content`. G02 gap 3, which
   restates the stamp-duty definition, is too. Q018 gap 5 is `disputed_flag_repeat`.
@@ -696,7 +698,7 @@ taken as 150 to 600 in all.
 |---|---|
 | One claim check | 1,100 x $0.01 + 400 x $0.10 + (150 to 600) x $0.50, per million = **$0.0001 to $0.0004** |
 | Claims per answered question | 5.1 (run 2) to 6.2 (run 1); taken as 6 |
-| Gap check (one call) | about $0.0003 |
+| Gap check (one call; one call per gap from D-68) | about $0.0003 (about $0.00005 per gap call) |
 | **Verification per answered question** | **about $0.001 to $0.003** |
 | **Total per answered question** | **about $0.010 to $0.012** (generation $0.0088 measured + verification) |
 | Refused at pre-check | $0 (no embedding, no model call) |

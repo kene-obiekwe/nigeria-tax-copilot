@@ -20,6 +20,9 @@ CALIBRATION = ROOT / "eval" / "guardrails" / "verifier_calibration_v1.jsonl"
 QUESTION = "Does the development levy apply to a small company?"
 CHUNK_IDS = ["nta2025:s59", "nta2025:s202:def:small-company", "nta2025:s56"]
 VERIFIER_PROMPT_SHA256 = "b5e2f49c4c7002876e47297b465ddaed8ef2c9f0ddd8df471d07b0be72e3d918"  # ver-prompt/4
+GAP_PROMPT_SHA256 = "440e484ea172f1608088f219bfc7a0d2aa2b575a6c7bc110b329e96f4a6a1731"  # gap-prompt/3 (D-67)
+GAP_PROMPT_V2_SHA256 = "5a79b648b54907b55cc30109b80ac45dcb38c2066a40e9b44636980dadaa4001"  # gap-prompt/2 (gap_recheck_1.json)
+GAP_PROMPT_V1_SHA256 = "83eab953e39dffe9286b88cd749270bfcde4fba1ce7a827908671f2a2625f05b"  # gap-prompt/1 (config_g2.json)
 
 
 def chunk(text, citation="Nigeria Tax Act 2025, section 56", header="Nigeria Tax Act 2025 > Chapter TWO > s56 Rates",
@@ -464,22 +467,134 @@ def gaps_check(gaps, handler=None, **kw):
     return verify.check_gaps("q", [(g, "model") for g in gaps], fake, GPOLICY.disputed_gap_patterns), fake
 
 
+# D-66: the only text gap-prompt/2 adds to gap-prompt/1.
+GAP_PROMPT_2_ADDITIONS = (
+    ' So is a bare link between provisions that names no subject matter, such as "section X, which section Y '
+    'refers to, is not among the passages", "section X, which is referred to, is not among them" or "section X, '
+    'to which section Y is subject, is not among the passages". A gap may say what the passages do not state and, '
+    'separately, name such a provision; that is still missing_information, because it does not say that the '
+    'provision contains the missing item.',
+    ' This includes a gap that says what a named provision contains, sets, covers or provides, or what it is '
+    'for, even when the gap also says that provision is not among the passages: for example "the rate is in '
+    'section X", "section X, which sets the due date, is not among the passages" or "section X, for the rate, is '
+    'not among the passages".',
+    '\n\nClassify from the gap text alone. You do not see the passages, so do not consider whether a passage '
+    'states what the gap says.')
+
+
+# D-67: gap-prompt/3 as (gap-prompt/3 text, gap-prompt/2 text) pairs, undone in this order.
+GAP_PROMPT_3_EDITS = (
+    # The one sentence of the narrow variant (tuning report section 10).
+    (' A gap that says the passages do not state, define or settle something is missing_information even though '
+     'it names what is missing, for example "the passages do not define X", "the passages do not say whether X '
+     'counts as Y", "no rate is stated", or "the question assumes a rule that the passages do not contain".', ''),
+    ('This includes a gap that names a particular provision, Act or Schedule and says what that provision '
+     'contains, sets, covers or provides, or what it is for, even when the gap also says it is not among the '
+     'passages:',
+     'This includes a gap that says what a named provision contains, sets, covers or provides, or what it is '
+     'for, even when the gap also says that provision is not among the passages:'),
+    # Precedence made explicit.
+    ('\n\nIf a gap fits missing_information but also says what a named provision contains, sets, covers or '
+     'provides, or what it is for, it is legal_content.', ''),
+    # "Classify from the gap text alone" moved out of the class list to after the last class.
+    ('\n\nClassify from the gap text alone. You do not see the passages, so do not consider whether a passage '
+     'states what the gap says.', ''),
+    ('is not among the passages".\n- advice',
+     'is not among the passages".\n\nClassify from the gap text alone. You do not see the passages, so do not '
+     'consider whether a passage states what the gap says.\n- advice'),
+)
+
+
+def test_gap_prompt_3_is_pinned_and_changes_only_the_d67_text():
+    assert prompt.GAP_PROMPT_VERSION == "gap-prompt/3" and prompt.GAP_SCHEMA_VERSION == "gap-schema/1"
+    assert hashlib.sha256(prompt.GAP_SYSTEM_PROMPT.encode("utf-8")).hexdigest() == GAP_PROMPT_SHA256
+    v2 = prompt.GAP_SYSTEM_PROMPT
+    for new, old in GAP_PROMPT_3_EDITS:
+        assert v2.count(new) == 1
+        v2 = v2.replace(new, old)
+    assert hashlib.sha256(v2.encode("utf-8")).hexdigest() == GAP_PROMPT_V2_SHA256
+    # gap-prompt/3 ends with the precedence rule and "text alone", after the last class.
+    tail = prompt.GAP_SYSTEM_PROMPT.split("- disputed_flag_repeat:")[1]
+    assert tail.index("it is legal_content.") < tail.index("Classify from the gap text alone.") < tail.index("Give exactly")
+    # gap-prompt/2 is kept as history: it adds only the D-66 text to gap-prompt/1.
+    v1 = v2
+    for part in GAP_PROMPT_2_ADDITIONS:
+        assert v1.count(part) == 1
+        v1 = v1.replace(part, "")
+    assert hashlib.sha256(v1.encode("utf-8")).hexdigest() == GAP_PROMPT_V1_SHA256
+    # The classifier sees only the question and the gaps, never the passages (D-66).
+    message = prompt.build_gap_message(QUESTION, ["Section 51 is not among the passages."])
+    assert "<passage" not in message and "Classify from the gap text alone." in prompt.GAP_SYSTEM_PROMPT
+    assert "<passage" not in prompt.GAP_SYSTEM_PROMPT
+
+
 def test_gap_pattern_filter_runs_in_code():
     result, fake = gaps_check(["P2 reads differently in another official text.", "It is marked as disputed."])
     assert [g.reason for g in result.gaps] == ["disputed_flag_repeat"] * 2 and result.kept == [] and not fake.requests
 
 
-def test_gap_classes_and_fail_closed():
-    classes = {"gaps": [{"index": 0, "class": "missing_information"}, {"index": 1, "class": "legal_content"},
-                        {"index": 2, "class": "advice"}, {"index": 3, "class": "disputed_flag_repeat"}]}
+def gap_text(params):
+    """The single gap of a per-gap request (D-68)."""
+    message = params["messages"][0]["content"]
+    assert message.count("<gap index=") == 1 and '<gap index="0">' in message
+    return message.split('<gap index="0">\n')[1].split("\n</gap>")[0]
+
+
+GAP_CLASS_OF = {"The rate section was not retrieved.": "missing_information",
+                "Appeals go to the High Court.": "legal_content", "Ask a tax adviser.": "advice",
+                "One passage is flagged.": "disputed_flag_repeat"}
+
+
+def by_gap_text(params):
+    cls = GAP_CLASS_OF.get(gap_text(params))
+    return {"gaps": [{"index": 0, "class": cls}] if cls else []}
+
+
+def test_gap_classes_one_call_per_gap():
+    """D-68: each gap that reaches the classifier gets its own call, with the same prompt and schema;
+    classes come back on the right gaps, and usage, cost and latency are summed or maxed."""
     gaps = ["The rate section was not retrieved.", "Appeals go to the High Court.", "Ask a tax adviser.",
             "One passage is flagged.", "Unclassified gap."]
-    result, fake = gaps_check(gaps, lambda p: classes)
-    assert result.kept == ["The rate section was not retrieved."] and len(fake.requests) == 1
+    result, fake = gaps_check(gaps, by_gap_text)
+    assert len(fake.requests) == 5 and sorted(gap_text(p) for p in fake.requests) == sorted(gaps)
+    assert all(p["system"] == fake.requests[0]["system"] and p["output_config"]["format"]["schema"] == prompt.GAP_SCHEMA
+               for p in fake.requests)
+    assert result.kept == ["The rate section was not retrieved."]
     assert [g.reason for g in result.gaps] == [None, "legal_content", "advice", "disputed_flag_repeat", "unclassified"]
+    assert result.request == {"prompt_version": prompt.GAP_PROMPT_VERSION, "schema_version": prompt.GAP_SCHEMA_VERSION,
+                              "per_gap": True, "calls": 5}
+    assert all(g.request["prompt_version"] == prompt.GAP_PROMPT_VERSION and g.response for g in result.gaps)
+    assert result.usage["input_tokens"] == 5 * 400 and result.latency_ms == 9 and result.error is None
+    assert result.cost_usd == pytest.approx(sum(g.cost_usd for g in result.gaps)) and result.cost_usd > 0
+    logged = result.as_log()["gaps"][1]
+    assert logged["class"] == "legal_content" and logged["request"]["messages"] and logged["error"] is None
+
+
+def test_gap_check_skips_the_call_for_fixed_and_pattern_gaps():
+    result, fake = gaps_check([verify.NO_PASSAGES_GAP, "P2 reads differently in another official text.",
+                               "Ask a tax adviser."], by_gap_text)
+    assert [gap_text(p) for p in fake.requests] == ["Ask a tax adviser."]
+    assert [g.reason for g in result.gaps] == ["fixed", "disputed_flag_repeat", "advice"]
+    assert result.gaps[0].request is None and result.gaps[1].request is None and result.request["calls"] == 1
+
+
+def test_gap_check_fails_closed_when_any_call_fails():
+    """D-68 keeps the failure rule: if any gap's call fails, every checked gap is removed
+    (`check_failed`) and the error is logged; the fixed no-passages gap is still kept."""
+    def one_fails(params):
+        if gap_text(params) == "Appeals go to the High Court.":
+            return "not json"
+        return by_gap_text(params)
+    gaps = [verify.NO_PASSAGES_GAP, "The rate section was not retrieved.", "Appeals go to the High Court."]
+    result, fake = gaps_check(gaps, one_fails)
+    assert len(fake.requests) == 2 and result.error == "output is not valid JSON"
+    assert result.kept == [verify.NO_PASSAGES_GAP]
+    assert [g.reason for g in result.gaps] == ["fixed", "check_failed", "check_failed"]
+    assert result.gaps[1].gap_class == "missing_information" and result.gaps[2].error == "output is not valid JSON"
     failed, _ = gaps_check([verify.NO_PASSAGES_GAP, "The rate section was not retrieved."],
                            fake=FakeVerifier(raises=llm.GenerationError("RateLimitError (HTTP 429)")))
-    assert failed.kept == [verify.NO_PASSAGES_GAP] and failed.error
+    assert failed.kept == [verify.NO_PASSAGES_GAP] and failed.error == "RateLimitError (HTTP 429)"
+    assert failed.gaps[1].reason == "check_failed" and failed.cost_usd == 0
 
 
 def test_not_a_claim_is_dropped_and_never_rendered(tmp_path):
