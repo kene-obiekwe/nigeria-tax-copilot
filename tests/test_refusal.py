@@ -574,27 +574,40 @@ def test_v1_frozen_config_is_kept_as_the_record():
 V2_SHA256 = "350905729640400eb77eeba6d32e6284ea5a7b06110bb6d46ce3fbd306cf35b4"  # D-58, overseer, 2026-11-05
 
 
-def test_v2_entry_is_pinned_and_refused_until_frozen(tmp_path):
-    """D-58: the v2 entry has its own files and its questions sha256 pinned; it has no split file and
-    no frozen configuration yet. Every v2 command refuses before the v2 questions file is opened;
-    freezing is checked on a temporary copy of the entry, never on the real configuration path."""
+V2_CONFIG_SHA256 = "ad55eff74c723afd588bb71de6ca8042641ce6460ddbb00ba3f3e113e1899032"  # D-71, 2026-11-06
+
+
+def test_v2_entry_is_pinned_and_frozen(tmp_path):
+    """D-58, D-71: the v2 entry has its own files, its questions sha256 and its frozen configuration
+    sha256 pinned, and no split file. The configuration is frozen once and matches the live one; the
+    held-out part stays unloadable until the decision run writes its marker, and no re-run is
+    possible before a void first run. Only guards and the configuration file are read, never the v2
+    questions file or results."""
     v2 = run_adversarial.SETS["v2"]
     assert (v2.questions.name, v2.split, v2.config.name) == ("adversarial_v2.jsonl", None, "config_g2_v2.json")
     assert v2.marker == run_adversarial.RESULTS_DIR / "v2" / "holdout_started.json"
     assert v2.result == run_adversarial.RESULTS_DIR / "v2" / "holdout_final.json"
     assert v2.pack_prefix == "v2_holdout_repeat" and v2.config_records_set
-    assert (v2.questions_sha256, v2.split_sha256, v2.config_sha256) == (V2_SHA256, None, None)
-    assert not v2.config.exists() and not v2.marker.exists()
+    assert (v2.questions_sha256, v2.split_sha256, v2.config_sha256) == (V2_SHA256, None, V2_CONFIG_SHA256)
+    assert hashlib.sha256(v2.config.read_bytes()).hexdigest() == V2_CONFIG_SHA256
+    assert not v2.marker.exists() and not v2.result.exists()
+    frozen = json.loads(v2.config.read_text(encoding="utf-8"))
+    assert frozen["adversarial_set"] == {"version": "v2", "sha256": V2_SHA256}
+    assert frozen["generation"]["prompt_version"] == "gen-prompt/7"
+    assert (frozen["verifier"]["gap_prompt_version"], frozen["verifier"]["per_gap"]) == ("gap-prompt/3", True)
+    assert (frozen["normaliser"], frozen["tau"]) == ("norm/5", 0.4)
+    assert run_adversarial.check_holdout_guard("v2") == frozen  # live configuration matches the freeze
     for call, message in ((lambda: run_adversarial.load_adversarial("v2", "holdout"), "has not been run"),
                           (lambda: run_adversarial.load_adversarial("v2", "tune"), "no split file"),
-                          (lambda: run_adversarial.check_holdout_guard("v2"), "no frozen configuration hash")):
+                          (lambda: run_adversarial.freeze_config("v2"), "frozen once"),
+                          (lambda: run_adversarial.check_holdout_guard("v2", rerun=True), "no complete record"),
+                          (lambda: run_adversarial.check_holdout_guard("v2", live={"tau": 0.5}),
+                           "live configuration differs")):
         with pytest.raises(run_adversarial.GuardError, match=message):
             call()
-    copy = dataclasses.replace(v2, config=tmp_path / "config_g2_v2.json")
-    run_adversarial.freeze_config(copy)
-    frozen = json.loads(copy.config.read_text(encoding="utf-8"))
-    assert frozen["adversarial_set"] == {"version": "v2", "sha256": V2_SHA256}
-    assert not v2.config.exists()
+    assert run_adversarial.main(["--freeze-config", "--set", "v2"]) == 2
+    copy = dataclasses.replace(v2, config=tmp_path / "config_g2_v2.json")  # a fresh freeze gives the same file
+    assert run_adversarial.freeze_config(copy) == V2_CONFIG_SHA256
 
 
 def test_fixture_set_guard_and_marker(tmp_path, monkeypatch):

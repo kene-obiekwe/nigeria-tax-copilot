@@ -135,9 +135,9 @@ SETS: dict[str, AdversarialSet] = {
         result=RESULTS_DIR / "holdout_final.json",
         pack_prefix="holdout_repeat",
         config_records_set=False),
-    # adversarial_v2 (D-52, D-58): 48 held-out cases, no split file. The sha256 values are pinned by
-    # the build session from the overseer's prompt once the file is frozen; until then every v2
-    # command is refused. This runner never opens the v2 file before then.
+    # adversarial_v2 (D-52, D-58): 48 held-out cases, no split file. The questions sha256 was pinned
+    # from the overseer's prompt (D-58); the configuration was frozen after tuning runs 6 and 7 met
+    # the D-61 gate (D-71). The v2 questions file is opened only by the decision run, after its marker.
     "v2": AdversarialSet(
         name="v2",
         questions=HERE / "adversarial_v2.jsonl",
@@ -145,7 +145,7 @@ SETS: dict[str, AdversarialSet] = {
         split=None,
         split_sha256=None,
         config=HERE / "config_g2_v2.json",
-        config_sha256=None,
+        config_sha256="ad55eff74c723afd588bb71de6ca8042641ce6460ddbb00ba3f3e113e1899032",  # D-71, 2026-11-06
         marker=RESULTS_DIR / "v2" / "holdout_started.json",
         result=RESULTS_DIR / "v2" / "holdout_final.json",
         pack_prefix="v2_holdout_repeat"),
