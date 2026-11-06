@@ -8,12 +8,17 @@ in SETTINGS.
 
 The key is read from .env (LLM_API_KEY) and passed to the SDK explicitly, together with the API
 base URL, so the SDK never falls back to ANTHROPIC_API_KEY, a saved profile or an
-ANTHROPIC_BASE_URL set for other tools. The key is never printed or logged, and provider errors
-are re-raised without their message.
+ANTHROPIC_BASE_URL set for other tools. The key is never printed or logged.
+
+A failed API call raises `APIError` (D-69): the SDK error type, the HTTP status, the API's own error
+type and message, and the request id, so a log shows why a run stopped (a spend limit, an outage).
+The message is taken from the API's error body, never from request headers; anything shaped like a
+key is replaced with "[redacted]" and the message is cut to 500 characters.
 """
 from __future__ import annotations
 
 import os
+import re
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -50,7 +55,50 @@ PRICES = {
 
 
 class GenerationError(RuntimeError):
-    """A model call failed. The message names the error type and status only."""
+    """A model call failed, or the client could not be set up."""
+
+
+# Key-shaped text: Anthropic and other "sk-" keys, and bearer tokens. Replaced before any logging.
+_SECRET = re.compile(r"sk-[A-Za-z0-9_\-]{6,}|(?i:bearer)\s+[A-Za-z0-9._\-]{8,}")
+MAX_ERROR_MESSAGE = 500
+
+
+def redact(text: str) -> str:
+    """One line, key-shaped text replaced, at most MAX_ERROR_MESSAGE characters."""
+    return _SECRET.sub("[redacted]", " ".join(str(text).split()))[:MAX_ERROR_MESSAGE]
+
+
+class APIError(GenerationError):
+    """A Claude API call failed (D-69). str() gives the SDK error type, HTTP status, the API's error
+    type and its message, with key-shaped text redacted; `as_log()` gives the same as fields."""
+
+    def __init__(self, error_type: str, *, status_code: int | None = None, api_error_type: str | None = None,
+                 message: str | None = None, request_id: str | None = None):
+        self.error_type, self.status_code = error_type, status_code
+        self.api_error_type = redact(api_error_type) if api_error_type else None
+        self.message = redact(message) if message else None
+        self.request_id = request_id
+        text = error_type + (f" (HTTP {status_code})" if status_code is not None else "")
+        detail = ": ".join(x for x in (self.api_error_type, self.message) if x)
+        super().__init__(f"{text}: {detail}" if detail else text)
+
+    def as_log(self) -> dict:
+        return {"error_type": self.error_type, "status_code": self.status_code,
+                "api_error_type": self.api_error_type, "message": self.message, "request_id": self.request_id}
+
+    @classmethod
+    def from_sdk(cls, exc) -> "APIError":
+        """Build from an SDK exception: the API's error body when there is one, else the SDK message."""
+        body = getattr(exc, "body", None)
+        error = body.get("error") if isinstance(body, dict) else None
+        api_type = error.get("type") if isinstance(error, dict) else None
+        message = error.get("message") if isinstance(error, dict) else None
+        if message is None:
+            message = getattr(exc, "message", None) or str(exc) or None
+        return cls(type(exc).__name__, status_code=getattr(exc, "status_code", None),
+                   api_error_type=api_type if isinstance(api_type, str) else None,
+                   message=message if isinstance(message, str) else None,
+                   request_id=getattr(exc, "request_id", None))
 
 
 @dataclass
@@ -128,10 +176,8 @@ class AnthropicLLMClient:
         started = time.monotonic()
         try:
             message = self._client.messages.create(**params)
-        except anthropic.APIStatusError as exc:
-            raise GenerationError(f"{type(exc).__name__} (HTTP {exc.status_code})") from None
-        except anthropic.AnthropicError as exc:
-            raise GenerationError(type(exc).__name__) from None
+        except anthropic.AnthropicError as exc:  # status errors, timeouts, connection errors (D-69)
+            raise APIError.from_sdk(exc) from None
         raw = message.to_dict()
         details = raw.get("stop_details")
         return LLMResponse(content=raw.get("content", []), stop_reason=raw.get("stop_reason"),

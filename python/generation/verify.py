@@ -47,6 +47,7 @@ NORMALISER_VERSION = "norm/5"  # norm/2: evidence and citation labels read as th
 # norm/4: the evidence check ignores letter case (D-48);
 # norm/5: the evidence check ignores whitespace next to a dash and also searches the context header (D-55)
 MAX_WORKERS = 4
+GAP_PER_GAP = True  # D-68: one gap check call per gap; recorded in the frozen G2 configuration (D-69)
 MOVED_NOT_RENDERED = "moved_not_rendered"  # D-59
 MIN_QUOTE_CHARS = 12
 NO_PASSAGES_GAP = "No provisions were retrieved for this question."
@@ -592,7 +593,7 @@ def check_gaps(question: str, gaps: list[tuple[str, str]], verifier: LLMClient |
     if not pending:
         return result
     result.request = {"prompt_version": GAP_PROMPT_VERSION, "schema_version": GAP_SCHEMA_VERSION,
-                      "per_gap": True, "calls": len(pending)}
+                      "per_gap": GAP_PER_GAP, "calls": len(pending)}
     with ThreadPoolExecutor(max_workers=max_workers) as pool:
         list(pool.map(lambda g: _classify_gap(question, g, verifier, effort, max_tokens), pending))
     for g in pending:

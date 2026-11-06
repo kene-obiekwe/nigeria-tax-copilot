@@ -339,16 +339,41 @@ def test_client_sends_to_the_api_host_and_parses_the_response(monkeypatch):
                               "cache_read_input_tokens": 0}
 
 
-def test_client_errors_name_type_and_status_only(monkeypatch):
+def test_client_errors_keep_type_status_and_message_with_keys_redacted(monkeypatch):
+    """D-69: the log keeps the API's error type and message, so a spend-limit stop is visible; any
+    key-shaped text is redacted and the SDK exception is not chained."""
     def handler(request):
-        return httpx2.Response(401, json={"type": "error", "error": {
-            "type": "authentication_error", "message": "invalid x-api-key sk-test-fake-SECRET-abc"}})
+        return httpx2.Response(400, json={"type": "error", "error": {
+            "type": "invalid_request_error",
+            "message": "You have reached your specified API usage limits. Key sk-test-fake-SECRET-abc"}},
+            headers={"request-id": "req_400"})
 
     client = mock_client(handler, monkeypatch)
-    with pytest.raises(llm.GenerationError) as info:
+    with pytest.raises(llm.APIError) as info:
         client.create(llm.request_params("s", "u", prompt.OUTPUT_SCHEMA))
-    assert str(info.value) == "AuthenticationError (HTTP 401)"
-    assert "SECRET" not in repr(info.value) and info.value.__cause__ is None
+    err = info.value
+    assert isinstance(err, llm.GenerationError) and err.__cause__ is None
+    assert str(err) == ("BadRequestError (HTTP 400): invalid_request_error: You have reached your specified "
+                        "API usage limits. Key [redacted]")
+    assert err.as_log() == {"error_type": "BadRequestError", "status_code": 400,
+                            "api_error_type": "invalid_request_error",
+                            "message": "You have reached your specified API usage limits. Key [redacted]",
+                            "request_id": "req_400"}
+    assert "SECRET" not in repr(err) and "SECRET" not in json.dumps(err.as_log())
+
+
+def test_api_error_without_status_and_redaction_limits(monkeypatch):
+    """A connection error has no HTTP status; messages are one line, redacted and capped."""
+    def handler(request):
+        raise httpx2.ConnectError("connection refused")
+
+    client = mock_client(handler, monkeypatch)
+    with pytest.raises(llm.APIError) as info:
+        client.create(llm.request_params("s", "u", prompt.OUTPUT_SCHEMA))
+    assert info.value.error_type == "APIConnectionError" and info.value.status_code is None
+    assert str(info.value).startswith("APIConnectionError: ")
+    assert llm.redact("a\n b  Bearer abcdefghijklmnop sk-ant-api03-XYZxyz_123") == "a b [redacted] [redacted]"
+    assert len(llm.redact("x" * 2000)) == llm.MAX_ERROR_MESSAGE
 
 
 def test_missing_key_never_falls_back_to_ambient_credentials(monkeypatch):

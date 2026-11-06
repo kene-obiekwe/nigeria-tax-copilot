@@ -697,15 +697,15 @@ def test_set_is_required(argv, capsys):
 
 
 def test_tuning_runs_continue_the_numbers(tmp_path, monkeypatch):
-    """Tuning runs continue from the last tune_run<N>.json (5 after runs 1 to 4) and refuse any other
-    number before loading anything."""
-    assert run_adversarial.next_tune_run() == 5
+    """Tuning runs continue from the last tune_run<N>.json (8 after runs 1 to 7, run 5 void, C-06) and
+    refuse any other number before loading anything."""
+    assert run_adversarial.next_tune_run() == 8
     assert run_adversarial.next_tune_run(tmp_path) == 1
     (tmp_path / "tune_run7.json").write_text("{}", encoding="utf-8")
     assert run_adversarial.next_tune_run(tmp_path) == 8
     monkeypatch.setattr(run_adversarial, "tune_cases", lambda *a: pytest.fail("loaded before the number check"))
-    for n in (4, 6):
-        with pytest.raises(run_adversarial.GuardError, match="next tuning run is number 5"):
+    for n in (7, 9):
+        with pytest.raises(run_adversarial.GuardError, match="next tuning run is number 8"):
             run_adversarial.run_tune("v1", ["tune"], n)
     assert run_adversarial.parse_parts("tune,holdout") == ["tune", "holdout"]
     with pytest.raises(run_adversarial.GuardError, match="--parts"):
@@ -748,6 +748,174 @@ def test_tuning_report_counts_d61_per_set():
     assert by_set["controls"]["cases"] == 2 and by_set["controls"]["false_refusals"] == ["ADV-2"]
     text = run_adversarial.report_markdown(report)
     assert "falsely refused: 3 (Q002, G03, ADV-2)" in text and "| v2 tune | 1 | 0 | 0 | 0 | 0 |" in text
+
+
+# D-69, D-70: stop at the first API error; one re-run after a void decision run -------------------
+
+SPEND_LIMIT = llm.APIError("BadRequestError", status_code=400, api_error_type="invalid_request_error",
+                           message="You have reached your specified API usage limits.")
+
+
+class CountingClient:
+    """A fake model client: raises `fail_on` at the given call number (1-based), else answers."""
+
+    def __init__(self, fail_at=None, error=SPEND_LIMIT, model="fake"):
+        self.calls, self.fail_at, self.error, self.model = 0, fail_at, error, model
+
+    def create(self, params):
+        self.calls += 1
+        if self.calls == self.fail_at:
+            raise self.error
+        return "ok"
+
+
+def test_first_api_error_stops_both_clients():
+    """D-69: the first APIError is recorded once; after it neither the generator nor the verifier
+    client reaches the API. A non-API GenerationError does not stop the run."""
+    stop = run_adversarial.APIStop()
+    gen_inner, ver_inner = CountingClient(fail_at=2), CountingClient()
+    gen_client = run_adversarial.StopOnAPIError(gen_inner, stop)
+    ver_client = run_adversarial.StopOnAPIError(ver_inner, stop)
+    assert gen_client.create({}) == "ok" and ver_client.create({}) == "ok" and not stop.stopped
+    with pytest.raises(llm.APIError):
+        gen_client.create({})
+    assert stop.error is SPEND_LIMIT
+    for client in (gen_client, ver_client):
+        with pytest.raises(llm.GenerationError, match="stopped at an earlier API error"):
+            client.create({})
+    assert (gen_inner.calls, ver_inner.calls) == (2, 1)
+    other = run_adversarial.APIStop()
+    plain = run_adversarial.StopOnAPIError(CountingClient(fail_at=1, error=llm.GenerationError("x")), other)
+    with pytest.raises(llm.GenerationError):
+        plain.create({})
+    assert not other.stopped
+
+
+def test_run_loop_stops_after_the_case_with_the_first_api_error():
+    """D-69: the loop keeps the rows answered so far, including the case during which the error
+    happened, and records where it stopped; a run with no error is complete."""
+    cases = [{"id": f"C{i}"} for i in range(1, 4)]
+    stop, seen = run_adversarial.APIStop(), []
+
+    def answer_case(case, r):
+        seen.append((r, case["id"]))
+        if (r, case["id"]) == (2, "C2"):
+            stop.record(SPEND_LIMIT)
+        return {"id": case["id"], "repeat": r}
+
+    runs, stopped = run_adversarial.run_loop(cases, 3, answer_case, stop)
+    assert seen == [(1, "C1"), (1, "C2"), (1, "C3"), (2, "C1"), (2, "C2")]
+    assert [len(rows) for rows in runs] == [3, 2]
+    assert stopped == {"repeat": 2, "case": "C2", "cases_written": 5, "cases_planned": 9,
+                       "error": SPEND_LIMIT.as_log()}
+    runs, stopped = run_adversarial.run_loop(cases, 1, lambda case, r: {"id": case["id"]}, run_adversarial.APIStop())
+    assert stopped is None and [r["id"] for r in runs[0]] == ["C1", "C2", "C3"]
+
+
+def stopped_record(case="ADV-1T", repeat=1):
+    return {"repeat": repeat, "case": case, "cases_written": 1, "cases_planned": 2, "error": SPEND_LIMIT.as_log()}
+
+
+def sheet_row(id_):
+    return {"id": id_, "source": "dev", "expected": "answer_supported", "status": "answered",
+            "refusal_reason": None, "flags": [], "notes_shown": [], "rendered": "r", "verification": None,
+            "passages": [], "cost_usd": 0.01, "required_notes": []}
+
+
+def test_stopped_tuning_run_is_written_void_and_exits_3(tmp_path, monkeypatch, capsys):
+    """D-69: a tuning run that hits an API error writes what it has, marked stopped_on_api_error and
+    void, with no D-61 counts and no review sheet, and exits non-zero."""
+    monkeypatch.setattr(run_adversarial, "RESULTS_DIR", tmp_path)
+    monkeypatch.setattr(run_adversarial, "PACK_DIR", tmp_path / "pack")
+    monkeypatch.setattr(run_adversarial, "next_tune_run", lambda results_dir=None: 9)
+    monkeypatch.setattr(run_adversarial, "tune_cases", lambda s, parts: [{"id": "Q001", "question": "q"}] * 2)
+    monkeypatch.setattr(run_adversarial, "current_config", lambda s=None: {"tau": 0.4})
+    monkeypatch.setattr(run_adversarial, "run_cases",
+                        lambda cases, repeats: ([[sheet_row("Q001")]], {}, stopped_record("Q001")))
+    assert run_adversarial.main(["--split", "tune", "--set", "v1", "--run", "9"]) == 3
+    record = json.loads((tmp_path / "tune_run9.json").read_text(encoding="utf-8"))
+    assert record["review"] == "void" and record["d61"] is None and len(record["cases"]) == 1
+    assert record["stopped_on_api_error"]["error"]["message"] == "You have reached your specified API usage limits."
+    assert not (tmp_path / "pack").exists()
+    err = capsys.readouterr().err
+    assert "STOPPED at the first API error" in err and "BadRequestError (HTTP 400)" in err and "void" in err
+
+
+def frozen_fixture(tmp_path, monkeypatch):
+    """A fixture set with a frozen configuration, registered in SETS, its in-scope questions empty."""
+    fx = fixture_set(tmp_path, ROWS)
+    monkeypatch.setattr(run_adversarial, "current_config",
+                        lambda s=None: {"tau": 0.4} | ({"adversarial_set": {
+                            "version": run_adversarial.get_set(s).name,
+                            "sha256": run_adversarial.get_set(s).questions_sha256}} if s is not None else {}))
+    fx = dataclasses.replace(fx, config_sha256=run_adversarial.freeze_config(fx))
+    monkeypatch.setitem(run_adversarial.SETS, "fx", fx)
+    monkeypatch.setattr(run_adversarial, "in_scope_questions", lambda include: [])
+    monkeypatch.setattr(run_adversarial, "PACK_DIR", tmp_path / "pack")
+    return fx
+
+
+def test_void_decision_run_allows_exactly_one_rerun(tmp_path, monkeypatch):
+    """D-70: a decision run stopped by an API error is written void (no review sheets) and exits 3;
+    the plain command then refuses; --rerun-after-void runs once with its own marker and result; a
+    second re-run is refused."""
+    fx = frozen_fixture(tmp_path, monkeypatch)
+    outcomes = iter([([[sheet_row("ADV-2H")]], {}, stopped_record("ADV-2H")),
+                     ([[sheet_row("ADV-2H")]] * 3, {}, None)])
+    monkeypatch.setattr(run_adversarial, "run_cases", lambda cases, repeats: next(outcomes))
+    with pytest.raises(run_adversarial.GuardError, match="no complete record of a first run"):
+        run_adversarial.check_holdout_guard(fx, rerun=True)
+    assert run_adversarial.main(["--holdout", "--set", "fx"]) == 3
+    first = json.loads(fx.result.read_text(encoding="utf-8"))
+    assert first["review"] == "void" and first["stopped_on_api_error"]["case"] == "ADV-2H"
+    assert first["rerun_after_void"] is False and not (tmp_path / "pack").exists()
+    assert run_adversarial.main(["--holdout", "--set", "fx"]) == 2  # runs once
+    assert run_adversarial.main(["--holdout", "--set", "fx", "--rerun-after-void"]) == 0
+    assert json.loads(fx.rerun_marker.read_text(encoding="utf-8"))["rerun_after_void"] is True
+    second = json.loads(fx.rerun_result.read_text(encoding="utf-8"))
+    assert second["review"] == "pending" and second["stopped_on_api_error"] is None
+    assert second["rerun_after_void"] is True and len(second["runs"]) == 3
+    assert (tmp_path / "pack" / "fx_holdout_repeat1_rerun" / "review_sheet.md").exists()
+    assert json.loads(fx.result.read_text(encoding="utf-8")) == first  # the void record is kept
+    with pytest.raises(run_adversarial.GuardError, match="has already been made"):
+        run_adversarial.check_holdout_guard(fx, rerun=True)
+    assert run_adversarial.main(["--holdout", "--set", "fx", "--rerun-after-void"]) == 2
+
+
+def test_rerun_is_refused_unless_the_first_run_was_void(tmp_path, monkeypatch, capsys):
+    """D-70: no re-run after a complete first run, after a run with no record, or for a void re-run
+    (the one re-run is spent); the flag needs --holdout. The live-configuration checks still apply."""
+    fx = frozen_fixture(tmp_path, monkeypatch)
+    fx.marker.parent.mkdir(parents=True)
+    fx.marker.write_text("{}", encoding="utf-8")
+    with pytest.raises(run_adversarial.GuardError, match="no complete record"):  # crashed, not void
+        run_adversarial.check_holdout_guard(fx, rerun=True)
+    fx.result.write_text(json.dumps({"review": "pending", "stopped_on_api_error": None}), encoding="utf-8")
+    with pytest.raises(run_adversarial.GuardError, match="not marked stopped_on_api_error"):
+        run_adversarial.check_holdout_guard(fx, rerun=True)
+    fx.result.write_text(json.dumps({"stopped_on_api_error": stopped_record()}), encoding="utf-8")
+    with pytest.raises(run_adversarial.GuardError, match="live configuration differs"):
+        run_adversarial.check_holdout_guard(fx, rerun=True, live={"tau": 0.5})
+    assert run_adversarial.check_holdout_guard(fx, rerun=True)["tau"] == 0.4
+    fx.rerun_result.write_text(json.dumps({"stopped_on_api_error": stopped_record()}), encoding="utf-8")
+    with pytest.raises(run_adversarial.GuardError, match="has already been made"):
+        run_adversarial.check_holdout_guard(fx, rerun=True)
+    with pytest.raises(SystemExit) as exc:
+        run_adversarial.main(["--split", "tune", "--set", "v1", "--run", "8", "--rerun-after-void"])
+    assert exc.value.code == 2 and "--holdout only" in capsys.readouterr().err
+    v2 = run_adversarial.SETS["v2"]
+    assert v2.rerun_marker == run_adversarial.RESULTS_DIR / "v2" / "holdout_started_rerun.json"
+    assert v2.rerun_result == run_adversarial.RESULTS_DIR / "v2" / "holdout_final_rerun.json"
+
+
+def test_frozen_configuration_records_the_gap_check_mode(monkeypatch):
+    """D-68, D-69: per_gap is part of the live configuration, so a frozen file catches a revert."""
+    from generation import verify
+    assert verify.GAP_PER_GAP is True
+    live = run_adversarial.current_config("v2")
+    assert live["verifier"]["per_gap"] is True
+    monkeypatch.setattr(run_adversarial, "GAP_PER_GAP", False)
+    assert run_adversarial.current_config("v2") != live
 
 
 def test_adversarial_loader_checks_both_hashes(tmp_path):

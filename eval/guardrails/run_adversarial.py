@@ -37,6 +37,16 @@ exists, when the set's hashes or its configuration hash are not recorded, when t
 does not match its hash or was made for another set, or when the live configuration differs from it.
 It then writes the marker and runs the set's held-out rows plus the 22 in-scope questions (dev, G03,
 G05) 3 times. No retrieval test-split question is ever loaded (D-29).
+
+**API errors (D-69, D-70).** Every run, tuning or held-out, stops at the first API error: the
+generator and verifier clients share one stop, so no call is made after it. The runner writes what
+it has, with `stopped_on_api_error` (case, repeat, the API's error type and message, redacted),
+writes no review sheet, and exits with code 3. Kene confirms spend headroom just before a decision
+run. A decision run that stopped this way is void and may be re-run exactly once:
+`--holdout --set <set> --rerun-after-void` refuses unless the first record exists and is marked
+`stopped_on_api_error`, and unless no re-run has been made; it writes its own marker and result
+(`*_rerun.json`) under the same frozen-configuration checks. The build session never reviews a void
+run's answers (D-70).
 """
 from __future__ import annotations
 
@@ -46,6 +56,7 @@ import importlib.util
 import json
 import re
 import sys
+import threading
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -59,10 +70,11 @@ from generation.disclosure import POLICY as DISCLOSURE_POLICY, load_policy  # no
 from generation.generate import DISCLAIMER, RETRIEVAL_CONFIG, DbCorpusStore, generate, retrieval_config  # noqa: E402
 from generation.guardrails import (HEADING_CORRECTIONS, POLICY as GUARDRAILS_POLICY, load_guardrails_policy,  # noqa: E402
                                    note_labels)
-from generation.llm import EFFORT, MODEL, VERIFIER_EFFORT, VERIFIER_MODEL, AnthropicLLMClient  # noqa: E402
+from generation.llm import (EFFORT, MODEL, VERIFIER_EFFORT, VERIFIER_MODEL, AnthropicLLMClient, APIError,  # noqa: E402
+                            GenerationError)
 from generation.prompt import (GAP_PROMPT_VERSION, GAP_SYSTEM_PROMPT, PROMPT_VERSION, SYSTEM_PROMPT,  # noqa: E402
                                VERIFIER_PROMPT_VERSION, VERIFIER_SCHEMA_VERSION, VERIFIER_SYSTEM_PROMPT)
-from generation.verify import NORMALISER_VERSION  # noqa: E402
+from generation.verify import GAP_PER_GAP, NORMALISER_VERSION  # noqa: E402
 from retrieval.retrieve import Retriever  # noqa: E402
 
 spec = importlib.util.spec_from_file_location("run_eval", ROOT / "eval" / "retrieval" / "run_eval.py")
@@ -99,6 +111,15 @@ class AdversarialSet:
     result: Path
     pack_prefix: str               # review pack folder: <pack_prefix><repeat>
     config_records_set: bool = True  # False only for v1, frozen before the registry (D-49)
+
+    @property
+    def rerun_marker(self) -> Path:
+        """The marker of the one re-run allowed after a void decision run (D-70)."""
+        return self.marker.with_name(f"{self.marker.stem}_rerun.json")
+
+    @property
+    def rerun_result(self) -> Path:
+        return self.result.with_name(f"{self.result.stem}_rerun.json")
 
 
 SETS: dict[str, AdversarialSet] = {
@@ -221,7 +242,8 @@ def current_config(adv_set: str | AdversarialSet | None = None) -> dict:
         "verifier": {"model": VERIFIER_MODEL, "effort": VERIFIER_EFFORT, "prompt_version": VERIFIER_PROMPT_VERSION,
                      "schema_version": VERIFIER_SCHEMA_VERSION,
                      "system_prompt_sha256": sha256_text(VERIFIER_SYSTEM_PROMPT),
-                     "gap_prompt_version": GAP_PROMPT_VERSION, "gap_prompt_sha256": sha256_text(GAP_SYSTEM_PROMPT)},
+                     "gap_prompt_version": GAP_PROMPT_VERSION, "gap_prompt_sha256": sha256_text(GAP_SYSTEM_PROMPT),
+                     "per_gap": GAP_PER_GAP},  # D-68 gap-check mode, recorded so a freeze catches a revert
         "normaliser": NORMALISER_VERSION,
         "tau": policy.tau,
         "guardrails_policy_sha256": sha256_file(GUARDRAILS_POLICY),
@@ -236,10 +258,31 @@ def current_config(adv_set: str | AdversarialSet | None = None) -> dict:
     return config
 
 
-def check_holdout_guard(adv_set: str | AdversarialSet, *, live: dict | None = None) -> dict:
-    """Return the set's frozen configuration, or raise GuardError before any work is done."""
+def check_rerun_allowed(s: AdversarialSet) -> dict:
+    """D-70: the one re-run after a void decision run. Returns the void run's stop record, or raises.
+    Reads only the record's stop field; the void run's answers are never reviewed."""
+    if s.rerun_marker.exists() or s.rerun_result.exists():
+        raise GuardError(f"the one re-run allowed after a void decision run of set {s.name} has already been made")
+    if not s.marker.exists() or not s.result.exists():
+        raise GuardError(f"a re-run of set {s.name} needs a first decision run that stopped on an API error; "
+                         "there is no complete record of a first run")
+    try:
+        stop = json.loads(s.result.read_text(encoding="utf-8")).get("stopped_on_api_error")
+    except (json.JSONDecodeError, AttributeError):
+        stop = None
+    if not stop:
+        raise GuardError(f"the first decision run of set {s.name} is not marked stopped_on_api_error, "
+                         "so it is not void and cannot be re-run (D-70)")
+    return stop
+
+
+def check_holdout_guard(adv_set: str | AdversarialSet, *, live: dict | None = None, rerun: bool = False) -> dict:
+    """Return the set's frozen configuration, or raise GuardError before any work is done. With
+    `rerun`, the one re-run after a void run (D-70) is checked instead of the once-only rule."""
     s = get_set(adv_set)
-    if s.marker.exists() or s.result.exists():
+    if rerun:
+        check_rerun_allowed(s)
+    elif s.marker.exists() or s.result.exists():
         raise GuardError(f"the held-out part of adversarial set {s.name} has already been run; it runs once")
     _check_set_hashes(s)
     if not s.config_sha256:
@@ -401,27 +444,77 @@ def review_sheet(title: str, rows: list[dict], texts: dict[str, str], chunk_text
     return "\n".join(out)
 
 
-def run_cases(cases: list[dict], repeats: int) -> tuple[list[list[dict]], dict]:
+class APIStop:
+    """One stop shared by a run's generator and verifier clients (D-69): the first API error."""
+
+    def __init__(self):
+        self.error: APIError | None = None
+        self._lock = threading.Lock()
+
+    @property
+    def stopped(self) -> bool:
+        return self.error is not None
+
+    def record(self, exc: APIError) -> None:
+        with self._lock:  # verifier calls run in parallel; the first error wins
+            if self.error is None:
+                self.error = exc
+
+
+class StopOnAPIError:
+    """A model client wrapper: an APIError stops the run, and every later call fails at once, so no
+    API call is made after the first error (D-69)."""
+
+    def __init__(self, client, stop: APIStop):
+        self.client, self.stop, self.model = client, stop, client.model
+
+    def create(self, params: dict):
+        if self.stop.stopped:
+            raise GenerationError("not called: the run stopped at an earlier API error (D-69)")
+        try:
+            return self.client.create(params)
+        except APIError as exc:
+            self.stop.record(exc)
+            raise
+
+
+def run_loop(cases: list[dict], repeats: int, answer_case, stop: APIStop) -> tuple[list[list[dict]], dict | None]:
+    """Answer every case `repeats` times, in order, and stop after the case during which the first API
+    error happened (D-69). Returns the rows so far and the stop record (None when complete)."""
+    runs: list[list[dict]] = []
+    for r in range(1, repeats + 1):
+        rows: list[dict] = []
+        runs.append(rows)
+        for case in cases:
+            rows.append(answer_case(case, r))
+            if stop.stopped:
+                return runs, {"repeat": r, "case": case["id"], "cases_written": sum(len(x) for x in runs),
+                              "cases_planned": len(cases) * repeats, "error": stop.error.as_log()}
+    return runs, None
+
+
+def run_cases(cases: list[dict], repeats: int) -> tuple[list[list[dict]], dict, dict | None]:
     config = retrieval_config()
     cache = run_eval.QueryCache(config["model"])
     policy, gpolicy = load_policy(), load_guardrails_policy()
-    llm, verifier = AnthropicLLMClient(model=MODEL), AnthropicLLMClient(model=VERIFIER_MODEL)
-    runs = []
+    stop = APIStop()
+    llm = StopOnAPIError(AnthropicLLMClient(model=MODEL), stop)
+    verifier = StopOnAPIError(AnthropicLLMClient(model=VERIFIER_MODEL), stop)
     with connect() as conn:
         retriever, store = Retriever(conn, config), DbCorpusStore(conn)
-        for r in range(1, repeats + 1):
-            rows = []
-            for case in cases:
-                answer = generate(case["question"], retriever=retriever, llm=llm, verifier=verifier, store=store,
-                                  query_vector=cache.embed(case["question"]), policy=policy,
-                                  guardrails_policy=gpolicy)
-                rows.append(answer_row(case, answer))
-                print(f"repeat {r} {case['id']}: {answer.status}"
-                      + (f" ({answer.refusal_reason})" if answer.refusal_reason else "")
-                      + f", {len(answer.claims)} claims, ${answer.total_cost_usd:.4f}")
-            runs.append(rows)
+
+        def answer_case(case: dict, r: int) -> dict:
+            answer = generate(case["question"], retriever=retriever, llm=llm, verifier=verifier, store=store,
+                              query_vector=cache.embed(case["question"]), policy=policy, guardrails_policy=gpolicy)
+            print(f"repeat {r} {case['id']}: {answer.status}"
+                  + (f" ({answer.refusal_reason})" if answer.refusal_reason else "")
+                  + f", {len(answer.claims)} claims, ${answer.total_cost_usd:.4f}"
+                  + (f"; STOPPED at API error: {stop.error}" if stop.stopped else ""))
+            return answer_row(case, answer)
+
+        runs, stopped = run_loop(cases, repeats, answer_case, stop)
         chunk_text = store.chunks(sorted({p["chunk_id"] for rows in runs for row in rows for p in row["passages"]}))
-    return runs, chunk_text
+    return runs, chunk_text, stopped
 
 
 def write_result(path: Path, record: dict) -> None:
@@ -461,39 +554,48 @@ def run_tune(adv_set: str | AdversarialSet, parts: list[str], run_no: int) -> di
     if out_path.exists():
         raise GuardError(f"{out_path.name} already exists; use the next run number")
     cases = tune_cases(s, parts)
-    runs, chunk_text = run_cases(cases, 1)
-    report = tuning_report(runs[0])
+    runs, chunk_text, stopped = run_cases(cases, 1)
+    rows = runs[0] if runs else []
+    report = None if stopped else tuning_report(rows)
     record = {"run": run_no, "split": "tune", "set": s.name, "parts": parts,
               "run_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-              "config": current_config(s), "adversarial_sha256": s.questions_sha256, "review": "pending",
-              "cost_usd": round(sum(r["cost_usd"] for r in runs[0]), 6), "d61": report, "cases": runs[0]}
+              "config": current_config(s), "adversarial_sha256": s.questions_sha256,
+              "review": "void" if stopped else "pending", "stopped_on_api_error": stopped,
+              "cost_usd": round(sum(r["cost_usd"] for r in rows), 6), "d61": report, "cases": rows}
     write_result(out_path, record)
+    if stopped:  # void: no counts and no review sheet (D-69, D-70)
+        return record
     pack = PACK_DIR / f"tune_run{run_no}"
     pack.mkdir(parents=True, exist_ok=True)
-    sheet = review_sheet(f"G2 tuning run {run_no}", runs[0], {c["id"]: c["question"] for c in cases}, chunk_text)
+    sheet = review_sheet(f"G2 tuning run {run_no}", rows, {c["id"]: c["question"] for c in cases}, chunk_text)
     (pack / "review_sheet.md").write_text(report_markdown(report) + "\n" + sheet, encoding="utf-8")
     return record
 
 
-def run_holdout(adv_set: str | AdversarialSet) -> dict:
+def run_holdout(adv_set: str | AdversarialSet, *, rerun: bool = False) -> dict:
+    """A decision run, or with `rerun` the one re-run after a void decision run (D-70)."""
     s = get_set(adv_set)
-    frozen = check_holdout_guard(s)
-    s.marker.parent.mkdir(parents=True, exist_ok=True)
-    with s.marker.open("x", encoding="utf-8", newline="\n") as fh:
+    frozen = check_holdout_guard(s, rerun=rerun)
+    marker, result = (s.rerun_marker, s.rerun_result) if rerun else (s.marker, s.result)
+    marker.parent.mkdir(parents=True, exist_ok=True)
+    with marker.open("x", encoding="utf-8", newline="\n") as fh:
         json.dump({"started_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "set": s.name,
-                   "config_sha256": s.config_sha256}, fh)
+                   "config_sha256": s.config_sha256, "rerun_after_void": rerun}, fh)
         fh.write("\n")
     cases = [dict(row, source="adversarial") for row in load_adversarial(s, "holdout")] + in_scope_questions(False)
-    runs, chunk_text = run_cases(cases, REPEATS)
+    runs, chunk_text, stopped = run_cases(cases, REPEATS)
     record = {"split": "holdout", "set": s.name, "run_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
               "config": frozen, "config_sha256": s.config_sha256, "adversarial_sha256": s.questions_sha256,
-              "repeats": REPEATS, "review": "pending",
+              "repeats": REPEATS, "rerun_after_void": rerun, "review": "void" if stopped else "pending",
+              "stopped_on_api_error": stopped,
               "cost_usd": round(sum(r["cost_usd"] for rows in runs for r in rows), 6),
               "runs": [{"repeat": i, "cases": rows} for i, rows in enumerate(runs, 1)]}
-    write_result(s.result, record)
+    write_result(result, record)
+    if stopped:  # void: no review sheets; the build session never reviews it (D-70)
+        return record
     texts = {c["id"]: c["question"] for c in cases}
     for i, rows in enumerate(runs, 1):
-        pack = PACK_DIR / f"{s.pack_prefix}{i}"
+        pack = PACK_DIR / f"{s.pack_prefix}{i}{'_rerun' if rerun else ''}"
         pack.mkdir(parents=True, exist_ok=True)
         (pack / "review_sheet.md").write_text(review_sheet(f"G2 held-out run ({s.name}), repeat {i}", rows, texts,
                                                            chunk_text), encoding="utf-8")
@@ -509,21 +611,34 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--set", required=True, choices=sorted(SETS), help="adversarial set version (required)")
     parser.add_argument("--parts", default="tune", help="tuning run: comma-separated parts (tune, holdout)")
     parser.add_argument("--run", type=int, help="tuning run number (the next number; never overwritten)")
+    parser.add_argument("--rerun-after-void", action="store_true",
+                        help="with --holdout: the one re-run after a decision run that stopped on an API error (D-70)")
     args = parser.parse_args(argv)
+    if args.rerun_after_void and not args.holdout:
+        parser.error("--rerun-after-void goes with --holdout only")
     try:
         if args.freeze_config:
             print(f"{SETS[args.set].config.name} written, sha256 {freeze_config(args.set)}")
-        elif args.holdout:
-            record = run_holdout(args.set)
-            print(f"held-out run ({args.set}) done: {REPEATS} repeats, ${record['cost_usd']:.4f}")
+            return 0
+        if args.holdout:
+            record = run_holdout(args.set, rerun=args.rerun_after_void)
+            done = f"held-out run ({args.set}{', re-run after void' if args.rerun_after_void else ''})"
         else:
             if args.run is None:
                 parser.error("--split tune needs --run")
             record = run_tune(args.set, parse_parts(args.parts), args.run)
-            print(f"tuning run {record['run']}: {len(record['cases'])} cases, ${record['cost_usd']:.4f}")
+            done = f"tuning run {record['run']}"
     except GuardError as exc:
         print(f"refused: {exc}", file=sys.stderr)
         return 2
+    if stop := record.get("stopped_on_api_error"):
+        print(f"{done} STOPPED at the first API error (case {stop['case']}, repeat {stop['repeat']}; "
+              f"{stop['cases_written']} of {stop['cases_planned']} cases written, ${record['cost_usd']:.4f}): "
+              f"{stop['error']['error_type']} (HTTP {stop['error']['status_code']}) "
+              f"{stop['error']['api_error_type'] or ''}: {stop['error']['message'] or ''}. "
+              "The record is void (D-70).", file=sys.stderr)
+        return 3
+    print(f"{done} done: ${record['cost_usd']:.4f}")
     return 0
 
 

@@ -5,7 +5,9 @@ logs/generation/YYYY-MM-DD.jsonl (UTC date). logs/ is git-ignored. New records u
 `gen-log/2`, which adds the guardrail pre-checks, the refusal and the filled verification field to
 `gen-log/1`; Phase 5 records stay as written and still read. The fields map onto the Phase 9
 audit table (timestamp, question, retrieved chunk ids, generated answer, verification outcome,
-refusal flag). Records never hold the API key, request headers or a provider error message.
+refusal flag). Records never hold the API key or request headers. A failed API call keeps its
+error type, HTTP status and the API's own error message, with key-shaped text redacted (D-69,
+`llm.APIError`).
 """
 from __future__ import annotations
 
