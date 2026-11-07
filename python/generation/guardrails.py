@@ -14,8 +14,14 @@ Pre-checks run before retrieval and cost nothing. They refuse only where code ca
    reference fails, and none is valid. Otherwise failed references become notes. When the same
    section number is named with an Act and also without one, the unnamed reference is left out of
    the refusal text, so the fact is stated once (D-60).
-3. **Notes, never refusals:** an Act outside the corpus (CITA, ...), and scope topics from the v1
-   known gaps (stamp duties, PAYE, ...).
+   A lettered number ("section 57A") is `no_such_section`: neither Act has a lettered section
+   (D-80).
+3. **Notes, never refusals:** an Act outside the corpus (CITA, ...), scope topics from the v1
+   known gaps (stamp duties, PAYE, ...), and a subsection that is not printed in an in-corpus
+   section ("section 100(4)" where section 100 prints only (1) and (2): the note
+   `reference:no_such_subsection`, D-81). The printed subsection labels of each in-corpus section
+   are read from its chunk text (`printed_subsections`): a line opening "(n)" or "N. (1)"; DQ-07's
+   (1), (2) and (4) for Nigeria Tax Act section 57 are kept as printed.
 
 References are read by the parser retrieval also uses (`retrieval.references`, D-54): the Act
 named after a reference, else the one named before it, with Acts outside the corpus included. Under
@@ -136,6 +142,11 @@ class Reference:
     act: str | None             # corpus act id, None (no Act named) or "other:<name>"
     verdict: str = "unchecked"  # ok | no_such_section | section_outside_v1 | other_act | unchecked
     text: str = ""              # refusal or note text for a failed reference
+    suffix: str = ""            # the letter of a lettered number ("57A"), D-80
+
+    @property
+    def label(self) -> str:
+        return f"{self.number}{self.suffix}"
 
 
 @dataclass
@@ -148,8 +159,8 @@ class PreCheck:
 
     def as_log(self) -> dict:
         return {"refusal": self.refusal,
-                "references": [{"kind": r.kind, "number": r.number, "act": r.act, "verdict": r.verdict}
-                               for r in self.references],
+                "references": [{"kind": r.kind, "number": r.number, "suffix": r.suffix, "act": r.act,
+                                "verdict": r.verdict} for r in self.references],
                 "notes": [n.ref for n in self.notes], "labels": note_labels(self.notes, self.refusal),
                 "flags": self.flags}
 
@@ -161,7 +172,8 @@ def _act_mentions(question: str, policy: GuardrailsPolicy) -> list[tuple[int, in
 
 def parse_references(question: str, policy: GuardrailsPolicy) -> list[Reference]:
     """Section and Schedule references, each with its Act, by the shared parser (D-54)."""
-    return [Reference(r.kind, r.number, r.act) for r in references.parse_references(question, policy.other_acts)]
+    return [Reference(r.kind, r.number, r.act, suffix=r.suffix)
+            for r in references.parse_references(question, policy.other_acts)]
 
 
 def _ordinal(n: int) -> str:
@@ -170,6 +182,16 @@ def _ordinal(n: int) -> str:
 
 def _check_section(ref: Reference, policy: GuardrailsPolicy, sections: dict[str, set[str]]) -> None:
     acts = policy.acts
+    if ref.suffix:  # D-80: neither Act numbers a section with a letter
+        ref.verdict = "no_such_section"
+        if ref.act is None:
+            nta, ntaa = acts["nta2025"], acts["ntaa2025"]
+            ref.text = (f"Neither the {nta['name']} nor the {ntaa['name']} has a section {ref.label}. Their sections "
+                        f"are numbered 1 to {nta['sections']} and 1 to {ntaa['sections']}, none with a letter.")
+        else:
+            ref.text = (f"The {acts[ref.act]['name']} has no section {ref.label}. Its sections are numbered 1 to "
+                        f"{acts[ref.act]['sections']}, none with a letter.")
+        return
     if ref.act is None:
         candidates = [a for a in CORPUS_ACTS if 1 <= ref.number <= acts[a]["sections"]]
         if not candidates:
@@ -213,13 +235,76 @@ def _check_schedule(ref: Reference, policy: GuardrailsPolicy, schedules: dict[st
         ref.text = f"The {_ordinal(ref.number)} Schedule of the {name} is outside the corpus this tool covers (v1)."
 
 
+# Subsections (D-81) --------------------------------------------------------------------------------
+
+_SECTION_CHUNK = re.compile(r"^(nta2025|ntaa2025):s(\d+)")
+_SUBSECTION_LINE = re.compile(r"\s*(?:\d+[A-Z]?\.\s*)?\((\d+)\)")
+
+
+def printed_subsections(chunk_id: str, text: str) -> tuple[str, str, set[int]] | None:
+    """(act, section, subsection labels printed in this chunk) for a section chunk, or None for a
+    definition entry, a Schedule chunk or anything else. A label is a line opening "(n)" or
+    "N. (1)" (G2 fix design 2, section 5.2(b))."""
+    m = _SECTION_CHUNK.match(chunk_id)
+    if not m or ":def:" in chunk_id:
+        return None
+    labels = set()
+    for line in text.split("\n"):
+        x = _SUBSECTION_LINE.match(line)
+        if x:
+            labels.add(int(x.group(1)))
+    return m.group(1), m.group(2), labels
+
+
+def add_printed_subsections(out: dict[str, dict], chunk_id: str, text: str) -> None:
+    """Add one chunk's printed subsection labels to a `sections()` result (per Act, "subsections")."""
+    found = printed_subsections(chunk_id, text)
+    if found is not None:
+        act, section, labels = found
+        out.setdefault(act, {"sections": set(), "schedules": set()}).setdefault("subsections", {}) \
+            .setdefault(section, set()).update(labels)
+
+
+def _labels_text(labels: list[int]) -> str:
+    items = [f"({n})" for n in labels]
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1]
+
+
+def _subsection_notes(question: str, policy: GuardrailsPolicy, printed: dict[str, dict[str, set[int]]]) -> list[str]:
+    """Note texts for subsection references that the in-corpus section does not print (D-81).
+    A reference to an Act outside the corpus, or to a section outside the corpus, gets none."""
+    out: list[str] = []
+    for ref in references.parse_subsection_refs(question, policy.other_acts):
+        if ref.act and ref.act.startswith("other:"):
+            continue
+        acts = [ref.act] if ref.act else list(CORPUS_ACTS)
+        candidates = [a for a in acts if str(ref.section) in printed.get(a, {})]
+        if not candidates or any(ref.subsection in printed[a][str(ref.section)] for a in candidates):
+            continue
+        parts = []
+        for a in candidates:
+            labels = sorted(printed[a][str(ref.section)])
+            name = policy.acts[a]["name"]
+            if labels:
+                has = f"has subsection{'s' if len(labels) > 1 else ''} {_labels_text(labels)} only"
+            else:
+                has = "has no numbered subsections"
+            parts.append(f"As printed, section {ref.section} of the {name} {has}; there is no subsection "
+                         f"({ref.subsection}).")
+        text = " ".join(parts)
+        if text not in out:
+            out.append(text)
+    return out
+
+
 def _note(ref: str, text: str) -> Disclosure:
     return Disclosure("note", ref, "question", "guardrail", text)
 
 
 # Note labels, as the adversarial set's `required_notes` names them: `scope:<topic>` (the policy's
 # topic keys), `act:<act_name>` (the Act's name in lower case, words joined by "_"),
-# `reference:<verdict>` (no_such_section, section_outside_v1) and the disclosure ids (DQ-12, ...).
+# `reference:<verdict>` (no_such_section, section_outside_v1), `reference:no_such_subsection` (D-81)
+# and the disclosure ids (DQ-12, ...).
 REFERENCE_REFUSALS = ("no_such_section", "section_outside_v1")
 
 
@@ -240,7 +325,8 @@ def note_labels(notes: list[Disclosure], refusal_reason: str | None = None,
 
 def pre_check(question: str, policy: GuardrailsPolicy, corpus: dict[str, dict[str, set]]) -> PreCheck:
     """Pre-checks for `question`. `corpus` is the store's `sections()`: per Act, the section
-    numbers ("sections", strings) and Schedule numbers ("schedules", ints) in the v1 corpus."""
+    numbers ("sections", strings) and Schedule numbers ("schedules", ints) in the v1 corpus, and
+    each in-corpus section's printed subsection labels ("subsections": section -> set of ints)."""
     result = PreCheck()
     text = question.strip()
     if not text or not re.search(r"[A-Za-z]", text) or len(text) > policy.max_question_chars:
@@ -262,14 +348,20 @@ def pre_check(question: str, policy: GuardrailsPolicy, corpus: dict[str, dict[st
     failed = [r for r in corpus_refs if r.verdict != "ok"]
     if corpus_refs and len(failed) == len(corpus_refs):
         # D-60: a section number also named with an Act is stated once, under the named Act.
-        named = {(r.kind, r.number) for r in failed if r.act}
-        stated = [r for r in failed if r.act or (r.kind, r.number) not in named]
+        named = {(r.kind, r.number, r.suffix) for r in failed if r.act}
+        stated = [r for r in failed if r.act or (r.kind, r.number, r.suffix) not in named]
         result.refusal = stated[0].verdict
         result.refusal_text = " ".join(dict.fromkeys(r.text for r in stated))
     elif failed:
         for verdict, text in dict.fromkeys((r.verdict, r.text) for r in failed):
             result.notes.append(_note(f"reference:{verdict}", text))
         result.flags.append("reference_note")
+
+    printed = {a: corpus.get(a, {}).get("subsections", {}) for a in CORPUS_ACTS}
+    for text in _subsection_notes(question, policy, printed):
+        result.notes.append(_note("reference:no_such_subsection", text))
+        if "reference_note" not in result.flags:
+            result.flags.append("reference_note")
 
     named_others = dict.fromkeys(a[len("other:"):] for _, _, a in _act_mentions(question, policy)
                                  if a.startswith("other:"))

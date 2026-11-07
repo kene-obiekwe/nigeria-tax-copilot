@@ -5,7 +5,9 @@
     print(answer.rendered)
 
 Flow (guardrails design, section 2): pre-checks on the question (invalid question, section and
-Schedule references, other-Act and scope notes); retrieve the top 5 chunks plus one keyword slot
+Schedule references, other-Act and scope notes); the note tagger (D-77), started with the pre-check,
+run alongside retrieval and generation on every status and joined before rendering, so the notes
+shown are the union of the pattern notes and the tagger's; retrieve the top 5 chunks plus one keyword slot
 with config_v2.json (D-54); the relevance floor; show the chunks to the model as passages P1 to P6 and
 get a JSON answer (claims citing passage labels, plus gaps); check the citations; verify every
 claim and gap (generation.verify); work out the disclosures for the kept claims' supporting
@@ -21,6 +23,7 @@ import json
 import re
 import sys
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -34,12 +37,15 @@ from embed.load import (BUILD_MANIFEST, CHUNKS, REGISTER, read_chunks, read_regi
 from generation.audit_log import LOG_DIR, SCHEMA, write_record  # noqa: E402
 from generation.disclosure import Disclosure, Policy, disclose, load_policy  # noqa: E402
 from generation.guardrails import (LOW_RELEVANCE_TEXT, POLICY as GUARDRAILS_POLICY,  # noqa: E402
-                                   GuardrailsPolicy, load_guardrails_policy, pre_check, relevance_floor)
+                                   GuardrailsPolicy, add_printed_subsections, load_guardrails_policy, pre_check,
+                                   relevance_floor)
 from generation.llm import (EFFORT, MAX_TOKENS, MODEL, VERIFIER_EFFORT, VERIFIER_MAX_TOKENS,  # noqa: E402
                             VERIFIER_MODEL, AnthropicLLMClient, GenerationError, LLMClient, LLMResponse, cost_usd,
                             request_params)
 from generation.prompt import (LABELS, OUTPUT_SCHEMA, PROMPT_VERSION, SCHEMA_VERSION, SYSTEM_PROMPT,  # noqa: E402
                                build_user_message)
+from generation.note_tagger import (OFF as TAGGER_OFF, TAGGER_EFFORT, TAGGER_MAX_TOKENS, TAGGER_MODEL,  # noqa: E402
+                                    TaggerResult, merge_notes, tag_question)
 from generation.verify import NO_PASSAGES_GAP, VerificationResult, verify_answer  # noqa: E402
 from retrieval.retrieve import Retriever  # noqa: E402
 
@@ -67,6 +73,10 @@ class GenerationConfig:
     verifier_model: str = VERIFIER_MODEL
     verifier_effort: str = VERIFIER_EFFORT
     verifier_max_tokens: int = VERIFIER_MAX_TOKENS
+    note_tagger: bool = True             # D-77
+    tagger_model: str = TAGGER_MODEL
+    tagger_effort: str = TAGGER_EFFORT
+    tagger_max_tokens: int = TAGGER_MAX_TOKENS
 
 
 @dataclass
@@ -118,10 +128,12 @@ class Answer:
     notes: list[Disclosure] = field(default_factory=list)
     verification: VerificationResult | None = None
     verification_cost_usd: float = 0.0
+    tagger: TaggerResult = field(default_factory=lambda: TaggerResult("off"))  # D-77; `notes` is the union
+    pattern_notes: list[Disclosure] = field(default_factory=list)
 
     @property
     def total_cost_usd(self) -> float:
-        return self.cost_usd + self.verification_cost_usd
+        return self.cost_usd + self.verification_cost_usd + self.tagger.cost_usd
 
 
 # Corpus stores -------------------------------------------------------------------------------
@@ -135,9 +147,10 @@ class DbCorpusStore:
 
     def chunks(self, chunk_ids: list[str]) -> dict[str, dict]:
         rows = self.conn.execute(
-            "SELECT chunk_id, act_id, citation, context_header, text, register_ids, page_labels "
+            "SELECT chunk_id, act_id, citation, context_header, text, register_ids, page_labels, cross_refs "
             "FROM corpus_chunks WHERE chunk_id = ANY(%s)", (list(chunk_ids),)).fetchall()
-        keys = ("chunk_id", "act_id", "citation", "context_header", "text", "register_ids", "page_labels")
+        keys = ("chunk_id", "act_id", "citation", "context_header", "text", "register_ids", "page_labels",
+                "cross_refs")  # cross_refs: the gap reference check (D-79)
         return {row[0]: dict(zip(keys, row)) for row in rows}
 
     def register_rows(self, chunk_ids: list[str], register_ids: list[str]) -> list[dict]:
@@ -157,6 +170,8 @@ class DbCorpusStore:
                 entry["sections"].add(section)
             if schedule is not None:
                 entry["schedules"].add(int(schedule))
+        for chunk_id, text in self.conn.execute("SELECT chunk_id, text FROM corpus_chunks").fetchall():
+            add_printed_subsections(out, chunk_id, text)  # D-81
         return out
 
     def corpus_info(self) -> dict:
@@ -182,10 +197,12 @@ class FileCorpusStore:
                 entry["sections"].add(chunk["section"])
             if chunk["schedule"]:
                 entry["schedules"].add(schedule_no(chunk["schedule"]["number"]))
+            add_printed_subsections(self._sections, chunk["chunk_id"], chunk["text"])  # D-81
             self._chunks[chunk["chunk_id"]] = {
                 "chunk_id": chunk["chunk_id"], "act_id": chunk["act_id"], "citation": chunk["citation"],
                 "context_header": chunk["context_header"], "text": chunk["text"],
-                "register_ids": list(chunk["discrepancy"]["register_ids"]), "page_labels": chunk["page_labels"]}
+                "register_ids": list(chunk["discrepancy"]["register_ids"]), "page_labels": chunk["page_labels"],
+                "cross_refs": list(chunk["cross_refs"])}
         self._register = [{k: row[k] for k in REGISTER_FIELDS} for row in read_register(register_path)]
 
     def chunks(self, chunk_ids: list[str]) -> dict[str, dict]:
@@ -200,7 +217,8 @@ class FileCorpusStore:
         return list(self._register)
 
     def sections(self) -> dict[str, dict[str, set]]:
-        return {act: {k: set(v) for k, v in entry.items()} for act, entry in self._sections.items()}
+        return {act: {k: ({s: set(labels) for s, labels in v.items()} if k == "subsections" else set(v))
+                      for k, v in entry.items()} for act, entry in self._sections.items()}
 
     def corpus_info(self) -> dict:
         snapshot = json.loads(BUILD_MANIFEST.read_text(encoding="utf-8"))["corpus_snapshot"]
@@ -343,14 +361,22 @@ def retrieval_config() -> dict:
 def generate(question: str, *, k: int = 5, retriever=None, llm: LLMClient | None = None, store=None,
              config: GenerationConfig | None = None, log_dir: Path | None = LOG_DIR,
              query_vector: list[float] | None = None, policy: Policy | None = None,
-             verifier: LLMClient | None = None, guardrails_policy: GuardrailsPolicy | None = None) -> Answer:
+             verifier: LLMClient | None = None, guardrails_policy: GuardrailsPolicy | None = None,
+             tagger: LLMClient | None = None) -> Answer:
     """Answer `question` from the top `k` retrieved chunks (design section 2.1). Opens its own
     database connection when `retriever` or `store` is not given. `verifier` is the verification
-    client (Haiku 5.5 by default; unused when `config.verify` is off). `log_dir=None` turns logging
-    off (unit tests only)."""
+    client (Haiku 5.5 by default; unused when `config.verify` is off). `tagger` is the note tagger
+    client (D-77): with `config.note_tagger` on, Haiku 5.5 by default when the generator client is
+    also the default; a caller that passes its own generator client (tests, runners) passes its own
+    tagger client, or the tagger is off for that call and logged as `off`. `log_dir=None` turns
+    logging off (unit tests only)."""
     config = config or GenerationConfig()
     policy = policy or load_policy()
     guardrails_policy = guardrails_policy or load_guardrails_policy()
+    if not config.note_tagger:
+        tagger = None
+    elif tagger is None and llm is None:
+        tagger = AnthropicLLMClient(model=config.tagger_model)
     llm = llm or AnthropicLLMClient(model=config.model)
     if config.verify:
         verifier = verifier or AnthropicLLMClient(model=config.verifier_model)
@@ -362,7 +388,7 @@ def generate(question: str, *, k: int = 5, retriever=None, llm: LLMClient | None
         retriever = retriever or Retriever(conn, retrieval_config())
         store = store or DbCorpusStore(conn)
         return _generate(question, k, retriever, llm, verifier, store, config, log_dir, query_vector, policy,
-                         guardrails_policy)
+                         guardrails_policy, tagger)
     finally:
         if conn is not None:
             conn.close()
@@ -376,9 +402,34 @@ def _refusal_text(reason: str, check) -> str:
 
 
 def _generate(question, k, retriever, llm, verifier, store, config, log_dir, query_vector, policy,
-              guardrails_policy) -> Answer:
+              guardrails_policy, tagger=None) -> Answer:
+    """Starts the note tagger (when on) with the pre-check, then answers; the tagger runs alongside
+    retrieval and generation and is joined before rendering (D-77)."""
     timestamp = datetime.now(timezone.utc)
     record_id = str(uuid.uuid4())
+    pool = ThreadPoolExecutor(max_workers=1) if tagger is not None else None
+    tagging = (pool.submit(tag_question, question, tagger, effort=config.tagger_effort,
+                           max_tokens=config.tagger_max_tokens) if pool is not None else None)
+    try:
+        return _answer(question, k, retriever, llm, verifier, store, config, log_dir, query_vector, policy,
+                       guardrails_policy, timestamp, record_id, tagging)
+    finally:
+        if pool is not None:
+            pool.shutdown(wait=True)
+
+
+def _join_tagger(tagging) -> TaggerResult:
+    """The tagger's result; an unexpected exception in the call counts as a tagger failure."""
+    if tagging is None:
+        return TAGGER_OFF
+    try:
+        return tagging.result()
+    except Exception as exc:  # noqa: BLE001 - tag_question catches model errors; this is a safety net
+        return TaggerResult("failed", reason=f"tagger raised {type(exc).__name__}: {exc}")
+
+
+def _answer(question, k, retriever, llm, verifier, store, config, log_dir, query_vector, policy,
+            guardrails_policy, timestamp, record_id, tagging) -> Answer:
     check = pre_check(question, guardrails_policy, store.sections())
     retrieved, floor = [], None
     if check.refusal is None:
@@ -419,7 +470,8 @@ def _generate(question, k, retriever, llm, verifier, store, config, log_dir, que
         verification = verify_answer(question, status, claims, gaps, chunks,
                                      {chunk_id: label for label, chunk_id in label_map.items()},
                                      verifier, guardrails_policy.disputed_gap_patterns,
-                                     effort=config.verifier_effort, max_tokens=config.verifier_max_tokens)
+                                     effort=config.verifier_effort, max_tokens=config.verifier_max_tokens,
+                                     other_acts=guardrails_policy.other_acts)
         status, gaps = verification.status, verification.gaps
         claims = ([Claim(c.text, c.labels, c.kept_chunk_ids) for c in verification.kept]
                   if status == "answered" else [])
@@ -428,11 +480,15 @@ def _generate(question, k, retriever, llm, verifier, store, config, log_dir, que
             refusal = {"status": status, "reason": verification.refusal_reason, "stage": "verification"}
             error = verification.refusal_reason if status == "error" else None
 
+    tagged = _join_tagger(tagging)  # D-77: joined before rendering, whatever the status
+    notes = merge_notes(check.notes, tagged, guardrails_policy)
+    if tagged.status == "failed":
+        flags.append("note_tagger_failed")
     cited = cited_in_order(claims)  # empty unless answered, so other statuses get question notes only
     rows = store.register_rows(cited, sorted(policy.anchor_terms))
     disclosures = disclose(cited, rows, question, policy, {c: chunks[c]["citation"] for c in cited},
-                           retrieved=[item.chunk_id for item in retrieved])
-    rendered = render(status, claims, gaps, cited, chunks, disclosures, notes=check.notes,
+                           retrieved=[item.chunk_id for item in retrieved], dq12_tagged=tagged.dq12)
+    rendered = render(status, claims, gaps, cited, chunks, disclosures, notes=notes,
                       refusal_text=_refusal_text(refusal["reason"], check) if refusal else None,
                       removal_lines=verification.removal_lines if verification else None)
     usage = response.usage if response else {"input_tokens": 0, "output_tokens": 0,
@@ -446,7 +502,12 @@ def _generate(question, k, retriever, llm, verifier, store, config, log_dir, que
             "guardrails": {"policy_file": GUARDRAILS_POLICY.relative_to(ROOT).as_posix(),
                            "policy_sha256": guardrails_policy.sha256, "pre_check": check.as_log(),
                            "floor": None if floor is None else floor.as_log(),
-                           "floor_calibrated": guardrails_policy.tau is not None, "verify": config.verify},
+                           "floor_calibrated": guardrails_policy.tau is not None, "verify": config.verify,
+                           # D-77: the pattern notes and the note tagger; `notes` below is their union
+                           "pattern_notes": [n.ref for n in check.notes],
+                           "note_tagger": tagged.as_log() | {
+                               "model": None if tagging is None else config.tagger_model,
+                               "effort": None if tagging is None else config.tagger_effort}},
             "retrieval": None if check.refusal else {
                 "config_file": RETRIEVAL_CONFIG.relative_to(ROOT).as_posix(),
                 "config_sha256": sha256_file(RETRIEVAL_CONFIG), "k": k,
@@ -464,7 +525,7 @@ def _generate(question, k, retriever, llm, verifier, store, config, log_dir, que
             "verification": None if verification is None else verification.as_log(),
             "refusal": refusal,
             "disclosures": [asdict(d) for d in disclosures],
-            "notes": [asdict(n) for n in check.notes],
+            "notes": [asdict(n) for n in notes],
             "rendered": rendered,
             "refusal_flag": status in ("not_covered", "refused"),
             "error": error,
@@ -475,5 +536,6 @@ def _generate(question, k, retriever, llm, verifier, store, config, log_dir, que
                   passages=passages, cited_chunk_ids=cited, rejected_citations=parsed.rejected,
                   disclosures=disclosures, rendered=rendered, model=config.model, usage=usage,
                   cost_usd=cost, record_id=record_id, error=error,
-                  refusal_reason=refusal["reason"] if refusal else None, flags=flags, notes=check.notes,
-                  verification=verification, verification_cost_usd=verification.cost_usd if verification else 0.0)
+                  refusal_reason=refusal["reason"] if refusal else None, flags=flags, notes=notes,
+                  verification=verification, verification_cost_usd=verification.cost_usd if verification else 0.0,
+                  tagger=tagged, pattern_notes=check.notes)

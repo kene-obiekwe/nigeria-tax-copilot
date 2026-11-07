@@ -69,8 +69,10 @@ notes:
       cites."
   DQ-12:
     when_question: commencement
-    # Shown when the question matches one of these patterns and does not name only the Nigeria Tax
-    # Act (it names the Administration Act, or no Act).
+    # Shown when the question matches one of these patterns, or the note tagger chooses
+    # ntaa_commencement (D-77), and does not name only Acts other than the Administration Act (it
+    # names the Administration Act, or no Act). The Acts outside the corpus are the guardrails
+    # policy's other_acts list; before D-77 the rule covered only the Nigeria Tax Act.
     patterns:
       - '\bcommenc\w*'
       - '\bcomes? into (?:force|effect|operation)\b'
@@ -89,12 +91,15 @@ notes:
       - '\beffective (?:from|on|since)\b'
       - '\bwhen (?:does|did|will) [\w\s]{0,60}\b(?:start|begin|apply|take effect)\b'
       # Commencement-day wording added 2026-11-04 (D-44), written from tuning cases only.
-      - '\b(?:from|on|as (?:of|from)) (?:which|what) (?:day|date)\b'
-      - '\b(?:which|what) (?:day|date) [\w\s'']{0,60}\b(?:follow|comply|obey|apply|applies|start|begin)\b'
+      # G2 fix build 2 (2026-11-07): the D-77 "of the month" guard, also on both D-44 patterns and the second D-56 one.
+      - '\b(?:from|on|as (?:of|from)) (?:which|what) (?:day|date)\b(?! of (?:the|each|every|a) (?:month|year|quarter))'
+      - '\b(?:which|what) (?:day|date)(?! of (?:the|each|every|a) (?:month|year|quarter)) [\w\s'']{0,60}\b(?:follow|comply|obey|apply|applies|start|begin)\b'
       # Start-of-law wording added 2026-11-05 (D-56; G2 fix design, section 4.2(a)), written from the
       # five notes missed in G2 decision run 1 and the build session's own probes.
-      - '\b(?:since|from|on|as of|as from|in|by) (?:which|what) (?:day|date|year|month)\b'
-      - '\b(?:which|what) (?:day|date|year|month)\b[\w\s'']{0,60}\b(?:begin|began|begun|start|started|starts|apply|applies|applied|follow|binding|bind|take effect|took effect|come into effect|in force|into force|operative|become law|became law|be law|live)\b'
+      # D-77 (G2 fix design 2, Appendix A): not when followed by "of the month", "of each month"
+      # and the like (a due day, not a start date).
+      - '\b(?:since|from|on|as of|as from|in|by) (?:which|what) (?:day|date|year|month)\b(?! of (?:the|each|every|a) (?:month|year|quarter))'
+      - '\b(?:which|what) (?:day|date|year|month)\b(?! of (?:the|each|every|a) (?:month|year|quarter))[\w\s'']{0,60}\b(?:begin|began|begun|start|started|starts|apply|applies|applied|follow|binding|bind|take effect|took effect|come into effect|in force|into force|operative|become law|became law|be law|live)\b'
       - '\b(?:become|becomes|became|been|is|was|are|were) (?:binding|law|operative|live|enforceable|effective(?! management| tax| rate| date| control))\b'
       - '\b(?:live|in force|binding|operative|effective|enforceable|law) yet\b'
       - '\balready (?:law|in force|binding|operative|effective|live|enforceable)\b'

@@ -101,11 +101,13 @@ def parse_section_refs(question: str, other_acts=None) -> list[SectionRef]:
     """Section references to look up, each with its corpus Act (None if unnamed).
 
     With `other_acts` None this is the D-21 reading. With an `other_acts` list (D-54) the shared
-    parser is used, and a reference attributed to an Act outside the corpus is left out."""
+    parser is used, and a reference attributed to an Act outside the corpus is left out, as is a
+    lettered number ("57A"), which neither Act has (D-80)."""
     if other_acts is None:
         refs = parse_section_refs_d21(question)
     else:
-        refs = [r for r in parse_references(question, other_acts) if r.kind == "section" and not r.other_act]
+        refs = [r for r in parse_references(question, other_acts)
+                if r.kind == "section" and not r.other_act and not r.suffix]
     out: list[SectionRef] = []
     for ref in refs:
         item = SectionRef(str(ref.number), ref.act)

@@ -1,8 +1,8 @@
 # G2 Fix Design 2 (Phase 6, after decision run 2)
 
-Status: **proposed, for overseer review**. This is a design only (D-74): no code, prompt, policy or
-configuration has been changed. The proposed decisions are D-77 to D-84 (section 10). They become
-decision-log rows only once Kene approves them.
+Status: **approved by Kene, 2026-11-07** (D-77 to D-84, section 10, now decision-log rows).
+Sections 1 to 12 are the design as reviewed, written before any code changed (D-74). Section 13
+records the build: what changed, the deviations, and the numbers measured after it.
 
 This is a research and reference tool, not tax advice.
 
@@ -648,6 +648,109 @@ The scripts were run from the repository root with `.venv\Scripts\python` and
 | `s10_gaprecheck.py` | Gap-class re-check, noise baseline and candidate | 5.2 (a) |
 | `s11_ranks.py`, `s12_options.py` | Ranks and retrieval options on dev, v1 and v2 (13 new clause embeddings) | 6 |
 | `eval\guardrails\check_adversarial_v3.py` | v3 format and overlap check (ids and counts) | 1, 9 |
+
+## 13. Build record (G2 fix build 2, 2026-11-07)
+
+Built to sections 2 to 8 and Appendices A and B. Nothing was committed, no tuning run was made and
+`config_g2_v3.json` was not frozen. eval/guardrails/adversarial_v3.jsonl was never opened.
+
+### 13.1 What changed
+
+| Area | Files |
+|---|---|
+| W patterns, `state_local_taxes` guard, CAMA, Finance Act years (D-77, D-78) | `data/curated/guardrails_policy.yml` (scope patterns equal the measured `g_W.yml`) |
+| DQ-12 "day of the month" guard and the Act rule (D-77) | `data/curated/disclosure_policy.yml` (equal to `d_W.yml`); `python/generation/disclosure.py` (`names_only_other_acts`) |
+| Note tagger (D-77) | `python/generation/prompt.py` (`tag-prompt/2`, 3,921 characters, sha256 9b2276873a6201ca...; `tag-schema/1`); `python/generation/note_tagger.py`; `python/generation/generate.py` (runs in a one-worker pool beside retrieval and generation, joined before rendering) |
+| Shared parser: ", and" lists, ranges, lettered numbers, subsections, frozen D-21 copy (D-79, D-80) | `python/retrieval/references.py`; `python/retrieval/retrieve.py` (a lettered reference is never looked up) |
+| Lettered refusal and subsection note (D-80, D-81) | `python/generation/guardrails.py`; both corpus stores return printed subsection labels |
+| Gap reference check (D-79) | `python/generation/verify.py` (`passage_references`, `unconnected_references`, before the classifier); `eval/guardrails/replay_gap_references.py` |
+| v3 entry, D-83 report, D-84 runner | `eval/guardrails/run_adversarial.py` (`--add v2:holdout`, the `d84` record and review-sheet block, the `d83` per-repeat block, tagger fields in the frozen configuration) |
+| Probe measure (section 2.7, item 5) | `eval/guardrails/measure_notes.py` |
+| Tests | `tests/test_g2_fix_2.py` (new), `tests/test_note_tagger_api.py` (new, `api`), `tests/test_refusal.py` (v2 test, artefact list, held-out guard on v3) |
+
+### 13.2 Deviations from the design
+
+1. **Lettered reference with no Act named.** Section 4.1 gives the text for a named Act only. The
+   build uses: "Neither the Nigeria Tax Act 2025 nor the Nigeria Tax Administration Act 2025 has a
+   section 12B. Their sections are numbered 1 to 203 and 1 to 148, none with a letter."
+2. **Subsection note for a section with no numbered subsections** (NTAA section 101): "As printed,
+   section 101 of the Nigeria Tax Administration Act 2025 has no numbered subsections; there is no
+   subsection (3)." Section 5.2(b) gives only the text for a section that has some.
+3. **Subsection references read only as "section 100(4)".** "Subsection (4) of section 100" gets no
+   note. The measured cases (ADV2-003, ADV-006) use the first form.
+4. **Range limits.** A "to" range is expanded only when it runs forwards, has no lettered end and
+   spans at most 20 sections (`MAX_RANGE`); otherwise only its first number is read.
+5. **Frozen configuration.** Besides the tagger fields (model, effort, max_tokens, prompt version and
+   sha256, schema version and sha256, `note_tagger: on`), it records
+   `verifier.gap_reference_check`, so a freeze catches a revert, as `per_gap` does (D-69).
+6. **Where the tagger is on.** `generate()` with its default clients makes a Haiku tagger; the
+   runner passes one on the shared stop (D-69). A caller that passes its own generator client and no
+   tagger (unit tests, offline scripts) runs with the tagger off, logged as `off`.
+7. **Log fields.** The tagger record (status, labels, reason, reasoning, request, response, usage,
+   cost, model, effort) and the pattern-only note labels are logged inside the `guardrails` field,
+   so `gen-log/2` keeps its field list; `notes` holds the union.
+8. **Finance Act name.** The policy entry is named `"Finance Act{year}"`; `{year}` becomes " 2023"
+   when the question gives a year next to the Act, else nothing.
+9. **Probe measure.** Run as `measure_notes.py --tagger` beside a tuning run, not inside the runner;
+   the review sheet's D-84 block points to it.
+10. **Test files.** The v2 registry test was stale at HEAD (it expected no v2 marker after decision
+    run 2); it now checks the spent state. The D-29 artefact scan listed every file under
+    `eval/guardrails/` not named v2, so before this build it also read `adversarial_v3.jsonl` into
+    memory (no output, no text shown). The list now leaves out every question set and anything named
+    v3, and covers all of `data/curated/*.yml`.
+11. **The "of the month" guard on three more DQ-12 patterns** (overseer review, approved by Kene,
+    2026-11-07). Appendix A guarded the D-56 "since/from/on ... which day/date/year/month" pattern
+    only, so "On what day of the month is the return due?" still got DQ-12 from the D-44 pattern.
+    The guard `(?! of (?:the|each|every|a) (?:month|year|quarter))` now follows the day/date group
+    of both D-44 patterns and the second D-56 pattern too (`data/curated/disclosure_policy.yml`).
+    Measured after it (no model call):
+    - DQ-12 pattern decisions: 0 of the 257 measured questions change. NP-088 was already handled
+      by the D-77 guard.
+    - Patterns-only measure (`measure_notes.py`): tune 33/33 and 1/11, check 21/33 and 2/11, all
+      54/66 and 3/22. D-57: 0 of 20 dev, G02 and G04, 2 of 16 v1 controls, 0 of 8 v2 controls; 0
+      required notes missed. The same as section 13.3.
+    - Dev run (`config_v2.json`): hit@5 20 of 20, MRR 0.879, first five equal to `dev_final.json`
+      on 20 of 20.
+    - Tests: `pytest -q -m "not api"` 986 passed, 2 skipped (the same two). New tests: due-day wording gets no DQ-12 note; start-day wording still
+      does.
+
+### 13.3 Measured after the build
+
+**Probe recall by half** (`measure_notes.py --tagger`, one tagger pass, 257 questions, 0 tagger
+failures, $0.0179), beside section 2.4:
+
+| Option | Tune fire | Tune near | Check fire | Check near | All fire | All near |
+|---|---|---|---|---|---|---|
+| W, design | 33/33 | 1/11 | 20/33 | 2/11 | 53/66 | 3/22 |
+| W, build (patterns) | 33/33 | 1/11 | 21/33 | 2/11 | 54/66 | 3/22 |
+| T, design pass 1 | 32/33 | 0/11 | 31/33 | 1/11 | 63/66 | 1/22 |
+| T, build (tagger) | 32/33 | 1/11 | 32/33 | 1/11 | 64/66 | 2/22 |
+| W+T, design pass 1 | 33/33 | 1/11 | 31/33 | 2/11 | 64/66 | 3/22 |
+| **W+T, build (both)** | **33/33** | 1/11 | **32/33** | 2/11 | **65/66** | 3/22 |
+
+- The extra check-half probe is NP-075 (a Finance Act with its year, D-78). The tagger option also
+  gains NP-076 (CAMA), because it uses the pattern Act notes: its Act family is 6 of 6 against 4 of
+  6 in the design.
+- The tagger alone missed NP-068 this pass (noise; the patterns catch it). Both options miss NP-012
+  only (the electronic money transfer levy, section 9).
+- D-57 and required notes: 0 of 20 dev; G02 and G04 (accepted in D-57); 2 of 16 v1 controls
+  (ADV-082, ADV-086, accepted in D-71); **0 of 8 v2 controls**; 0 required notes missed on v1 and v2
+  for both options (the tagger alone misses ADV-072's DQ-12, as in the design). The Act rule removes
+  only ADV2-041's DQ-12 note. The old fixtures: 0 of 18 fire probes missed, 0 of 16 near misses noted.
+
+**Gap reference replay** (`replay_gap_references.py`): 846 kept gaps, 141 naming a section or
+Schedule, 8 removed, the same 8 as section 3.2 (MATCH).
+
+**Retrieval.** `run_eval.py --split dev --config eval\retrieval\config_v2.json`: hit@5 20 of 20,
+MRR 0.879, and the first five match `dev_final.json` on 20 of 20.
+
+**Tests.** `pytest -q -m "not api"`: 980 passed, 2 skipped (the overseer-only held-out guard and
+the spent retrieval test-split check). `tests/test_note_tagger_api.py`: 5 passed.
+
+**Found in the build, then fixed:** the D-44 commencement-day pattern (`from|on|as of ... which|what
+day|date`) had no "of the month" guard, so "On what day of the month is the return due?" still got
+DQ-12. It fired on no dev question or v2 control. Fixed after the overseer review (section 13.2,
+item 11).
 
 ## Appendix A: patterns as measured (option W)
 

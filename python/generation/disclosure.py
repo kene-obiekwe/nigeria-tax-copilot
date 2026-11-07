@@ -15,7 +15,11 @@ under a duplicate, or hidden:
 
 Hidden rows are returned with kind "hidden" so they reach the log, but the renderer skips them.
 Two data-quality notes are added: DQ-16 when NTA s191 is cited, and DQ-12 on Administration Act
-commencement questions (D-39, D-44). The lists and texts are pinned in data/curated/disclosure_policy.yml.
+commencement questions (D-39, D-44), found by the patterns or chosen by the note tagger
+(`ntaa_commencement`, D-77). Either way, a question that names only Acts other than the
+Administration Act (the Nigeria Tax Act, or an Act outside the corpus) gets no DQ-12 note (the D-77
+Act rule). The lists and texts are pinned in data/curated/disclosure_policy.yml; the Acts outside
+the corpus are the guardrails policy's `other_acts`.
 """
 from __future__ import annotations
 
@@ -29,9 +33,10 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "python"))
 
-from retrieval.retrieve import _ACT_NAME, _act_of  # noqa: E402
+from retrieval.references import CORPUS_ACT, act_of, load_other_acts, other_act_mentions  # noqa: E402
 
 POLICY = ROOT / "data" / "curated" / "disclosure_policy.yml"
+GUARDRAILS_POLICY = ROOT / "data" / "curated" / "guardrails_policy.yml"  # other_acts, for the DQ-12 Act rule
 SHOWN_TYPES = {"substantive", "missing_content", "numbering"}
 COMPARISON_NAMES = {"nass": "National Assembly text", "gombe": "Gombe State IRS print"}
 
@@ -61,9 +66,12 @@ class Policy:
     dq12_time_words: re.Pattern | None = None
     dq12_period_act: re.Pattern | None = None
     dq12_period: re.Pattern | None = None
+    other_acts: tuple = ()  # (name, pattern) of the Acts outside the corpus (D-77 Act rule); () = D-44 rule
 
 
-def load_policy(path: Path = POLICY) -> Policy:
+def load_policy(path: Path = POLICY, other_acts_path: Path | None = GUARDRAILS_POLICY) -> Policy:
+    """The disclosure policy. `other_acts_path` (the guardrails policy) supplies the Acts outside
+    the corpus for the DQ-12 Act rule; None keeps the D-44 rule (only the Nigeria Tax Act)."""
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     notes = data["notes"]
     return Policy(
@@ -81,6 +89,7 @@ def load_policy(path: Path = POLICY) -> Policy:
                          if notes["DQ-12"].get("time_words") else None),
         dq12_period_act=_optional(notes["DQ-12"].get("period_trigger", {}).get("act")),
         dq12_period=_optional(notes["DQ-12"].get("period_trigger", {}).get("period")),
+        other_acts=load_other_acts(other_acts_path) if other_acts_path is not None else (),
     )
 
 
@@ -122,30 +131,41 @@ def names_term(question: str, term: str) -> bool:
     return re.search(r"\b" + re.escape(term) + r"\b", question, re.IGNORECASE) is not None
 
 
-def is_ntaa_commencement_question(question: str, policy: Policy, retrieved: list[str] | None = None) -> bool:
+def names_only_other_acts(question: str, policy: Policy) -> bool:
+    """The D-77 Act rule: the question names at least one Act and none of them is the
+    Administration Act (the Nigeria Tax Act, or Acts outside the corpus from `policy.other_acts`)."""
+    acts = {act_of(m.group(0)) for m in CORPUS_ACT.finditer(question)}  # with or without "Nigeria"
+    acts |= {"other" for _ in other_act_mentions(question, policy.other_acts)}
+    return bool(acts) and "ntaa2025" not in acts
+
+
+def is_ntaa_commencement_question(question: str, policy: Policy, retrieved: list[str] | None = None,
+                                  tagged: bool = False) -> bool:
     """A commencement pattern matches, or (D-39) a trigger chunk was retrieved and the question has
-    a time word, or (D-44) the question names the Administration Act and a period before 2026. The
-    question must not name only the Nigeria Tax Act (the period trigger names the Administration Act,
-    so it always passes that test)."""
+    a time word, or (D-44) the question names the Administration Act and a period before 2026, or
+    (D-77) the note tagger chose `ntaa_commencement` (`tagged`). The question must not name only
+    Acts other than the Administration Act (the period trigger names the Administration Act, so it
+    always passes that test)."""
     if (policy.dq12_period_act is not None and policy.dq12_period is not None
             and policy.dq12_period_act.search(question) and policy.dq12_period.search(question)):
         return True
     by_pattern = any(p.search(question) for p in policy.dq12_patterns)
     by_retrieval = bool(retrieved and policy.dq12_time_words is not None
                         and policy.dq12_chunks & set(retrieved) and policy.dq12_time_words.search(question))
-    if not (by_pattern or by_retrieval):
+    if not (by_pattern or by_retrieval or tagged):
         return False
-    acts = {_act_of(m.group(0)) for m in _ACT_NAME.finditer(question)}
-    return not acts or "ntaa2025" in acts
+    return not names_only_other_acts(question, policy)
 
 
 def disclose(cited: list[str], register_rows: list[dict], question: str, policy: Policy,
-             citations: dict[str, str] | None = None, retrieved: list[str] | None = None) -> list[Disclosure]:
+             citations: dict[str, str] | None = None, retrieved: list[str] | None = None,
+             dq12_tagged: bool = False) -> list[Disclosure]:
     """Disclosures for an answer citing `cited` (chunk ids, first-citation order).
 
     `register_rows` holds at least every row on the cited chunks and the anchor rows; other rows
     are ignored. `citations` maps chunk id to its human-readable citation (default: the id).
-    `retrieved` (all retrieved chunk ids) feeds the DQ-12 retrieval trigger only.
+    `retrieved` (all retrieved chunk ids) feeds the DQ-12 retrieval trigger only. `dq12_tagged`:
+    the note tagger chose `ntaa_commencement` (D-77).
     """
     citations = citations or {}
     order = {chunk_id: i for i, chunk_id in enumerate(cited)}
@@ -187,6 +207,6 @@ def disclose(cited: list[str], register_rows: list[dict], question: str, policy:
             other = COMPARISON_NAMES.get(row["comparison_text"], row["comparison_text"])
             out.append(Disclosure("note", rid, "question", "question",
                                   f"{row_text(row, policy)} The {other} reads: {reading}"))
-    if is_ntaa_commencement_question(question, policy, retrieved):
+    if is_ntaa_commencement_question(question, policy, retrieved, tagged=dq12_tagged):
         out.append(Disclosure("note", "DQ-12", "question", "question", policy.dq12_text))
     return out

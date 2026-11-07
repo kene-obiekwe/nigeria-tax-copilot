@@ -15,7 +15,9 @@ both pass:
    found verbatim (after whitespace, dashes and quote marks are normalised, ignoring case) in the
    text or context header of a passage the claim cites (norm/5, D-55).
 
-Gaps are filtered for the disputed flag in code, then classified in one call. The action rule
+Gaps are filtered for the disputed flag in code, then checked for their references in code (D-79:
+every section or Schedule a gap names must be a passage's own, or one a passage refers to, else
+the gap is removed as `reference_not_in_passages`), then classified, one call per gap. The action rule
 (design section 3.7) then keeps or removes each claim and decides whether the answer is shown,
 refused (`unsupported_answer`) or reported as an outage (`verification_unavailable`). A claim
 judged `not_a_claim` (a statement about the passages) is dropped and logged as
@@ -37,6 +39,7 @@ sys.path.insert(0, str(ROOT / "python"))
 
 from generation.llm import (VERIFIER_EFFORT, VERIFIER_MAX_TOKENS, GenerationError, LLMClient,  # noqa: E402
                             LLMResponse, cost_usd, request_params)
+from retrieval import references  # noqa: E402
 from generation.prompt import (GAP_CLASSES, GAP_PROMPT_VERSION, GAP_SCHEMA, GAP_SCHEMA_VERSION,  # noqa: E402
                                GAP_SYSTEM_PROMPT, REASONS, VERDICTS, VERIFIER_PROMPT_VERSION, VERIFIER_SCHEMA,
                                VERIFIER_SCHEMA_VERSION, VERIFIER_SYSTEM_PROMPT, build_gap_message,
@@ -48,6 +51,8 @@ NORMALISER_VERSION = "norm/5"  # norm/2: evidence and citation labels read as th
 # norm/5: the evidence check ignores whitespace next to a dash and also searches the context header (D-55)
 MAX_WORKERS = 4
 GAP_PER_GAP = True  # D-68: one gap check call per gap; recorded in the frozen G2 configuration (D-69)
+GAP_REFERENCE_CHECK = True  # D-79: the gap reference check runs before the classifier; recorded likewise
+REFERENCE_NOT_IN_PASSAGES = "reference_not_in_passages"
 MOVED_NOT_RENDERED = "moved_not_rendered"  # D-59
 MIN_QUOTE_CHARS = 12
 NO_PASSAGES_GAP = "No provisions were retrieved for this question."
@@ -521,7 +526,8 @@ class GapCheck:
     origin: str             # model (claims judged not_a_claim are no longer moved here, D-59)
     gap_class: str | None
     kept: bool
-    reason: str | None      # disputed_flag_repeat | legal_content | advice | unclassified | check_failed | fixed
+    reason: str | None      # disputed_flag_repeat | reference_not_in_passages | legal_content | advice |
+    #                         unclassified | check_failed | fixed
     # The gap's own classifier call (D-68); None for the fixed gap and pattern-filtered gaps.
     request: dict | None = None
     response: dict | None = None
@@ -529,10 +535,12 @@ class GapCheck:
     usage: dict = field(default_factory=lambda: dict(ZERO_USAGE))
     cost_usd: float = 0.0
     latency_ms: int = 0
+    unconnected: list[str] = field(default_factory=list)  # D-79: the references that failed the check
 
     def as_log(self) -> dict:
         return {"text": self.text, "origin": self.origin, "class": self.gap_class, "kept": self.kept,
-                "reason": self.reason, "request": self.request, "response": self.response, "error": self.error,
+                "reason": self.reason, "unconnected": self.unconnected, "request": self.request,
+                "response": self.response, "error": self.error,
                 "usage": self.usage, "cost_usd": round(self.cost_usd, 6), "latency_ms": self.latency_ms}
 
 
@@ -552,6 +560,56 @@ class GapResult:
     def as_log(self) -> dict:
         return {"gaps": [g.as_log() for g in self.gaps], "request": self.request, "error": self.error,
                 "usage": self.usage, "cost_usd": round(self.cost_usd, 6), "latency_ms": self.latency_ms}
+
+
+# Gap reference check (D-79; G2 fix design 2, section 3.1) -----------------------------------------
+
+_OWN_SECTION = re.compile(r"^(nta2025|ntaa2025):s(\d+[A-Z]?)\b")
+_OWN_SCHEDULE = re.compile(r"^(nta2025|ntaa2025):sch(\d+)\b")
+_TARGET_SECTION = re.compile(r"^s(\d+[A-Z]?)")
+_TARGET_SCHEDULE = re.compile(r"^sch(\d+)")
+
+
+def passage_references(chunk: dict, other_acts=()) -> set[tuple[str, str, str]]:
+    """(kind, number, act) for everything a passage is or refers to: its own section or Schedule,
+    its `cross_refs`, and every reference the shared parser reads from its context header and text
+    (a reference with no Act named takes the passage's Act; one to an Act outside the corpus is
+    skipped)."""
+    act = chunk["act_id"]
+    out: set[tuple[str, str, str]] = set()
+    if m := _OWN_SECTION.match(chunk["chunk_id"]):
+        out.add(("section", m.group(2).upper(), m.group(1)))
+    if m := _OWN_SCHEDULE.match(chunk["chunk_id"]):
+        out.add(("schedule", m.group(2), m.group(1)))
+    for ref in chunk.get("cross_refs") or []:
+        target, ref_act = ref.get("target") or "", ref.get("act_id") or act
+        if m := _TARGET_SECTION.match(target):
+            out.add(("section", m.group(1).upper(), ref_act))
+        elif m := _TARGET_SCHEDULE.match(target):
+            out.add(("schedule", m.group(1), ref_act))
+    for ref in references.parse_references(f"{chunk.get('context_header', '')}\n{chunk['text']}", other_acts):
+        if not ref.other_act:
+            out.add((ref.kind, ref.label, ref.act or act))
+    return out
+
+
+def unconnected_references(text: str, passages: list[dict], other_acts=()) -> list[str]:
+    """The section and Schedule references in `text` (a gap) that no passage is or refers to
+    (D-79). A reference to an Act outside the corpus is skipped; one with no Act named may match
+    either corpus Act. A lettered number fails unless a passage carries it."""
+    allowed: set[tuple[str, str, str]] = set()
+    for chunk in passages:
+        allowed |= passage_references(chunk, other_acts)
+    out: list[str] = []
+    for ref in references.parse_references(text, other_acts):
+        if ref.other_act:
+            continue
+        acts = [ref.act] if ref.act else list(references.CORPUS_ACTS)
+        if not any((ref.kind, ref.label, a) in allowed for a in acts):
+            item = f"{ref.kind} {ref.label}" + (f" ({ref.act})" if ref.act else "")
+            if item not in out:
+                out.append(item)
+    return out
 
 
 def _classify_gap(question: str, gap: GapCheck, verifier: LLMClient, effort: str, max_tokens: int) -> None:
@@ -576,16 +634,20 @@ def _classify_gap(question: str, gap: GapCheck, verifier: LLMClient, effort: str
 
 def check_gaps(question: str, gaps: list[tuple[str, str]], verifier: LLMClient | None, disputed_patterns, *,
                effort: str = VERIFIER_EFFORT, max_tokens: int = VERIFIER_MAX_TOKENS,
-               max_workers: int = MAX_WORKERS) -> GapResult:
-    """Pattern filter, then one classifier call per remaining gap, in parallel (design section 3.6,
-    D-68). `gaps` holds (text, origin) pairs. The fixed no-passages gap is never checked. If any
-    call fails, every checked gap is removed (`check_failed`), as when the single call failed."""
+               max_workers: int = MAX_WORKERS, passages: list[dict] | None = None,
+               other_acts=()) -> GapResult:
+    """Pattern filter, then (when `passages` is given) the reference check (D-79), then one
+    classifier call per remaining gap, in parallel (design section 3.6, D-68). `gaps` holds (text,
+    origin) pairs. The fixed no-passages gap is never checked. If any call fails, every checked gap
+    is removed (`check_failed`), as when the single call failed."""
     checks = []
     for text, origin in gaps:
         if text == NO_PASSAGES_GAP:
             checks.append(GapCheck(text, origin, None, True, "fixed"))
         elif any(p.search(text) for p in disputed_patterns):
             checks.append(GapCheck(text, origin, "disputed_flag_repeat", False, "disputed_flag_repeat"))
+        elif passages is not None and (bad := unconnected_references(text, passages, other_acts)):
+            checks.append(GapCheck(text, origin, None, False, REFERENCE_NOT_IN_PASSAGES, unconnected=bad))
         else:
             checks.append(GapCheck(text, origin, None, False, None))
     pending = [g for g in checks if g.reason is None]
@@ -698,9 +760,14 @@ def apply_action_rule(model_status: str, checks: list[ClaimCheck]) -> tuple[str,
 def verify_answer(question: str, model_status: str, claims: list, gaps: list[str],
                   chunks: dict[str, dict], label_of: dict[str, str], verifier: LLMClient, disputed_patterns, *,
                   effort: str = VERIFIER_EFFORT, max_tokens: int = VERIFIER_MAX_TOKENS,
-                  max_workers: int = MAX_WORKERS, always_call: bool = False) -> VerificationResult:
+                  max_workers: int = MAX_WORKERS, always_call: bool = False,
+                  other_acts=None) -> VerificationResult:
     """Verify a parsed answer (`model_status` "answered" or "not_covered"). `claims` are parser
-    claims (text, chunk_ids); `label_of` maps chunk id to the label it was shown under."""
+    claims (text, chunk_ids); `label_of` maps chunk id to the label it was shown under; `chunks`
+    holds every passage shown, which the gap reference check reads (D-79). `other_acts` is the
+    guardrails policy's list of Acts outside the corpus (None: read from the policy file)."""
+    if other_acts is None:
+        other_acts = references.load_other_acts()
     def one(item):
         no, claim = item
         cited = [(label_of[c], chunks[c]) for c in claim.chunk_ids]
@@ -717,7 +784,9 @@ def verify_answer(question: str, model_status: str, claims: list, gaps: list[str
     kept_gaps: list[str] = []
     if gap_input and status in ("answered", "not_covered"):
         gap_result = check_gaps(question, gap_input, verifier, disputed_patterns, effort=effort,
-                                max_tokens=max_tokens, max_workers=max_workers)
+                                max_tokens=max_tokens, max_workers=max_workers,
+                                passages=list(chunks.values()) if GAP_REFERENCE_CHECK else None,
+                                other_acts=other_acts)
         kept_gaps = gap_result.kept
         if any(not g.kept for g in gap_result.gaps):
             flags.append("gaps_removed")

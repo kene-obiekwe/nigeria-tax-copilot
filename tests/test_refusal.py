@@ -575,14 +575,16 @@ V2_SHA256 = "350905729640400eb77eeba6d32e6284ea5a7b06110bb6d46ce3fbd306cf35b4"  
 
 
 V2_CONFIG_SHA256 = "ad55eff74c723afd588bb71de6ca8042641ce6460ddbb00ba3f3e113e1899032"  # D-71, 2026-11-06
+V3_SHA256 = "c293176417fc4ea04dc891f48a33fd85485ac55bbfcdeb6edf05828d51f116d7"  # D-75, overseer, 2026-11-07
 
 
-def test_v2_entry_is_pinned_and_frozen(tmp_path):
-    """D-58, D-71: the v2 entry has its own files, its questions sha256 and its frozen configuration
-    sha256 pinned, and no split file. The configuration is frozen once and matches the live one; the
-    held-out part stays unloadable until the decision run writes its marker, and no re-run is
-    possible before a void first run. Only guards and the configuration file are read, never the v2
-    questions file or results."""
+def test_v2_entry_is_pinned_frozen_and_spent(tmp_path):
+    """D-58, D-71, D-73: the v2 entry has its own files, its questions sha256 and its frozen
+    configuration sha256 pinned, and no split file. Its decision run has been made (marker and
+    result exist), so a second run and a second freeze refuse, and the held-out part loads as
+    tuning data. The frozen file stays as the record; the live configuration has moved on since
+    (D-77 to D-81), so a fresh freeze differs. Only guards, the configuration file and the spent
+    rows (by count) are read."""
     v2 = run_adversarial.SETS["v2"]
     assert (v2.questions.name, v2.split, v2.config.name) == ("adversarial_v2.jsonl", None, "config_g2_v2.json")
     assert v2.marker == run_adversarial.RESULTS_DIR / "v2" / "holdout_started.json"
@@ -590,24 +592,23 @@ def test_v2_entry_is_pinned_and_frozen(tmp_path):
     assert v2.pack_prefix == "v2_holdout_repeat" and v2.config_records_set
     assert (v2.questions_sha256, v2.split_sha256, v2.config_sha256) == (V2_SHA256, None, V2_CONFIG_SHA256)
     assert hashlib.sha256(v2.config.read_bytes()).hexdigest() == V2_CONFIG_SHA256
-    assert not v2.marker.exists() and not v2.result.exists()
+    assert v2.marker.exists() and v2.result.exists()
     frozen = json.loads(v2.config.read_text(encoding="utf-8"))
     assert frozen["adversarial_set"] == {"version": "v2", "sha256": V2_SHA256}
     assert frozen["generation"]["prompt_version"] == "gen-prompt/7"
     assert (frozen["verifier"]["gap_prompt_version"], frozen["verifier"]["per_gap"]) == ("gap-prompt/3", True)
     assert (frozen["normaliser"], frozen["tau"]) == ("norm/5", 0.4)
-    assert run_adversarial.check_holdout_guard("v2") == frozen  # live configuration matches the freeze
-    for call, message in ((lambda: run_adversarial.load_adversarial("v2", "holdout"), "has not been run"),
+    assert "tagger" not in frozen and frozen != run_adversarial.current_config("v2")
+    assert len(run_adversarial.load_adversarial("v2", "holdout")) == 48  # spent: tuning data (D-73)
+    for call, message in ((lambda: run_adversarial.check_holdout_guard("v2"), "runs once"),
                           (lambda: run_adversarial.load_adversarial("v2", "tune"), "no split file"),
-                          (lambda: run_adversarial.freeze_config("v2"), "frozen once"),
-                          (lambda: run_adversarial.check_holdout_guard("v2", rerun=True), "no complete record"),
-                          (lambda: run_adversarial.check_holdout_guard("v2", live={"tau": 0.5}),
-                           "live configuration differs")):
+                          (lambda: run_adversarial.freeze_config("v2"), "frozen once")):
         with pytest.raises(run_adversarial.GuardError, match=message):
             call()
     assert run_adversarial.main(["--freeze-config", "--set", "v2"]) == 2
-    copy = dataclasses.replace(v2, config=tmp_path / "config_g2_v2.json")  # a fresh freeze gives the same file
-    assert run_adversarial.freeze_config(copy) == V2_CONFIG_SHA256
+    assert run_adversarial.main(["--holdout", "--set", "v2"]) == 2
+    copy = dataclasses.replace(v2, config=tmp_path / "config_g2_v2.json")
+    assert run_adversarial.freeze_config(copy) != V2_CONFIG_SHA256
 
 
 def test_fixture_set_guard_and_marker(tmp_path, monkeypatch):
@@ -841,7 +842,7 @@ def test_stopped_tuning_run_is_written_void_and_exits_3(tmp_path, monkeypatch, c
     monkeypatch.setattr(run_adversarial, "RESULTS_DIR", tmp_path)
     monkeypatch.setattr(run_adversarial, "PACK_DIR", tmp_path / "pack")
     monkeypatch.setattr(run_adversarial, "next_tune_run", lambda results_dir=None: 9)
-    monkeypatch.setattr(run_adversarial, "tune_cases", lambda s, parts: [{"id": "Q001", "question": "q"}] * 2)
+    monkeypatch.setattr(run_adversarial, "tune_cases", lambda s, parts, extra=(): [{"id": "Q001", "question": "q"}] * 2)
     monkeypatch.setattr(run_adversarial, "current_config", lambda s=None: {"tau": 0.4})
     monkeypatch.setattr(run_adversarial, "run_cases",
                         lambda cases, repeats: ([[sheet_row("Q001")]], {}, stopped_record("Q001")))
@@ -1018,16 +1019,23 @@ def test_calibration_file_is_the_frozen_one():
 
 
 def _artefacts():
-    paths = [ROOT / "data" / "curated" / "guardrails_policy.yml", ROOT / "data" / "curated" / "disclosure_policy.yml"]
+    paths = sorted((ROOT / "data" / "curated").glob("*.yml"))  # every policy file (D-83)
     paths += sorted((ROOT / "docs" / "phase06_guardrails").glob("*.md"))
-    paths += sorted((ROOT / "python" / "generation").glob("*.py"))
-    # The writing sessions check their own files; anything named v2 is written by the adversarial_v2
-    # session and is never opened here (D-40, D-58).
+    paths += sorted((ROOT / "python" / "generation").glob("*.py"))  # includes prompt.py (tag-prompt/2)
+    # Question sets are not artefacts. Anything named v3 is written by the adversarial_v3 session
+    # and is never opened here (D-40, D-83); v2 is spent (D-73), so its results are checked too.
     paths += [p for p in sorted((ROOT / "eval" / "guardrails").rglob("*.*"))
-              if p.name not in ("adversarial_v1.jsonl", "split_v1.json") and "v2" not in p.name
-              and "v2" not in p.relative_to(ROOT / "eval" / "guardrails").parts]
+              if not p.name.startswith("adversarial_v") and p.name != "split_v1.json" and "v3" not in p.name
+              and "v3" not in p.relative_to(ROOT / "eval" / "guardrails").parts]
     paths += sorted((ROOT / "tests").glob("test_*.py")) + sorted((ROOT / "tests" / "data").glob("*.json"))
     return [p for p in paths if p.is_file() and p.suffix in {".py", ".md", ".yml", ".json", ".jsonl", ".csv"}]
+
+
+def test_artefacts_never_include_a_question_set_or_v3_file():
+    names = [p.relative_to(ROOT).as_posix() for p in _artefacts()]
+    assert not [n for n in names if n.startswith("eval/guardrails/adversarial_v") or "v3" in n], names
+    assert "python/generation/prompt.py" in names and "data/curated/disclosure_policy.yml" in names
+    assert "eval/guardrails/note_recall_probes.jsonl" in names
 
 
 def test_no_test_question_text_in_phase6_artefacts():
@@ -1043,14 +1051,15 @@ def test_no_test_question_text_in_phase6_artefacts():
 @pytest.mark.skipif(os.getenv("TAXY_OVERSEER_HOLDOUT_CHECK") != "1",
                     reason="overseer-only check: set TAXY_OVERSEER_HOLDOUT_CHECK=1 (Kene, 2026-11-03)")
 def test_no_held_out_question_text_in_tests_or_fixtures():
-    """Design section 10, on the v2 set (D-62: the v1 held-out part is tuning data since D-52). Reads
-    adversarial_v2.jsonl directly, because load_adversarial refuses a held-out part before its
+    """Design section 10, on the v3 set (D-83; v1 and v2 are spent, D-62, D-73), over the tests,
+    fixtures, phase 6 docs, python/generation (prompt.py included) and data/curated/*.yml. Reads
+    adversarial_v3.jsonl directly, because load_adversarial refuses a held-out part before its
     marker exists; checks the bytes against the pinned sha256 first, keeps the rows in memory and
     reports ids only. It runs only in the overseer's session when the flag is set (D-40: the build
     session never sees held-out questions)."""
-    v2 = run_adversarial.SETS["v2"]
-    data = v2.questions.read_bytes()
-    assert hashlib.sha256(data).hexdigest() == v2.questions_sha256 == V2_SHA256
+    v3 = run_adversarial.SETS["v3"]
+    data = v3.questions.read_bytes()
+    assert hashlib.sha256(data).hexdigest() == v3.questions_sha256 == V3_SHA256
     held_out = [json.loads(line) for line in data.decode("utf-8").splitlines() if line.strip()]
     leaks = []
     for path in _artefacts():

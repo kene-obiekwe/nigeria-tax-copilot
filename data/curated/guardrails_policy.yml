@@ -35,14 +35,20 @@ other_acts:
     pattern: '\bPetroleum Profits Tax Act\b|\b(?-i:PPTA)\b'
   - name: Stamp Duties Act
     pattern: '\bStamp Duties Act\b'
-  - name: Finance Act
-    pattern: '\bFinance Act\b'
+  # D-78: Finance Acts are separate statutes named by year. {year} becomes the year the question
+  # gives with the Act ("Finance Act 2023", "Finance Act, 2023", "the 2023 Finance Act"), so the
+  # label is act:finance_act_2023; with no year the name is "Finance Act" (act:finance_act).
+  - name: "Finance Act{year}"
+    pattern: '\bFinance Act\b(?:,?\s+(?:of\s+)?(?:19|20)\d{2}\b)?|\b(?:19|20)\d{2}\s+Finance Act\b'
   - name: Federal Inland Revenue Service (Establishment) Act
     pattern: '\bFederal Inland Revenue Service \(Establishment\) Act\b|\b(?-i:FIRSEA)\b'
   - name: Industrial Development (Income Tax Relief) Act
     pattern: '\bIndustrial Development \(Income Tax Relief\) Act\b'
   - name: Customs and Excise Management Act
     pattern: '\bCustoms and Excise Management Act\b|\bNigeria Customs Service Act\b'
+  # D-78 (G2 fix design 2, Appendix A).
+  - name: Companies and Allied Matters Act
+    pattern: '\bCompanies and Allied Matters Act\b|\b(?-i:CAMA)\b'
   - name: "{match}"
     pattern: '\bNigeria Tax (?:Administration )?Act,? (?!2025\b)\d{4}\b'
 
@@ -54,45 +60,50 @@ other_act_note: "The {name} is not in the corpus this tool covers. Section numbe
 # (customs_and_excise is an extra topic the set does not use). Failed section references give
 # reference:no_such_section or reference:section_outside_v1 (python/generation/guardrails.py). Each pattern is checked against the 20 dev questions and G01 to G05 by a
 # unit test (it must not fire on an in-scope question).
+# D-77 (G2 fix design 2, section 2.3(a) and Appendix A): every topic gains the measured W
+# alternatives, appended after the existing ones; in state_local_taxes, "local government" no
+# longer fires inside a list of tiers or before "offices", "agencies" and the like. The note tagger
+# (python/generation/note_tagger.py) chooses from the same topics; a note shows when a pattern or
+# the tagger fires.
 scope_topics:
   personal_income_tax:
-    pattern: '\b(?-i:PAYE)\b|\bpay[- ]as[- ]you[- ]earn\b|\bpersonal income tax\b|\b(?-i:PIT)\b'
+    pattern: '\b(?-i:PAYE)\b|\bpay[- ]as[- ]you[- ]earn\b|\bpersonal income tax\b|\b(?-i:PIT)\b|\b(?-i:PITA)\b|\bsole (?:proprietors?(?:hips?)?|traders?)\b|\bself[- ]employed\b|\bpartnerships?\b(?![^.?!]{0,20}\b(?:company|companies|limited|LLP)\b)|\bnot (?:a )?(?:registered|incorporated) (?:as a )?compan(?:y|ies)\b|\bunincorporated\b|\b(?:my|our|an?|the|each) (?:staff|employees?|workers?|driver|drivers|cook|nanny|maid|gardener|security guard)''?s? (?:pay|salar(?:y|ies)|wages?)\b[^.?!]{0,60}\b(?:hold back|withhold|deduct|remit|government|tax)\b|\b(?:hold back|withhold|deduct)\b[^.?!]{0,40}\b(?:staff|employees?|workers?|driver|drivers)''?s? (?:pay|salar(?:y|ies)|wages?)\b|\b(?:rent relief|personal relief|consolidated relief)\b'
     text: "Personal income tax and PAYE are outside the corpus this tool covers (v1)."
   # D-56: any form of "stamp" (a small business stamps a document rather than "pays stamp duty"),
   # plus "dutiable instrument" (G2 fix design, section 4.2(a)).
   stamp_duties:
-    pattern: '\bstamp dut(?:y|ies)\b|\bstamp(?:s|ed|ing)?\b|\bdutiable instruments?\b'
+    pattern: '\bstamp dut(?:y|ies)\b|\bstamp(?:s|ed|ing)?\b|\bdutiable instruments?\b|\bduty\b[^.?!]{0,50}\b(?:agreements?|leases?|tenanc(?:y|ies)|deeds?|instruments?|documents?|receipts?|contracts?|transfers?)\b|\b(?:agreements?|leases?|tenanc(?:y|ies)|deeds?|instruments?|contracts?)\b[^.?!]{0,30}\bduty\b|\b(?:transfer|conveyance|assignment) (?:documents?|deeds?|forms?|instruments?)\b|\bdeeds? of (?:assignment|conveyance|transfer)\b'
     text: "Stamp duties are outside the corpus this tool covers (v1)."
   petroleum_taxes:
-    pattern: '\bpetroleum\b|\boil and gas\b|\bhydrocarbon'
+    pattern: '\bpetroleum\b|\boil and gas\b|\bhydrocarbon|\b(?-i:PPTA)\b|\boil (?:blocks?|fields?|wells?|licen[cs]es?|leases?|mining)\b|\broyalt(?:y|ies)\b[^.?!]{0,40}\b(?:oil|gas|crude|block)\b'
     text: "Petroleum taxes are outside the corpus this tool covers (v1)."
   # D-56 adds: "local government" on its own; a local, area, municipal, town or city council; LGA;
   # state government, a state board, state internal or inland revenue; a state revenue service
   # acronym ([A-Z]{1,4}IRS, except FIRS); and fees, levies, permits, tickets or rates for signage,
   # signboards, billboards, markets, motor parks, hawking or street trading. The existing terms stay.
   state_local_taxes:
-    pattern: '\bstate (?:tax|taxes|levy|levies|revenue)\b|\blocal government (?:tax|taxes|levy|levies|rates?)\b|\bland use charge\b|\btenement rates?\b|\blocal governments?\b|\b(?:local|area|municipal|town|city) councils?\b|\b(?-i:LGAs?)\b|\bstate (?:governments?|boards?)\b|\bstate (?:internal|inland) revenue\b|\b(?-i:(?!FIRS\b)[A-Z]{1,4}IRS)\b|\b(?:signage|sign ?boards?|billboards?|advert(?:isement)? boards?|markets?(?! value| price| rate)|market stalls?|motor parks?|hawking|street trading)\b[^.?!]{0,40}\b(?:fees?|levy|levies|permits?|tickets?|rates?)\b|\b(?:fees?|levy|levies|permits?|tickets?|rates?)\b[^.?!]{0,40}\b(?:signage|sign ?boards?|billboards?|advert(?:isement)? boards?|markets?(?! value| price| rate)|market traders?|market stalls?|motor parks?|hawking|street trading)\b'
+    pattern: '\bstate (?:tax|taxes|levy|levies|revenue)\b|\blocal government (?:tax|taxes|levy|levies|rates?)\b|\bland use charge\b|\btenement rates?\b|(?<!state and )(?<!state, and )\blocal governments?\b(?! (?:offices?|agencies|ministries|departments|bodies|institutions|councils? offices?))|\b(?:local|area|municipal|town|city) councils?\b|\b(?-i:LGAs?)\b|\bstate (?:governments?|boards?)\b|\bstate (?:internal|inland) revenue\b|\b(?-i:(?!FIRS\b)[A-Z]{1,4}IRS)\b|\b(?:signage|sign ?boards?|billboards?|advert(?:isement)? boards?|markets?(?! value| price| rate)|market stalls?|motor parks?|hawking|street trading)\b[^.?!]{0,40}\b(?:fees?|levy|levies|permits?|tickets?|rates?)\b|\b(?:fees?|levy|levies|permits?|tickets?|rates?)\b[^.?!]{0,40}\b(?:signage|sign ?boards?|billboards?|advert(?:isement)? boards?|markets?(?! value| price| rate)|market traders?|market stalls?|motor parks?|hawking|street trading)\b'
     text: "State and local government taxes and levies are outside the corpus this tool covers (v1)."
   surcharge:
-    pattern: '\bsurcharge\b'
+    pattern: '\bsurcharge\b|\b(?:levy|levies|charges?|surcharges?|duty|duties|tax)\b[^.?!]{0,40}\b(?:fossil fuels?|fuel products?|fuels?|diesel|petrol|kerosene|gasoline|aviation fuel)\b|\b(?:fossil fuels?|fuel products?|fuels?|diesel|petrol|kerosene|gasoline|aviation fuel)\b[^.?!]{0,30}\b(?:levy|levies|charges?|surcharges?|duty|duties|tax)\b'
     text: "The surcharge is outside the corpus this tool covers (v1)."
   economic_development_incentives:
-    pattern: '\bpioneer status\b|\beconomic development incentives?\b|\btax holidays?\b'
+    pattern: '\bpioneer status\b|\beconomic development incentives?\b|\btax holidays?\b|\bpriority (?:compan(?:y|ies)|industr(?:y|ies)|sectors?|products?|business(?:es)?)\b|\bincentive certificates?\b|\b(?:investment|capital) tax credits?\b'
     text: "Economic development incentives (such as pioneer status) are outside the corpus this tool
       covers (v1)."
   subsidiary_legislation:
-    pattern: '\bguidelines?\b|\bcirculars?\b|\b(?:Administration|Modification) Order\b'
+    pattern: '\bguidelines?\b|\bcirculars?\b|\b(?:Administration|Modification) Order\b|\b(?:President|Minister|Federal Executive Council)\b[^.?!]{0,50}\b(?:orders?|notices?|lists?|directives?|proclamations?)\b|\b(?:orders?|notices?|directives?)\b[^.?!]{0,30}\b(?:President|Minister)\b|\b(?:NRS|Service|Revenue Service)\b[^.?!]{0,40}\b(?:guidance|practice notes?|public notices?|information circulars?|guides?)\b|\b(?:Tax Administration|VAT Modification|Modification) Order\b'
     text: "Subsidiary legislation and NRS guidance (orders, guidelines and circulars) are outside the
       corpus this tool covers (v1)."
   customs_and_excise:
-    pattern: '\bcustoms\b|\bexcise\b|\bimport dut(?:y|ies)\b'
+    pattern: '\bcustoms\b|\bexcise\b|\bimport dut(?:y|ies)\b|\btariffs?\b|\bport (?:levy|levies|charges?|fees?)\b|\bduty on (?:imports?|imported)\b'
     text: "Customs and excise duties are outside the corpus this tool covers (v1)."
   # Added 2026-11-03 (overseer fix 5): a year from 1900 to 2025 used as a period ("in 2024", "the
   # 2023 year of assessment"), "before 2026", "pre-2026" or the repealed Acts' periods. A year inside
   # an Act's name ("Nigeria Tax Act 2025") does not match. Month-and-year dates ("March 2025",
   # "15 March 2025", "Mar. 3, 2024") also match (D-44).
   pre_2026_periods:
-    pattern: '\b(?:in|for|during|before|until|since|from|of) (?:the )?(?:(?:tax |financial )?years? |year of assessment )?(?:19\d{2}|20(?:[01]\d|2[0-5]))\b(?!\s*(?:Act|Order))|\b(?:19\d{2}|20(?:[01]\d|2[0-5])) (?:tax year|year of assessment|financial year|accounts|returns?)\b|\bpre-?2026\b|\bbefore (?:1 )?(?:January )?2026\b|\bunder the (?:old|repealed|previous) (?:law|laws|Acts?)\b|\b(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)\.?,?\s+(?:\d{1,2}(?:st|nd|rd|th)?,?\s+)?(?:19\d{2}|20(?:[01]\d|2[0-5]))\b'
+    pattern: '\b(?:in|for|during|before|until|since|from|of) (?:the )?(?:(?:tax |financial )?years? |year of assessment )?(?:19\d{2}|20(?:[01]\d|2[0-5]))\b(?!\s*(?:Act|Order))|\b(?:19\d{2}|20(?:[01]\d|2[0-5])) (?:tax year|year of assessment|financial year|accounts|returns?)\b|\bpre-?2026\b|\bbefore (?:1 )?(?:January )?2026\b|\bunder the (?:old|repealed|previous) (?:law|laws|Acts?)\b|\b(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)\.?,?\s+(?:\d{1,2}(?:st|nd|rd|th)?,?\s+)?(?:19\d{2}|20(?:[01]\d|2[0-5]))\b|\bbefore the (?:new )?(?:tax )?(?:laws?|Acts?|rules)\b(?:[^.?!]{0,30}\b(?:start|started|began|took effect|came into|commenced|applied))?|\b(?:my|our|its|their|his|her|company''s|business''s|firm''s)\s+(?:19\d{2}|20(?:[01]\d|2[0-5]))\b(?!\s*(?:Act|Order))|\b(?:19\d{2}|20(?:[01]\d|2[0-5]))\s+(?:invoices?|profits?|income|sales|turnover|assessments?|liabilit(?:y|ies)|tax(?:es)?|filings?|balances?|losses)\b'
     text: "Tax periods before 2026, under the repealed Acts, are outside the corpus this tool covers (v1)."
 
 scope_note_suffix: "Answers come only from the provisions that are in the corpus."
