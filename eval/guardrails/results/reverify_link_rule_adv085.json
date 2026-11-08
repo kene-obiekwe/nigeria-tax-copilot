@@ -1,0 +1,240 @@
+{
+ "name": "link_rule_adv085",
+ "run_at": "2026-11-08T18:16:22+00:00",
+ "runs": [
+  11
+ ],
+ "case": "ADV-085",
+ "claim": 3,
+ "calls_per_claim": 3,
+ "verifier": {
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "prompt_version": "ver-prompt/5",
+  "schema_version": "ver-schema/2",
+  "system_prompt_sha256": "cf4433292a44178ec735e72aeb776e7ab4eec9ce621cc31b58c2a1dc821f2c49",
+  "normaliser": "norm/5"
+ },
+ "chunk_source": "committed chunk file (FileCorpusStore)",
+ "claims": 1,
+ "calls": 3,
+ "stopped": null,
+ "cost_usd": 0.001084,
+ "messages_matching_log": 3,
+ "messages_differing_from_log": 0,
+ "transitions": {
+  "supported -> unsupported": 3
+ },
+ "supported_lost": [
+  {
+   "run": 11,
+   "case_id": "ADV-085",
+   "no": 3,
+   "call": 1,
+   "verdict": "unsupported",
+   "reason": "misread",
+   "sub_reason": null,
+   "text": "The exemption list in section 186(1) is subject to section 186(2), which says that, notwithstanding Chapter Six, VAT is not collected on the items in paragraph 1 of the Eleventh Schedule except where the Minister, by an order published in the Official Gazette, specifies the date of collection of VAT on the items listed in the order.",
+   "chunk_ids": [
+    "nta2025:s186"
+   ]
+  },
+  {
+   "run": 11,
+   "case_id": "ADV-085",
+   "no": 3,
+   "call": 2,
+   "verdict": "unsupported",
+   "reason": "bridging_fact",
+   "sub_reason": null,
+   "text": "The exemption list in section 186(1) is subject to section 186(2), which says that, notwithstanding Chapter Six, VAT is not collected on the items in paragraph 1 of the Eleventh Schedule except where the Minister, by an order published in the Official Gazette, specifies the date of collection of VAT on the items listed in the order.",
+   "chunk_ids": [
+    "nta2025:s186"
+   ]
+  },
+  {
+   "run": 11,
+   "case_id": "ADV-085",
+   "no": 3,
+   "call": 3,
+   "verdict": "unsupported",
+   "reason": "bridging_fact",
+   "sub_reason": null,
+   "text": "The exemption list in section 186(1) is subject to section 186(2), which says that, notwithstanding Chapter Six, VAT is not collected on the items in paragraph 1 of the Eleventh Schedule except where the Minister, by an order published in the Official Gazette, specifies the date of collection of VAT on the items listed in the order.",
+   "chunk_ids": [
+    "nta2025:s186"
+   ]
+  }
+ ],
+ "supported_gained": [],
+ "rows": [
+  {
+   "run": 11,
+   "case_id": "ADV-085",
+   "record_id": "7533daea-ef99-4224-a623-08b085fb0469",
+   "no": 3,
+   "call": 1,
+   "text": "The exemption list in section 186(1) is subject to section 186(2), which says that, notwithstanding Chapter Six, VAT is not collected on the items in paragraph 1 of the Eleventh Schedule except where the Minister, by an order published in the Official Gazette, specifies the date of collection of VAT on the items listed in the order.",
+   "labels": [
+    "P3"
+   ],
+   "chunk_ids": [
+    "nta2025:s186"
+   ],
+   "saved_prompt_version": "ver-prompt/4",
+   "saved_verdict": "supported",
+   "saved_reason": "none",
+   "message_matches_log": true,
+   "verdict": "unsupported",
+   "reason": "misread",
+   "sub_reason": null,
+   "llm_verdict": "unsupported",
+   "reasoning": "The statement claims the exemption list in s186(1) is subject to s186(2). The passage's s186(2) opens 'Notwithstanding the provisions of Chapter Six of this Act', which links subsection (2) to Chapter Six, not to the s186(1) list. The passage does not state that the s186(1) list is subject to s186(2). The rest of the statement, describing s186(2) itself (VAT not collected on Eleventh Schedule paragraph 1 items except where the Minister by order specifies the collection date), matches the passage. But the link between the list and subsection (2) is a link the passages do not state, so the statement is unsupported.",
+   "second": null,
+   "unsupported_part": "The claim that the exemption list in section 186(1) is subject to section 186(2). The passage says only that s186(2) is notwithstanding Chapter Six; it does not link s186(1) to s186(2).",
+   "evidence": [
+    {
+     "label": "P3",
+     "quote": "(2) Notwithstanding the provisions of Chapter Six of this Act, VAT shall\nnot be collected on the items specified in paragraph 1 of the Eleventh Schedule\nto this Act except where the Minister by an order, published in the Official\nGazette, specifies the date of collection of VAT on the items listed in the order.",
+     "found": true
+    }
+   ],
+   "rule": {
+    "passed": true,
+    "tokens": [
+     "chap:6",
+     "para:1",
+     "sch:11",
+     "sec:186",
+     "sub:1",
+     "sub:2"
+    ],
+    "missing": [],
+    "reason": null,
+    "hint": null,
+    "normaliser": "norm/5"
+   },
+   "error": null,
+   "usage": {
+    "input_tokens": 833,
+    "output_tokens": 465,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1989
+   },
+   "cost_usd": 0.000336,
+   "latency_ms": 2655
+  },
+  {
+   "run": 11,
+   "case_id": "ADV-085",
+   "record_id": "7533daea-ef99-4224-a623-08b085fb0469",
+   "no": 3,
+   "call": 2,
+   "text": "The exemption list in section 186(1) is subject to section 186(2), which says that, notwithstanding Chapter Six, VAT is not collected on the items in paragraph 1 of the Eleventh Schedule except where the Minister, by an order published in the Official Gazette, specifies the date of collection of VAT on the items listed in the order.",
+   "labels": [
+    "P3"
+   ],
+   "chunk_ids": [
+    "nta2025:s186"
+   ],
+   "saved_prompt_version": "ver-prompt/4",
+   "saved_verdict": "supported",
+   "saved_reason": "none",
+   "message_matches_log": true,
+   "verdict": "unsupported",
+   "reason": "bridging_fact",
+   "sub_reason": null,
+   "llm_verdict": "unsupported",
+   "reasoning": "The statement claims that the exemption list in s186(1) is subject to s186(2), and it restates s186(2): notwithstanding Chapter Six, VAT is not collected on Eleventh Schedule paragraph 1 items except where the Minister by Official Gazette order specifies the collection date. The passage's (2) opens with 'Notwithstanding the provisions of Chapter Six', and says VAT shall not be collected on Eleventh Schedule items except where the Minister by order published in the Gazette specifies the date of collection. The statement's wording matches. However, the statement says the exemption list in s186(1) is subject to s186(2). The passage's 'notwithstanding' links subsection (2) to Chapter Six, not to subsection (1). Nothing in the passage states that subsection (1) is subject to subsection (2). That is a link the passages do not state, so the statement is unsupported.",
+   "second": null,
+   "unsupported_part": "The claim that the exemption list in section 186(1) is subject to section 186(2). The passage's 'Notwithstanding' links s186(2) only to Chapter Six, and no passage links s186(1) to s186(2).",
+   "evidence": [
+    {
+     "label": "P3",
+     "quote": "(2) Notwithstanding the provisions of Chapter Six of this Act, VAT shall\nnot be collected on the items specified in paragraph 1 of the Eleventh Schedule\nto this Act except where the Minister by an order, published in the Official\nGazette, specifies the date of collection of VAT on the items listed in the order.",
+     "found": true
+    }
+   ],
+   "rule": {
+    "passed": true,
+    "tokens": [
+     "chap:6",
+     "para:1",
+     "sch:11",
+     "sec:186",
+     "sub:1",
+     "sub:2"
+    ],
+    "missing": [],
+    "reason": null,
+    "hint": null,
+    "normaliser": "norm/5"
+   },
+   "error": null,
+   "usage": {
+    "input_tokens": 833,
+    "output_tokens": 557,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1989
+   },
+   "cost_usd": 0.000382,
+   "latency_ms": 2782
+  },
+  {
+   "run": 11,
+   "case_id": "ADV-085",
+   "record_id": "7533daea-ef99-4224-a623-08b085fb0469",
+   "no": 3,
+   "call": 3,
+   "text": "The exemption list in section 186(1) is subject to section 186(2), which says that, notwithstanding Chapter Six, VAT is not collected on the items in paragraph 1 of the Eleventh Schedule except where the Minister, by an order published in the Official Gazette, specifies the date of collection of VAT on the items listed in the order.",
+   "labels": [
+    "P3"
+   ],
+   "chunk_ids": [
+    "nta2025:s186"
+   ],
+   "saved_prompt_version": "ver-prompt/4",
+   "saved_verdict": "supported",
+   "saved_reason": "none",
+   "message_matches_log": true,
+   "verdict": "unsupported",
+   "reason": "bridging_fact",
+   "sub_reason": null,
+   "llm_verdict": "unsupported",
+   "reasoning": "The statement says the exemption list in s186(1) is subject to s186(2), and describes s186(2) accurately: notwithstanding Chapter Six, VAT is not collected on Eleventh Schedule paragraph 1 items except where the Minister by Official Gazette order specifies the collection date. The passage's s186(2) opens with 'Notwithstanding the provisions of Chapter Six', and its wording matches the description. However, the statement links the whole exemption list in s186(1) to s186(2). The passage links only s186(2) to Chapter Six via 'Notwithstanding'. It does not state that s186(1) is subject to s186(2). The link between the list in (1) and (2) is not stated, so the statement is unsupported on that part. The description of (2) itself is supported.",
+   "second": null,
+   "unsupported_part": "The claim that the exemption list in section 186(1) is subject to section 186(2) is not stated in the passages; s186(2) only opens with 'Notwithstanding' Chapter Six and does not link to s186(1).",
+   "evidence": [
+    {
+     "label": "P3",
+     "quote": "(2) Notwithstanding the provisions of Chapter Six of this Act, VAT shall\nnot be collected on the items specified in paragraph 1 of the Eleventh Schedule\nto this Act except where the Minister by an order, published in the Official\nGazette, specifies the date of collection of VAT on the items listed in the order.",
+     "found": true
+    }
+   ],
+   "rule": {
+    "passed": true,
+    "tokens": [
+     "chap:6",
+     "para:1",
+     "sch:11",
+     "sec:186",
+     "sub:1",
+     "sub:2"
+    ],
+    "missing": [],
+    "reason": null,
+    "hint": null,
+    "normaliser": "norm/5"
+   },
+   "error": null,
+   "usage": {
+    "input_tokens": 833,
+    "output_tokens": 526,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1989
+   },
+   "cost_usd": 0.000366,
+   "latency_ms": 2640
+  }
+ ]
+}

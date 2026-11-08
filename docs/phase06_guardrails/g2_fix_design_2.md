@@ -945,6 +945,113 @@ From the repository root with `.venv\Scripts\python` and `PYTHONIOENCODING=utf-8
 
 Paid calls: about $0.167 for the 3 passes and about $0.0013 for the `api` test (cap $0.25).
 
+## 15. The verifier link rule (D-89, D-90, 2026-11-08)
+
+### 15.1 Why (D-89)
+
+Tuning run 11 failed D-84 on one case (tuning report, section 17). ADV-085 claim 3 says "The exemption list in
+section 186(1) is subject to section 186(2), ...". Section 186(2) opens "Notwithstanding the provisions of
+Chapter Six of this Act" and never refers to subsection (1). The claim invents a link between two provisions,
+and `ver-prompt/4` passed it as "a reasonable reading of the text rather than an added fact". D-90 allowed one
+verifier rule for links between provisions, measured offline only, with no tuning run. If its gate failed, the
+verifier would stay at `ver-prompt/4` and the case would become a known limitation.
+
+### 15.2 The rule (`ver-prompt/5`, not adopted)
+
+`ver-prompt/4` verbatim plus one paragraph, placed after "Exceptions and earlier statements" and before
+"Reasons". 4,502 characters (`ver-prompt/4`: 3,520), sha256
+`cf4433292a44178ec735e72aeb776e7ab4eec9ce621cc31b58c2a1dc821f2c49`. The schema stays `ver-schema/2`. The
+paragraph, verbatim:
+
+> Links between provisions
+> A statement may say that one provision is linked to another: that it is subject to the other, overrides it,
+> applies notwithstanding it, is an exception to it, or qualifies or limits it. Such a link is supported only
+> if a passage itself states it, between the same two provisions and with the same provision giving way. Two
+> provisions are not linked because they sit in the same section or next to each other. Words such as
+> "Subject to X" or "Notwithstanding X" link the provision they open to X and to nothing else: "(3)
+> Notwithstanding section 10, ..." links subsection (3) to section 10, not to subsection (1) or (2) of its own
+> section. A statement that only repeats a passage's own "subject to" or "notwithstanding" for the provision
+> that uses it (for example "this is subject to section 12", where the passage reads "Subject to section 12 of
+> this Act, ...") is supported for that part. A link the passages do not state makes the statement
+> unsupported.
+
+The examples use made-up section numbers, so the prompt does not name the failing case.
+
+### 15.3 Measurements
+
+**(a) Calibration run 9** (`calibration_run9.json`, sha256 `aa082942...25f5`), 2 passes, live settings
+(`claude-haiku-5-5`, low, `norm/5`); details in the calibration report, section 10.
+
+| Gate, each pass | Pass 1 | Pass 2 | Met |
+|---|---|---|---|
+| Mutations caught 60 of 60 | 60 | 60 | yes |
+| Real unsupported 2 of 2 | 2 | **1** (CAL-R1-Q018-4 `supported`) | **no** |
+| False removals at most 3 of 131 | 2 | 2 | yes |
+| 0 claims lost to the evidence check | 0 | 0 | yes |
+
+CAL-R1-Q018-4 mixes a rule with a statement about the passages ("... but the passages do not name garri"). It
+was `unsupported` in every pass of runs 1 to 7, then `not_a_claim` in one pass each of runs 8 and 9, and
+`supported` in run 9 pass 2. Its reasoning does not mention links. Two passes cannot show whether the new
+paragraph moved it.
+
+**(b) Offline re-verification of saved claims** (`eval/guardrails/reverify_claims.py`, new). For each case of a
+tuning run, the script reads the full answer record from the git-ignored generation log by `record_id` (the
+claim text, the labels it was shown under, the cited chunk ids and the saved verdict), takes chunk text from the
+committed chunk file and sends the claim through `verify.check_claim`, as `verify_answer` does. It rebuilds the
+user message and compares it with the logged request: **991 of 991 matched byte for byte** (the 2 others failed
+the rule check and were never sent, then or now). Records: `reverify_link_rule.json` (sha256 `0ce06984...eb6e`)
+and `reverify_link_rule_adv085.json` (`8b9bdbf3...a3cf`). No `ver-prompt/4` re-run was made alongside, so a
+changed verdict mixes the rule's effect with the verifier's own variance.
+
+| Run | Claims | Unchanged | Changed |
+|---|---|---|---|
+| 8 | 340 | 337 | 3: ADV-086 claim 3 supported to unverified; ADV2-030 claim 4 and Q050 claim 2 unsupported to supported |
+| 10 | 331 | 331 | 0 |
+| 11 | 322 | 319 | 3: ADV-085 claim 3 supported to unsupported; Q035 claim 5 supported to not_a_claim; Q050 claim 2 unsupported to supported |
+
+Every changed verdict, read against its cited chunk:
+
+| Claim | Change | Reading |
+|---|---|---|
+| Run 11 ADV-085 claim 3 (NTA s186) | supported to unsupported (`misread`) | Correct. The reasoning applies the rule: "Notwithstanding" links subsection (2) to Chapter Six, not to the subsection (1) list. |
+| Run 8 ADV-086 claim 3 (NTAA s3(1)) | supported to unverified (`evidence_not_found`) | **Wrong removal of a true claim** ("power to administer income tax, stamp duties and tax incentives" is s3(1)(b)). The verdict was `supported`, but the quote ran list items together ("income tax,(ii)") where the passage breaks the line, so the evidence check did not find it. A quote-format slip, not the rule. |
+| Run 11 Q035 claim 5 (NTAA s11(1)-(2)) | supported to not_a_claim | The first sentence is true (s11(2)); the second, "The small company proviso is not stated in that subsection", is about the passage. Moving it matches the human reading of the same pattern in calibration (CAL-R1-Q018-4 is human-unsupported), so it is not counted as a wrong removal; its true first sentence is no longer shown. |
+| Run 8 ADV2-030 claim 4 (NTA s34) | unsupported to supported | Correct gain: s34(1)(a) proviso (ii) states it. `ver-prompt/4` had removed it as `overstated_condition`. |
+| Runs 8 and 11 Q050 claim 2 (NTAA s66) | unsupported to supported (both runs) | Borderline. The passage reads "may ... remit ... and make a monthly report", so "may also make a monthly report" follows its wording; `ver-prompt/4`'s `misread` (the report goes with a remission) was also a fair reading. Not caused by the rule; the reasoning cites the earlier-statements paragraph. |
+
+**(c) ADV-085 run 11 claim 3, 3 separate calls:** `unsupported` in 3 of 3 (`misread`, `bridging_fact`,
+`bridging_fact`); with the full pass, 4 of 4.
+
+**Claims that must stay supported**, each confirmed first from the chunk text (each repeats the passage's own
+"Subject to section N" for the provision that opens with it): ADV-062 claim 1 in runs 10 and 11 (NTAA s65(1),
+subject to section 67), ADV2-018 claims 1 and 3 in run 11 (NTAA s49(1) and (3), subject to section 11),
+ADV2-018 claim 5 in run 8 (s65(1)), Q043 claim 1 in run 11 (s49(3)). All six are `supported` under
+`ver-prompt/5`.
+
+### 15.4 Gates and result
+
+| Gate (D-90) | Result |
+|---|---|
+| Calibration run 9, each pass: 60/60, 2/2, at most 3 false removals, 0 lost to evidence | **Failed**: pass 2 real unsupported 1 of 2 |
+| ADV-085 run 11 claim 3 not supported in 3 of 3 calls | Met (3 of 3) |
+| Supported to not supported: at most 3 true claims | Met: 1 (ADV-086 run 8 claim 3), or 2 if Q035 run 11 claim 5 is counted |
+| The six named claims stay supported | Met (6 of 6) |
+
+**`ver-prompt/5` is not adopted** (D-90). `python/generation/prompt.py` is back to `ver-prompt/4`, checked by
+sha256 (`b5e2f49c4c7002876e47297b465ddaed8ef2c9f0ddd8df471d07b0be72e3d918`, 3,520 characters); no test pin
+changed. The rule did what it was written for, both on ADV-085 and on the named claims. It failed on a
+calibration claim it does not address, so the result cannot separate the rule from variance on that one claim.
+**Known limitation:** the verifier can pass a claim that invents a link between provisions when its description
+of each provision is right (ADV-085). Tuning runs 12 and 13 follow on the run 11 configuration.
+
+**Cost:** calibration run 9 $0.0947; full re-verification $0.2221 (993 claims, 991 calls); ADV-085 3 calls
+$0.0011; **$0.3179 in all** (cap $1.00). No call failed.
+
+**Tests** (on the restored `ver-prompt/4`): `pytest -q -m "not api"`: 995 passed, 2 skipped, 1 failed.
+`tests/test_refusal.py::test_tuning_runs_continue_the_numbers` expects the next tuning run to be 11, and the
+untracked `tune_run11.json` makes it 12. As in section 14.7, the failure comes from the untracked record, not
+from this work, and the test is updated when that record is committed.
+
 ## Appendix A: patterns as measured (option W)
 
 Additions to `data/curated/guardrails_policy.yml` scope patterns (appended with `|`). Matching ignores

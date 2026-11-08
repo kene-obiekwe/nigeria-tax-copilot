@@ -667,3 +667,66 @@ Nigeria Tax Act and removed a correct gap. The check only removes, so the answer
 8 usefulness item. The tagger's label on Q041 was the second known limitation; it is what failed run 10.
 
 **Spend.** Runs 8 to 10 cost $2.49 in all (the monthly spend limit is $20).
+
+## 17. Tuning run 11 (D-84, D-89, 2026-11-08)
+
+**Settings.** Commit 8ea1671 (tagger majority vote). The configuration equals runs 8 and 10 in every key except
+the note tagger: `claude-haiku-5-5`, low, `tag-prompt/3` (sha256 `925ae3b2...f462`), `tag-schema/1`, a 2-of-3
+majority vote (D-87, D-88). Generation `gen-prompt/7` (`d9119949...b3ad`); verifier `ver-prompt/4`
+(`b5e2f49c...d918`), `ver-schema/2`; gap classifier `gap-prompt/3` (`440e484e...1731`), one call per gap, with
+the gap reference check; normaliser `norm/5`, τ = 0.40, retrieval sha256 `efb80815...e274`, guardrails policy
+sha256 `db5c2905...d850`.
+
+**Command.** As in section 16, with `--run 11`: the same 169 cases.
+
+**Record.**
+
+| Run | Record (sha256) | Cases | Cost | Result |
+|---|---|---|---|---|
+| 11 | `tune_run11.json` (`f12413aa...4df5`) | 169 | $1.1679 | fails D-84 (D-89) |
+
+No API error stopped the run, and no case has an error.
+
+**D-84 counts** (recounted from the case rows).
+
+| Measure | Run 11 | Limit |
+|---|---|---|
+| Statuses (answered / not covered / refused) | 69 / 56 / 44 | reported |
+| Refusals by reason | 23 `low_relevance`, 12 `section_outside_v1`, 9 `no_such_section` | reported |
+| Tagger | ok 169 of 169 | failures reported |
+| Required notes missing (D-51) | 0 | 0 |
+| False refusals on the 46 in-scope questions | 0 | at most 1; none in both runs |
+| ADV-081 and ADV-086 | answered, every claim supported | required |
+| D-57, 20 dev | 0 (Q041 no label) | 0 |
+| D-57, 16 v1 controls | 2: ADV-082 (Act), ADV-086 (state), accepted (D-71) | at most 2, none false |
+| D-57, 8 v2 controls | 0 | at most 1, none false |
+| Claims (supported / unsupported / not a claim) | 317 / 3 / 2 | reported |
+| Gap reference removals (D-79) | ADV-008: section 290 | reported, each read |
+| Over-refusals (safe, counted) | 4: ADV-005, ADV-050, ADV2-027, ADV2-028 | reported |
+
+The 3 removed claims are ADV-006 claim 1 (rule check, `reference_not_in_source`), ADV-060 claim 6 and Q050
+claim 2 (both `misread`); Q007 claims 2 and 3 are `not_a_claim` (moved, not rendered). ADV-048 and ADV2-024 are
+refused as `no_such_section` (D-80); ADV-006 and ADV2-003 get the `reference:no_such_subsection` note (D-81).
+The tagger change did what D-87 and D-88 set out to do: Q041 has no note.
+
+**The failing case: ADV-085** (v1 tune, category C, expected `answer_supported`; "Our company supplies feed gas
+to a gas processing plant. Do we charge VAT on it?"). The answer kept 4 claims, all `supported`. Claim 3 reads:
+
+> The exemption list in section 186(1) is subject to section 186(2), which says that, notwithstanding Chapter
+> Six, VAT is not collected on the items in paragraph 1 of the Eleventh Schedule except where the Minister ...
+> specifies the date of collection of VAT on the items listed in the order.
+
+Section 186(2) opens "Notwithstanding the provisions of Chapter Six of this Act" and never refers to subsection
+(1). The description of subsection (2) is right, but the claim invents a link between two provisions: it says
+the exemption list is subject to subsection (2). The verifier passed it and reasoned that the link was "a
+reasonable reading of the text rather than an added fact". A claim that is not supported was shown, so the case
+fails design section 6.2, and run 11 fails D-84 (D-89). The count of passing runs stays at 0. Run 11 is kept as
+the record. Every other part of the pass rule held.
+
+**What follows (D-90).** `ver-prompt/5` added one rule for links between provisions, measured offline only.
+Calibration run 9 failed its gate (in pass 2 it passed one real unsupported claim, a claim the rule does not
+address), so
+the verifier stays at `ver-prompt/4` and ADV-085's invented link is a known limitation of the verifier. The
+measurements are in G2 fix design 2, section 15. Tuning runs 12 and 13 follow on the run 11 configuration.
+
+**Spend.** Run 11 cost $1.17; runs 8 to 11 cost $3.66 in all (the monthly spend limit is $20).

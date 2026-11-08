@@ -711,15 +711,15 @@ def test_set_is_required(argv, capsys):
 
 
 def test_tuning_runs_continue_the_numbers(tmp_path, monkeypatch):
-    """Tuning runs continue from the last tune_run<N>.json (11 after runs 1 to 10; runs 5 and 9 void,
+    """Tuning runs continue from the last tune_run<N>.json (12 after runs 1 to 11; runs 5 and 9 void,
     C-06, C-07) and refuse any other number before loading anything."""
-    assert run_adversarial.next_tune_run() == 11
+    assert run_adversarial.next_tune_run() == 12
     assert run_adversarial.next_tune_run(tmp_path) == 1
     (tmp_path / "tune_run7.json").write_text("{}", encoding="utf-8")
     assert run_adversarial.next_tune_run(tmp_path) == 8
     monkeypatch.setattr(run_adversarial, "tune_cases", lambda *a: pytest.fail("loaded before the number check"))
-    for n in (10, 12):
-        with pytest.raises(run_adversarial.GuardError, match="next tuning run is number 11"):
+    for n in (11, 13):
+        with pytest.raises(run_adversarial.GuardError, match="next tuning run is number 12"):
             run_adversarial.run_tune("v1", ["tune"], n)
     assert run_adversarial.parse_parts("tune,holdout") == ["tune", "holdout"]
     with pytest.raises(run_adversarial.GuardError, match="--parts"):

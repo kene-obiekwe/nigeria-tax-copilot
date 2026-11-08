@@ -44,6 +44,8 @@ changes between two passes reported, above 3% a risk to review.
 | 7, pass 2 | ver-prompt/3 | norm/2 | low | 60 / 60 | 2 / 2 | 3 / 131 | 0 | $0.0304 | 1.5 s / 4.1 s |
 | 8, pass 1 | ver-prompt/4, ver-schema/2 | norm/3 | low | 60 / 60 | 2 / 2 | 3 / 131 | 0 | $0.0465 | 2.1 s / 5.7 s |
 | 8, pass 2 | ver-prompt/4, ver-schema/2 | norm/3 | low | 60 / 60 | 2 / 2 | 1 / 131 | 0 | $0.0464 | 2.1 s / 5.2 s |
+| 9, pass 1 | ver-prompt/5, ver-schema/2 (not adopted, D-90) | norm/5 | low | 60 / 60 | 2 / 2 | 2 / 131 | 0 | $0.0478 | 1.8 s / 6.1 s |
+| 9, pass 2 | ver-prompt/5, ver-schema/2 (not adopted, D-90) | norm/5 | low | 60 / 60 | **1 / 2** | 2 / 131 | 0 | $0.0469 | 1.8 s / 5.0 s |
 
 Run 8 is the re-calibration after tuning run 1 (section 8).
 
@@ -274,3 +276,37 @@ row and pass, so they differ from the section 5 counts, which were taken differe
 
 No re-calibration run and no tuning run 3 were made (D-48): the change can only recover claims the verifier
 already judged `supported`.
+
+## 10. Run 9: the link rule (`ver-prompt/5`, D-90, 2026-11-08)
+
+Tuning run 11 kept a claim that invented a link between provisions (ADV-085 claim 3: "the exemption list in
+section 186(1) is subject to section 186(2)"; tuning report, section 17). `ver-prompt/5` is `ver-prompt/4`
+verbatim plus one paragraph, "Links between provisions" (4,502 characters, sha256 `cf443329...2c49`; the text is
+in G2 fix design 2, section 15). Run 9 measures it on the same frozen set with the live settings (effort `low`,
+`norm/5`), two passes (`eval/guardrails/results/calibration_run9.json`).
+
+| Measure | Gate (D-90) | Pass 1 | Pass 2 |
+|---|---|---|---|
+| Mutations caught | 60 of 60 | 60 of 60 (10 of 10 each type) | 60 of 60 (10 of 10 each type) |
+| Real unsupported claims caught | 2 of 2 | 2 of 2 | **1 of 2: missed** |
+| False removals | at most 3 of 131 | 2 (CAL-R1-Q035-1, CAL-R1-G05-3) | 2 (CAL-R1-Q015-6, CAL-R1-G05-3) |
+| Claims lost to the evidence check | 0 | 0 (1 of 210 quotes not found) | 0 (1 of 216 quotes not found) |
+| Verdict stability | reported | 6 of 195 changed (3.08%) | |
+
+- **The gate fails in pass 2.** CAL-R1-Q018-4 ("The definition of basic food items includes tubers of ... cassava
+  ... Garri is made from cassava, but the passages do not name garri.") is a human-unsupported claim that mixes
+  a rule with a statement about the passages. It was `unsupported` in every pass of runs 1 to 7, `not_a_claim` in
+  run 8 pass 2 and run 9 pass 1 (counted as caught), and `supported` in run 9 pass 2. The verifier's reasoning
+  does not mention links between provisions; it judged "the main content is a legal rule". The claim sits on
+  the "about the passages" boundary, and two passes cannot show whether the new paragraph moved it. The gate
+  was fixed before the run, so `ver-prompt/5` is not adopted.
+- **False removals are older patterns**, not the new rule: CAL-R1-Q035-1 (the audited-accounts rule without the
+  small-company proviso, as in section 3.3) and CAL-R1-Q015-6 (an `overstated_condition` for a dropped "in
+  Nigeria"); CAL-R1-G05-3 is the rule-check removal of every run.
+- **Second calls (D-46).** 10 and 11 second calls; 10 and 9 confirmed, the same as run 8. No human-supported claim
+  was `contradicted`.
+- **Stability.** The 6 changes: 3 mutations moving between `unsupported` and `contradicted` (caught both times),
+  CAL-R1-Q015-6 and CAL-R1-Q035-1 (human-supported, removed in one pass each) and CAL-R1-Q018-4.
+- **Cost.** $0.0947 for both passes (about $0.00024 per claim, as run 8). Runs 1 to 9 spent $0.4911 in all.
+
+The verifier stays at `ver-prompt/4` (sha256 `b5e2f49c...d918`), as D-90 set out for a failed gate.
