@@ -40,7 +40,8 @@ eval/guardrails/measure_notes.py, run beside the tuning run.
 **Freezing.** `--freeze-config --set <set>` writes the set's configuration file once (`open("x")`)
 from the live configuration: prompt versions and hashes, verifier model and effort, the gap-check
 mode and the gap reference check, normaliser, tau, policy hashes, the retrieval configuration's
-sha256, the note tagger (`note_tagger: on`, model, effort, `tag-prompt/2` and its sha256, D-77)
+sha256, the note tagger (`note_tagger: on`, model, effort, the tag prompt version and its sha256, D-77, and
+the majority vote's votes and threshold, D-88)
 and, for every set after v1, the set's version and sha256.
 
 **Decision run.** `--holdout --set <set>` refuses, before any work, when the set's marker or result
@@ -289,7 +290,9 @@ def current_config(adv_set: str | AdversarialSet | None = None) -> dict:
         "tagger": {"model": TAGGER_MODEL, "effort": TAGGER_EFFORT, "max_tokens": TAGGER_MAX_TOKENS,
                    "prompt_version": TAG_PROMPT_VERSION, "prompt_sha256": sha256_text(TAG_SYSTEM_PROMPT),
                    "schema_version": TAG_SCHEMA_VERSION,
-                   "schema_sha256": sha256_text(json.dumps(TAG_SCHEMA, sort_keys=True))},
+                   "schema_sha256": sha256_text(json.dumps(TAG_SCHEMA, sort_keys=True)),
+                   # D-88: the majority vote, read from the live generation configuration
+                   "votes": GenerationConfig().tagger_votes, "threshold": GenerationConfig().tagger_threshold},
     }
     if adv_set is not None:
         s = get_set(adv_set)
@@ -363,7 +366,8 @@ def answer_row(case: dict, answer) -> dict:
         "notes_shown": notes,
         "pattern_notes": [n.ref for n in answer.pattern_notes],
         "note_tagger": {"status": answer.tagger.status, "labels": answer.tagger.labels,
-                        "reason": answer.tagger.reason},
+                        "reason": answer.tagger.reason,  # D-88: each call's status and labels
+                        "calls": [{"status": c.status, "labels": c.labels} for c in answer.tagger.calls]},
         "claims": [{"no": i, "text": c.text, "chunk_ids": c.chunk_ids} for i, c in enumerate(answer.claims, 1)],
         "gaps": answer.gaps,
         "passages": [{"label": p.label, "rank": p.rank, "chunk_id": p.chunk_id, "score": p.score}

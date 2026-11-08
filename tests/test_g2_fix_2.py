@@ -1,5 +1,5 @@
-"""G2 fix build 2 (G2 fix design 2, D-77 to D-84): the note tagger and its validation, the W pattern
-families, the DQ-12 Act rule, CAMA and Finance Act years, the gap reference check, lettered section
+"""G2 fix build 2 (G2 fix design 2, D-77 to D-84) and the tagger majority build (D-87, D-88): the
+note tagger, its validation and its 2-of-3 vote, tag-prompt/3, the W pattern families, the DQ-12 Act rule, CAMA and Finance Act years, the gap reference check, lettered section
 numbers, the subsection note, the adversarial_v3 entry and the D-84 runner. No key and no database
 are needed, except the store comparison test, which needs the database. Questions written here are
 the build session's own words (D-41); probe, adversarial and dev questions are named by id only, and
@@ -30,7 +30,8 @@ DQ12 = load_policy()
 OTHER_ACTS = references.load_other_acts()
 NO_VERIFY = gen.GenerationConfig(verify=False)
 
-TAG_PROMPT_SHA256 = "9b2276873a6201ca44113339185ebf1a16435597e5a22ef9b1782027439a8e89"  # tag-prompt/2 (D-77)
+TAG_PROMPT_SHA256 = "925ae3b29561d6cdc51e767096bc64eb1e4190ddfaf11774d3c66f2f5544f462"  # tag-prompt/3 (D-87)
+TAG_PROMPT_2_SHA256 = "9b2276873a6201ca44113339185ebf1a16435597e5a22ef9b1782027439a8e89"  # tag-prompt/2 (D-77)
 TAG_SCHEMA_SHA256 = "2622c8aede75144c26fc5996fdf61c1a042f5581fc975800cda610fe892aa40b"  # tag-schema/1
 V3_SHA256 = "c293176417fc4ea04dc891f48a33fd85485ac55bbfcdeb6edf05828d51f116d7"  # D-75, pinned from the overseer
 
@@ -87,10 +88,12 @@ class FakeTagger:
     def __init__(self, labels=(), *, text=None, stop_reason="end_turn", raises=None):
         self.labels, self.text, self.stop_reason, self.raises = list(labels), text, stop_reason, raises
         self.calls, self.params = 0, None
+        self._lock = threading.Lock()  # the majority tagger (D-88) calls it from 3 threads
 
     def create(self, params):
-        self.calls += 1
-        self.params = params
+        with self._lock:
+            self.calls += 1
+            self.params = params
         if self.raises:
             raise self.raises
         text = self.text if self.text is not None else json.dumps({"reasoning": "fake", "labels": self.labels})
@@ -138,14 +141,14 @@ def ask(question=PLAIN, tagger=None, *, retriever=None, model=None, log_dir=None
                         tagger=tagger)
 
 
-# D-77: tag-prompt/2 and its schema -------------------------------------------------------------
+# D-77, D-87: tag-prompt/3 and its schema -------------------------------------------------------
 
 
 def test_tag_prompt_and_schema_are_pinned():
     text = prompt.TAG_SYSTEM_PROMPT
-    assert len(text) == 3921 and text.endswith("\n") and not text.endswith("\n\n") and "\r" not in text
+    assert len(text) == 4319 and text.endswith("\n") and not text.endswith("\n\n") and "\r" not in text
     assert hashlib.sha256(text.encode("utf-8")).hexdigest() == TAG_PROMPT_SHA256 == prompt.TAG_PROMPT_SHA256
-    assert prompt.TAG_PROMPT_VERSION == "tag-prompt/2" and prompt.TAG_SCHEMA_VERSION == "tag-schema/1"
+    assert prompt.TAG_PROMPT_VERSION == "tag-prompt/3" and prompt.TAG_SCHEMA_VERSION == "tag-schema/1"
     digest = hashlib.sha256(json.dumps(prompt.TAG_SCHEMA, sort_keys=True).encode("utf-8")).hexdigest()
     assert digest == TAG_SCHEMA_SHA256
     assert list(prompt.TAG_SCHEMA["properties"]) == ["reasoning", "labels"]  # reasoning first
@@ -161,7 +164,8 @@ def test_tagger_request_shape():
     assert params["model"] == "claude-haiku-5-5" and params["max_tokens"] == 4000
     assert params["output_config"]["effort"] == "low"
     assert params["output_config"]["format"]["schema"] == prompt.TAG_SCHEMA
-    assert result.cost_usd > 0 and result.as_log()["prompt_version"] == "tag-prompt/2"
+    assert result.cost_usd > 0 and result.as_log()["prompt_version"] == "tag-prompt/3"
+    assert fake.calls == 3 and (result.votes, result.threshold) == (3, 2)  # D-88
 
 
 @pytest.mark.parametrize("fake,reason", [
@@ -174,12 +178,12 @@ def test_tagger_request_shape():
     (FakeTagger(raises=llm.GenerationError("timed out")), "call failed: timed out"),
 ])
 def test_invalid_tagger_output_is_a_failure(fake, reason):
-    result = note_tagger.tag_question("Q?", fake)
+    result = note_tagger.tag_once("Q?", fake)  # one call's validation; the vote is tested below
     assert (result.status, result.labels, result.reason) == ("failed", [], reason)
 
 
 def test_duplicate_labels_are_dropped():
-    result = note_tagger.tag_question("Q?", FakeTagger(["surcharge", "surcharge", "stamp_duties"]))
+    result = note_tagger.tag_once("Q?", FakeTagger(["surcharge", "surcharge", "stamp_duties"]))
     assert (result.status, result.labels) == ("ok", ["surcharge", "stamp_duties"])
 
 
@@ -190,8 +194,10 @@ def test_failed_tagger_falls_back_to_pattern_notes_and_is_logged(tmp_path):
     assert refs(answer) == [n.ref for n in answer.pattern_notes] == ["scope:stamp_duties"]
     record = json.loads(next(tmp_path.glob("*.jsonl")).read_text(encoding="utf-8"))
     logged = record["guardrails"]["note_tagger"]  # inside the gen-log/2 guardrails field
-    assert (logged["status"], logged["reason"]) == ("failed", "output is not valid JSON")
-    assert (logged["model"], logged["effort"], logged["prompt_version"]) == ("claude-haiku-5-5", "low", "tag-prompt/2")
+    assert logged["status"] == "failed" and logged["reason"].startswith("0 of 3 calls succeeded, 2 needed")
+    assert [c["reason"] for c in logged["calls"]] == ["output is not valid JSON"] * 3  # D-88: every call kept
+    assert (logged["model"], logged["effort"], logged["prompt_version"]) == ("claude-haiku-5-5", "low", "tag-prompt/3")
+    assert (logged["votes"], logged["threshold"]) == (3, 2)
     assert record["guardrails"]["pattern_notes"] == ["scope:stamp_duties"]
     assert [n["ref"] for n in record["notes"]] == ["scope:stamp_duties"]
 
@@ -265,7 +271,7 @@ def test_tagger_runs_on_every_status(status):
     fake = FakeTagger(["stamp_duties"])
     answer = ask(question, fake, retriever=retriever, model=model)
     assert answer.status == status.split("_")[0] if status.startswith("refused") else answer.status == status
-    assert fake.calls == 1 and answer.tagger.status == "ok"
+    assert fake.calls == 3 and answer.tagger.status == "ok"  # D-88: three calls on every status
     note = next(n for n in answer.notes if n.ref == "scope:stamp_duties")
     assert note.text in answer.rendered and answer.rendered.endswith(gen.DISCLAIMER)
 
@@ -298,7 +304,8 @@ def test_api_error_from_the_tagger_triggers_the_shared_stop():
     answer = ask(PLAIN, tagger, retriever=WaitingRetriever(stop), model=model)
     assert stop.error is SPEND_LIMIT and inner.requests == []
     assert answer.status == "error" and answer.tagger.status == "failed"
-    assert answer.tagger.reason.startswith("call failed: ") and "note_tagger_failed" in answer.flags
+    assert answer.tagger.reason.startswith("0 of 3 calls succeeded") and "note_tagger_failed" in answer.flags
+    assert all(c.reason.startswith("call failed: ") for c in answer.tagger.calls)
 
 
 def test_runner_gives_generate_a_tagger_on_the_shared_stop(monkeypatch):
@@ -330,6 +337,149 @@ def test_runner_gives_generate_a_tagger_on_the_shared_stop(monkeypatch):
     tagger = seen["tagger"]
     assert isinstance(tagger, run_adversarial.StopOnAPIError) and tagger.model == "claude-haiku-5-5"
     assert tagger.stop is seen["llm"].stop is seen["verifier"].stop
+
+
+# D-88: the 2-of-3 majority vote --------------------------------------------------------------
+
+
+class ScriptedTagger(FakeTagger):
+    """A fake tagger client whose calls, in the order they arrive, answer from `script`: a list of
+    labels, an exception to raise, or "bad" for output that is not JSON."""
+
+    def __init__(self, *script):
+        super().__init__()
+        self.script = list(script)
+
+    def create(self, params):
+        with self._lock:
+            step = self.script[self.calls]
+            self.calls += 1
+            self.params = params
+        if isinstance(step, Exception):
+            raise step
+        text = "{not json" if step == "bad" else json.dumps({"reasoning": "scripted", "labels": step})
+        usage = {"input_tokens": 40, "output_tokens": 90, "cache_creation_input_tokens": 0,
+                 "cache_read_input_tokens": 1600}
+        return llm.LLMResponse([{"type": "text", "text": text}], "end_turn", None, usage, "req_vote", self.model, 9)
+
+
+TIMEOUT = llm.GenerationError("timed out")
+
+
+def test_a_label_given_by_two_of_three_calls_is_shown():
+    fake = ScriptedTagger(["stamp_duties", "surcharge"], ["stamp_duties"], [])
+    answer = ask(PLAIN, fake)
+    assert fake.calls == 3 and answer.tagger.status == "ok"
+    assert answer.tagger.labels == ["stamp_duties"] and refs(answer) == ["scope:stamp_duties"]
+
+
+def test_a_label_given_by_one_call_of_three_is_not_shown():
+    answer = ask(PLAIN, ScriptedTagger(["surcharge"], [], []))
+    assert answer.tagger.status == "ok" and answer.tagger.labels == [] and refs(answer) == []
+    assert sorted(c.labels for c in answer.tagger.calls) == [[], [], ["surcharge"]]
+
+
+def test_one_failed_call_and_two_agreeing_calls_show_the_label():
+    answer = ask(PLAIN, ScriptedTagger(TIMEOUT, ["ntaa_commencement", "petroleum_taxes"], ["petroleum_taxes"]))
+    assert answer.tagger.status == "ok" and answer.tagger.labels == ["petroleum_taxes"]
+    assert refs(answer) == ["scope:petroleum_taxes"] and "note_tagger_failed" not in answer.flags
+    assert sorted(c.status for c in answer.tagger.calls) == ["failed", "ok", "ok"]
+    # With two successful calls the threshold is still 2: a label only one of them gives is not shown.
+    split = note_tagger.tag_question("Q?", ScriptedTagger(TIMEOUT, ["surcharge"], []))
+    assert (split.status, split.labels) == ("ok", [])
+
+
+def test_two_failed_calls_mean_the_tagger_failed():
+    question = "Must the sale contract for my van carry duty?"  # the stamp pattern fires on its own
+    answer = ask(question, ScriptedTagger(TIMEOUT, "bad", ["surcharge"]))
+    assert answer.tagger.status == "failed" and answer.tagger.labels == []
+    assert answer.tagger.reason.startswith("1 of 3 calls succeeded, 2 needed (call ")
+    assert "call failed: timed out" in answer.tagger.reason and "output is not valid JSON" in answer.tagger.reason
+    assert "note_tagger_failed" in answer.flags
+    assert refs(answer) == ["scope:stamp_duties"]  # the pattern notes only, not the lone surcharge label
+
+
+def test_the_vote_log_keeps_every_call_and_sums_the_cost(tmp_path):
+    answer = ask(PLAIN, ScriptedTagger(["stamp_duties"], ["stamp_duties"], ["customs_and_excise"]), log_dir=tmp_path)
+    tagged = answer.tagger
+    assert len(tagged.calls) == 3 and tagged.cost_usd > 0
+    assert tagged.cost_usd == pytest.approx(sum(c.cost_usd for c in tagged.calls))
+    assert tagged.usage["cache_read_input_tokens"] == 3 * 1600 and tagged.usage["output_tokens"] == 3 * 90
+    assert answer.total_cost_usd == pytest.approx(answer.cost_usd + tagged.cost_usd)  # verification is off
+    logged = json.loads(next(tmp_path.glob("*.jsonl")).read_text(encoding="utf-8"))["guardrails"]["note_tagger"]
+    assert (logged["status"], logged["labels"], logged["votes"], logged["threshold"]) == ("ok", ["stamp_duties"], 3, 2)
+    assert sorted(tuple(c["labels"]) for c in logged["calls"]) == [("customs_and_excise",), ("stamp_duties",),
+                                                                   ("stamp_duties",)]
+    for call in logged["calls"]:
+        assert call["status"] == "ok" and call["response"]["request_id"] == "req_vote"
+        assert call["usage"]["output_tokens"] == 90 and call["cost_usd"] > 0 and call["latency_ms"] == 9
+    assert logged["request"]["prompt_version"] == "tag-prompt/3"  # the same request for every call, logged once
+    assert logged["cost_usd"] == pytest.approx(sum(c["cost_usd"] for c in logged["calls"]), abs=1e-6)
+
+
+def test_an_api_error_in_one_call_trips_the_shared_stop():
+    """D-69 with D-88: one call's API error stops the run, even when the other two calls succeed;
+    the generator client then makes no call."""
+    stop = run_adversarial.APIStop()
+    inner = FakeLLM(ANSWER)
+    tagger = run_adversarial.StopOnAPIError(ScriptedTagger(SPEND_LIMIT, ["surcharge"], ["surcharge"]), stop)
+    answer = ask(PLAIN, tagger, retriever=WaitingRetriever(stop), model=run_adversarial.StopOnAPIError(inner, stop))
+    assert stop.error is SPEND_LIMIT and inner.requests == [] and answer.status == "error"
+    assert len(answer.tagger.calls) == 3
+    assert any(c.reason and c.reason.startswith("call failed: ") for c in answer.tagger.calls)
+
+
+def test_votes_and_threshold_come_from_the_generation_config():
+    config = gen.GenerationConfig()
+    assert (config.tagger_votes, config.tagger_threshold) == (3, 2) == (note_tagger.TAGGER_VOTES,
+                                                                       note_tagger.TAGGER_THRESHOLD)
+    single = FakeTagger(["surcharge"])
+    answer = gen.generate(PLAIN, retriever=FakeRetriever(), llm=FakeLLM(ANSWER), store=STORE, log_dir=None,
+                          guardrails_policy=POLICY, policy=DQ12, tagger=single,
+                          config=gen.GenerationConfig(verify=False, tagger_votes=1, tagger_threshold=1))
+    assert single.calls == 1 and answer.tagger.labels == ["surcharge"] and answer.tagger.votes == 1
+    with pytest.raises(ValueError, match="threshold 4"):
+        note_tagger.tag_question("Q?", FakeTagger(), votes=3, threshold=4)
+
+
+def test_each_call_keeps_its_status_and_labels():
+    tagged = note_tagger.tag_question("Q?", ScriptedTagger(["surcharge"], ["surcharge"], TIMEOUT))
+    assert sorted((c.status, tuple(c.labels)) for c in tagged.calls) == [("failed", ()), ("ok", ("surcharge",)),
+                                                                        ("ok", ("surcharge",))]
+    assert (tagged.status, tagged.labels) == ("ok", ["surcharge"])
+
+
+# D-87: tag-prompt/3 narrows the personal income tax label ---------------------------------------
+
+PIT_TEXT_V2 = ("Personal income tax: tax on individuals, PAYE and tax taken from employees' pay, personal reliefs, "
+               "and businesses taxed as individuals (sole proprietors, self-employed people, partnerships of "
+               "individuals and other unincorporated businesses).")  # tag-prompt/2, design Appendix B
+
+
+def test_personal_income_tax_label_is_the_only_change_from_tag_prompt_2():
+    """Putting the tag-prompt/2 wording back into the one label gives tag-prompt/2 exactly, so D-87
+    changed that label's description and nothing else in the prompt."""
+    v3 = prompt.TAG_LABEL_TOPICS["personal_income_tax"]
+    assert v3 != PIT_TEXT_V2 and prompt.TAG_SYSTEM_PROMPT.count(v3) == 1
+    back = prompt.TAG_SYSTEM_PROMPT.replace(v3, PIT_TEXT_V2)
+    assert hashlib.sha256(back.encode("utf-8")).hexdigest() == TAG_PROMPT_2_SHA256
+    # What the narrowed label still covers, and the first-person case it no longer covers by itself.
+    for kept in ("an individual's own income", "PAYE", "personal reliefs", "sole proprietor",
+                 "self-employed person", "partnership of individuals", "not a registered company"):
+        assert kept in v3, kept
+    assert '"my shop"' in v3 and "does not by that alone raise this topic" in v3
+    assert "the business may be a company" in v3
+
+
+def test_a_first_person_business_question_follows_the_tagger_vote():
+    """The narrowing is in the prompt; the code shows whatever the vote gives. A question about the
+    asker's own business with no pattern hit gets no note when the calls choose none, and the
+    personal income tax note when two of them choose it."""
+    question = "Our bakery filed its return three weeks late. What penalty can the tax office charge us?"
+    quiet = ask(question, ScriptedTagger([], [], ["personal_income_tax"]))
+    assert quiet.pattern_notes == [] and refs(quiet) == []
+    loud = ask(question, ScriptedTagger(["personal_income_tax"], [], ["personal_income_tax"]))
+    assert refs(loud) == ["scope:personal_income_tax"]
 
 
 # D-77: pattern families (W), one or more per family, the build session's own words -----------
@@ -638,8 +788,9 @@ def test_v3_entry_is_pinned_and_not_frozen(tmp_path):
     assert frozen["adversarial_set"] == {"version": "v3", "sha256": V3_SHA256}
     assert frozen["note_tagger"] == "on" and frozen["verifier"]["gap_reference_check"] is True
     assert frozen["tagger"] == {"model": "claude-haiku-5-5", "effort": "low", "max_tokens": 4000,
-                                "prompt_version": "tag-prompt/2", "prompt_sha256": TAG_PROMPT_SHA256,
-                                "schema_version": "tag-schema/1", "schema_sha256": TAG_SCHEMA_SHA256}
+                                "prompt_version": "tag-prompt/3", "prompt_sha256": TAG_PROMPT_SHA256,
+                                "schema_version": "tag-schema/1", "schema_sha256": TAG_SCHEMA_SHA256,
+                                "votes": 3, "threshold": 2}
     assert not v3.config.exists()
 
 
@@ -650,6 +801,10 @@ def test_frozen_configuration_catches_a_tagger_or_gap_check_revert(monkeypatch):
     monkeypatch.setattr(run_adversarial, "GAP_REFERENCE_CHECK", True)
     assert run_adversarial.current_config("v3") == live
     monkeypatch.setattr(run_adversarial, "TAG_SYSTEM_PROMPT", prompt.TAG_SYSTEM_PROMPT + "x")
+    assert run_adversarial.current_config("v3") != live
+    monkeypatch.setattr(run_adversarial, "TAG_SYSTEM_PROMPT", prompt.TAG_SYSTEM_PROMPT)
+    monkeypatch.setattr(run_adversarial, "GenerationConfig",  # D-88: a single-call revert is caught
+                        lambda: gen.GenerationConfig(tagger_votes=1, tagger_threshold=1))
     assert run_adversarial.current_config("v3") != live
 
 

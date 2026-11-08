@@ -5,8 +5,8 @@
     print(answer.rendered)
 
 Flow (guardrails design, section 2): pre-checks on the question (invalid question, section and
-Schedule references, other-Act and scope notes); the note tagger (D-77), started with the pre-check,
-run alongside retrieval and generation on every status and joined before rendering, so the notes
+Schedule references, other-Act and scope notes); the note tagger (D-77; three calls and a 2-of-3 vote, D-88), started with the
+pre-check, run alongside retrieval and generation on every status and joined before rendering, so the notes
 shown are the union of the pattern notes and the tagger's; retrieve the top 5 chunks plus one keyword slot
 with config_v2.json (D-54); the relevance floor; show the chunks to the model as passages P1 to P6 and
 get a JSON answer (claims citing passage labels, plus gaps); check the citations; verify every
@@ -45,7 +45,7 @@ from generation.llm import (EFFORT, MAX_TOKENS, MODEL, VERIFIER_EFFORT, VERIFIER
 from generation.prompt import (LABELS, OUTPUT_SCHEMA, PROMPT_VERSION, SCHEMA_VERSION, SYSTEM_PROMPT,  # noqa: E402
                                build_user_message)
 from generation.note_tagger import (OFF as TAGGER_OFF, TAGGER_EFFORT, TAGGER_MAX_TOKENS, TAGGER_MODEL,  # noqa: E402
-                                    TaggerResult, merge_notes, tag_question)
+                                    TAGGER_THRESHOLD, TAGGER_VOTES, TaggerResult, merge_notes, tag_question)
 from generation.verify import NO_PASSAGES_GAP, VerificationResult, verify_answer  # noqa: E402
 from retrieval.retrieve import Retriever  # noqa: E402
 
@@ -77,6 +77,8 @@ class GenerationConfig:
     tagger_model: str = TAGGER_MODEL
     tagger_effort: str = TAGGER_EFFORT
     tagger_max_tokens: int = TAGGER_MAX_TOKENS
+    tagger_votes: int = TAGGER_VOTES          # D-88: parallel tagger calls per question
+    tagger_threshold: int = TAGGER_THRESHOLD  # D-88: successful calls that must give a label
 
 
 @dataclass
@@ -409,7 +411,8 @@ def _generate(question, k, retriever, llm, verifier, store, config, log_dir, que
     record_id = str(uuid.uuid4())
     pool = ThreadPoolExecutor(max_workers=1) if tagger is not None else None
     tagging = (pool.submit(tag_question, question, tagger, effort=config.tagger_effort,
-                           max_tokens=config.tagger_max_tokens) if pool is not None else None)
+                           max_tokens=config.tagger_max_tokens, votes=config.tagger_votes,
+                           threshold=config.tagger_threshold) if pool is not None else None)
     try:
         return _answer(question, k, retriever, llm, verifier, store, config, log_dir, query_vector, policy,
                        guardrails_policy, timestamp, record_id, tagging)

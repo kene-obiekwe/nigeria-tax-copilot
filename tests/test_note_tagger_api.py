@@ -1,7 +1,8 @@
 """The note tagger against the live API (D-77; G2 fix design 2, section 2.7, item 3). Marked `api`:
 skipped with a stated reason when LLM_API_KEY is absent. Six fixed questions, written by the build
-session (D-41), one Haiku 5.5 call each at effort low (about $0.0005 in all). Output is not
-deterministic, so the test checks validation and the clear-cut labels only."""
+session (D-41), each through the live majority tagger (D-88: three Haiku 5.5 calls at effort low and
+a 2-of-3 vote; about $0.0015 in all). Output is not deterministic, so the test checks validation and
+the clear-cut labels only."""
 import os
 
 import pytest
@@ -34,7 +35,10 @@ def test_every_call_validates(results):
     for result in results:
         assert result.status == "ok", result.reason
         assert set(result.labels) <= set(prompt.TAG_LABELS) and len(result.labels) <= note_tagger.MAX_LABELS
-        assert result.response["model"].startswith("claude-haiku-5-5") and result.reasoning
+        assert (result.votes, result.threshold, len(result.calls)) == (3, 2, 3)
+        for call in result.calls:
+            assert call.status == "ok", call.reason
+            assert call.response["model"].startswith("claude-haiku-5-5") and call.reasoning
     assert sum(r.cost_usd for r in results) < 0.01
 
 

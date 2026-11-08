@@ -275,16 +275,17 @@ def build_gap_message(question: str, gaps: list[str]) -> str:
 # One Haiku 5.5 call per question chooses which fixed notes apply, from a closed list of labels:
 # the nine scope topics of data/curated/guardrails_policy.yml plus ntaa_commencement (DQ-12). The
 # model never sees the passages, never writes note text and never refuses. The prompt text is
-# tag-prompt/2 verbatim (3,921 characters, sha256 9b227687...8e89); unit tests pin its sha256 and
+# tag-prompt/3 verbatim (4,319 characters, sha256 925ae3b2...f462); unit tests pin its sha256 and
 # the schema's. The user turn is "Question:" and a newline, then the question.
 
-TAG_PROMPT_VERSION = "tag-prompt/2"  # /1 to /2 (design session): chargeable gains and "still applies now" sentences
+TAG_PROMPT_VERSION = "tag-prompt/3"  # /1 to /2 (design session): chargeable gains and "still applies now" sentences;
+# /2 to /3 (D-87): the personal_income_tax label no longer fires on a first-person shop or business alone
 TAG_SCHEMA_VERSION = "tag-schema/1"
-TAG_PROMPT_SHA256 = "9b2276873a6201ca44113339185ebf1a16435597e5a22ef9b1782027439a8e89"
+TAG_PROMPT_SHA256 = "925ae3b29561d6cdc51e767096bc64eb1e4190ddfaf11774d3c66f2f5544f462"
 NTAA_COMMENCEMENT = "ntaa_commencement"
 
 TAG_LABEL_TOPICS = {
-    "personal_income_tax": "Personal income tax: tax on individuals, PAYE and tax taken from employees' pay, personal reliefs, and businesses taxed as individuals (sole proprietors, self-employed people, partnerships of individuals and other unincorporated businesses).",
+    "personal_income_tax": "Personal income tax: tax on an individual's own income such as salary, wages and allowances, PAYE and tax taken from employees' pay, personal reliefs, and a business the question says or clearly implies is taxed as an individual (a sole proprietor or sole trader, a self-employed person, a partnership of individuals, or a business that is unincorporated or not a registered company). An asker who writes in the first person about their own shop or business (\"my shop\", \"my business\") does not by that alone raise this topic: the business may be a company, and how the tax office assesses or collects a business's tax is inside the corpus.",
     "stamp_duties": "Stamp duties: duty on documents and instruments (agreements, leases, deeds, transfer documents and forms) and stamping.",
     "petroleum_taxes": "Petroleum taxes: taxes on petroleum and on oil and gas operations, such as hydrocarbon tax and petroleum profits tax, and royalties on oil and gas licences or blocks.",
     "state_local_taxes": "State and local government taxes and levies: taxes, rates, levies, fees and permits charged by a state, a state revenue service, a local government or a council (for example tenement rates, the land use charge, signage and market levies).",
@@ -322,5 +323,5 @@ TAG_SCHEMA = {
 
 
 def build_tag_message(question: str) -> str:
-    """The tagger's user turn: the question as data, unescaped, as measured (tag-prompt/2)."""
+    """The tagger's user turn: the question as data, unescaped, as measured (tag-prompt/2 and /3)."""
     return "Question:\n" + question

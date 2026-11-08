@@ -2,12 +2,13 @@
 sections 2.1 to 2.4 and 2.7 item 5).
 
     .venv\\Scripts\\python eval\\guardrails\\measure_notes.py                 # patterns only, no model call
-    .venv\\Scripts\\python eval\\guardrails\\measure_notes.py --tagger        # also one tagger call per question
+    .venv\\Scripts\\python eval\\guardrails\\measure_notes.py --tagger        # also the majority tagger (3 calls each)
     .venv\\Scripts\\python eval\\guardrails\\measure_notes.py --labels-in labels.json   # replay saved tagger labels
 
 For every question, works out the notes the question itself triggers, as `generate()` shows them on
 any status: the pre-check notes (scope, other Act, reference), the question-triggered disclosures
-(DQ-12 and anchor rows) and, with the tagger, the tagger's notes. DQ-12's retrieval trigger reads
+(DQ-12 and anchor rows) and, with the tagger, the tagger's notes (the live note tagger: 3 parallel
+calls per question, a label shown when at least 2 successful calls give it, D-88). DQ-12's retrieval trigger reads
 the passages retrieved under the live retrieval configuration (`config_v2.json`, 6 passages); a
 question refused at pre-check retrieves nothing, as in `generate()`.
 
@@ -32,6 +33,9 @@ The D-57 table counts the questions that show a scope, Act or DQ-12 note not in 
 whether such a note is false is the reviewer's judgement. Prints ids and labels only, never question
 text. Query vectors come from the git-ignored cache; an uncached question costs one embedding call.
 With `--tagger` the run stops at the first API error (D-69) and exits with code 3.
+`--labels-out` saves the tagger's result per question (ids and labels only: the final labels, status
+and reason, and each call's status and labels; no reasoning or question text) under the live tag
+prompt version; `--labels-in` replays such a file with no call.
 """
 from __future__ import annotations
 
@@ -54,7 +58,8 @@ from generation.disclosure import disclose, is_ntaa_commencement_question, load_
 from generation.generate import DbCorpusStore, retrieval_config  # noqa: E402
 from generation.guardrails import load_guardrails_policy, note_labels, pre_check  # noqa: E402
 from generation.llm import AnthropicLLMClient  # noqa: E402
-from generation.note_tagger import TAGGER_MODEL, tag_question  # noqa: E402
+from generation.note_tagger import TAGGER_MODEL, TAGGER_THRESHOLD, TAGGER_VOTES, tag_question  # noqa: E402
+from generation.prompt import TAG_PROMPT_VERSION  # noqa: E402
 from retrieval.retrieve import Retriever  # noqa: E402
 
 PROBES = ROOT / "tests" / "data" / "note_probes.json"
@@ -157,9 +162,11 @@ def questions() -> list[dict]:
     return rows
 
 
-def run_tagger(rows: list[dict], workers: int = 4) -> tuple[dict[str, dict], dict | None, float]:
-    """One tagger call per question, stopping at the first API error (D-69). Returns labels by id
-    ({"status", "labels", "reason"}), the stop record (None when complete) and the cost."""
+def run_tagger(rows: list[dict], workers: int = 2) -> tuple[dict[str, dict], dict | None, float]:
+    """The majority tagger on every question (D-88: 3 parallel calls each, so `workers` questions
+    make up to 3 x `workers` calls at once), stopping at the first API error (D-69). Returns results
+    by id ({"status", "labels", "reason", "latency_ms", "cost_usd", "calls"}), the stop record (None
+    when complete) and the cost."""
     stop = run_adversarial.APIStop()
     client = run_adversarial.StopOnAPIError(AnthropicLLMClient(model=TAGGER_MODEL), stop)
     out: dict[str, dict] = {}
@@ -170,7 +177,9 @@ def run_tagger(rows: list[dict], workers: int = 4) -> tuple[dict[str, dict], dic
             return
         result = tag_question(row["question"], client)
         out[row["id"]] = {"status": result.status, "labels": result.labels, "reason": result.reason,
-                          "latency_ms": result.latency_ms, "cost_usd": round(result.cost_usd, 7)}
+                          "latency_ms": result.latency_ms, "cost_usd": round(result.cost_usd, 7),
+                          "calls": [{"status": c.status, "labels": c.labels, "reason": c.reason,
+                                     "latency_ms": c.latency_ms} for c in result.calls]}
         cost[0] += result.cost_usd
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -249,7 +258,8 @@ def d57_table(rows: list[dict], modes) -> list[str]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--tagger", action="store_true", help="one tagger call per question (paid, about $0.02)")
+    parser.add_argument("--tagger", action="store_true",
+                        help="the majority tagger, 3 calls per question (paid, about $0.06)")
     parser.add_argument("--labels-in", type=Path, help="replay tagger labels saved by --labels-out (no calls)")
     parser.add_argument("--labels-out", type=Path, help="save the tagger labels (ids and labels only)")
     args = parser.parse_args(argv)
@@ -275,8 +285,9 @@ def main(argv: list[str] | None = None) -> int:
                 "labels": v.get("labels") or [], "reason": v.get("error")} for k, v in data.items()}
     if args.labels_out and tagged:
         args.labels_out.parent.mkdir(parents=True, exist_ok=True)
-        args.labels_out.write_text(json.dumps({"tag_prompt": "tag-prompt/2", "labels": tagged}, indent=1),
-                                   encoding="utf-8")
+        source = ({"tag_prompt": TAG_PROMPT_VERSION, "votes": TAGGER_VOTES, "threshold": TAGGER_THRESHOLD}
+                  if args.tagger else {"replayed_from": str(args.labels_in)})
+        args.labels_out.write_text(json.dumps(source | {"labels": tagged}, indent=1), encoding="utf-8")
     modes = MODES if tagged else ("patterns",)
 
     with connect() as conn:
@@ -325,6 +336,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Tagger: {len(tagged)} questions, failures {len(failures)}"
               f"{' (' + '; '.join(f'{k} {v}' for k, v in failures.items()) + ')' if failures else ''}"
               + (f", cost ${cost:.4f}, latency median {lat[len(lat) // 2]} ms, max {lat[-1]} ms" if args.tagger else ""))
+        calls = [c for v in tagged.values() for c in v.get("calls") or []]
+        if calls:
+            call_lat = sorted(c.get("latency_ms", 0) for c in calls)
+            print(f"Tagger calls: {len(calls)}, failed {sum(c.get('status') != 'ok' for c in calls)}"
+                  + (f", latency median {call_lat[len(call_lat) // 2]} ms, max {call_lat[-1]} ms" if args.tagger else ""))
     print(f"\nquery embeddings: {cache.hits} from cache, {cache.misses} embedded, {cache.tokens_used} tokens")
     return 0
 

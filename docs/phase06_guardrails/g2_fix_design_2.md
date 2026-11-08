@@ -752,6 +752,199 @@ day|date`) had no "of the month" guard, so "On what day of the month is the retu
 DQ-12. It fired on no dev question or v2 control. Fixed after the overseer review (section 13.2,
 item 11).
 
+## 14. Tagger majority build (D-86 to D-88, 2026-11-08)
+
+Built after tuning run 10. Nothing was committed, no tuning run was made and `config_g2_v3.json`
+was not frozen. eval/guardrails/adversarial_v3.jsonl was never opened. Sections 2 to 13 are left as
+they were measured; this section records what changed after them.
+
+### 14.1 Why (D-86)
+
+Tuning run 10 failed the section 8.2 pass rule on one point: the tagger put
+`scope:personal_income_tax` on dev Q041, a question about the asker's own shop, where no pattern
+fires. The D-57 dev limit is 0, so the run fails. Over the passes made before then the tagger gave
+Q041 that label in 2 of 4 runs and passes, so the label is a coin toss, not a stable reading. The
+required personal income tax notes in run 10 (ADV-017, ADV-051, ADV2-009) all came from the
+patterns; the tagger matters for this topic on the probe wording. The count of passing runs
+restarts. Runs 8, 9 (void) and 10 are kept as records.
+
+### 14.2 `tag-prompt/3`: one label narrowed (D-87)
+
+Only the `personal_income_tax` description changes (4,319 characters, sha256
+`925ae3b29561d6cdc51e767096bc64eb1e4190ddfaf11774d3c66f2f5544f462`). Putting the `tag-prompt/2`
+description back into that label gives `tag-prompt/2` exactly (sha256 `9b227687...8e89`, Appendix
+B); a unit test checks this. The new description, verbatim:
+
+```text
+Personal income tax: tax on an individual's own income such as salary, wages and allowances, PAYE and tax taken from employees' pay, personal reliefs, and a business the question says or clearly implies is taxed as an individual (a sole proprietor or sole trader, a self-employed person, a partnership of individuals, or a business that is unincorporated or not a registered company). An asker who writes in the first person about their own shop or business ("my shop", "my business") does not by that alone raise this topic: the business may be a company, and how the tax office assesses or collects a business's tax is inside the corpus.
+```
+
+**Single-call result, 5 passes over the 257 questions** (one call per question, about $0.0186 per
+pass):
+
+| Gate | Result |
+|---|---|
+| Q041 gets no label | 5 of 5 passes |
+| Dev questions with a note not required | 0 in every pass |
+| Controls with a note beyond ADV-082 and ADV-086 | ADV-094 (`scope:economic_development_incentives`) in pass 4 only |
+| Required notes missed (patterns and tagger together) | 0 in every pass |
+| Personal income tax fire probes, both (tune, check) | 3/3 and 4/4 in every pass (no loss against `tag-prompt/2`) |
+
+Questions with any label change across the 5 passes: 6 of 257 (NP-068, NP-075, NP-083, ADV-068,
+ADV-086, ADV-094). The single-call tagger therefore missed the control gate once in 5 passes.
+
+### 14.3 The majority vote (D-88)
+
+`tag-prompt/3` is kept as written. The tagger makes 3 calls per question in parallel; a label is
+shown when at least 2 of the successful calls give it, so with two successful calls both must
+give it.
+
+- **Failure.** Fewer than 2 successful calls means the tagger failed: the answer shows the pattern
+  notes only, the flag `note_tagger_failed` is set, and the reason names each failed call. One
+  failed call does not fail the tagger when the other two succeed.
+- **API errors.** An API error in any call trips the run's shared stop (D-69), even when the other
+  two calls succeed; the run stops after that case. Calls already in flight finish, as parallel
+  verifier calls do.
+- **Log.** The tagger record keeps all 3 calls (status, labels, reason, reasoning, response, usage,
+  cost, latency), the final labels, the votes and the threshold. The request is the same for every
+  call and is logged once. The cost and usage are the sums over the calls; the latency is the wall
+  time of the vote. The runner's case row adds each call's status and labels.
+- **Configuration.** `GenerationConfig` holds `tagger_votes` (3) and `tagger_threshold` (2);
+  `generate()` passes them to the tagger. The run record and the frozen configuration record them
+  under `tagger` (`votes`, `threshold`), read from the live `GenerationConfig`, so a revert to one
+  call is caught at freeze or decision-run time. The section 8.2 freeze therefore records
+  `tag-prompt/3` and the vote, not `tag-prompt/2`.
+
+### 14.4 The overseer's simulation
+
+Before the build, the overseer replayed the 5 saved `tag-prompt/3` passes as every possible
+triple (10 triples) under the 2-of-3 rule, with no model call. Every gate was met in all 10:
+Q041 no note, dev 0, controls only ADV-082 and ADV-086 (ADV-094 never), 0 required notes missed,
+personal income tax recall unchanged. Questions with any label change fell from 6 to 3 of 257
+(NP-068, NP-075, ADV-068). A vote shows a label the single call gives more than half the time and
+drops one it gives less often; the pattern floor is unchanged.
+
+### 14.5 What changed
+
+| Area | Files |
+|---|---|
+| `tag-prompt/3` (D-87) | `python/generation/prompt.py` (only the personal income tax label, the version and the sha256) |
+| Majority vote (D-88) | `python/generation/note_tagger.py` (`tag_once` is one call; `tag_question` is the vote; `majority`); `python/generation/generate.py` (`tagger_votes`, `tagger_threshold`) |
+| Run record and frozen configuration | `eval/guardrails/run_adversarial.py` (`tagger.votes`, `tagger.threshold`; each call's status and labels in the case row) |
+| Probe measure | `eval/guardrails/measure_notes.py` (the vote; `--labels-out` records the live prompt version, the votes and threshold, and each call's status and labels; per-call failures and latency printed) |
+| Tests | `tests/test_g2_fix_2.py` (prompt pins; 2 of 3 shown; 1 of 3 not shown; one failed call with two agreeing; two failed calls; an API error in one call; the vote log and cost; the configuration; the narrowed label); `tests/test_note_tagger_api.py` (checks the 3 calls) |
+
+Deviations from the task:
+
+1. The single call is kept as `tag_once`, so the validation tests still test one call. The final
+   labels are listed in the closed list's order rather than the model's; the notes were already
+   shown in the policy's order.
+2. `measure_notes.py --tagger` runs 2 questions at a time (6 calls at once), down from 4 single
+   calls, to keep the request rate close to what earlier passes and tuning runs used.
+3. In principle a vote can show more than 3 labels (each call may give 3). It did not happen in
+   2,313 calls; the most any vote showed was 2.
+
+### 14.6 Live check: 3 majority passes over the 257 questions
+
+`measure_notes.py --tagger --labels-out`, 3 passes, 771 calls each. The label files and outputs are
+in `.agents/tagmaj/` (git-ignored).
+
+**Gates, every pass:**
+
+| Gate | Pass 1 | Pass 2 | Pass 3 |
+|---|---|---|---|
+| a. Q041 gets no note | met | met | met |
+| b. Dev questions with a note not required | 0 of 20 | 0 of 20 | 0 of 20 |
+| c. Controls with a note not required | ADV-082 (Act), ADV-086 (state) | same | same |
+| d. Required notes missed, v1 and v2 (both) | 0 | 0 | 0 |
+| e. Personal income tax fire probes, both (tune, check) | 3/3, 4/4 | 3/3, 4/4 | 3/3, 4/4 |
+
+ADV-094 got no label from any of its 9 calls; Q041 got none from any of its 9 calls. ADV-086's
+state note comes from the D-56 pattern; the vote dropped the tagger's own label in all 3 passes
+(1 of 3 calls each).
+
+**Probe recall by half:**
+
+| Option | Pass | Tune fire | Tune near | Check fire | Check near | All fire | All near |
+|---|---|---|---|---|---|---|---|
+| patterns | all | 33/33 | 1/11 | 21/33 | 2/11 | 54/66 | 3/22 |
+| tagger | 1 | 33/33 | 1/11 | 32/33 | 1/11 | 65/66 | 2/22 |
+| tagger | 2, 3 | 32/33 | 1/11 | 32/33 | 1/11 | 64/66 | 2/22 |
+| both | 1, 2, 3 | 33/33 | 1/11 | 32/33 | 2/11 | 65/66 | 3/22 |
+
+- Both options miss NP-012 only (the electronic money transfer levy, section 9). The tagger alone
+  also misses NP-068 in passes 2 and 3 (pre-2026; the patterns catch it).
+- Near misses with a note (both): NP-024 (petroleum, D-56 pattern), NP-032 (state and local from
+  the pattern, personal income tax from the tagger: "the interest I earn"), NP-063 (customs, D-56
+  pattern), as in section 13.3.
+- By family, both options: 6/6 in every family except stamp duties (5/6, NP-012), in every pass.
+
+**Notes not required (D-57) and required notes missed** (the same in all 3 passes):
+
+| Option | 20 dev | G01 to G05 | 16 v1 controls | 8 v2 controls | v1 required missed | v2 required missed |
+|---|---|---|---|---|---|---|
+| patterns | 0 | G02 stamp, G04 DQ-12 | ADV-082, ADV-086 | 0 | 0 | 0 |
+| tagger | 0 | G02 stamp, G04 DQ-12 | ADV-082 | 0 | 1 (ADV-072 DQ-12, as in section 2.4) | 0 |
+| both | 0 | G02 stamp, G04 DQ-12 | ADV-082, ADV-086 | 0 | 0 | 0 |
+
+The DQ-12 Act rule removes only ADV2-041's note. The old probe fixtures: 0 of 18 fire probes
+missed, 0 of 16 near misses noted.
+
+**Stability.** Flips per label are the questions where the label is shown in some passes and not
+others. "Single calls" treats the 9 calls per question inside the same 3 passes as 9 one-call
+passes.
+
+| Label | Majority: questions / flips | Single calls: questions / flips |
+|---|---|---|
+| personal_income_tax | 12 / 1 (ADV-010) | 12 / 2 (NP-032, ADV-010) |
+| stamp_duties | 10 / 0 | 10 / 0 |
+| petroleum_taxes | 7 / 0 | 7 / 0 |
+| state_local_taxes | 8 / 1 (NP-032) | 9 / 2 (NP-032, ADV-086) |
+| surcharge | 7 / 0 | 7 / 0 |
+| economic_development_incentives | 11 / 1 (ADV-029) | 11 / 1 (ADV-029) |
+| subsidiary_legislation | 8 / 0 | 8 / 0 |
+| customs_and_excise | 7 / 0 | 7 / 0 |
+| pre_2026_periods | 10 / 2 (NP-068, ADV-068) | 13 / 5 (NP-068, NP-075, ADV-017, ADV-068, ADV2-028) |
+| ntaa_commencement | 18 / 0 | 19 / 2 (NP-067, ADV-068) |
+| **Questions with any change** | **5 of 257** (NP-032, NP-068, ADV-010, ADV-068, ADV-029) | 10 of 257 |
+
+None of the 5 changes touches a dev question, a control or a required note: ADV-010's personal
+income tax note and ADV-029's incentives note are on topic and not required; NP-032 is a near miss;
+NP-068's note still shows through the patterns; ADV-068 keeps its required DQ-12 note in every pass,
+and only its pre-2026 label, which is not required, changes.
+
+**Failures, cost and latency:**
+
+| Pass | Tagger failures | Failed calls | Cost | Vote latency, median / max | Call latency, median / max |
+|---|---|---|---|---|---|
+| 1 | 0 | 0 of 771 | $0.0555 | 1.25 s / 2.8 s | 1.17 s / 2.8 s |
+| 2 | 0 | 0 of 771 | $0.0550 | 1.25 s / 8.0 s | 1.16 s / 8.0 s |
+| 3 | 0 | 0 of 771 | $0.0555 | 1.25 s / 2.8 s | 1.16 s / 2.8 s |
+
+The vote costs about $0.00022 per question, three times one call. A 169-case tuning run adds about
+$0.036 for the tagger (section 8.3 counted $0.012). The vote's latency is that of its slowest call;
+the median rose from 1.2 s to 1.25 s, and only pre-check refusals wait for it.
+
+### 14.7 Tests
+
+- `pytest -q -m "not api"`: 995 passed, 2 skipped (the same two as section 13.3), 1 failed:
+  `tests/test_refusal.py::test_tuning_runs_continue_the_numbers` expects the next tuning run to be 8,
+  and the untracked records `tune_run8.json` to `tune_run10.json` now make it 11. The test fails
+  with or without this build; it is updated when those records are committed.
+- `tests/test_note_tagger_api.py` (`api`, 18 calls): 5 passed.
+
+### 14.8 Commands run
+
+From the repository root with `.venv\Scripts\python` and `PYTHONIOENCODING=utf-8`:
+
+| Command | What it did |
+|---|---|
+| `-m pytest -q -m "not api"`; `-m pytest -q tests\test_note_tagger_api.py` | Tests (section 14.7) |
+| `eval\guardrails\measure_notes.py --tagger --labels-out .agents\tagmaj\m_p<N>.json`, N = 1 to 3 | The live check (section 14.6) |
+| `.agents\tagmaj\analyse_maj.py` on the 3 label files | Gates, flips and per-call figures, with no model call |
+
+Paid calls: about $0.167 for the 3 passes and about $0.0013 for the `api` test (cap $0.25).
+
 ## Appendix A: patterns as measured (option W)
 
 Additions to `data/curated/guardrails_policy.yml` scope patterns (appended with `|`). Matching ignores
