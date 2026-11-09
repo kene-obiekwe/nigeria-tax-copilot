@@ -12,8 +12,9 @@ both pass:
    the LLM check, never a failure.
 2. **LLM check (Claude Haiku 5.5):** one call per claim, at most 4 at a time, with only that
    claim's cited passages. A `supported` verdict counts only when one of its evidence quotes is
-   found verbatim (after whitespace, dashes and quote marks are normalised, ignoring case) in the
-   text or context header of a passage the claim cites (norm/5, D-55).
+   found verbatim (after whitespace, dashes and quote marks are normalised, ignoring case and the
+   punctuation at the quote's two ends) in the text or context header of a passage the claim cites
+   (norm/6, D-55, D-102).
 
 Gaps are filtered for the disputed flag in code, then checked for their references in code (D-79:
 every section or Schedule a gap names must be a passage's own, or one a passage refers to, else
@@ -45,10 +46,11 @@ from generation.prompt import (GAP_CLASSES, GAP_PROMPT_VERSION, GAP_SCHEMA, GAP_
                                VERIFIER_SCHEMA_VERSION, VERIFIER_SYSTEM_PROMPT, build_gap_message,
                                build_verifier_message)
 
-NORMALISER_VERSION = "norm/5"  # norm/2: evidence and citation labels read as their leading passage label;
+NORMALISER_VERSION = "norm/6"  # norm/2: evidence and citation labels read as their leading passage label;
 # norm/3: a Schedule chunk's line-start "N." numbering counts as paragraph N;
 # norm/4: the evidence check ignores letter case (D-48);
-# norm/5: the evidence check ignores whitespace next to a dash and also searches the context header (D-55)
+# norm/5: the evidence check ignores whitespace next to a dash and also searches the context header (D-55);
+# norm/6: the evidence check ignores punctuation (";", ".", ",", ":") at the start and end of a quote (D-102)
 MAX_WORKERS = 4
 GAP_PER_GAP = True  # D-68: one gap check call per gap; recorded in the frozen G2 configuration (D-69)
 GAP_REFERENCE_CHECK = True  # D-79: the gap reference check runs before the classifier; recorded likewise
@@ -339,6 +341,10 @@ def hint_note(word: str) -> str:
 
 
 _DASH_SPACE = re.compile(r"\s*-\s*")
+# norm/6 (D-102): a quote's leading and trailing punctuation is not evidence ("rate;" quoted, "rate."
+# printed). Only the quote is trimmed, never the passage, so no quote of 12 or more characters left
+# after trimming that norm/5 found is lost.
+_QUOTE_ENDS = re.compile(r"^[\s;.,:]+|[\s;.,:]+$")
 
 
 def _evidence_form(text: str) -> str:
@@ -350,8 +356,9 @@ def _evidence_form(text: str) -> str:
 
 def evidence_found(quote: str, chunk_text: str, context_header: str = "") -> bool:
     """True if `quote` (at least MIN_QUOTE_CHARS after normalising) is in the passage's text or its
-    context header (norm/5, D-55: the verifier is shown the header as the passage's location)."""
-    quote = _evidence_form(quote)
+    context header (norm/5, D-55: the verifier is shown the header as the passage's location). The
+    quote's punctuation at either end is ignored (norm/6, D-102)."""
+    quote = _QUOTE_ENDS.sub("", _evidence_form(quote))
     if len(quote) < MIN_QUOTE_CHARS:
         return False
     return any(quote in _evidence_form(source) for source in (chunk_text, context_header) if source)

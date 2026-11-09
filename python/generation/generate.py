@@ -7,8 +7,9 @@
 Flow (guardrails design, section 2): pre-checks on the question (invalid question, section and
 Schedule references, other-Act and scope notes); the note tagger (D-77; three calls and a 2-of-3 vote, D-88), started with the
 pre-check, run alongside retrieval and generation on every status and joined before rendering, so the notes
-shown are the union of the pattern notes and the tagger's; retrieve the top 5 chunks plus one keyword slot
-with config_v2.json (D-54); the relevance floor; show the chunks to the model as passages P1 to P6 and
+shown are the union of the pattern notes and the tagger's; retrieve the top 5 chunks plus one keyword slot,
+then up to two attachments (the commencement chunk and one definition), with config_v3.json (D-54,
+D-98 to D-100); the relevance floor; show the chunks to the model as passages P1 to P8 and
 get a JSON answer (claims citing passage labels, plus gaps); check the citations; verify every
 claim and gap (generation.verify); work out the disclosures for the kept claims' supporting
 citations (D-23 as amended by D-32); render the answer with its notes, sources, disclosures and
@@ -49,7 +50,8 @@ from generation.note_tagger import (OFF as TAGGER_OFF, TAGGER_EFFORT, TAGGER_MAX
 from generation.verify import NO_PASSAGES_GAP, VerificationResult, verify_answer  # noqa: E402
 from retrieval.retrieve import Retriever  # noqa: E402
 
-RETRIEVAL_CONFIG = ROOT / "eval" / "retrieval" / "config_v2.json"  # D-54; config_final.json stays the G1 record (D-21)
+ATTACHMENT_REASONS = ("commencement lookup", "definition attachment")  # retrieval reasons of P7, P8 (D-100)
+RETRIEVAL_CONFIG = ROOT / "eval" / "retrieval" / "config_v3.json"  # D-100 (config_v2.json plus the attachments, D-54); config_final.json stays the G1 record (D-21)
 DISCLAIMER = ("This is a research and reference tool. It is not tax advice and is not a substitute for a "
               "licensed tax professional. It must not be used for an actual filing or compliance decision. "
               "Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax "
@@ -90,6 +92,12 @@ class Passage:
     rank: int
     score: float
     disputed: bool
+    reasons: list[str] = field(default_factory=list)  # why retrieval returned it (attachments: D-98, D-99)
+
+    @property
+    def attachment(self) -> str | None:
+        """The attachment reason ("commencement lookup: ...", "definition attachment: ..."), else None."""
+        return next((r for r in self.reasons if r.startswith(ATTACHMENT_REASONS)), None)
 
 
 @dataclass
@@ -441,7 +449,7 @@ def _answer(question, k, retriever, llm, verifier, store, config, log_dir, query
     chunks = store.chunks([item.chunk_id for item in retrieved])
     passages = [Passage(label, item.chunk_id, chunks[item.chunk_id]["citation"],
                         chunks[item.chunk_id]["context_header"], item.rank, item.score,
-                        bool(chunks[item.chunk_id]["register_ids"]))
+                        bool(chunks[item.chunk_id]["register_ids"]), list(item.reasons))
                 for label, item in zip(LABELS, retrieved)]
     label_map = {p.label: p.chunk_id for p in passages}
 

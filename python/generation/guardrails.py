@@ -31,7 +31,8 @@ mean.
 
 The relevance floor runs after retrieval: when tau is set, a question whose best vector score is
 below tau is refused (`low_relevance`); questions answered by a section lookup are exempt. Only
-vector results count: an Act-name lookup is not exempt and a keyword slot is never read (D-54).
+vector results count: an Act-name lookup is not exempt and a keyword slot is never read (D-54), nor
+is a commencement lookup or a definition attachment (D-100, `config_v3.json`).
 """
 from __future__ import annotations
 
@@ -395,10 +396,13 @@ class Floor:
         return {"status": self.status, "top1_vector_score": self.top1, "tau": self.tau}
 
 
+NOT_READ_BY_FLOOR = ("section lookup", "keyword slot", "commencement lookup", "definition attachment")
+
+
 def _is_vector_result(item) -> bool:
-    """A result the floor reads: not a section lookup and not a keyword slot; an Act-name lookup
-    only where it is also a vector result (D-54)."""
-    if any(r.startswith(("section lookup", "keyword slot")) for r in item.reasons):
+    """A result the floor reads: not a section lookup, a keyword slot (D-54), a commencement lookup or
+    a definition attachment (D-100); an Act-name lookup only where it is also a vector result (D-54)."""
+    if any(r.startswith(NOT_READ_BY_FLOOR) for r in item.reasons):
         return False
     if any(r.startswith("act-name lookup") for r in item.reasons):
         return any(r.startswith("vector rank") for r in item.reasons)

@@ -1,0 +1,17 @@
+{
+ "name": "v3",
+ "based_on": "v2",
+ "model": "openai/text-embedding-3-small",
+ "section_lookup": true,
+ "keyword": false,
+ "candidates": 50,
+ "rrf_k": 60,
+ "filters": null,
+ "other_act_refs": "skip",
+ "act_lookup": {"max_chunks": 2},
+ "keyword_slots": 1,
+ "commencement_lookup": true,
+ "definition_attachment": {"max": 1, "min_similarity": 0.40, "sources": 5},
+ "retrieval_policy": {"path": "data/curated/retrieval_policy.yml", "sha256": "7c7ea5cc2ba7636b4ae2b716eee8aa67eabffd414d89795bff8556fb6c6b952c"},
+ "passages": 8
+}

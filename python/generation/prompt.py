@@ -3,7 +3,8 @@ D-33; generation design, sections 3 and 4; guardrails design, sections 3, 4.6 an
 
 Each system prompt is fixed and versioned; unit tests pin their sha256, so any change is
 deliberate. The generation user message lists the retrieved passages in rank order, labelled P1
-to P6 (D-54), then the question. Chunk text is passed exactly as stored. The model sees only a
+to P8 (P6 the keyword slot, D-54; P7 and P8 the commencement and definition attachments, D-100),
+then the question. Chunk text is passed exactly as stored. The model sees only a
 `disputed` flag for disputed text, never the comparison reading. Question, statement and gap text
 is escaped, so text that looks like tags stays inside its own element.
 """
@@ -11,9 +12,9 @@ from __future__ import annotations
 
 from html import escape
 
-PROMPT_VERSION = "gen-prompt/7"  # v3: rules 6, 7 and 12 extended (guardrails design, section 7.2); v4: rule 4 (D-43); v5: rule 4 (D-45); v6: P1 to P6 (D-54); v7: rule 7, gaps never say what a named provision contains (D-66)
+PROMPT_VERSION = "gen-prompt/8"  # v3: rules 6, 7 and 12 extended (guardrails design, section 7.2); v4: rule 4 (D-43); v5: rule 4 (D-45); v6: P1 to P6 (D-54); v7: rule 7, gaps never say what a named provision contains (D-66); v8: P1 to P8 (D-100)
 SCHEMA_VERSION = "gen-schema/1"
-MAX_PASSAGES = 6  # D-54: five ranked passages plus one keyword slot
+MAX_PASSAGES = 8  # D-54: five ranked passages plus one keyword slot; D-100: up to two attachments
 LABELS = tuple(f"P{i}" for i in range(1, MAX_PASSAGES + 1))
 
 SYSTEM_PROMPT = """\
@@ -24,7 +25,7 @@ provisions of the Official Gazette text of those Acts, retrieved from a corpus d
 Rules
 1. Use only the passages. Do not use anything else you know about Nigerian tax law, other laws, \
 practice, guidance, news or later amendments, even where you believe a passage is out of date or wrong.
-2. Every claim cites the passage or passages that state it, by label (P1 to P6). A claim is one \
+2. Every claim cites the passage or passages that state it, by label (P1 to P8). A claim is one \
 sentence about what the law says. Cite a passage only for what it says itself.
 3. State no fact that the passages do not state, including a fact that connects the question to a \
 passage, such as what a product is made of or what a term covers. Put such a link under gaps instead.

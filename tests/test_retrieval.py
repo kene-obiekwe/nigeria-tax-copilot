@@ -303,6 +303,63 @@ def test_unknown_other_act_refs_value_is_refused(loaded):
         retriever(loaded, other_act_refs="ignore")
 
 
+# D-98 to D-100: config_v3.json, attachments after P6 (G2 fix design 3, sections 2 to 4) ----------
+
+V3 = json.loads((ROOT / "eval" / "retrieval" / "config_v3.json").read_text(encoding="utf-8"))
+
+
+def test_config_v3_is_config_v2_plus_the_attachments():
+    new = {"commencement_lookup": True, "definition_attachment": {"max": 1, "min_similarity": 0.40, "sources": 5},
+           "retrieval_policy": {"path": "data/curated/retrieval_policy.yml",
+                                "sha256": hashlib.sha256((ROOT / "data" / "curated" / "retrieval_policy.yml")
+                                                         .read_bytes()).hexdigest()}}
+    assert (V3["name"], V3["based_on"], V3["passages"]) == ("v3", "v2", 8)
+    assert {k: v for k, v in V3.items() if k in new} == new
+    assert {k: v for k, v in V3.items() if k not in new and k not in ("name", "based_on", "passages")} == \
+        {k: v for k, v in V2.items() if k not in ("name", "based_on", "passages")}
+
+
+@pytest.mark.parametrize("question", [
+    "What does section 56 of the Nigeria Tax Act say about a small company?",
+    "When did the NTA kick in for company profits?",
+    "Is a small business registered for VAT?",
+    "value added tax on exported services",
+])
+def test_attachments_are_appended_and_never_reorder(loaded, question):
+    v2 = rt.Retriever(loaded, {**V2, "model": FakeClient.model}, FakeClient()).retrieve(question, k=5, query_vector=QUERY)
+    v3 = rt.Retriever(loaded, {**V3, "model": FakeClient.model}, FakeClient()).retrieve(question, k=5, query_vector=QUERY)
+    assert [(r.chunk_id, r.rank, r.reasons) for r in v3[:6]] == [(r.chunk_id, r.rank, r.reasons) for r in v2]
+    assert len(v3) <= 8 and [r.rank for r in v3] == list(range(1, len(v3) + 1))
+    assert all(r.reasons[0].startswith(("commencement lookup", "definition attachment")) for r in v3[6:])
+    assert len({r.chunk_id for r in v3}) == len(v3)
+
+
+def test_commencement_chunk_is_attached_on_the_throwaway_load(loaded):
+    v3 = rt.Retriever(loaded, {**V3, "model": FakeClient.model}, FakeClient()).retrieve(
+        "When did the NTA kick in for company profits?", k=5, query_vector=QUERY)
+    assert v3[6].chunk_id == "nta2025:s203" and v3[6].reasons[0].startswith("commencement lookup")
+
+
+def test_config_v3_first_six_equal_config_v2_on_dev():
+    """Design section 6 with the real code: on the 20 dev questions, against the project database with
+    cached query vectors (no embedding), the first six passages are config_v2.json's."""
+    from check_pgvector import connect
+    cache = run_eval.QueryCache(V3["model"])
+    key = clients.CLIENTS.get(cache.model)
+    with connect() as conn:
+        old, new = rt.Retriever(conn, V2), rt.Retriever(conn, V3)
+        attached = 0
+        for q in run_eval.load_questions("dev"):
+            digest = cache.key(key, q["question"])
+            assert digest in cache.records, q["id"]
+            vector = cache.records[digest]
+            a = [r.chunk_id for r in old.retrieve(q["question"], 5, query_vector=vector)]
+            b = new.retrieve(q["question"], 5, query_vector=vector)
+            assert [r.chunk_id for r in b[:6]] == a and len(a) == 6, q["id"]
+            attached += len(b) > 6
+    assert attached == 6  # design section 2.3: a definition on 6 of 20 dev questions, no commencement chunk
+
+
 # Relevance floor under D-54 (section 2.5, item 2) -------------------------------------------------
 
 

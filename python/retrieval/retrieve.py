@@ -41,6 +41,25 @@ Without lookup or keyword search the ranking is the Phase 3 vector search exactl
 - `keyword_slots: N`: after the first `k` results, the best N BM25 chunks not already among them
   are appended (rank k+1, ...). They never displace or reorder the first `k`, and the relevance
   floor never reads them.
+
+**Attachments for generation (D-98 to D-100, `config_v3.json`).** Two more options, after the
+keyword slots, both off in `config_final.json` and `config_v2.json`, which therefore rank exactly as
+before. Attachments are appended only: they never move or replace an earlier result. The patterns
+and scopes are in data/curated/retrieval_policy.yml, whose sha256 the configuration pins
+(`retrieval_policy`).
+
+- `commencement_lookup: true` (D-99): when the question asks when the Nigeria Tax Act starts
+  (retrieval.commencement), its commencement chunk (`nta2025:s203`) is appended unless it is already
+  shown. Reason `commencement lookup: ...`.
+- `definition_attachment: {"max": 1, "min_similarity": 0.40, "sources": 5}` (D-98): the defined
+  terms used by the first `sources` results are read (retrieval.definitions); a term is dropped if
+  any chunk of its definition is already shown, and a definition chunk whose cosine similarity to
+  the question is below `min_similarity` is dropped. Of the rest, at most `max` definitions are
+  appended: the term first used by the highest-ranked result, and within one result the nearest
+  definition chunk. Reason `definition attachment: <term> (similarity ...)`.
+
+The commencement chunk comes first, then the definition. The relevance floor reads neither
+(generation.guardrails, D-100).
 """
 from __future__ import annotations
 
@@ -56,7 +75,9 @@ sys.path.insert(0, str(ROOT / "python"))
 
 from check_pgvector import connect  # noqa: E402
 from embed.clients import DEFAULT_MODEL, EmbeddingClient, get_client  # noqa: E402
-from embed.load import vector_literal  # noqa: E402
+from embed.load import sha256_file, vector_literal  # noqa: E402
+from retrieval.commencement import POLICY as RETRIEVAL_POLICY, load_commencement  # noqa: E402
+from retrieval.definitions import DefinitionIndex, load_scopes  # noqa: E402
 from retrieval.references import (CORPUS_ACT_D21, LIST_NUMBER, SECTION_REF, act_of, load_other_acts,  # noqa: E402
                                   named_other_acts, parse_references, parse_section_refs_d21)
 
@@ -205,8 +226,9 @@ class KeywordIndex:
 
 class Retriever:
     """One retrieval configuration over one connection. `config` keys: model, section_lookup,
-    keyword, candidates, rrf_k, filters, other_act_refs, act_lookup, keyword_slots, passages (all
-    optional; see the module docstring). `other_acts` overrides the policy's list (tests)."""
+    keyword, candidates, rrf_k, filters, other_act_refs, act_lookup, keyword_slots,
+    commencement_lookup, definition_attachment, retrieval_policy, passages (all optional; see the
+    module docstring). `other_acts` overrides the policy's list (tests)."""
 
     def __init__(self, conn, config: dict | None = None, client: EmbeddingClient | None = None,
                  other_acts=None):
@@ -223,9 +245,19 @@ class Retriever:
         self.act_lookup = int((config.get("act_lookup") or {}).get("max_chunks", 0))
         self.keyword_slots = int(config.get("keyword_slots", 0))
         self.passages = config.get("passages")
+        attach = config.get("definition_attachment") or {}
+        self.definition_max = int(attach.get("max", 0))
+        self.definition_min_similarity = float(attach.get("min_similarity", 0.0))
+        self.definition_sources = int(attach.get("sources", 5))
+        commencement = bool(config.get("commencement_lookup", False))
         self.other_acts = None
-        if self.other_act_refs or self.act_lookup:
+        if self.other_act_refs or self.act_lookup or commencement:
             self.other_acts = tuple(other_acts) if other_acts is not None else load_other_acts()
+        self.policy_path = None
+        if commencement or self.definition_max:
+            self.policy_path = _checked_policy(config.get("retrieval_policy"))
+        self.commencement = load_commencement(self.other_acts, self.policy_path) if commencement else None
+        self._definition_index: DefinitionIndex | None = None
         self._chunk_text: dict[str, str] | None = None
         self.conn = conn
         self._client = client
@@ -267,6 +299,70 @@ class Retriever:
                 found.setdefault(chunk_id, (float(distance), ref, act_id))
         return sorted(((cid, d, ref, act) for cid, (d, ref, act) in found.items()),
                       key=lambda item: (item[1], item[0]))
+
+    def definition_index(self) -> DefinitionIndex:
+        if self._definition_index is None:
+            self._definition_index = DefinitionIndex.from_db(self.conn, load_scopes(self.policy_path))
+        return self._definition_index
+
+    def distances(self, query_vector: list[float], chunk_ids) -> dict[str, float]:
+        """Cosine distance to the question of each chunk in `chunk_ids` that has a vector."""
+        if not chunk_ids:
+            return {}
+        rows = self.conn.execute(
+            "SELECT chunk_id, embedding <=> %s::vector FROM chunk_embeddings WHERE model = %s AND chunk_id = ANY(%s)",
+            (vector_literal(query_vector), self.model, sorted(set(chunk_ids)))).fetchall()
+        return {chunk_id: float(d) for chunk_id, d in rows}
+
+    def commencement_attachment(self, question: str, query_vector: list[float], shown: set[str],
+                                allowed: list[str] | None = None) -> list[Retrieved]:
+        """The commencement chunk of the Act the question asks about, unless already shown (D-99)."""
+        if self.commencement is None:
+            return []
+        act_id = self.commencement.target(question)
+        chunk_id = self.commencement.chunk_for(act_id)
+        if not chunk_id or chunk_id in shown or (allowed is not None and chunk_id not in allowed):
+            return []
+        distance = self.distances(query_vector, [chunk_id]).get(chunk_id)
+        if distance is None:
+            return []
+        return [Retrieved(chunk_id, 0, 1 - distance, distance,
+                          [f"commencement lookup: the question asks when the {ACT_NAMES[act_id]} starts "
+                           f"(cosine distance {distance:.4f})"])]
+
+    def definition_attachment(self, sources: list[Retrieved], query_vector: list[float], shown: set[str],
+                              allowed: list[str] | None = None) -> list[Retrieved]:
+        """At most `definition_max` definitions of terms the `sources` use (D-98): the term first used
+        by the highest-ranked source, then the nearest definition chunk; a term with any chunk shown
+        is skipped, and a chunk below `definition_min_similarity` is dropped."""
+        if not self.definition_max:
+            return []
+        index = self.definition_index()
+        first_use: dict[tuple[str, str], int] = {}
+        for position, item in enumerate(sources, start=1):
+            for key in index.terms_used(item.chunk_id):
+                first_use.setdefault(key, position)
+        candidates = []
+        for key, position in first_use.items():
+            chunks = index.definitions[key].chunks
+            if any(chunk_id in shown for chunk_id in chunks):
+                continue
+            candidates += [(chunk_id, key, position) for chunk_id in chunks
+                           if allowed is None or chunk_id in allowed]
+        distance = self.distances(query_vector, [chunk_id for chunk_id, _, _ in candidates])
+        ranked = sorted((position, distance[chunk_id], chunk_id, key) for chunk_id, key, position in candidates
+                        if chunk_id in distance and 1 - distance[chunk_id] >= self.definition_min_similarity)
+        out, taken = [], set()
+        for position, d, chunk_id, key in ranked:
+            if len(out) >= self.definition_max:
+                break
+            if key in taken:
+                continue
+            taken.add(key)
+            out.append(Retrieved(chunk_id, 0, 1 - d, d,
+                                 [f"definition attachment: {index.definitions[key].term} (similarity {1 - d:.3f}, "
+                                  f"cosine distance {d:.4f}; term used by result {position})"]))
+        return out
 
     def keyword_index(self) -> KeywordIndex:
         if self._keyword_index is None:
@@ -374,9 +470,27 @@ class Retriever:
                     results.append(Retrieved(chunk_id, 0, 1 - distance, distance,
                                              [f"keyword slot: BM25 rank {bm25_rank} (BM25 {s:.3f}, "
                                               f"cosine distance {distance:.4f})"]))
+        if self.commencement is not None or self.definition_max:
+            shown = {item.chunk_id for item in results}
+            sources = results[:min(self.definition_sources, k)]
+            attached = self.commencement_attachment(question, query_vector, shown, allowed)
+            shown |= {item.chunk_id for item in attached}
+            attached += self.definition_attachment(sources, query_vector, shown, allowed)
+            results += attached
         for rank, item in enumerate(results, start=1):
             item.rank = rank
         return results
+
+
+def _checked_policy(entry: dict | None) -> Path:
+    """The retrieval policy file a configuration names, refused if its sha256 differs from the pinned
+    value (the configuration is frozen with the policy it was measured with, D-100)."""
+    if not entry:
+        return RETRIEVAL_POLICY
+    path = ROOT / entry["path"]
+    if entry.get("sha256") and sha256_file(path) != entry["sha256"]:
+        raise ValueError(f"{entry['path']} does not match the sha256 pinned in the retrieval configuration")
+    return path
 
 
 def retrieve(question: str, k: int = 5, model: str = DEFAULT_MODEL, filters: dict | None = None,

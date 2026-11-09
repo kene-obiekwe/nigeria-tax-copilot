@@ -1,0 +1,68 @@
+about: Pinned patterns and scopes for the two retrieval attachments of config_v3.json (D-98, D-99;
+  G2 fix design 3, sections 2.2 and 3.3). The logic is in python/retrieval/commencement.py and
+  python/retrieval/definitions.py. eval/retrieval/config_v3.json pins this file's sha256, so any
+  change here is deliberate. The patterns are matched ignoring case unless marked (?-i:...).
+
+# Commencement lookup (D-99; design section 3.3). The trigger is a pattern on the question, so it
+# needs no embedding. It fires when the question has either
+#   (a) a commencement phrase anywhere (`phrases`), or
+#   (b) an Act word followed within two words by a start verb (`start_verbs`), together with a
+#       time word (`time_words`);
+# and either names the Nigeria Tax Act (the shared parser's CORPUS_ACT, so "NTA" counts) or names
+# no Act at all, has an Act word and does not contain `exclude_word`. A question that names only
+# the Administration Act, or only Acts outside the corpus, never fires.
+commencement:
+  # An Act word: NTA, "Nigeria(n) Tax Act" (with an optional ", 2025"), or "(tax) act/law/legislation".
+  act_word: '(?:\b(?-i:NTA)\b|\bNigeria(?:n)?\s+Tax\s+Act(?:,?\s+2025)?|\b(?:tax\s+)?(?:act|law|legislation)\b)'
+  # (a) Fixed phrases; {act_word} is replaced by act_word.
+  phrases:
+    - '\b(?:com(?:e|es|ing)|came)\s+into\s+(?:force|effect|operation)\b'
+    - '\b(?:in|into)\s+force\b'
+    - '\b(?:take|takes|taking|took|taken)\s+effect\b'
+    - '\b(?:become|becomes|became)\s+(?:law|effective|operative)\b'
+    - '\bcommencement\s+(?:date\s+)?of\s+(?:the\s+)?(?:new\s+)?{act_word}'
+    - '{act_word}(?:''s|’s)?\s+commencement\b'
+    - '\beffective\s+date\s+of\s+(?:the\s+)?(?:new\s+)?{act_word}'
+  # (b) Start verbs, read after an Act word (an optional "2025", up to two words between, an
+  # optional "first").
+  start_verbs:
+    - 'kick(?:s|ed)?\s+in'
+    - 'start(?:s|ed)?'
+    - 'beg(?:in|ins|an|un)'
+    - 'commence(?:s|d)?'
+    - 'appl(?:y|ies|ied)'
+    - 'go(?:es)?\s+live'
+    - 'went\s+live'
+    - 'operat(?:e|es|ed)'
+    - '(?:be|been|is|was)\s+(?:effective|operative)'
+  time_words: [when, date, day, from, since, yet, already, year, first]
+  # A question naming no Act but containing this word asks about the Administration Act, whose
+  # commencement provisions are not in the v1 corpus (DQ-12; design section 3.4).
+  exclude_word: administration
+  # The chunk attached per corpus Act. The Administration Act has no entry: its long title and
+  # section 148 are not in the v1 corpus (DQ-12).
+  chunks:
+    nta2025: 'nta2025:s203'
+
+# Definition scopes (D-98; design section 2.2, rule 2), from each definition section's own words.
+# `definitions` is the chunk-id prefix of the definition chunks; `applies_to` lists alternatives,
+# each a set of corpus_chunks column values that must all hold (act -> act_id, chapter -> chapter_no,
+# part -> part_no, schedule -> schedule_no, schedule_part -> schedule_part).
+definition_scopes:
+  - definitions: 'nta2025:s202:def:'
+    words: In this Act
+    applies_to:
+      - {act: nta2025}
+  - definitions: 'ntaa2025:s147:def:'
+    words: In this Act
+    applies_to:
+      - {act: ntaa2025}
+  - definitions: 'nta2025:s189:def:'
+    words: For the purposes of this Part and Chapter Six
+    applies_to:
+      - {act: nta2025, chapter: 6}
+      - {act: nta2025, chapter: 8, part: 4}
+  - definitions: 'nta2025:sch1:pt1:para1:def:'
+    words: For the purposes of this Part
+    applies_to:
+      - {act: nta2025, schedule: 1, schedule_part: I}

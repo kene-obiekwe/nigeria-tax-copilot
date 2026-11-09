@@ -22,10 +22,12 @@ sys.modules.setdefault("run_eval", run_eval)
 spec.loader.exec_module(run_eval)
 
 STORE = gen.FileCorpusStore()
-SYSTEM_PROMPT_SHA256 = "d9119949ade1c378976b84f2386659a298c9b3ceef02e2c47feb7eebdf39b3ad"  # gen-prompt/7 (D-66)
+SYSTEM_PROMPT_SHA256 = "28f832507be2a31179b012d477b94dd055ce6995bee965a05c259d3a664be168"  # gen-prompt/8 (D-100)
+PROMPT_V7_SHA256 = "d9119949ade1c378976b84f2386659a298c9b3ceef02e2c47feb7eebdf39b3ad"  # gen-prompt/7 (D-66)
 PROMPT_V6_SHA256 = "34d4eb23fa0a7419acb5cbb309a030adaf4aab881b59d00107db3569debef084"  # gen-prompt/6 (D-54)
 PROMPT_V5_SHA256 = "85ee84b03edb19cef01de8e8ea79262bda822a2a85e3ec2e6066d34c789e5444"  # gen-prompt/5 (D-45)
-RETRIEVAL_CONFIG_SHA256 = "efb80815f3a98c51635a02557cc1dc8fadf1ebbd1fc1b9534a7827b4799ee274"  # config_v2.json (D-54)
+RETRIEVAL_CONFIG_SHA256 = "158dfac548b892097788bc9b53d00a046e9f415b5250796b470be844b6f68982"  # config_v3.json (D-100, frozen)
+CONFIG_V2_SHA256 = "efb80815f3a98c51635a02557cc1dc8fadf1ebbd1fc1b9534a7827b4799ee274"  # config_v2.json (D-54)
 FINAL_CONFIG_SHA256 = "6ce743b317a58260f7eb397c7a6e9a7e14afab86cbde2dbc296273131c9e3684"  # config_final.json (D-21)
 QUESTION = "Does the development levy apply to a small company?"
 CHUNK_IDS = ["nta2025:s59", "nta2025:s202:def:small-company", "nta2025:s56"]
@@ -78,7 +80,7 @@ def run(output=ANSWER, tmp_path=None, **kw):
 
 def test_system_prompt_is_pinned():
     assert hashlib.sha256(prompt.SYSTEM_PROMPT.encode("utf-8")).hexdigest() == SYSTEM_PROMPT_SHA256
-    assert prompt.PROMPT_VERSION == "gen-prompt/7"
+    assert prompt.PROMPT_VERSION == "gen-prompt/8"
     assert "exception, proviso or exclusion that bears on the question" in prompt.SYSTEM_PROMPT  # D-43(a)
     assert "Every claim must be true when read on its own." in prompt.SYSTEM_PROMPT  # D-45
     assert "in the same claim as the rule" in prompt.SYSTEM_PROMPT
@@ -93,46 +95,70 @@ GEN_PROMPT_7_ADDITION = (
     "a date or a procedure.")
 
 
+def gen_prompt_7() -> str:
+    """gen-prompt/8 with its one change undone (D-100: the label range P1 to P8 back to P1 to P6)."""
+    return prompt.SYSTEM_PROMPT.replace("(P1 to P8)", "(P1 to P6)")
+
+
+def test_gen_prompt_8_changes_only_the_label_range():
+    """D-100: gen-prompt/8 is gen-prompt/7 with rule 2 citing P1 to P8; no rule text changes."""
+    assert prompt.SYSTEM_PROMPT.count("(P1 to P8)") == 1 and "P6)" not in prompt.SYSTEM_PROMPT
+    assert hashlib.sha256(gen_prompt_7().encode("utf-8")).hexdigest() == PROMPT_V7_SHA256
+
+
 def test_gen_prompt_7_adds_only_the_rule_7_gap_sentence():
     """D-66: gen-prompt/7 is gen-prompt/6 plus one passage at the end of rule 7."""
     assert prompt.SYSTEM_PROMPT.count(GEN_PROMPT_7_ADDITION) == 1
     rule7 = prompt.SYSTEM_PROMPT.split("\n7. ")[1].split("\n8. ")[0]
     assert GEN_PROMPT_7_ADDITION in rule7
-    v6 = prompt.SYSTEM_PROMPT.replace(GEN_PROMPT_7_ADDITION, "")
+    v6 = gen_prompt_7().replace(GEN_PROMPT_7_ADDITION, "")
     assert hashlib.sha256(v6.encode("utf-8")).hexdigest() == PROMPT_V6_SHA256
 
 
 def test_gen_prompt_6_changes_only_the_passage_labels():
     """D-54: gen-prompt/6 is gen-prompt/5 with rule 2 citing P1 to P6; no other rule changes."""
-    v6 = prompt.SYSTEM_PROMPT.replace(GEN_PROMPT_7_ADDITION, "")
+    v6 = gen_prompt_7().replace(GEN_PROMPT_7_ADDITION, "")
     assert v6.count("(P1 to P6)") == 1 and "P5)" not in v6
     v5 = v6.replace("(P1 to P6)", "(P1 to P5)")
     assert hashlib.sha256(v5.encode("utf-8")).hexdigest() == PROMPT_V5_SHA256
 
 
-def test_six_label_schema():
-    assert prompt.MAX_PASSAGES == 6 and prompt.LABELS == ("P1", "P2", "P3", "P4", "P5", "P6")
+EIGHT = ["nta2025:s59", "nta2025:s56", "nta2025:s57", "nta2025:s148", "nta2025:s144", "nta2025:s196",
+         "nta2025:s203", "nta2025:s202:def:small-company"]
+
+
+def test_eight_label_schema():
+    """D-100: up to 8 passages (P7 and P8 for the attachments)."""
+    assert prompt.MAX_PASSAGES == 8 and prompt.LABELS == ("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8")
     labels = prompt.OUTPUT_SCHEMA["properties"]["claims"]["items"]["properties"]["passages"]["items"]["enum"]
-    assert labels == ["P1", "P2", "P3", "P4", "P5", "P6"]
-    chunks = [STORE.chunks([c])[c] for c in ["nta2025:s59", "nta2025:s56", "nta2025:s57", "nta2025:s148",
-                                             "nta2025:s144", "nta2025:s196"]]
+    assert labels == ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"]
+    chunks = [STORE.chunks([c])[c] for c in EIGHT]
     assert re.findall(r'label="(P\d)"', prompt.build_user_message(chunks, QUESTION)) == list(prompt.LABELS)
-    with pytest.raises(ValueError, match="at most 6 passages"):
+    with pytest.raises(ValueError, match="at most 8 passages"):
         prompt.build_user_message(chunks + chunks[:1], QUESTION)
 
 
-def test_generate_shows_six_passages(tmp_path):
-    ids = ["nta2025:s59", "nta2025:s56", "nta2025:s57", "nta2025:s148", "nta2025:s144", "nta2025:s196", "nta2025:s3"]
+def test_generate_shows_eight_passages(tmp_path):
+    ids = EIGHT + ["nta2025:s3"]
+    reasons = ["vector rank %d" % i for i in range(1, 6)] + [
+        "keyword slot: BM25 rank 1 (BM25 9.000, cosine distance 0.4000)",
+        "commencement lookup: the question asks when the Nigeria Tax Act 2025 starts (cosine distance 0.4000)",
+        "definition attachment: small company (similarity 0.600, cosine distance 0.4000; term used by result 1)",
+        "vector rank 6"]
 
-    class SixRetriever:  # five ranked results plus one keyword slot, as config_v2.json returns them
+    class EightRetriever:  # five ranked results, the keyword slot and two attachments, as config_v3.json gives them
         def retrieve(self, question, k=5, filters=None, query_vector=None):
-            return [Retrieved(c, i, 0.6, 0.4, ["vector rank %d" % i]) for i, c in enumerate(ids[:k + 1], 1)]
+            return [Retrieved(c, i, 0.6, 0.4, [r]) for i, (c, r) in enumerate(zip(ids, reasons), 1)]
 
-    answer, fake = run({"status": "answered", "claims": [{"text": "The rate is set.", "passages": ["P6"]}],
-                        "gaps": []}, retriever=SixRetriever())
+    answer, fake = run({"status": "answered", "claims": [{"text": "The Act starts.", "passages": ["P7"]},
+                                                         {"text": "The term is defined.", "passages": ["P8"]}],
+                        "gaps": []}, retriever=EightRetriever(), tmp_path=tmp_path)
     assert [p.label for p in answer.passages] == list(prompt.LABELS)
-    assert answer.claims[0].chunk_ids == ["nta2025:s196"]
-    assert 'label="P6"' in fake.requests[0]["messages"][0]["content"]
+    assert [c.chunk_ids for c in answer.claims] == [["nta2025:s203"], ["nta2025:s202:def:small-company"]]
+    assert 'label="P8"' in fake.requests[0]["messages"][0]["content"]
+    assert [p.attachment is not None for p in answer.passages] == [False] * 6 + [True, True]
+    record = json.loads(next(tmp_path.glob("*.jsonl")).read_text(encoding="utf-8").splitlines()[-1])
+    assert [c["reasons"] for c in record["retrieval"]["chunks"]] == [[r] for r in reasons[:8]]  # logged reasons
 
 
 def test_user_message_labels_passages_in_rank_order_with_exact_text():
@@ -159,10 +185,12 @@ def test_request_shape():
     assert not {"temperature", "top_p", "top_k"} & set(params)
 
 
-def test_retrieval_config_is_config_v2_and_final_stays_frozen():
-    """Generation reads config_v2.json (D-54); config_final.json stays the G1 record (D-21)."""
-    assert gen.RETRIEVAL_CONFIG == ROOT / "eval" / "retrieval" / "config_v2.json"
+def test_retrieval_config_is_config_v3_and_final_stays_frozen():
+    """Generation reads config_v3.json, frozen after the dev run (D-100); config_v2.json is kept
+    unchanged (D-54) and config_final.json stays the G1 record (D-21)."""
+    assert gen.RETRIEVAL_CONFIG == ROOT / "eval" / "retrieval" / "config_v3.json"
     assert hashlib.sha256(gen.RETRIEVAL_CONFIG.read_bytes()).hexdigest() == RETRIEVAL_CONFIG_SHA256
+    assert hashlib.sha256((ROOT / "eval" / "retrieval" / "config_v2.json").read_bytes()).hexdigest() == CONFIG_V2_SHA256
     assert hashlib.sha256(run_eval.FINAL_CONFIG.read_bytes()).hexdigest() == FINAL_CONFIG_SHA256
 
 
@@ -282,7 +310,7 @@ def test_log_record_has_every_field_and_no_key(tmp_path, monkeypatch):
     assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/2"
     assert record["record_id"] == answer.record_id and record["verification"] is None
     assert record["request"]["system"][0]["text"] == prompt.SYSTEM_PROMPT
-    assert record["request"]["prompt_version"] == "gen-prompt/7"
+    assert record["request"]["prompt_version"] == "gen-prompt/8"
     assert [c["chunk_id"] for c in record["retrieval"]["chunks"]] == CHUNK_IDS
     assert record["retrieval"]["config_sha256"] == RETRIEVAL_CONFIG_SHA256
     assert record["response"]["usage"]["cache_read_input_tokens"] == 700

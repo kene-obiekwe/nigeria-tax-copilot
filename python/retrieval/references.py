@@ -21,7 +21,8 @@ covers every number in it (D-79). A number may carry one trailing letter ("57A",
 read as a lettered number (`Reference.suffix`), which neither Act has, so the guardrails refuse or
 note it as `no_such_section` and retrieval never looks it up (D-80). `parse_subsection_refs` reads
 the first numbered subsection after a section number ("section 100(4)") for the subsection note
-(D-81).
+(D-81). A list number followed by "%", "per cent" or "percent" is a rate, not a section ("section
+56, 30%" and "section 148, 7.5%" are sections 56 and 148 only; D-101, G2 fix design 3, section 7(e)).
 
 `parse_section_refs_d21` keeps the D-21 reading with a frozen copy of the D-21 expressions (section
 references only, the two corpus Acts only, "Nigeria" required before "Tax Administration Act", no
@@ -55,13 +56,18 @@ LIST_NUMBER_D21 = re.compile(r"(?:,|and|or)\s*(\d+)", re.IGNORECASE)
 # The shared expressions (D-79, D-80): a number with at most one trailing letter, and the
 # separators ",", ", and", ", or", "and", "or" and "to" (a range).
 _NUMBER = r"\d+(?:[a-z](?![a-z]))?"
+# A list number followed by a percent sign, "per cent" or "percent" (also after a decimal part, as in
+# "7.5%") is a rate, not a section: "section 56, 30%" is section 56 only (D-101). The "(?!\d)" stops
+# the digits backtracking ("30%" is never read as 3).
+_LIST_NUMBER = (r"\d+(?!\d)(?:[a-z](?![a-z]))?"
+                r"(?!\s*(?:\.\d+)?\s*(?:%|per\s*cent\b|percent\b))")
 _SEPARATOR = r",\s*(?:and|or)\b|,|\band\b|\bor\b|\bto\b"
 _PARENS = r"(?:\s*\([0-9a-z]+\))*"
 SECTION_REF = re.compile(
     r"(?<!\.)\b(?:sections?|secs?\.|s\.|s(?=\d))\s*(" + _NUMBER + r")(" + _PARENS
-    + r"(?:\s*(?:" + _SEPARATOR + r")\s*" + _NUMBER + _PARENS + r")*)",
+    + r"(?:\s*(?:" + _SEPARATOR + r")\s*" + _LIST_NUMBER + _PARENS + r")*)",
     re.IGNORECASE)
-LIST_ITEM = re.compile(r"\s*(" + _SEPARATOR + r")\s*(" + _NUMBER + r")(" + _PARENS + r")", re.IGNORECASE)
+LIST_ITEM = re.compile(r"\s*(" + _SEPARATOR + r")\s*(" + _LIST_NUMBER + r")(" + _PARENS + r")", re.IGNORECASE)
 LIST_NUMBER = LIST_NUMBER_D21  # kept for existing callers (retrieval.retrieve), D-21 form
 _FIRST_PARENS = re.compile(r"^(" + _PARENS + r")", re.IGNORECASE)
 _PAREN_ITEM = re.compile(r"\(([0-9a-z]+)\)", re.IGNORECASE)

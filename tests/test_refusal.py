@@ -576,6 +576,7 @@ V2_SHA256 = "350905729640400eb77eeba6d32e6284ea5a7b06110bb6d46ce3fbd306cf35b4"  
 
 V2_CONFIG_SHA256 = "ad55eff74c723afd588bb71de6ca8042641ce6460ddbb00ba3f3e113e1899032"  # D-71, 2026-11-06
 V3_SHA256 = "c293176417fc4ea04dc891f48a33fd85485ac55bbfcdeb6edf05828d51f116d7"  # D-75, overseer, 2026-11-07
+V4_SHA256 = "83c76466b1b6ad7054f8add0ea0d4e353cdac020ea0e381371cbc103e40e1dcb"  # D-106, writer, 2026-11-09
 
 
 def test_v2_entry_is_pinned_frozen_and_spent(tmp_path):
@@ -1019,22 +1020,26 @@ def test_calibration_file_is_the_frozen_one():
 
 
 def _artefacts():
-    paths = sorted((ROOT / "data" / "curated").glob("*.yml"))  # every policy file (D-83)
+    # Every policy file (D-83), including the retrieval policy (D-105)
+    paths = sorted((ROOT / "data" / "curated").glob("*.yml"))
     paths += sorted((ROOT / "docs" / "phase06_guardrails").glob("*.md"))
-    paths += sorted((ROOT / "python" / "generation").glob("*.py"))  # includes prompt.py (tag-prompt/2)
-    # Question sets are not artefacts. Anything named v3 is written by the adversarial_v3 session
-    # and is never opened here (D-40, D-83); v2 is spent (D-73), so its results are checked too.
+    paths += sorted((ROOT / "python" / "generation").glob("*.py"))  # includes prompt.py (gen-prompt/8)
+    paths += sorted((ROOT / "python" / "retrieval").glob("*.py"))  # the commencement and definition rules (D-105)
+    # Question sets are not artefacts. Anything named v4 is written by the adversarial_v4 session
+    # and is never opened here (D-40, D-105, D-106); v2 and v3 are spent (D-73, D-106), so their
+    # results are checked too.
     paths += [p for p in sorted((ROOT / "eval" / "guardrails").rglob("*.*"))
-              if not p.name.startswith("adversarial_v") and p.name != "split_v1.json" and "v3" not in p.name
-              and "v3" not in p.relative_to(ROOT / "eval" / "guardrails").parts]
+              if not p.name.startswith("adversarial_v") and p.name != "split_v1.json" and "v4" not in p.name
+              and "v4" not in p.relative_to(ROOT / "eval" / "guardrails").parts]
     paths += sorted((ROOT / "tests").glob("test_*.py")) + sorted((ROOT / "tests" / "data").glob("*.json"))
     return [p for p in paths if p.is_file() and p.suffix in {".py", ".md", ".yml", ".json", ".jsonl", ".csv"}]
 
 
-def test_artefacts_never_include_a_question_set_or_v3_file():
+def test_artefacts_never_include_a_question_set_or_v4_file():
     names = [p.relative_to(ROOT).as_posix() for p in _artefacts()]
-    assert not [n for n in names if n.startswith("eval/guardrails/adversarial_v") or "v3" in n], names
+    assert not [n for n in names if n.startswith("eval/guardrails/adversarial_v") or "v4" in n], names
     assert "python/generation/prompt.py" in names and "data/curated/disclosure_policy.yml" in names
+    assert "data/curated/retrieval_policy.yml" in names and "python/retrieval/commencement.py" in names
     assert "eval/guardrails/note_recall_probes.jsonl" in names
 
 
@@ -1051,15 +1056,16 @@ def test_no_test_question_text_in_phase6_artefacts():
 @pytest.mark.skipif(os.getenv("TAXY_OVERSEER_HOLDOUT_CHECK") != "1",
                     reason="overseer-only check: set TAXY_OVERSEER_HOLDOUT_CHECK=1 (Kene, 2026-11-03)")
 def test_no_held_out_question_text_in_tests_or_fixtures():
-    """Design section 10, on the v3 set (D-83; v1 and v2 are spent, D-62, D-73), over the tests,
-    fixtures, phase 6 docs, python/generation (prompt.py included) and data/curated/*.yml. Reads
-    adversarial_v3.jsonl directly, because load_adversarial refuses a held-out part before its
-    marker exists; checks the bytes against the pinned sha256 first, keeps the rows in memory and
-    reports ids only. It runs only in the overseer's session when the flag is set (D-40: the build
-    session never sees held-out questions)."""
-    v3 = run_adversarial.SETS["v3"]
-    data = v3.questions.read_bytes()
-    assert hashlib.sha256(data).hexdigest() == v3.questions_sha256 == V3_SHA256
+    """Design section 10, on the v4 set (D-105, D-106; v1, v2 and v3 are spent, D-62, D-73, D-106),
+    over the tests, fixtures, phase 6 docs, python/generation (prompt.py included), python/retrieval
+    and data/curated/*.yml (the retrieval policy included). Reads adversarial_v4.jsonl directly,
+    because load_adversarial refuses a held-out part before its marker exists; checks the bytes
+    against the pinned sha256 first, keeps the rows in memory and reports ids only. It runs only in
+    the overseer's session when the flag is set (D-40: the build session never sees held-out
+    questions)."""
+    v4 = run_adversarial.SETS["v4"]
+    data = v4.questions.read_bytes()
+    assert hashlib.sha256(data).hexdigest() == v4.questions_sha256 == V4_SHA256
     held_out = [json.loads(line) for line in data.decode("utf-8").splitlines() if line.strip()]
     leaks = []
     for path in _artefacts():

@@ -771,21 +771,22 @@ V3_CONFIG_SHA256 = "6b78fdc162399dc6309789d5f920db456999649c50e2d01e26385528f560
 VER_PROMPT_4_SHA256 = "b5e2f49c4c7002876e47297b465ddaed8ef2c9f0ddd8df471d07b0be72e3d918"
 
 
-def test_v3_entry_is_pinned_and_frozen(tmp_path):
-    """D-83, D-92: the v3 entry has its questions sha256 and its frozen configuration sha256 pinned. The
-    configuration was frozen once after tuning runs 12 and 14 met D-84, and matches the live one; the
-    held-out part stays unloadable until the decision run writes its marker. Only guards and the
-    configuration file are read, never the v3 questions file or results."""
+def test_v3_entry_is_pinned_frozen_and_spent(tmp_path):
+    """D-83, D-92, D-94, D-106: the v3 entry has its questions sha256 and its frozen configuration
+    sha256 pinned. Its decision run has been made (marker and result exist), so a second run and a
+    second freeze refuse, and the held-out part is tuning data (D-106). The frozen file stays as the
+    record; the live configuration has moved on since (D-98 to D-102), so it differs. Only guards and
+    the configuration file are read here, never the v3 questions file or its results."""
     v3 = run_adversarial.SETS["v3"]
     assert (v3.questions.name, v3.questions_sha256, v3.split, v3.split_sha256) == \
         ("adversarial_v3.jsonl", V3_SHA256, None, None)
     assert v3.config == run_adversarial.HERE / "config_g2_v3.json" and v3.config_sha256 == V3_CONFIG_SHA256
     assert hashlib.sha256(v3.config.read_bytes()).hexdigest() == V3_CONFIG_SHA256
-    assert v3.marker == run_adversarial.RESULTS_DIR / "v3" / "holdout_started.json" and not v3.marker.exists()
-    assert v3.result == run_adversarial.RESULTS_DIR / "v3" / "holdout_final.json" and not v3.result.exists()
+    assert v3.marker == run_adversarial.RESULTS_DIR / "v3" / "holdout_started.json" and v3.marker.exists()
+    assert v3.result == run_adversarial.RESULTS_DIR / "v3" / "holdout_final.json" and v3.result.exists()
     assert v3.pack_prefix == "v3_holdout_repeat" and v3.config_records_set and v3.d57_control_limit == 1
     assert run_adversarial.SETS["v1"].d57_control_limit is None and run_adversarial.SETS["v2"].d57_control_limit is None
-    for call, message in ((lambda: run_adversarial.load_adversarial("v3", "holdout"), "has not been run"),
+    for call, message in ((lambda: run_adversarial.check_holdout_guard("v3"), "runs once"),
                           (lambda: run_adversarial.load_adversarial("v3", "tune"), "no split file"),
                           (lambda: run_adversarial.freeze_config("v3"), "frozen once")):
         with pytest.raises(run_adversarial.GuardError, match=message):
@@ -799,10 +800,12 @@ def test_v3_entry_is_pinned_and_frozen(tmp_path):
                                 "votes": 3, "threshold": 2}
     assert frozen["verifier"]["prompt_version"] == "ver-prompt/4"
     assert frozen["verifier"]["system_prompt_sha256"] == VER_PROMPT_4_SHA256
-    assert run_adversarial.check_holdout_guard("v3") == frozen  # live configuration matches the freeze
+    assert (frozen["generation"]["prompt_version"], frozen["normaliser"]) == ("gen-prompt/7", "norm/5")
+    assert "retrieval_policy_sha256" not in frozen and frozen != run_adversarial.current_config("v3")
     assert run_adversarial.main(["--freeze-config", "--set", "v3"]) == 2
-    copy = dataclasses.replace(v3, config=tmp_path / "config_g2_v3.json")  # a fresh freeze gives the same file
-    assert run_adversarial.freeze_config(copy) == V3_CONFIG_SHA256
+    assert run_adversarial.main(["--holdout", "--set", "v3"]) == 2
+    copy = dataclasses.replace(v3, config=tmp_path / "config_g2_v3.json")  # a fresh freeze differs now
+    assert run_adversarial.freeze_config(copy) != V3_CONFIG_SHA256
 
 
 def test_frozen_configuration_catches_a_tagger_or_gap_check_revert(monkeypatch):
@@ -884,7 +887,8 @@ def test_d84_report():
     report = run_adversarial.d84_report(rows)
     assert report["in_scope_questions"] == 7 and report["false_refusals"] == ["ADV-090"]
     assert report["false_refusals_within_limit"] is True
-    assert report["answered_every_claim_supported"] == {"ADV-081": True, "ADV-086": False}
+    assert report["answered_every_claim_supported"] == {"ADV-081": True, "ADV-086": False, "ADV3-043": None,
+                                                        "ADV3-044": None}  # D-104: v3 not in this run
     assert report["d57"]["dev"]["with_notes_not_required"] == {"Q002": ["scope:surcharge"]}
     assert report["d57"]["dev"]["within_limit"] is False
     assert report["d57"]["v1 controls"]["within_limit"] is True

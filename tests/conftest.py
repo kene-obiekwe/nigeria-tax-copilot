@@ -1,9 +1,30 @@
+import os
 import uuid
 
 import psycopg
 import pytest
 
 from check_pgvector import connect
+
+# D-108: tests marked `api` call paid APIs. They run only when this variable is "1", whatever keys
+# are set or loaded from .env; otherwise they skip with this reason.
+API_TESTS_FLAG = "TAXY_RUN_API_TESTS"
+API_SKIP_REASON = f"paid API test: set {API_TESTS_FLAG}=1 to run it (D-108)"
+
+
+def api_tests_enabled(environ=os.environ) -> bool:
+    return environ.get(API_TESTS_FLAG) == "1"
+
+
+def pytest_collection_modifyitems(config, items):
+    """Skip every `api` test unless TAXY_RUN_API_TESTS=1 (D-108). Read at collection, after the test
+    modules are imported, so a module that loads .env cannot turn its tests on."""
+    if api_tests_enabled():
+        return
+    skip = pytest.mark.skip(reason=API_SKIP_REASON)
+    for item in items:
+        if item.get_closest_marker("api") is not None:
+            item.add_marker(skip)
 
 
 @pytest.fixture
