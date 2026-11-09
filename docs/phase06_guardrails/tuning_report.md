@@ -730,3 +730,79 @@ the verifier stays at `ver-prompt/4` and ADV-085's invented link is a known limi
 measurements are in G2 fix design 2, section 15. Tuning runs 12 and 13 follow on the run 11 configuration.
 
 **Spend.** Run 11 cost $1.17; runs 8 to 11 cost $3.66 in all (the monthly spend limit is $20).
+
+## 18. Tuning runs 12 to 14 (D-84, C-08, D-91, D-92, 2026-11-08)
+
+**Settings.** Runs 12 to 14 ran on the run 11 configuration (commit 8ea1671, `tag-prompt/3` as a 2-of-3 vote). Generation
+`claude-sonnet-5-5`, medium, `gen-prompt/7` (sha256 `d9119949...b3ad`); verifier `claude-haiku-5-5`, low, `ver-prompt/4`
+(`b5e2f49c...d918`), `ver-schema/2`; gap classifier `gap-prompt/3` (`440e484e...1731`), one call per gap, with the gap
+reference check; note tagger `claude-haiku-5-5`, low, `tag-prompt/3` (`925ae3b2...f462`), `tag-schema/1`, votes 3, threshold 2;
+normaliser `norm/5`, τ = 0.40, retrieval sha256 `efb80815...e274`, guardrails policy sha256 `db5c2905...d850`. The three records
+hold the same configuration in every key.
+
+**Command.** As in section 16, with `--run 12`, `--run 13` and `--run 14`: the same 169 cases.
+
+**Records.**
+
+| Run | Record (sha256) | Cases | Cost | Result |
+|---|---|---|---|---|
+| 12 | `tune_run12.json` (`dbed9c9e...095e`) | 169 | $1.1626 | passes D-84 |
+| 13 | `tune_run13.json` (`7e3a999a...2fd`) | 108 of 169 | $0.6235 | void (C-08) |
+| 14 | `tune_run14.json` (`6b28e594...f0cc`) | 169 | $1.1663 | passes D-84 |
+
+Run 13 stopped at ADV2-012, repeat 1, under D-69: the API raised `APIConnectionError` "Connection error." (no HTTP status and no
+request id; a brief drop in Kene's internet connection). The runner wrote the 108 cases it had, the last being ADV2-012 with the
+error, and marked the record `review: void`. It is kept as the record and is not judged (C-08). Run 14's recorded configuration
+equals run 12's in every key, so runs 12 and 14 count as two in a row (D-92).
+
+**D-84 counts** (runs 12 and 14; recounted from the case rows of the JSON files).
+
+| Measure | Run 12 | Run 14 | Limit |
+|---|---|---|---|
+| Statuses (answered / not covered / refused) | 68 / 57 / 44 | 67 / 57 / 45 | reported |
+| Refusals by reason | 23 `low_relevance`, 12 `section_outside_v1`, 9 `no_such_section` | as run 12, plus 1 `unsupported_answer` (ADV-094) | reported |
+| Tagger | ok 169 of 169 (0 of 507 calls failed) | ok 169 of 169 (0 of 507 calls failed) | failures reported |
+| Required notes missing (D-51) | 0 | 0 | 0 |
+| False refusals on the 46 in-scope questions | 0 | 1: ADV-094 | at most 1; none in both runs |
+| ADV-081 and ADV-086 | answered, every claim supported (2 and 4 claims) | answered, every claim supported (4 and 4 claims) | required |
+| D-57, 20 dev | 0 (Q041 no note) | 0 (Q041 no note) | 0 |
+| D-57, 16 v1 controls | 2: ADV-082 (Act), ADV-086 (state), accepted (D-71) | the same 2 | at most 2, none false |
+| D-57, 8 v2 controls | 0 | 0 | at most 1, none false |
+| Claims (supported / unsupported / unverified / not a claim) | 330 / 1 / 0 / 1 | 322 / 5 / 1 / 0 | reported |
+| Gap reference removals (D-79) | ADV-008: "section 290" and "section 22(8)" (bound to the Nigeria Tax Act, D-85) | the same | reported, each read |
+| Over-refusals (safe, counted) | 5: ADV-005, ADV-006, ADV-050, ADV2-027, ADV2-028 | the same 5 | reported |
+
+ADV-048 and ADV2-024 are refused as `no_such_section` (D-80); ADV-006 and ADV2-003 get the `reference:no_such_subsection` note
+(D-81), in both runs.
+
+**The claims that were not supported.**
+
+- *Run 12.* ADV-094 claim 1 (`bridging_fact`) was removed; the case was still answered, with 2 supported claims. Q026 claim 7 is
+  `not_a_claim` (moved, not rendered).
+- *Run 14.* ADV-094 claims 1 and 2 (`bridging_fact`) and claim 3 (`reference_not_in_source`, "sec:187") were all removed, so
+  nothing was left and the case was refused as `unsupported_answer`: the one false refusal, within the limit of 1 (D-93, 1).
+  ADV2-025 claim 5 ("Where any tax is not paid within the period prescribed under the Act, and subject to section 67, 10% of the
+  ...") was removed by the rule check as `reference_not_in_source` for "sec:10": the reference parser reads "section 67, 10% of"
+  as two sections, though the statement is true of section 65(1) (D-93, 2). Q050 claim 2 was removed as `misread` (the same
+  arguable reading as in section 14), and ADV2-047 claim 2 is `unverified` (removed).
+
+**ADV2-018 claim 7 (D-91).** The claim reads "Where tax is not paid within the period prescribed, the relevant tax authority
+serves a demand notice, and if payment is not made within 30 days from the date of service of the demand notice, it may proceed to
+enforce payment under the Act." Its opening condition comes from section 65(1) of the Nigeria Tax Administration Act, a different
+subsection from the demand notice, 30 days and enforcement it states, which are in section 65(2). The section is headed "Penalty
+and interest for non-payment of tax", and subsection (2) is stated exactly, so the legal outcome for the question is unchanged.
+Under materiality (D-43(b)) the claim is passed with concern in runs 11 and 12. An invented link that changes scope, override or
+exception, like ADV-085's (D-89), still fails. In run 14 the case answered with 8 claims, all supported.
+
+**Result (D-92).** Runs 12 and 14 meet D-84 (design 2, section 8.2); run 13 is void (C-08). G2 tuning ends and
+`config_g2_v3.json` is frozen from the live configuration:
+`.venv\Scripts\python eval\guardrails\run_adversarial.py --freeze-config --set v3` wrote it once (sha256 `6b78fdc1...00b7`), and it is
+pinned in `SETS["v3"].config_sha256`. Every key it shares with run 14's recorded configuration is equal; the file adds only the v3
+set's version and sha256. The decision run opens `adversarial_v3.jsonl` only after its marker, and has not started.
+
+**Known limitations (D-93), no change; both only remove, so the answer stays safe, and both are Phase 8 usefulness items.**
+(1) The verifier may remove true Thirteenth Schedule claims as bridging facts or through the reference rule check. This caused
+ADV-094's false refusal in run 14 only (run 12 answered it), in the D-71 family. (2) The reference parser reads "subject to
+section 67, 10% of" as two sections (67 and 10), so the rule check removed ADV2-025 claim 5 in run 14.
+
+**Spend.** Runs 12 to 14 cost $2.95 in all ($1.1626 + $0.6235 + $1.1663; the monthly spend limit is $20).

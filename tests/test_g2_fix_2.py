@@ -767,31 +767,42 @@ def test_database_store_reads_the_same_sections():
 # D-83: the adversarial_v3 entry (the file itself is never opened) -------------------------------
 
 
-def test_v3_entry_is_pinned_and_not_frozen(tmp_path):
+V3_CONFIG_SHA256 = "6b78fdc162399dc6309789d5f920db456999649c50e2d01e26385528f56000b7"  # D-92, 2026-11-08
+VER_PROMPT_4_SHA256 = "b5e2f49c4c7002876e47297b465ddaed8ef2c9f0ddd8df471d07b0be72e3d918"
+
+
+def test_v3_entry_is_pinned_and_frozen(tmp_path):
+    """D-83, D-92: the v3 entry has its questions sha256 and its frozen configuration sha256 pinned. The
+    configuration was frozen once after tuning runs 12 and 14 met D-84, and matches the live one; the
+    held-out part stays unloadable until the decision run writes its marker. Only guards and the
+    configuration file are read, never the v3 questions file or results."""
     v3 = run_adversarial.SETS["v3"]
     assert (v3.questions.name, v3.questions_sha256, v3.split, v3.split_sha256) == \
         ("adversarial_v3.jsonl", V3_SHA256, None, None)
-    assert v3.config == run_adversarial.HERE / "config_g2_v3.json" and v3.config_sha256 is None
-    assert not v3.config.exists()  # frozen only after the D-84 tuning gate
+    assert v3.config == run_adversarial.HERE / "config_g2_v3.json" and v3.config_sha256 == V3_CONFIG_SHA256
+    assert hashlib.sha256(v3.config.read_bytes()).hexdigest() == V3_CONFIG_SHA256
     assert v3.marker == run_adversarial.RESULTS_DIR / "v3" / "holdout_started.json" and not v3.marker.exists()
     assert v3.result == run_adversarial.RESULTS_DIR / "v3" / "holdout_final.json" and not v3.result.exists()
     assert v3.pack_prefix == "v3_holdout_repeat" and v3.config_records_set and v3.d57_control_limit == 1
     assert run_adversarial.SETS["v1"].d57_control_limit is None and run_adversarial.SETS["v2"].d57_control_limit is None
     for call, message in ((lambda: run_adversarial.load_adversarial("v3", "holdout"), "has not been run"),
                           (lambda: run_adversarial.load_adversarial("v3", "tune"), "no split file"),
-                          (lambda: run_adversarial.check_holdout_guard("v3"), "no frozen configuration hash")):
+                          (lambda: run_adversarial.freeze_config("v3"), "frozen once")):
         with pytest.raises(run_adversarial.GuardError, match=message):
             call()
-    copy = dataclasses.replace(v3, config=tmp_path / "config_g2_v3.json")  # a freeze into a temporary copy
-    run_adversarial.freeze_config(copy)
-    frozen = json.loads(copy.config.read_text(encoding="utf-8"))
+    frozen = json.loads(v3.config.read_text(encoding="utf-8"))
     assert frozen["adversarial_set"] == {"version": "v3", "sha256": V3_SHA256}
     assert frozen["note_tagger"] == "on" and frozen["verifier"]["gap_reference_check"] is True
     assert frozen["tagger"] == {"model": "claude-haiku-5-5", "effort": "low", "max_tokens": 4000,
                                 "prompt_version": "tag-prompt/3", "prompt_sha256": TAG_PROMPT_SHA256,
                                 "schema_version": "tag-schema/1", "schema_sha256": TAG_SCHEMA_SHA256,
                                 "votes": 3, "threshold": 2}
-    assert not v3.config.exists()
+    assert frozen["verifier"]["prompt_version"] == "ver-prompt/4"
+    assert frozen["verifier"]["system_prompt_sha256"] == VER_PROMPT_4_SHA256
+    assert run_adversarial.check_holdout_guard("v3") == frozen  # live configuration matches the freeze
+    assert run_adversarial.main(["--freeze-config", "--set", "v3"]) == 2
+    copy = dataclasses.replace(v3, config=tmp_path / "config_g2_v3.json")  # a fresh freeze gives the same file
+    assert run_adversarial.freeze_config(copy) == V3_CONFIG_SHA256
 
 
 def test_frozen_configuration_catches_a_tagger_or_gap_check_revert(monkeypatch):

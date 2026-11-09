@@ -1,0 +1,41 @@
+{
+ "generation": {
+  "model": "claude-sonnet-5-5",
+  "effort": "medium",
+  "prompt_version": "gen-prompt/7",
+  "system_prompt_sha256": "d9119949ade1c378976b84f2386659a298c9b3ceef02e2c47feb7eebdf39b3ad"
+ },
+ "verifier": {
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "prompt_version": "ver-prompt/4",
+  "schema_version": "ver-schema/2",
+  "system_prompt_sha256": "b5e2f49c4c7002876e47297b465ddaed8ef2c9f0ddd8df471d07b0be72e3d918",
+  "gap_prompt_version": "gap-prompt/3",
+  "gap_prompt_sha256": "440e484ea172f1608088f219bfc7a0d2aa2b575a6c7bc110b329e96f4a6a1731",
+  "per_gap": true,
+  "gap_reference_check": true
+ },
+ "normaliser": "norm/5",
+ "tau": 0.4,
+ "guardrails_policy_sha256": "db5c2905752ae9b3bf7b1342f4c04d1b026c725adba377ac4bd477630ab2d850",
+ "disclosure_policy_sha256": "8f2316b6de8198e3b0985b1c6ce33823d90cf179cb7e1da5100a3d275db1b36c",
+ "heading_corrections_sha256": "8ba9de0435238e70c77146989d6a8d9c3cec7af970e25bbe018fd8a7d8f9e4f5",
+ "retrieval_config_sha256": "efb80815f3a98c51635a02557cc1dc8fadf1ebbd1fc1b9534a7827b4799ee274",
+ "note_tagger": "on",
+ "tagger": {
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "max_tokens": 4000,
+  "prompt_version": "tag-prompt/3",
+  "prompt_sha256": "925ae3b29561d6cdc51e767096bc64eb1e4190ddfaf11774d3c66f2f5544f462",
+  "schema_version": "tag-schema/1",
+  "schema_sha256": "2622c8aede75144c26fc5996fdf61c1a042f5581fc975800cda610fe892aa40b",
+  "votes": 3,
+  "threshold": 2
+ },
+ "adversarial_set": {
+  "version": "v3",
+  "sha256": "c293176417fc4ea04dc891f48a33fd85485ac55bbfcdeb6edf05828d51f116d7"
+ }
+}
