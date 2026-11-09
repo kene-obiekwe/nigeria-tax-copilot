@@ -156,7 +156,7 @@ def test_evidence_check_ignores_letter_case_only():
     assert verify.evidence_found("a capital allowance in respect of qualifying expenditure", text)
     assert verify.evidence_found("A CAPITAL ALLOWANCE in respect of qualifying expenditure", text)
     assert not verify.evidence_found("a capital allowance in respect of eligible expenditure", text)  # one word changed
-    assert verify.NORMALISER_VERSION == "norm/6"
+    assert verify.NORMALISER_VERSION == "norm/7"
 
 
 def test_evidence_check():
@@ -668,7 +668,7 @@ def test_gen_log_2_record_has_every_field_and_verification(tmp_path, monkeypatch
     assert list(record) == list(audit_log.FIELDS) and record["schema"] == "gen-log/2"
     v = record["verification"]
     assert v["verifier_model"] == "claude-haiku-5-5" and v["prompt_version"] == "ver-prompt/4"
-    assert v["schema_version"] == "ver-schema/2" and v["normaliser"] == "norm/6"
+    assert v["schema_version"] == "ver-schema/2" and v["normaliser"] == "norm/7"
     assert v["summary"]["outcome"] == "passed" and v["claims"][0]["action"] == "kept"
     assert v["claims"][0]["request"]["prompt_version"] == "ver-prompt/4" and v["claims"][0]["response"]["usage"]
     assert v["claims"][0]["request"]["schema_version"] == "ver-schema/2"

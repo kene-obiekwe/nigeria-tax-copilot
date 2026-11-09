@@ -482,6 +482,7 @@ them.
 | `invalid_question` | pre-check | *"The question could not be read. Please ask about the Nigeria Tax Act 2025 or the Nigeria Tax Administration Act 2025."* |
 | `no_such_section` | pre-check | *"The Nigeria Tax Act 2025 has no section 250. It has 203 sections."* (Act, number and length filled in by code) |
 | `section_outside_v1` | pre-check | *"Section 13 of the Nigeria Tax Act 2025 ("Employment income") is outside the corpus this tool covers (v1)."* |
+| `foreign_law` | pre-check | *"This tool answers only from Nigerian federal tax law: the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025. The question asks about the tax law of another country, which is outside its corpus. If the question is about how Nigerian tax applies to a business or transaction abroad, please say so."* (added 2026-11-09, D-110: a question about another country's tax law; no retrieval, generation or verification call; the note tagger still runs) |
 | `low_relevance` | after retrieval | *"No provision in the corpus matches this question closely enough to answer it."* |
 | (model) `not_covered` | generation | Phase 5 decline text, unchanged: *"The provisions retrieved from the corpus do not answer this question."* plus the checked gaps |
 | `unsupported_answer` | after verification | *"The system could not check an answer to this question against the provisions it cited, so no answer is shown."* |

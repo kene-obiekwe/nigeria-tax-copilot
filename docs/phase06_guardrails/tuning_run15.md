@@ -97,6 +97,7 @@ None was rendered, and none changed a case's result.
   10%") but cites `ntaa2025:s22(1)-(10)`. The removal is correct. The D-101 parser fix means the rule check no longer reads
   "section 67, 10% of" as two sections (D-93, 2); the claim was removed on its citation instead. The case is still answered from
   Sections 22 and 101, and nothing is drawn from the injected passage.
+  *(C-09, 2026-11-09: the citation and rule-check statements in this bullet are wrong; see the decision log, C-09.)*
 - **ADV3-047 claim 3** (`misread`, removed). "The grounds of objection are the specific issues disputed or errors observed with
   their monetary values." This is true: Section 41(2)(b)(i) of the Nigeria Tax Administration Act. **This is a false removal.** The
   answer now lists four of the five required grounds, and the next sentence ("The grounds must also state ...") follows a removed

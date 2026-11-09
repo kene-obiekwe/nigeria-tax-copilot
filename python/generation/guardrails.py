@@ -22,6 +22,12 @@ Pre-checks run before retrieval and cost nothing. They refuse only where code ca
    `reference:no_such_subsection`, D-81). The printed subsection labels of each in-corpus section
    are read from its chunk text (`printed_subsections`): a line opening "(n)" or "N. (1)"; DQ-07's
    (1), (2) and (4) for Nigeria Tax Act section 57 are kept as printed.
+4. **Another country's tax law** (`foreign_law`, D-110, amending D-34 for this one class): the
+   question places a tax in a foreign country (a strong form, or a weak form with no first-person
+   word) and carries no Nigerian, cross-border or Nigerian-treatment hook (G2 fix design 4, section
+   2.3). It is checked last, only when no other refusal applies; a reference refusal needs a section
+   or Schedule reference, which is a hook, so the two never both apply. The lists are in the
+   policy's `foreign_law` block.
 
 References are read by the parser retrieval also uses (`retrieval.references`, D-54): the Act
 named after a reference, else the one named before it, with Acts outside the corpus included. Under
@@ -75,6 +81,100 @@ class GuardrailsPolicy:
     margin: float
     headings: dict                   # (act id, section number) -> heading of the cited print
     sha256: str
+    foreign_law: "ForeignLawRules | None" = None  # D-110; None when the policy has no foreign_law block
+
+
+# Another country's tax law (D-110; G2 fix design 4, section 2.3) ---------------------------------
+
+
+def _alt(items) -> str:
+    return "|".join(items)
+
+
+@dataclass(frozen=True)
+class ForeignLawRules:
+    refusal_text: str
+    strong: tuple            # (form name, compiled pattern), S1 to S7
+    there: re.Pattern        # S8, read only when `foreign_place` also matches
+    foreign_place: re.Pattern
+    located: re.Pattern      # W1
+    tax_near: re.Pattern     # W2; group 1 holds the words between the tax word and "in"
+    trading_in: re.Pattern   # W3
+    counterparty: re.Pattern
+    first_person: re.Pattern
+    hook: re.Pattern
+
+
+def load_foreign_law(data: dict) -> ForeignLawRules:
+    """Build the forms of G2 fix design 4, section 2.3 (prototype 4, with the narrowed S2) from the
+    policy's `foreign_law` lists."""
+    place = rf"(?:the\s+)?(?:(?i:{_alt(data['countries'])})|(?-i:{_alt(data['countries_cased'])}))"
+    city = rf"(?i:{_alt(data['cities'])})"
+    demonym = rf"(?i:{_alt(data['demonyms'])})"
+    loc = rf"(?:{place}|{city})"
+    authority = _alt(a.replace("{place}", place).replace("{demonym}", demonym) for a in data["authorities"])
+    tax, not_after = data["tax_word"], data["not_after_tax_word"]
+    taxpayer, located_taxpayer = _alt(data["taxpayers"]), _alt(data["located_taxpayers"])
+
+    def c(pattern: str) -> re.Pattern:
+        return re.compile(pattern, re.IGNORECASE)
+
+    strong = (
+        ("S1", c(rf"\b(?:{place}|{demonym})(?:['’]s)?\s+{tax}\b{not_after}")),
+        ("S2", c(authority)),
+        ("S3", c(rf"\b(?:does|do|did|will|would|can|is)\s+{place}\s+(?:government\s+)?(?:{_alt(data['taxing_verbs'])})\b")),
+        ("S4", c(rf"\b{tax}\s+(?:(?:rates?|laws?|rules|regime|system)\s+)?in\s+{loc}\b")),
+        ("S5", c(rf"\b{tax}\s+rates?\s+(?:for|of|on)\s+(?:\w+\s+){{0,3}}?(?:{taxpayer})\s+in\s+{loc}\b")),
+        ("S6", c(rf"\b(?:taxed|taxable|chargeable to tax)\s+in\s+{loc}\b")),
+        ("S7", c(rf"^\s*(?:In|Under|Within)\s+{loc}\s*,")),
+    )
+    return ForeignLawRules(
+        refusal_text=" ".join(data["refusal_text"].split()),
+        strong=strong,
+        there=c(rf"\b(?:{_alt(data['there_verbs'])})\s+there\b"),
+        foreign_place=c(rf"\b(?:{place}|{city}|{demonym})\b|{authority}"),
+        located=c(rf"\b(?:{located_taxpayer})\s+(?:(?:set up|based|operating|trading)\s+)?in\s+{loc}\b"),
+        tax_near=c(rf"\b{tax}\s+((?:[\w'’-]+\s+){{0,4}}?)in\s+{loc}\b"),
+        trading_in=c(rf"\b(?:{_alt(data['located_verbs'])})\s+in\s+{loc}\b"),
+        counterparty=c(rf"\b(?:{_alt(data['counterparty_words'])})\b"),
+        first_person=c(_alt(data["first_person"])),
+        hook=c(_alt(data["hooks"])),
+    )
+
+
+@dataclass
+class ForeignLawCheck:
+    fired: bool
+    strong: list[tuple[str, str]]   # (form, matched text)
+    weak: list[tuple[str, str]]
+    first_person: list[str]
+    hooks: list[str]
+
+    def as_log(self) -> dict:
+        return {"fired": self.fired, "strong": [list(x) for x in self.strong], "weak": [list(x) for x in self.weak],
+                "first_person": self.first_person, "hooks": self.hooks}
+
+
+def foreign_law_check(question: str, rules: ForeignLawRules) -> ForeignLawCheck:
+    """fire = (strong or (weak and no first-person word)) and no hook (design 4, section 2.3)."""
+    strong = [(name, m.group(0)) for name, pattern in rules.strong for m in [pattern.search(question)] if m]
+    if rules.foreign_place.search(question) and (m := rules.there.search(question)):
+        strong.append(("S8", m.group(0)))
+    weak = []
+    for m in rules.located.finditer(question):  # W1: no counterparty word in the 4 words before
+        if not rules.counterparty.search(" ".join(question[:m.start()].split()[-4:])):
+            weak.append(("W1", m.group(0)))
+            break
+    for m in rules.tax_near.finditer(question):  # W2: no counterparty word between
+        if not rules.counterparty.search(m.group(1)):
+            weak.append(("W2", m.group(0)))
+            break
+    if m := rules.trading_in.search(question):
+        weak.append(("W3", m.group(0)))
+    first_person = [m.group(0) for m in rules.first_person.finditer(question)]
+    hooks = [m.group(0) for m in rules.hook.finditer(question)]
+    fired = bool(strong or (weak and not first_person)) and not hooks
+    return ForeignLawCheck(fired, strong, weak, first_person, hooks)
 
 
 def _sha256(path: Path) -> str:
@@ -130,6 +230,7 @@ def load_guardrails_policy(path: Path = POLICY, section_map: Path = SECTION_MAP,
         margin=float(floor["margin"]),
         headings=load_section_headings(section_map, heading_corrections),
         sha256=_sha256(path),
+        foreign_law=load_foreign_law(data["foreign_law"]) if data.get("foreign_law") else None,
     )
 
 
@@ -152,18 +253,20 @@ class Reference:
 
 @dataclass
 class PreCheck:
-    refusal: str | None = None              # invalid_question | no_such_section | section_outside_v1
+    refusal: str | None = None  # invalid_question | no_such_section | section_outside_v1 | foreign_law
     refusal_text: str | None = None
     references: list[Reference] = field(default_factory=list)
     notes: list[Disclosure] = field(default_factory=list)
     flags: list[str] = field(default_factory=list)
+    foreign_law: ForeignLawCheck | None = None  # D-110; None when not checked
 
     def as_log(self) -> dict:
         return {"refusal": self.refusal,
                 "references": [{"kind": r.kind, "number": r.number, "suffix": r.suffix, "act": r.act,
                                 "verdict": r.verdict} for r in self.references],
                 "notes": [n.ref for n in self.notes], "labels": note_labels(self.notes, self.refusal),
-                "flags": self.flags}
+                "flags": self.flags,
+                "foreign_law": None if self.foreign_law is None else self.foreign_law.as_log()}
 
 
 def _act_mentions(question: str, policy: GuardrailsPolicy) -> list[tuple[int, int, str]]:
@@ -376,6 +479,12 @@ def pre_check(question: str, policy: GuardrailsPolicy, corpus: dict[str, dict[st
             result.notes.append(_note(f"scope:{topic}", f"{note} {policy.scope_note_suffix}"))
             if "scope_note" not in result.flags:
                 result.flags.append("scope_note")
+
+    # D-110: another country's tax law, only when no reference refusal applies; notes are kept.
+    if result.refusal is None and policy.foreign_law is not None:
+        result.foreign_law = foreign_law_check(question, policy.foreign_law)
+        if result.foreign_law.fired:
+            result.refusal, result.refusal_text = "foreign_law", policy.foreign_law.refusal_text
     return result
 
 

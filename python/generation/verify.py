@@ -46,11 +46,12 @@ from generation.prompt import (GAP_CLASSES, GAP_PROMPT_VERSION, GAP_SCHEMA, GAP_
                                VERIFIER_SCHEMA_VERSION, VERIFIER_SYSTEM_PROMPT, build_gap_message,
                                build_verifier_message)
 
-NORMALISER_VERSION = "norm/6"  # norm/2: evidence and citation labels read as their leading passage label;
+NORMALISER_VERSION = "norm/7"  # norm/2: evidence and citation labels read as their leading passage label;
 # norm/3: a Schedule chunk's line-start "N." numbering counts as paragraph N;
 # norm/4: the evidence check ignores letter case (D-48);
 # norm/5: the evidence check ignores whitespace next to a dash and also searches the context header (D-55);
-# norm/6: the evidence check ignores punctuation (";", ".", ",", ":") at the start and end of a quote (D-102)
+# norm/6: the evidence check ignores punctuation (";", ".", ",", ":") at the start and end of a quote (D-102);
+# norm/7: the rule check reads ", and N" in a section list and never reads "N%" after a list comma as a section (D-111)
 MAX_WORKERS = 4
 GAP_PER_GAP = True  # D-68: one gap check call per gap; recorded in the frozen G2 configuration (D-69)
 GAP_REFERENCE_CHECK = True  # D-79: the gap reference check runs before the classifier; recorded likewise
@@ -92,8 +93,12 @@ _ROMAN = {"i": 1, "v": 5, "x": 10, "l": 50, "c": 100}
 _DATE_DMY = re.compile(rf"\b(\d{{1,2}})(?:st|nd|rd|th)?\s+(?:day\s+of\s+)?({_MONTH_ALT}),?\s+(\d{{4}})\b")
 _DATE_MDY = re.compile(rf"\b({_MONTH_ALT})\s+(\d{{1,2}})(?:st|nd|rd|th)?,?\s+(\d{{4}})\b")
 _SCHEDULE = re.compile(rf"\b({_ORDINAL_ALT}|\d+(?:st|nd|rd|th))\s+schedules?\b|\bschedules?\s+(\d+)\b")
+# norm/7 (D-111): the list separators of the shared parser (", and", ", or", ",", "and", "or", "to")
+# and its D-101 rule: a list number followed by "%", "per cent" or "percent" (also after a decimal
+# part) is a rate, not a section ("section 67, 10% of" is section 67 only).
 _SECTION = re.compile(r"\b(?:sections?|ss?\.)\s*(\d+)((?:\s*\([0-9a-z]+\))*)"
-                      r"((?:\s*(?:,|and|or|to)\s*\d+(?:\s*\([0-9a-z]+\))*)*)")
+                      r"((?:\s*(?:,\s*(?:and|or)\b|,|\band\b|\bor\b|\bto\b)\s*\d+(?!\d)"
+                      r"(?!\s*(?:\.\d+)?\s*(?:%|per\s*cent\b|percent\b))(?:\s*\([0-9a-z]+\))*)*)")
 _SUBSECTION = re.compile(r"\bsub-?sections?\s*((?:\(\d+[a-z]?\)\s*(?:,|and|or|to)?\s*)+)")
 _PARAGRAPH = re.compile(r"\b(?:sub-?)?paragraphs?\s*((?:\((?:[a-z]{1,4}|\d+)\)\s*(?:,|and|or|to)?\s*)+)")
 _PARAGRAPH_NUM = re.compile(r"\b(?:sub-?)?paragraphs?\s+(\d+)\b")

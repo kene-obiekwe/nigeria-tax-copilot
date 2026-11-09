@@ -451,7 +451,7 @@ TEXT = "(1) Tax is charged at the standard rate.\n(2) The supplier shall issue a
 
 
 def test_norm6_version():
-    assert verify.NORMALISER_VERSION == "norm/6"
+    assert verify.NORMALISER_VERSION == "norm/7"  # norm/7 (D-111) keeps norm/6's evidence rule
 
 
 def test_norm6_recovers_trailing_punctuation():
@@ -535,7 +535,7 @@ def test_live_configuration_records_the_retrieval_policy(monkeypatch, tmp_path):
     live = run_adversarial.current_config("v4")
     assert live["retrieval_policy_sha256"] == hashlib.sha256(POLICY_PATH.read_bytes()).hexdigest()
     assert live["retrieval_config_sha256"] == hashlib.sha256(V3_PATH.read_bytes()).hexdigest()
-    assert (live["generation"]["prompt_version"], live["normaliser"]) == ("gen-prompt/8", "norm/6")
+    assert (live["generation"]["prompt_version"], live["normaliser"]) == ("gen-prompt/8", "norm/7")
     other = tmp_path / "policy.yml"
     other.write_bytes(POLICY_PATH.read_bytes() + b"\n# changed\n")
     monkeypatch.setattr(run_adversarial, "RETRIEVAL_POLICY", other)

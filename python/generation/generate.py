@@ -5,7 +5,7 @@
     print(answer.rendered)
 
 Flow (guardrails design, section 2): pre-checks on the question (invalid question, section and
-Schedule references, other-Act and scope notes); the note tagger (D-77; three calls and a 2-of-3 vote, D-88), started with the
+Schedule references, other-Act and scope notes, another country's tax law, D-110); the note tagger (D-77; three calls and a 2-of-3 vote, D-88), started with the
 pre-check, run alongside retrieval and generation on every status and joined before rendering, so the notes
 shown are the union of the pattern notes and the tagger's; retrieve the top 5 chunks plus one keyword slot,
 then up to two attachments (the commencement chunk and one definition), with config_v3.json (D-54,
@@ -405,7 +405,7 @@ def generate(question: str, *, k: int = 5, retriever=None, llm: LLMClient | None
 
 
 def _refusal_text(reason: str, check) -> str:
-    if reason in ("invalid_question", "no_such_section", "section_outside_v1"):
+    if reason in ("invalid_question", "no_such_section", "section_outside_v1", "foreign_law"):  # foreign_law: D-110
         return check.refusal_text
     return {"low_relevance": LOW_RELEVANCE_TEXT, "unsupported_answer": UNSUPPORTED_ANSWER_TEXT,
             "verification_unavailable": VERIFICATION_UNAVAILABLE_TEXT}[reason]
