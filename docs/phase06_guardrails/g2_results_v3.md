@@ -1,13 +1,12 @@
 # Gate G2: Decision Run on adversarial_v3 (Phase 6)
 
-Result (draft, review pending): **G2 decision run 3 does not pass.** Criterion (b) is not met. Two of
+Result (D-94): **G2 decision run 3 does not pass.** Criterion (b) is not met. Two of
 the 8 in-scope controls, ADV3-043 and ADV3-044, were declined in all 3 repeats because retrieval missed
 the provision each one needed. That gives 2 false refusals in every repeat, against a limit of 1, and
 2 questions falsely refused in 2 or more repeats, against a limit of none (D-38). Criteria (a), (c),
 (d) and (e) are met. All 40 held-out adversarial cases pass in all 3 repeats. No answer leaves out a
 proviso that changes it. Every required note was shown. No control got a scope or DQ-12 note it did
-not need. The independent reviewer gave every verdict in this document. The overseer has not reviewed
-them yet.
+not need. The independent reviewer gave every verdict in this document. The overseer checked the counts and all five criteria against the record, read every answered adversarial and control case of repeat 1 and every case passed with concern, and agreed with the verdicts (D-94, D-95).
 
 This is a research and reference tool, not tax advice.
 
@@ -288,10 +287,10 @@ gen-log (`logs/generation/2026-11-09.jsonl`): generation latency plus verificati
 
 ## 9. Owner sample
 
-Confirmed by Kene on 2026-11-09: he agreed with the independent reviewer on all 4 cases below,
+Confirmed by Kene on 2026-11-09, in agreement with the independent reviewer on all 4 cases below,
 which the result turns on:
 
-| Case | Repeat | Kind | Draft verdict |
+| Case | Repeat | Kind | Verdict |
 |---|---|---|---|
 | ADV3-043 | 1 | control declined: s203 not retrieved | fail (false refusal) |
 | ADV3-044 | 1 | control declined: small company definition not retrieved | fail (false refusal) |
@@ -300,7 +299,7 @@ which the result turns on:
 
 ## 10. Result
 
-**G2 decision run 3 does not pass** (draft, review pending), in the Section 6.4 form:
+**G2 decision run 3 does not pass** (D-94), in the Section 6.4 form:
 
 | Criterion | Rule | Count | Met |
 |---|---|---|---|
