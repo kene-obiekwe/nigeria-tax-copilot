@@ -510,25 +510,39 @@ def test_d104_report_names_the_v3_controls_and_attachments():
     assert "ADV3-044 NO" in text and "1 cases with an attachment, 1 passages; claims citing one: ADV3-043 claim 1" in text
 
 
-def test_v4_entry_is_pinned_and_not_frozen():
-    """D-105, D-106: the v4 entry has the writer's sha256 pinned and no split file. Its configuration is
-    not frozen yet, so a decision run refuses, and its held-out part cannot load before its marker.
-    Only guards are called; the v4 questions file is never opened."""
+V4_CONFIG_SHA256 = "d088e6cdde077f7d2b9cb85c2c380790148a998eeb50f02196461de12270a3b5"  # D-114, 2026-11-09
+TUNE_RUNS_16_17 = [ROOT / "eval" / "guardrails" / "results" / f"tune_run{n}.json" for n in (16, 17)]
+
+
+def test_v4_entry_is_pinned_and_frozen(tmp_path):
+    """D-105, D-106, D-114: the v4 entry has the writer's sha256 and its frozen configuration sha256
+    pinned, and no split file. The configuration was frozen once after tuning runs 16 and 17 met D-84 as
+    extended by D-104 (D-109); it equals both runs' recorded configuration plus the set's version and
+    sha256, and matches the live one. The held-out part stays unloadable until the decision run writes
+    its marker. Only guards and the configuration file are read; the v4 questions file is never opened."""
     v4 = run_adversarial.SETS["v4"]
     assert (v4.questions.name, v4.questions_sha256, v4.split, v4.split_sha256) == \
         ("adversarial_v4.jsonl", V4_SHA256, None, None)
-    assert v4.config == run_adversarial.HERE / "config_g2_v4.json" and v4.config_sha256 is None
-    assert not v4.config.exists()
+    assert v4.config == run_adversarial.HERE / "config_g2_v4.json" and v4.config_sha256 == V4_CONFIG_SHA256
+    assert hashlib.sha256(v4.config.read_bytes()).hexdigest() == V4_CONFIG_SHA256
     assert v4.marker == run_adversarial.RESULTS_DIR / "v4" / "holdout_started.json" and not v4.marker.exists()
     assert v4.result == run_adversarial.RESULTS_DIR / "v4" / "holdout_final.json" and not v4.result.exists()
     assert v4.pack_prefix == "v4_holdout_repeat" and v4.config_records_set and v4.d57_control_limit == 1
     for call, message in ((lambda: run_adversarial.load_adversarial("v4", "holdout"), "has not been run"),
                           (lambda: run_adversarial.load_adversarial("v4", "tune"), "no split file"),
-                          (lambda: run_adversarial.check_holdout_guard("v4"), "no frozen configuration hash")):
+                          (lambda: run_adversarial.freeze_config("v4"), "frozen once")):
         with pytest.raises(run_adversarial.GuardError, match=message):
             call()
-    assert run_adversarial.main(["--holdout", "--set", "v4"]) == 2
-    assert run_adversarial.current_config("v4")["adversarial_set"] == {"version": "v4", "sha256": V4_SHA256}
+    frozen = json.loads(v4.config.read_text(encoding="utf-8"))
+    assert frozen["adversarial_set"] == {"version": "v4", "sha256": V4_SHA256}
+    for path in TUNE_RUNS_16_17:  # D-84: the passing pair's recorded configuration, field by field
+        assert {k: v for k, v in frozen.items() if k != "adversarial_set"} == \
+            json.loads(path.read_text(encoding="utf-8"))["config"]
+    assert (frozen["generation"]["prompt_version"], frozen["normaliser"]) == ("gen-prompt/8", "norm/7")
+    assert run_adversarial.check_holdout_guard("v4") == frozen  # live configuration matches the freeze
+    assert run_adversarial.main(["--freeze-config", "--set", "v4"]) == 2
+    copy = dataclasses.replace(v4, config=tmp_path / "config_g2_v4.json")  # a fresh freeze gives the same file
+    assert run_adversarial.freeze_config(copy) == V4_CONFIG_SHA256
 
 
 def test_live_configuration_records_the_retrieval_policy(monkeypatch, tmp_path):

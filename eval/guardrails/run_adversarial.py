@@ -50,7 +50,8 @@ mode and the gap reference check, normaliser, tau, policy hashes, the retrieval 
 sha256 and the retrieval policy's sha256 (D-98, D-99), the note tagger (`note_tagger: on`, model,
 effort, the tag prompt version and its sha256, D-77, and the majority vote's votes and threshold, D-88)
 and, for every set after v1, the set's version and sha256. The v4 entry (D-105, D-106) has its
-questions sha256 pinned and no configuration hash until it is frozen.
+questions sha256 pinned and, since the freeze after tuning runs 16 and 17 (D-114), its configuration
+sha256.
 
 **Decision run.** `--holdout --set <set>` refuses, before any work, when the set's marker or result
 exists, when the set's hashes or its configuration hash are not recorded, when the configuration file
@@ -196,8 +197,9 @@ SETS: dict[str, AdversarialSet] = {
         d57_control_limit=1),  # D-83: at most 1 of the 8 controls, none judged false
     # adversarial_v4 (D-105, D-106): 48 held-out cases, no split file, written by a separate session
     # under D-40. The questions sha256 is pinned from the writer's value; the build session never
-    # opens the file. The configuration is frozen only after tuning meets D-104 (`--freeze-config
-    # --set v4`), so its hash is not recorded yet. v3 is spent and joins the tuning data (D-106).
+    # opens the file. The configuration was frozen after tuning runs 16 and 17 met the D-84 gate as
+    # extended by D-104 (D-109, D-114). The v4 questions file is opened only by the decision run,
+    # after its marker. v3 is spent and joins the tuning data (D-106).
     "v4": AdversarialSet(
         name="v4",
         questions=HERE / "adversarial_v4.jsonl",
@@ -205,7 +207,7 @@ SETS: dict[str, AdversarialSet] = {
         split=None,
         split_sha256=None,
         config=HERE / "config_g2_v4.json",
-        config_sha256=None,  # recorded after the freeze (D-104, D-105)
+        config_sha256="d088e6cdde077f7d2b9cb85c2c380790148a998eeb50f02196461de12270a3b5",  # D-114, 2026-11-09
         marker=RESULTS_DIR / "v4" / "holdout_started.json",
         result=RESULTS_DIR / "v4" / "holdout_final.json",
         pack_prefix="v4_holdout_repeat",
