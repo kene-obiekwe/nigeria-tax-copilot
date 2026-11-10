@@ -622,6 +622,12 @@ removals stay at or under 5% on the calibration set (section 3.8).
 
 *(G2 decision run 1 failed on 2026-11-04, D-50. The next decision run uses adversarial_v2, D-52.)*
 
+*(G2 decision run 2 failed on 2026-11-06, D-72. The next decision run uses adversarial_v3.)*
+
+*(G2 decision run 3 failed on 2026-11-09, D-94. The next decision run uses adversarial_v4.)*
+
+*(G2 decision run 4 failed on 2026-11-09. No further G2 decision runs follow under D-97 and D-109: G2 not met, D-115.)*
+
 ## 7. Fixes for the known weaknesses
 
 | Weakness | Fix | Where |
