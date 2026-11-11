@@ -511,6 +511,8 @@ def test_d104_report_names_the_v3_controls_and_attachments():
 
 
 V4_CONFIG_SHA256 = "d088e6cdde077f7d2b9cb85c2c380790148a998eeb50f02196461de12270a3b5"  # D-114, 2026-11-09
+FROZEN_HEADING_CORRECTIONS_SHA256 = "8ba9de0435238e70c77146989d6a8d9c3cec7af970e25bbe018fd8a7d8f9e4f5"  # before D-126
+HEADING_CORRECTIONS = guardrails.HEADING_CORRECTIONS
 TUNE_RUNS_16_17 = [ROOT / "eval" / "guardrails" / "results" / f"tune_run{n}.json" for n in (16, 17)]
 
 
@@ -518,17 +520,19 @@ def test_v4_entry_is_pinned_and_frozen(tmp_path):
     """D-105, D-106, D-114: the v4 entry has the writer's sha256 and its frozen configuration sha256
     pinned, and no split file. The configuration was frozen once after tuning runs 16 and 17 met D-84 as
     extended by D-104 (D-109); it equals both runs' recorded configuration plus the set's version and
-    sha256, and matches the live one. The held-out part stays unloadable until the decision run writes
-    its marker. Only guards and the configuration file are read; the v4 questions file is never opened."""
+    sha256. Decision run 4 ran (D-115), so its committed marker and result exist and the held-out part
+    runs once only (D-127). Since D-126 (DQ-19) the live configuration differs from the freeze in the
+    heading-corrections hash alone, the one named override that config_p7.json records (D-123). Only
+    guards and the configuration file are read; the v4 questions file is never opened."""
     v4 = run_adversarial.SETS["v4"]
     assert (v4.questions.name, v4.questions_sha256, v4.split, v4.split_sha256) == \
         ("adversarial_v4.jsonl", V4_SHA256, None, None)
     assert v4.config == run_adversarial.HERE / "config_g2_v4.json" and v4.config_sha256 == V4_CONFIG_SHA256
     assert hashlib.sha256(v4.config.read_bytes()).hexdigest() == V4_CONFIG_SHA256
-    assert v4.marker == run_adversarial.RESULTS_DIR / "v4" / "holdout_started.json" and not v4.marker.exists()
-    assert v4.result == run_adversarial.RESULTS_DIR / "v4" / "holdout_final.json" and not v4.result.exists()
+    assert v4.marker == run_adversarial.RESULTS_DIR / "v4" / "holdout_started.json" and v4.marker.exists()
+    assert v4.result == run_adversarial.RESULTS_DIR / "v4" / "holdout_final.json" and v4.result.exists()
     assert v4.pack_prefix == "v4_holdout_repeat" and v4.config_records_set and v4.d57_control_limit == 1
-    for call, message in ((lambda: run_adversarial.load_adversarial("v4", "holdout"), "has not been run"),
+    for call, message in ((lambda: run_adversarial.check_holdout_guard("v4"), "runs once"),
                           (lambda: run_adversarial.load_adversarial("v4", "tune"), "no split file"),
                           (lambda: run_adversarial.freeze_config("v4"), "frozen once")):
         with pytest.raises(run_adversarial.GuardError, match=message):
@@ -539,10 +543,15 @@ def test_v4_entry_is_pinned_and_frozen(tmp_path):
         assert {k: v for k, v in frozen.items() if k != "adversarial_set"} == \
             json.loads(path.read_text(encoding="utf-8"))["config"]
     assert (frozen["generation"]["prompt_version"], frozen["normaliser"]) == ("gen-prompt/8", "norm/7")
-    assert run_adversarial.check_holdout_guard("v4") == frozen  # live configuration matches the freeze
+    live = run_adversarial.current_config("v4")  # D-126: the heading-corrections hash is the only difference
+    assert frozen["heading_corrections_sha256"] == FROZEN_HEADING_CORRECTIONS_SHA256
+    assert live["heading_corrections_sha256"] == hashlib.sha256(HEADING_CORRECTIONS.read_bytes()).hexdigest()
+    assert {k for k in set(live) | set(frozen) if live.get(k) != frozen.get(k)} == {"heading_corrections_sha256"}
     assert run_adversarial.main(["--freeze-config", "--set", "v4"]) == 2
-    copy = dataclasses.replace(v4, config=tmp_path / "config_g2_v4.json")  # a fresh freeze gives the same file
-    assert run_adversarial.freeze_config(copy) == V4_CONFIG_SHA256
+    copy = dataclasses.replace(v4, config=tmp_path / "config_g2_v4.json")  # a fresh freeze differs only there
+    run_adversarial.freeze_config(copy)
+    assert json.loads(copy.config.read_text(encoding="utf-8")) == \
+        dict(frozen, heading_corrections_sha256=live["heading_corrections_sha256"])
 
 
 def test_live_configuration_records_the_retrieval_policy(monkeypatch, tmp_path):

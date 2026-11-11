@@ -2,6 +2,7 @@
 section validator, other-Act and scope notes, the relevance floor, the DQ-12 trigger, the pinned
 texts and the runner guards, plus the D-29 and held-out text guards. No key and no database are
 needed. Questions written here are new wording for the tests; dev questions are named by id only."""
+import csv
 import dataclasses
 import hashlib
 import importlib.util
@@ -125,18 +126,57 @@ def test_no_dev_or_in_scope_question_is_refused_or_noted_at_pre_check():
 
 HEADING_FIXES = {("ntaa2025", 37): "Making of assessments of tax in upstream petroleum operations",
                  ("ntaa2025", 61): "Power to distrain",
-                 ("nta2025", 113): "Chargeable tax petroleum operations"}
+                 ("nta2025", 113): "Chargeable tax petroleum operations",
+                 ("ntaa2025", 24): "Returns for surcharge",          # DQ-19 page check, 2026-11-11
+                 ("ntaa2025", 148): "Citation and commencement"}
+
+
+LETTERS_EQUAL_FIXES = 44  # DQ-19, D-126: spacing-only corrections of out-of-corpus NTAA headings
+
+
+def _adds_spaces_only(derived: str, heading: str) -> bool:
+    """True when `heading` is `derived` with spaces inserted and no other character changed."""
+    i = 0
+    for ch in heading:
+        if i < len(derived) and ch == derived[i]:
+            i += 1
+        elif ch != " ":
+            return False
+    return i == len(derived)
 
 
 def test_heading_corrections_replace_exactly_the_three_wrong_headings():
+    """D-60 (DQ-18): the three page-checked rows. D-126 (DQ-19): every other row is a letters-equal
+    row that only adds spaces to an OCR-joined heading of an out-of-corpus NTAA section."""
     rows = guardrails.load_heading_corrections()
-    assert {(r["act_id"], r["section"]): r["heading"] for r in rows} == HEADING_FIXES
-    assert all(isinstance(r["pdf_page"], int) and (ROOT / r["source"]).name.endswith(".pdf") for r in rows)
+    page_checked = [r for r in rows if r.get("method") != "letters_equal"]
+    letters_equal = [r for r in rows if r.get("method") == "letters_equal"]
+    assert {(r["act_id"], r["section"]): r["heading"] for r in page_checked} == HEADING_FIXES
+    assert all(isinstance(r["pdf_page"], int) and (ROOT / r["source"]).name.endswith(".pdf") for r in page_checked)
+    assert len(letters_equal) == LETTERS_EQUAL_FIXES
+    corpus_sections = CORPUS["ntaa2025"]["sections"]
+    comparison = {}
+    with guardrails.SECTION_MAP.open(encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            if row["act_id"] == "ntaa2025":
+                comparison[(int(row["cited_section"]), row["comparison_print"])] = row["comparison_heading"].strip()
+    for r in letters_equal:
+        assert (r["act_id"], r["print"]) == ("ntaa2025", "nrs") and str(r["section"]) not in corpus_sections
+        assert _adds_spaces_only(r["derived"], r["heading"]) and r["derived"] != r["heading"]
+        assert r["matches"] and all(comparison[(r["section"], p)] == r["heading"] for p in r["matches"])
+    fixes = {(r["act_id"], r["section"]): r["heading"] for r in rows}
     derived = guardrails.load_section_headings(corrections=None)
-    for key, heading in HEADING_FIXES.items():
+    for key, heading in fixes.items():
         assert POLICY.headings[key] == heading and derived[key] != heading
-    assert {k: v for k, v in POLICY.headings.items() if k not in HEADING_FIXES} == \
-        {k: v for k, v in derived.items() if k not in HEADING_FIXES}
+    assert {k: v for k, v in POLICY.headings.items() if k not in fixes} == \
+        {k: v for k, v in derived.items() if k not in fixes}
+
+
+def test_letters_equal_heading_names_the_section_in_a_refusal():
+    """D-126: exit question E11's lookup error names Section 67 by its corrected heading."""
+    result = check("What does section 67 of the NTAA say?")
+    assert result.refusal_text == ('Section 67 of the Nigeria Tax Administration Act 2025 ("Recovery of tax") '
+                                   "is outside the corpus this tool covers (v1).")
 
 
 def test_corrected_heading_names_the_section_in_a_refusal():
@@ -1036,9 +1076,14 @@ def _artefacts():
     return [p for p in paths if p.is_file() and p.suffix in {".py", ".md", ".yml", ".json", ".jsonl", ".csv"}]
 
 
+# D-127: decision run 4 ran (D-115); only its published results may be read as artefacts.
+PUBLISHED_V4_RESULTS = {"docs/phase06_guardrails/g2_results_v4.md", "docs/phase06_guardrails/g2_results_v4.csv"}
+
+
 def test_artefacts_never_include_a_question_set_or_v4_file():
     names = [p.relative_to(ROOT).as_posix() for p in _artefacts()]
-    assert not [n for n in names if n.startswith("eval/guardrails/adversarial_v") or "v4" in n], names
+    assert not [n for n in names if n.startswith("eval/guardrails/adversarial_v")
+                or ("v4" in n and n not in PUBLISHED_V4_RESULTS)], names
     assert "python/generation/prompt.py" in names and "data/curated/disclosure_policy.yml" in names
     assert "data/curated/retrieval_policy.yml" in names and "python/retrieval/commencement.py" in names
     assert "eval/guardrails/note_recall_probes.jsonl" in names

@@ -284,7 +284,12 @@ def _ordinal(n: int) -> str:
     return ORDINAL_WORDS[n - 1].capitalize() if 1 <= n <= len(ORDINAL_WORDS) else f"{n}th"
 
 
-def _check_section(ref: Reference, policy: GuardrailsPolicy, sections: dict[str, set[str]]) -> None:
+def check_section(ref: Reference, policy: GuardrailsPolicy, sections: dict[str, set[str]]) -> None:
+    """Set `ref.verdict` and `ref.text` for a section reference: `ok`, `no_such_section` (past the
+    end of the Act, or lettered, D-80) or `section_outside_v1` (a real section not in the corpus,
+    named by its corrected heading, D-60). `sections` holds, per corpus Act, the section numbers in
+    the v1 corpus. Public since Phase 7 (D-118): the lookup tool checks a reference with the
+    pre-check's own code."""
     acts = policy.acts
     if ref.suffix:  # D-80: neither Act numbers a section with a letter
         ref.verdict = "no_such_section"
@@ -444,7 +449,7 @@ def pre_check(question: str, policy: GuardrailsPolicy, corpus: dict[str, dict[st
         if ref.act and ref.act.startswith("other:"):
             ref.verdict = "other_act"
         elif ref.kind == "section":
-            _check_section(ref, policy, sections)
+            check_section(ref, policy, sections)
         else:
             _check_schedule(ref, policy, schedules)
 

@@ -825,3 +825,122 @@ on its own line.
   rate, and the build session sees them. No paid run on them before run 1 limits tuning to them.
   Phase 8 measures the full system.
 - **Interest is never computed.** Late-payment questions get a partial answer by design.
+
+## 15. Build record (build plan steps 1 to 5, 2026-11-11)
+
+Steps 1 to 5 of section 13.2 are built. They cost nothing: no model call, no API test and no paid
+embedding were made. Steps 6 to 8 (the paid tests, the regression sample, the freeze and the exit
+check) are not started. `config_p7.json` is not frozen; the freeze code is in place.
+
+### 15.1 What was built
+
+1. **Headings (D-126, D-127).** Of the 148 NTAA sections, 83 are outside the corpus. Their derived
+   headings were compared with the Gombe and National Assembly headings in the section map:
+   35 already equal one of them; 44 differ from one only by spacing (the letters are equal) and are
+   corrected in `data/curated/heading_corrections.yml` (`method: letters_equal`, with the texts they
+   match); 4 have different letters. Two of those 4 (Sections 37 and 61) were already corrected
+   from their page images under DQ-18. The other 2 are left for a page-image check and not
+   corrected: Section 24 ("Returns-for surcharge"; both texts read "Returns for surcharge") and
+   Section 148 ("Citationand commencement"; both texts read "Citation"). Both were page-checked
+   afterwards (section 15.4). The file's sha256 was then
+   `003384cb1c299cddaf49ec2ecf7c192beab888a2eee16934cb772d53e8bf7721` (was `8ba9de04...e4f5`).
+   DQ-19 is updated in the decision log. The two stale tests are fixed as D-127 says (the heading
+   test counts the page-checked and the letters-equal rows; the artefact test allows the published
+   v4 results).
+2. **Calculator.** `python/tools/taxcalc.py` (`calc/1`) and `data/curated/calc_rates.yml` (14 rows,
+   each quote copied from its chunk, sha256 `111f3f6f...c700`, pinned in the code). The hand-worked
+   figures of section 9.1 come out of the code from the expected inputs (a test).
+3. **Lookup.** `python/tools/lookup.py`; `check_section` is now public in `guardrails.py` and
+   `pre_check` calls it, with no change of behaviour.
+4. **Loop.** In `generation/generate.py`, behind `tools.enabled` (default off): `ToolSession` (the
+   tool calls, their limits and the passages P9 to P14), `run_tool_loop` (calls 1 and 2 under
+   `tool_choice` `auto`, the last under `none`; assistant turns appended unchanged; one user message
+   of tool results per turn), the parser for `gen-schema/2`, checks K1 to K6 with the scope-note veto
+   applied after the notes are joined, the gap figure filter (in `verify.check_gaps`), the
+   calculation block in `render()`, and the `gen-log/3` record. `prompt.py` builds `gen-prompt/9`
+   from `gen-prompt/8` by four exact replacements and holds the two tool definitions (`tool-defs/1`).
+5. **Exit check.** `eval/tools/exit_questions_v1.jsonl` (14 rows written from the section 9.1 table,
+   sha256 `ba25dfd29abfd6b039676436aeb32007a2e078897f71767ad6b9f7dbad63b01a`) and
+   `eval/tools/run_exit_check.py` (the freeze, the run guards, the $0.60 cost stop and the automatic
+   checks of section 9.2). No model call was made on these questions.
+
+### 15.2 Choices made where the design is silent
+
+These are the build's readings of the design. Each is open to the overseer's review.
+
+- **Rule 2's label range.** `gen-prompt/8` names "(P1 to P8)" in rule 2; `gen-prompt/9` says
+  "(P1 to P14)", as D-100 did for P6 to P8. The other rules are word for word apart from the
+  amended rule 6, the added rules 13 and 14 and the output paragraph naming `calculations`.
+- **Tools off keeps `gen-log/2`.** Section 7.2 says the tools block is null when tools are off.
+  The build writes `gen-log/3` only when tools are on, so the Phase 6 pipeline's records are
+  unchanged byte for byte.
+- **The `calculate_liability` input schema** is not given in the design. It is strict, with all 10
+  fields required and nullable, and enums for the scenario, the amount basis and the provision.
+- **K4 checks numeric constants only.** The rule that a VAT-inclusive price holds the VAT
+  (Section 149) has no figure, so it has no K4 tie; E02 relies on the Section 148 rate.
+- **Lookup subsection filter.** A chunk whose subsection list is empty holds the whole section, so
+  it is kept for any printed subsection.
+- **Counting calls.** A call with bad input counts towards the limits. Tool passages always take
+  the next free label from P9 on.
+- **Log totals.** The record's `usage` and `cost_usd` (and `Answer.cost_usd`) add up over all
+  calls; `request` and `response` hold the final call, as section 7.2 says.
+- **Section 8, item 2.** The design counts "305 visible questions" for v1 to v4 plus the dev and
+  exit questions. The 305 of earlier phases are v1 to v3, the 88 note probes, 20 dev and G01 to
+  G05; the replay used those 305 plus the 48 of v4 (353).
+- **The v4 freeze test.** Since D-126, the live configuration differs from `config_g2_v4.json` in
+  `heading_corrections_sha256` only. `test_v4_entry_is_pinned_and_frozen` now asserts exactly that
+  one named difference, as `config_p7.json` records it.
+
+### 15.3 Free checks (section 8, items 1 to 5)
+
+| Check | Result |
+|---|---|
+| 1. Tools-off request | sha256 `204b474a42711c633753b97594f0b3cbd463ff72e42588fe1b7a85e942aa26df`, equal to the request that the code before the build (commit `cd0b9da`) makes for the same question and fake clients; pinned in `tests/test_tools.py` |
+| 2. Pre-check replay | 353 questions: 0 differences from the refactor; with the corrected heading file, 3 questions differ (ADV2-008, ADV4-006, ADV4-007), each only in a corrected heading inside a `section_outside_v1` text; 0 unexplained |
+| 3. Render replay | 217 of 217 tuning run 17 records identical |
+| 4. Rule-check replay | 436 of 436 kept claims unchanged |
+| 5. Full suite | `.venv\Scripts\python -m pytest -q` without `TAXY_RUN_API_TESTS`: 1362 passed, 24 skipped (the `api` tests and the skips that were there before), 0 failed, in 457 s |
+
+Spend for steps 1 to 5: $0.00. Phase 7 spend stays $0.0531 of the $2.00 cap (D-116).
+
+### 15.4 Overseer fixes and the page check (D-128, D-129, DQ-19; 2026-11-11)
+
+The overseer approved steps 1 to 5 with two fixes, which Kene approved. Both are built, with the
+page check of the two headings left open in section 15.1. No paid call was made.
+
+- **D-128, API errors in the exit check.** `run_exit_check.py` wraps the generation, verifier and
+  tagger clients in one shared stop (`APIStop` and `StopOnAPIError` from the Phase 6 runner, D-69).
+  The first API error stops the run after that question, and no later call reaches the API. The
+  record is void: `stopped_on_api_error` holds the question, the questions written and planned, and
+  the error's type, status, API error type and redacted message; review is "void"; there is no
+  `auto_pass` and no per-question `checks`. The runner exits with code 3. A void run does not count
+  towards the two D-116 runs (`counted_run`); `--run N --rerun-after-void` re-runs it once, into
+  `exit_run<N>_rerun.json`, only when the first record is a complete void record and no re-run
+  record exists. Run 2 needs a run 1 that counts. Tests use fake clients: a generation error, a
+  tagger error, the re-run, exit code 3 and the guards.
+- **D-129, the Section 149 value rule.** `taxcalc.RULES` holds one text-only rule,
+  `vat_inclusive_value` (`nta2025:s149`, Section 149(1)(a)), with its quote and the chunk's sha256
+  (a test checks both). A VAT-inclusive calculation lists it in `relies_on` after `vat_rate`. K4
+  passes for it when a kept claim cites `nta2025:s149` among its kept citations; there is no token
+  check. The tool result names it as `{"rule": ..., "states": ..., "passage": ...}`, beside the
+  `{"constant": ...}` items. `config_p7.json` will record the rule under `tools.rules`. The rate
+  table and its sha256 do not change. Tests: E02 is shown when a Section 149 claim is kept, and
+  withheld (`rate_not_confirmed`) when none is kept or the claim is removed. The withheld line
+  still says "the rate it uses was not confirmed", which reads loosely for a rule; the wording was
+  left as designed.
+- **Page check (DQ-19).** Rendered from the local NRS scan and read as for DQ-18 (D-60). Section 24:
+  the margin note on PDF page 20 (A 278) reads "Returns for surcharge" (the hyphen was OCR noise).
+  Section 148: the margin note on PDF page 74 (A 332) reads "Citation and commencement", while the
+  Gombe and National Assembly texts and the arrangement of sections (PDF page 6, A 263) read
+  "Citation" only; the cited print's margin note is used. Both are page-checked rows, so the file
+  holds 5 page-checked and 44 letters-equal rows, sha256
+  `2a7969b82ca80821e28cf8178d11c5c0d455ec773d727c691e840ee6299975ce`. DQ-19 is now fixed.
+
+| Check (after the fixes) | Result |
+|---|---|
+| Pre-check replay | 353 questions: 0 refactor differences; 46 corrected heading rows against the base file; the same 3 questions differ (ADV2-008, ADV4-006, ADV4-007), each only in a corrected heading; 0 unexplained |
+| Render replay | 217 of 217 identical |
+| Rule-check replay | 436 of 436 kept claims unchanged |
+| Full suite | without `TAXY_RUN_API_TESTS`: 1373 passed, 24 skipped, 0 failed, in 429 s (11 new tests) |
+
+Spend: $0.00. Phase 7 spend stays $0.0531 of the $2.00 cap (D-116).

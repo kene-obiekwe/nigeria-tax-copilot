@@ -5,9 +5,19 @@
 # heading of each row below. A row applies only while the derived file still holds `derived`
 # exactly; if the derived heading changes, loading fails, so a stale correction is never applied.
 #
-# Each heading was checked against the page image of the cited print on 2026-11-05.
-# `pdf_page` counts from 1 in the PDF file; `printed_page` is the gazette page number in the header.
-# The headings are the margin notes beside the section in the body of the Act.
+# Two kinds of row:
+#
+# 1. Page-checked rows (DQ-18, 2026-11-05): each heading was checked against the page image of the
+#    cited print. `pdf_page` counts from 1 in the PDF file; `printed_page` is the gazette page
+#    number in the header. The headings are the margin notes beside the section in the body of the
+#    Act. NTAA sections 24 and 148 were checked the same way on 2026-11-11 (DQ-19): their letters
+#    differ from the comparison headings, so they were not letters-equal rows.
+# 2. Letters-equal rows (DQ-19, D-126, 2026-11-11), `method: letters_equal`: OCR-joined headings of
+#    NTAA sections outside the v1 corpus. The derived heading's letters equal the comparison
+#    heading's letters exactly when spaces are ignored (`matches` names the comparison print or
+#    prints, Gombe gazette print or National Assembly text, as in section_map.csv), so the
+#    correction adds spaces only and changes no other character. No page image was needed. A heading
+#    whose letters differ is not corrected here without a page check.
 
 corrections:
   - act_id: ntaa2025
@@ -46,3 +56,340 @@ corrections:
       Margin note beside section 113 reads "Chargeable tax petro- leum operations" over four lines;
       the arrangement of sections (PDF page 6, A 390) reads "113. Chargeable tax petroleum
       operations". The derived text lost the first word.
+
+  - act_id: ntaa2025
+    print: nrs
+    section: 24
+    derived: "Returns-for surcharge"
+    heading: "Returns for surcharge"
+    source: data/raw/nigeria_tax_administration_act_2025_gazette_nrs.pdf
+    pdf_page: 20
+    printed_page: "A 278"
+    reading: >-
+      Margin note beside section 24(1) reads "Returns for surcharge" over two lines; there is no
+      hyphen, which the OCR read in from the gap before the line. Checked 2026-11-11 (DQ-19). The
+      arrangement of sections (PDF page 3, A 260) reads "24. Returns of surcharge"; the margin note
+      is the heading in the body of the Act, as for the other rows.
+
+  - act_id: ntaa2025
+    print: nrs
+    section: 148
+    derived: "Citationand commencement"
+    heading: "Citation and commencement"
+    source: data/raw/nigeria_tax_administration_act_2025_gazette_nrs.pdf
+    pdf_page: 74
+    printed_page: "A 332"
+    reading: >-
+      Margin note beside section 148 reads "Citation and commence- ment" over three lines, and the
+      section is about both ("may be cited as ... and shall come into effect on ..."). Checked
+      2026-11-11 (DQ-19). The arrangement of sections (PDF page 6, A 263) and the Gombe and National
+      Assembly texts read "Citation" only; the margin note of the cited print is used.
+
+  - act_id: ntaa2025
+    print: nrs
+    section: 12
+    derived: "Estimated incometax returns for companies engaged in liquefied natural gas"
+    heading: "Estimated income tax returns for companies engaged in liquefied natural gas"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 13
+    derived: "Incometax returns for individuals"
+    heading: "Income tax returns for individuals"
+    method: letters_equal
+    matches: [gombe]
+  - act_id: ntaa2025
+    print: nrs
+    section: 17
+    derived: "Actual returnsfor upstream petroleum operations"
+    heading: "Actual returns for upstream petroleum operations"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 50
+    derived: "Paymentof tax for companies engaged in upstream petroleum operations and midstream liquefied natural gas operations"
+    heading: "Payment of tax for companies engaged in upstream petroleum operations and midstream liquefied natural gas operations"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 54
+    derived: "Avoidance by transfer by companies engaged inpetroleum operations"
+    heading: "Avoidance by transfer by companies engaged in petroleum operations"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 58
+    derived: "Powerto assess lands, buildings, books and documents"
+    heading: "Power to assess lands, buildings, books and documents"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 59
+    derived: "Power to remove booksand documents"
+    heading: "Power to remove books and documents"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 62
+    derived: "Enforcement ofpowers"
+    heading: "Enforcement of powers"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 63
+    derived: "Revocation ofpetroleum or mining licence or lease"
+    heading: "Revocation of petroleum or mining licence or lease"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 67
+    derived: "Recoveryof tax"
+    heading: "Recovery of tax"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 68
+    derived: "Assignment oftaxdebts"
+    heading: "Assignment of tax debts"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 71
+    derived: "Deployment oftechnology"
+    heading: "Deployment of technology"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 77
+    derived: "Powerofthe President or Governorto remittaxes"
+    heading: "Power of the President or Governor to remit taxes"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 78
+    derived: "Powerof the Presidentto exempt companies fromincome tax"
+    heading: "Power of the President to exempt companies from income tax"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 80
+    derived: "Powerof Accountant- General to deduct at source"
+    heading: "Power of Accountant- General to deduct at source"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 81
+    derived: "Distribution ofvalue added tax revenue"
+    heading: "Distribution of value added tax revenue"
+    method: letters_equal
+    matches: [gombe]
+  - act_id: ntaa2025
+    print: nrs
+    section: 82
+    derived: "Transfer of taxrevenue forrefund"
+    heading: "Transfer of tax revenue for refund"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 87
+    derived: "Establishmentofthe StateInternal Revenue Service"
+    heading: "Establishment of the State Internal Revenue Service"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 88
+    derived: "Functionsof theState Service"
+    heading: "Functions of the State Service"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 89
+    derived: "Establishmentand composition ofthe Management Boardofthe StateService"
+    heading: "Establishment and composition of the Management Board of the State Service"
+    method: letters_equal
+    matches: [gombe]
+  - act_id: ntaa2025
+    print: nrs
+    section: 90
+    derived: "Appointmentofthe Executive Chairmanof the State Service"
+    heading: "Appointment of the Executive Chairman of the State Service"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 91
+    derived: "Functionsof the State Board"
+    heading: "Functions of the State Board"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 92
+    derived: "Establishmentofthe Technical Committee oftheState Board"
+    heading: "Establishment of the Technical Committee of the State Board"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 93
+    derived: "Establishmentof the Local Government Revenue Committee"
+    heading: "Establishment of the Local Government Revenue Committee"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 95
+    derived: "Establishment and composition ofStateJoint Revenue Committee"
+    heading: "Establishment and composition of State Joint Revenue Committee"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 97
+    derived: "Exercise of powers by relevanttax authority"
+    heading: "Exercise of powers by relevant tax authority"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 98
+    derived: "Delegationof powersof therelevant StateBoard"
+    heading: "Delegation of powers of the relevant State Board"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 99
+    derived: "Executive Chairman and other officials of therelevant taxauthority"
+    heading: "Executive Chairman and other officials of the relevant tax authority"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 111
+    derived: "Failure to disclose facts inadutiable instrument"
+    heading: "Failure to disclose facts in a dutiable instrument"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 112
+    derived: "Failure to notify changeof address"
+    heading: "Failure to notify change of address"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 114
+    derived: "Offenceby authorised and unathorised persons"
+    heading: "Offence by authorised and unathorised persons"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 117
+    derived: "Impersonationofan authorised officer"
+    heading: "Impersonation of an authorised officer"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 118
+    derived: "Aidingand abetting commission ofoffence"
+    heading: "Aiding and abetting commission of offence"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 123
+    derived: "Defaults in paymentsof mineral royalties"
+    heading: "Defaults in payments of mineral royalties"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 128
+    derived: "Failure to file estimated andactual returnson due date"
+    heading: "Failure to file estimated and actual returns on due date"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 129
+    derived: "Late paymentoftax"
+    heading: "Late payment of tax"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 130
+    derived: "Failure to complywith therequirementof notice"
+    heading: "Failure to comply with the requirement of notice"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 137
+    derived: "Obstruction ofan authorised officer and refusal to grant immediate entry"
+    heading: "Obstruction of an authorised officer and refusal to grant immediate entry"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 138
+    derived: "Powerto compound offences"
+    heading: "Power to compound offences"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 140
+    derived: "Placeofan offence"
+    heading: "Place of an offence"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 141
+    derived: "Settlementof dispute"
+    heading: "Settlement of dispute"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 143
+    derived: "Official secrecyand confidentiality"
+    heading: "Official secrecy and confidentiality"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 144
+    derived: "Powersof theMinister to issue general directives and make regulations"
+    heading: "Powers of the Minister to issue general directives and make regulations"
+    method: letters_equal
+    matches: [gombe, nass]
+  - act_id: ntaa2025
+    print: nrs
+    section: 145
+    derived: "Conflictwith otherlaws"
+    heading: "Conflict with other laws"
+    method: letters_equal
+    matches: [gombe]

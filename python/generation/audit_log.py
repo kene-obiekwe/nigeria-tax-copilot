@@ -3,7 +3,9 @@
 One JSON object per question, including refused and failed ones, appended to
 logs/generation/YYYY-MM-DD.jsonl (UTC date). logs/ is git-ignored. New records use schema
 `gen-log/2`, which adds the guardrail pre-checks, the refusal and the filled verification field to
-`gen-log/1`; Phase 5 records stay as written and still read. The fields map onto the Phase 9
+`gen-log/1`; Phase 5 records stay as written and still read. With tools on (Phase 7, D-123) records
+use `gen-log/3`: `gen-log/2` plus one `tools` block (model calls, tool uses, added passages and
+computations); with tools off records stay `gen-log/2`, exactly as before. The fields map onto the Phase 9
 audit table (timestamp, question, retrieved chunk ids, generated answer, verification outcome,
 refusal flag). Records never hold the API key or request headers. A failed API call keeps its
 error type, HTTP status and the API's own error message, with key-shaped text redacted (D-69,
@@ -23,7 +25,9 @@ FIELDS_V1 = ("schema", "record_id", "timestamp", "question", "corpus", "retrieva
 FIELDS = ("schema", "record_id", "timestamp", "question", "corpus", "guardrails", "retrieval", "request",
           "response", "parsed", "verification", "refusal", "disclosures", "notes", "rendered", "refusal_flag",
           "error")
-FIELDS_BY_SCHEMA = {"gen-log/1": FIELDS_V1, "gen-log/2": FIELDS}
+SCHEMA_TOOLS = "gen-log/3"
+FIELDS_V3 = FIELDS + ("tools",)
+FIELDS_BY_SCHEMA = {"gen-log/1": FIELDS_V1, "gen-log/2": FIELDS, "gen-log/3": FIELDS_V3}
 
 
 def log_path(timestamp: datetime, log_dir: Path = LOG_DIR) -> Path:
@@ -31,14 +35,16 @@ def log_path(timestamp: datetime, log_dir: Path = LOG_DIR) -> Path:
 
 
 def write_record(record: dict, timestamp: datetime, log_dir: Path = LOG_DIR) -> Path:
-    """Append one record; every field in FIELDS must be present (null allowed)."""
-    missing = [name for name in FIELDS if name not in record]
+    """Append one record; every field of its schema (FIELDS for `gen-log/2`, FIELDS_V3 for
+    `gen-log/3`) must be present (null allowed)."""
+    fields = FIELDS_V3 if record.get("schema") == SCHEMA_TOOLS else FIELDS
+    missing = [name for name in fields if name not in record]
     if missing:
         raise ValueError(f"log record is missing {missing}")
     path = log_path(timestamp, log_dir)
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8", newline="\n") as fh:
-        fh.write(json.dumps({name: record[name] for name in FIELDS}, ensure_ascii=False) + "\n")
+        fh.write(json.dumps({name: record[name] for name in fields}, ensure_ascii=False) + "\n")
     return path
 
 

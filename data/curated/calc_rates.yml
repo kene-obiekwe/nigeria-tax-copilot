@@ -1,0 +1,167 @@
+# Rates and thresholds for the calculation tool (Phase 7, D-119, D-120; tools design, section 4.3).
+#
+# This file is the only source of every rate and threshold that python/tools/taxcalc.py uses. The
+# model never passes a rate. Each row ties one constant to the exact words of the cited gazette text:
+#
+#   id                 the name the calculator uses
+#   value              the constant as a decimal string (a percent for `unit: percent`, naira for `unit: naira`)
+#   unit               percent | naira
+#   act_id, section    where it is printed
+#   chunk_id           the corpus chunk that prints it (data/derived/chunks/v1_chunks.jsonl)
+#   quote              copied from that chunk's text; it matches after the evidence normaliser (norm/6:
+#                      whitespace, dashes, quote marks and case)
+#   chunk_text_sha256  the chunk's text_sha256, so a changed corpus fails the tests
+#   states             how the tool names the constant to the model (the `relies_on` text)
+#
+# tests/test_taxcalc.py proves that every quote is in its chunk, that the quote's token equals the
+# value, and that every chunk hash matches. The sha256 of this file is pinned in
+# python/tools/taxcalc.py (RATES_SHA256) and recorded in eval/tools/config_p7.json.
+
+version: calc/1
+
+# I3: a question that carries any of these marks is not computed (foreign currency). Symbols match
+# anywhere; words match as whole words, singular or plural, in any case.
+currency_marks:
+  symbols: ["$", "£", "€"]
+  words: ["USD", "GBP", "EUR", "dollar", "pound", "euro"]
+
+constants:
+  - id: vat_rate
+    value: "7.5"
+    unit: percent
+    act_id: nta2025
+    section: "148"
+    chunk_id: nta2025:s148
+    quote: "VAT shall be charged on the value of all taxable supplies at the rate of 7.5%"
+    chunk_text_sha256: ba147ae5a0efe57aec9b4046a65f8a368ac59af3daab72147761e51da36eb5eb
+    states: "the VAT rate of 7.5% on the value of a taxable supply"
+
+  - id: cit_rate_small
+    value: "0"
+    unit: percent
+    act_id: nta2025
+    section: "56"
+    chunk_id: nta2025:s56
+    quote: "a small company, at 0%"
+    chunk_text_sha256: 9c4ce3c9dc7cdb8f1b6f432268f6686fa4bac25efe8d976e2513b8ace1bb3d66
+    states: "the company income tax rate of 0% on the total profits of a small company"
+
+  - id: cit_rate_other
+    value: "30"
+    unit: percent
+    act_id: nta2025
+    section: "56"
+    chunk_id: nta2025:s56
+    quote: "any other company, at the rate of 30 per cent"
+    chunk_text_sha256: 9c4ce3c9dc7cdb8f1b6f432268f6686fa4bac25efe8d976e2513b8ace1bb3d66
+    states: "the company income tax rate of 30 per cent on the total profits of any other company"
+
+  - id: small_turnover_max
+    value: "50000000"
+    unit: naira
+    act_id: nta2025
+    section: "202"
+    chunk_id: nta2025:s202:def:small-company
+    quote: "gross turnover of ₦50,000,000 or less per annum"
+    chunk_text_sha256: dd872e0e396ac9c96e3bc4a022dfa4986ac306686ada87cd15e77f6136bc54bb
+    states: "the small-company limit of gross turnover of ₦50,000,000 or less per annum"
+
+  - id: small_fixed_assets_max
+    value: "250000000"
+    unit: naira
+    act_id: nta2025
+    section: "202"
+    chunk_id: nta2025:s202:def:small-company
+    quote: "total fixed assets not exceeding ₦250,000,000"
+    chunk_text_sha256: dd872e0e396ac9c96e3bc4a022dfa4986ac306686ada87cd15e77f6136bc54bb
+    states: "the small-company limit of total fixed assets not exceeding ₦250,000,000"
+
+  - id: etr_turnover_min
+    value: "20000000000"
+    unit: naira
+    act_id: nta2025
+    section: "57"
+    chunk_id: nta2025:s57
+    quote: "aggregate turnover of ₦20,000,000,000 and above"
+    chunk_text_sha256: ce531f7b5077ca92349a3ee8de9426c37f5803aebd7d49cf16475681ba1b0e43
+    states: "the Section 57 minimum effective tax rate threshold of aggregate turnover of ₦20,000,000,000 and above"
+
+  - id: dev_levy_rate
+    value: "4"
+    unit: percent
+    act_id: nta2025
+    section: "59"
+    chunk_id: nta2025:s59
+    quote: "A development levy of 4% is imposed on the assessable profits"
+    chunk_text_sha256: 5ff6c565e7541d1482fbc7b8deba9b69aceb2b3c689600c2167bc57385e0567d
+    states: "the development levy of 4% on assessable profits, other than of small companies and non-resident companies"
+
+  - id: late_payment_addition_rate
+    value: "10"
+    unit: percent
+    act_id: ntaa2025
+    section: "65"
+    chunk_id: ntaa2025:s65
+    quote: "a sum equal to 10% of the amount of the tax payable shall be added to it"
+    chunk_text_sha256: 7de9ae7273486b03dac77f80f9c2e1b2429c8b1ca0241798f71e00dfb860070b
+    states: "the sum equal to 10% of the tax payable that is added to tax not paid in time"
+
+  - id: s100_first_month
+    value: "50000"
+    unit: naira
+    act_id: ntaa2025
+    section: "100"
+    chunk_id: ntaa2025:s100
+    quote: "₦50,000 in the first month in which the failure occurs"
+    chunk_text_sha256: 8c5dd90131e80ef5bce02ae546921382be41071560ec48e2014ea19baf74dae3
+    states: "the penalty of ₦50,000 in the first month of a failure to register"
+
+  - id: s100_later_month
+    value: "25000"
+    unit: naira
+    act_id: ntaa2025
+    section: "100"
+    chunk_id: ntaa2025:s100
+    quote: "₦25,000 for each subsequent month in which the failure continues"
+    chunk_text_sha256: 8c5dd90131e80ef5bce02ae546921382be41071560ec48e2014ea19baf74dae3
+    states: "the penalty of ₦25,000 for each later month in which a failure to register continues"
+
+  - id: s101_first_month
+    value: "100000"
+    unit: naira
+    act_id: ntaa2025
+    section: "101"
+    chunk_id: ntaa2025:s101
+    quote: "₦100,000 in the first month in which the failure occurs"
+    chunk_text_sha256: 3b717f4622b53edb0c11bb3d9cbcaeda65abf3b9d97fd8f936b9f9f29bc7a598
+    states: "the penalty of ₦100,000 in the first month of a failure to file returns"
+
+  - id: s101_later_month
+    value: "50000"
+    unit: naira
+    act_id: ntaa2025
+    section: "101"
+    chunk_id: ntaa2025:s101
+    quote: "₦50,000 for each subsequent month in which the failure continues"
+    chunk_text_sha256: 3b717f4622b53edb0c11bb3d9cbcaeda65abf3b9d97fd8f936b9f9f29bc7a598
+    states: "the penalty of ₦50,000 for each later month in which a failure to file returns continues"
+
+  - id: s104_fixed
+    value: "200000"
+    unit: naira
+    act_id: ntaa2025
+    section: "104"
+    chunk_id: ntaa2025:s104
+    quote: "an administrative penalty of ₦200,000"
+    chunk_text_sha256: bd9184137c7e19163fb83501a05a1a1e0b4bbb5a36df5142d4ffa5bf8bca86bf
+    states: "the administrative penalty of ₦200,000 for failing to process a taxable supply through the fiscalisation system"
+
+  - id: s104_rate
+    value: "100"
+    unit: percent
+    act_id: ntaa2025
+    section: "104"
+    chunk_id: ntaa2025:s104
+    quote: "100% of the tax due"
+    chunk_text_sha256: bd9184137c7e19163fb83501a05a1a1e0b4bbb5a36df5142d4ffa5bf8bca86bf
+    states: "the further penalty of 100% of the tax due for failing to use the fiscalisation system"

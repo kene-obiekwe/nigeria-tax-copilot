@@ -644,14 +644,24 @@ def _classify_gap(question: str, gap: GapCheck, verifier: LLMClient, effort: str
     gap.gap_class = classes[0] if classes else None
 
 
+FIGURE_KINDS = ("amt", "pct")  # the gap figure filter's token kinds (Phase 7, D-122)
+
+
+def gap_figures_not_in_source(text: str, allowed: set[str]) -> list[str]:
+    """The amount and percentage tokens of a gap that are not in `allowed` (tools design, section 5.2:
+    a figure in neither the question nor any shown passage)."""
+    return sorted(t for t in extract_tokens(text) if t.split(":", 1)[0] in FIGURE_KINDS and t not in allowed)
+
+
 def check_gaps(question: str, gaps: list[tuple[str, str]], verifier: LLMClient | None, disputed_patterns, *,
                effort: str = VERIFIER_EFFORT, max_tokens: int = VERIFIER_MAX_TOKENS,
                max_workers: int = MAX_WORKERS, passages: list[dict] | None = None,
-               other_acts=()) -> GapResult:
-    """Pattern filter, then (when `passages` is given) the reference check (D-79), then one
-    classifier call per remaining gap, in parallel (design section 3.6, D-68). `gaps` holds (text,
-    origin) pairs. The fixed no-passages gap is never checked. If any call fails, every checked gap
-    is removed (`check_failed`), as when the single call failed."""
+               other_acts=(), figure_allowed: set[str] | None = None) -> GapResult:
+    """Pattern filter, then (when `passages` is given) the reference check (D-79), then (when
+    `figure_allowed` is given: tools on only, D-122) the gap figure filter, then one classifier call
+    per remaining gap, in parallel (design section 3.6, D-68). `gaps` holds (text, origin) pairs. The
+    fixed no-passages gap is never checked. If any call fails, every checked gap is removed
+    (`check_failed`), as when the single call failed."""
     checks = []
     for text, origin in gaps:
         if text == NO_PASSAGES_GAP:
@@ -660,6 +670,8 @@ def check_gaps(question: str, gaps: list[tuple[str, str]], verifier: LLMClient |
             checks.append(GapCheck(text, origin, "disputed_flag_repeat", False, "disputed_flag_repeat"))
         elif passages is not None and (bad := unconnected_references(text, passages, other_acts)):
             checks.append(GapCheck(text, origin, None, False, REFERENCE_NOT_IN_PASSAGES, unconnected=bad))
+        elif figure_allowed is not None and (bad := gap_figures_not_in_source(text, figure_allowed)):
+            checks.append(GapCheck(text, origin, None, False, "figure_not_in_source", unconnected=bad))
         else:
             checks.append(GapCheck(text, origin, None, False, None))
     pending = [g for g in checks if g.reason is None]
@@ -773,11 +785,12 @@ def verify_answer(question: str, model_status: str, claims: list, gaps: list[str
                   chunks: dict[str, dict], label_of: dict[str, str], verifier: LLMClient, disputed_patterns, *,
                   effort: str = VERIFIER_EFFORT, max_tokens: int = VERIFIER_MAX_TOKENS,
                   max_workers: int = MAX_WORKERS, always_call: bool = False,
-                  other_acts=None) -> VerificationResult:
+                  other_acts=None, gap_figure_allowed: set[str] | None = None) -> VerificationResult:
     """Verify a parsed answer (`model_status` "answered" or "not_covered"). `claims` are parser
     claims (text, chunk_ids); `label_of` maps chunk id to the label it was shown under; `chunks`
     holds every passage shown, which the gap reference check reads (D-79). `other_acts` is the
-    guardrails policy's list of Acts outside the corpus (None: read from the policy file)."""
+    guardrails policy's list of Acts outside the corpus (None: read from the policy file).
+    `gap_figure_allowed` turns on the gap figure filter (tools on only, D-122; None: off)."""
     if other_acts is None:
         other_acts = references.load_other_acts()
     def one(item):
@@ -798,7 +811,7 @@ def verify_answer(question: str, model_status: str, claims: list, gaps: list[str
         gap_result = check_gaps(question, gap_input, verifier, disputed_patterns, effort=effort,
                                 max_tokens=max_tokens, max_workers=max_workers,
                                 passages=list(chunks.values()) if GAP_REFERENCE_CHECK else None,
-                                other_acts=other_acts)
+                                other_acts=other_acts, figure_allowed=gap_figure_allowed)
         kept_gaps = gap_result.kept
         if any(not g.kept for g in gap_result.gaps):
             flags.append("gaps_removed")
