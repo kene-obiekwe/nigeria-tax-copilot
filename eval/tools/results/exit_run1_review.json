@@ -1,0 +1,472 @@
+{
+  "schema": "exit-review/1",
+  "run": 1,
+  "record_file": "eval/tools/results/exit_run1.json",
+  "record_sha256": "2c5f7fe428d62643273798bda10c1eede77c5167aeb41d1d01bcd344364cd7dd",
+  "reviewer": "overseer",
+  "owner_confirmation": {
+    "confirmed_by": "Kene",
+    "date": "2026-11-11",
+    "questions": [
+      "E02",
+      "E06",
+      "E11"
+    ]
+  },
+  "decision": "D-132",
+  "result": "pass",
+  "run_2_used": false,
+  "kept_claims_total": 40,
+  "kept_claims_supported": 40,
+  "reported_extras": [
+    "E03 made a duplicate calculation call (C2 not listed, withheld)",
+    "X2 made an extra lookup of Section 202"
+  ],
+  "questions": [
+    {
+      "id": "E01",
+      "status": "answered",
+      "kept_claims": 2,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "nta2025:s148"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "nta2025:s153"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": false
+    },
+    {
+      "id": "E02",
+      "status": "answered",
+      "kept_claims": 2,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "nta2025:s148"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "nta2025:s149"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": true
+    },
+    {
+      "id": "E03",
+      "status": "answered",
+      "kept_claims": 4,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "nta2025:s56"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "nta2025:s202:def:small-company"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 3,
+          "chunk_ids": [
+            "nta2025:s202:def:gross-turnover"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 4,
+          "chunk_ids": [
+            "nta2025:s57"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": false
+    },
+    {
+      "id": "E04",
+      "status": "answered",
+      "kept_claims": 5,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "nta2025:s202:def:small-company"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "nta2025:s56"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 3,
+          "chunk_ids": [
+            "nta2025:s56"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 4,
+          "chunk_ids": [
+            "nta2025:s202:def:gross-turnover"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 5,
+          "chunk_ids": [
+            "nta2025:s57"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": false
+    },
+    {
+      "id": "E05",
+      "status": "answered",
+      "kept_claims": 2,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "nta2025:s59"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "nta2025:s202:def:small-company"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": false
+    },
+    {
+      "id": "E06",
+      "status": "answered",
+      "kept_claims": 5,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "nta2025:s56"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "nta2025:s202:def:small-company"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 3,
+          "chunk_ids": [
+            "nta2025:s59"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 4,
+          "chunk_ids": [
+            "nta2025:s59"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 5,
+          "chunk_ids": [
+            "nta2025:s57"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": true
+    },
+    {
+      "id": "E07",
+      "status": "answered",
+      "kept_claims": 4,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "ntaa2025:s65"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "ntaa2025:s65"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 3,
+          "chunk_ids": [
+            "ntaa2025:s65"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 4,
+          "chunk_ids": [
+            "ntaa2025:s65"
+          ],
+          "overseer_verdict": "supported",
+          "note": "Says \"this section\" where Section 65(3) says \"this subsection\" (harmless)."
+        }
+      ],
+      "confirmed_by_owner": false
+    },
+    {
+      "id": "E08",
+      "status": "answered",
+      "kept_claims": 3,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "ntaa2025:s101"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "ntaa2025:s101"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 3,
+          "chunk_ids": [
+            "ntaa2025:s101"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": false
+    },
+    {
+      "id": "E09",
+      "status": "answered",
+      "kept_claims": 2,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "ntaa2025:s100"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "ntaa2025:s100"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": false
+    },
+    {
+      "id": "E10",
+      "status": "answered",
+      "kept_claims": 3,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "ntaa2025:s104"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "ntaa2025:s104"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 3,
+          "chunk_ids": [
+            "ntaa2025:s104"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": false
+    },
+    {
+      "id": "E11",
+      "status": "answered",
+      "kept_claims": 1,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "ntaa2025:s65"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": true
+    },
+    {
+      "id": "X1",
+      "status": "answered",
+      "kept_claims": 4,
+      "overseer_verdict": "supported with concern",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "nta2025:s39"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "nta2025:s39"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 3,
+          "chunk_ids": [
+            "nta2025:s27(1)-(4)"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 4,
+          "chunk_ids": [
+            "nta2025:sch1:pt1:para9"
+          ],
+          "overseer_verdict": "supported with concern",
+          "note": "States the Schedule 1 Part I paragraph 9 disposal rule without its \"In this Part\" (capital allowance) scope; the citation shows the source."
+        }
+      ],
+      "confirmed_by_owner": false
+    },
+    {
+      "id": "X2",
+      "status": "answered",
+      "kept_claims": 3,
+      "overseer_verdict": "supported",
+      "claims": [
+        {
+          "no": 1,
+          "chunk_ids": [
+            "nta2025:s56"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 2,
+          "chunk_ids": [
+            "nta2025:s202:def:small-company"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        },
+        {
+          "no": 3,
+          "chunk_ids": [
+            "nta2025:s57"
+          ],
+          "overseer_verdict": "supported",
+          "note": null
+        }
+      ],
+      "confirmed_by_owner": false
+    },
+    {
+      "id": "X3",
+      "status": "not_covered",
+      "kept_claims": 0,
+      "overseer_verdict": "supported",
+      "claims": [],
+      "confirmed_by_owner": false
+    }
+  ]
+}

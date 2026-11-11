@@ -1122,3 +1122,352 @@ run 1. No paid call was made for this step ($0.00).
   the file's existence instead of False.
 - **Rules from here.** The file is never edited. A fix before run 2 makes `config_p7_r2.json`. Exit-check
   run 1 is the next paid step (cap $0.60); it is not started.
+
+## 18. Exit-check run 1 record (2026-11-11)
+
+**Result: PASS on run 1 (D-132). Run 2 was not used.** Sections 18.1 to 18.4 record what run 1 produced (facts from the runner's record, written before the review); Section 18.5 records the overseer's review, Kene's confirmation and the result.
+
+- **Command:** `.venv\Scripts\python eval\tools\run_exit_check.py --run 1`, run once; exit code 0 (not void; `stopped_on_api_error` null, `stopped_on_cost` null).
+- **Record:** `eval/tools/results/exit_run1.json`, sha256 `2c5f7fe428d62643273798bda10c1eede77c5167aeb41d1d01bcd344364cd7dd`, committed in `d1b8e1b` (`test(phase7): exit-check run 1 record`), not pushed.
+- **Configuration:** `eval/tools/config_p7.json`, sha256 `e2f61fe680759c0778719c01dfc30d2a463d6f484f54e8f7d7989e5a02ceec25` (equals the pin); frozen at 2026-11-11T17:16:16.550420+00:00.
+- **Time:** started 2026-11-11T17:46:55.982620+00:00, finished 2026-11-11T17:49:36.990834+00:00 (UTC).
+- **Runner result:** `auto_pass` = **true**: **auto checks pass** for all 14 questions. `review` = "pending": pass rule 3 (every kept claim supported) and the final verdict are left to the overseer and Kene.
+- **Cost:** $0.2916 against the $0.60 run cap.
+
+### 18.1 Summary table
+
+| Id | Status | Computed item(s) shown (expected) | Auto checks | Tool calls | Claims kept / removed / moved | Cost |
+|---|---|---|---|---|---|---|
+| E01 | answered | vat_on_supply 195000.00 (vat_on_supply 195000.00) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability | 2 / 0 / 0 | $0.0283 |
+| E02 | answered | vat_on_supply 34883.72 (vat_on_supply 34883.72) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability | 2 / 0 / 0 | $0.0198 |
+| E03 | answered | company_income_tax 10800000.00 (company_income_tax 10800000.00) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability, calculate_liability | 4 / 0 / 0 | $0.0356 |
+| E04 | answered | company_income_tax 0.00 (company_income_tax 0.00) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability | 5 / 0 / 0 | $0.0202 |
+| E05 | answered | development_levy 10000000.00 (development_levy 10000000.00) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability | 2 / 0 / 0 | $0.0177 |
+| E06 | answered | company_income_tax 24000000.00; development_levy 3000000.00 (company_income_tax 24000000.00; development_levy 3000000.00) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability, calculate_liability | 5 / 0 / 0 | $0.0267 |
+| E07 | answered | late_payment_addition 240000.00 (late_payment_addition 240000.00) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability | 4 / 0 / 0 | $0.0205 |
+| E08 | answered | monthly_admin_penalty 250000.00 (monthly_admin_penalty 250000.00) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability | 3 / 0 / 0 | $0.0153 |
+| E09 | answered | monthly_admin_penalty 200000.00 (monthly_admin_penalty 200000.00) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability | 2 / 0 / 0 | $0.0162 |
+| E10 | answered | fiscalisation_penalty 1000000.00 (fiscalisation_penalty 1000000.00) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability | 3 / 0 / 0 | $0.0172 |
+| E11 | answered | late_payment_addition 90000.00 (late_payment_addition 90000.00) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | lookup_section, calculate_liability | 1 / 0 / 1 | $0.0229 |
+| X1 | answered | none (none) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | none | 4 / 0 / 0 | $0.0123 |
+| X2 | answered | none (none) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | calculate_liability, lookup_section | 3 / 0 / 0 | $0.0309 |
+| X3 | not_covered | none (none) | correct, code_ok, figures, notes_ok, lookup_ok, disclaimer all true | none | 0 / 0 / 0 | $0.0079 |
+| **Total** | | | | | | **$0.2916** |
+
+All 14 cases: `auto_pass` true, `code_ok` true, `figures.passed` true (no unexplained amount or percentage; no computed amount in a claim or gap), `notes_ok` true, `lookup_ok` true, `disclaimer` true, no API error. Verifier verdicts in every case: 0 unsupported, 0 contradicted, 0 unverified.
+
+### 18.2 Questions
+
+#### E01 (compute)
+
+> We are invoicing a customer ₦2,600,000 for printing services, before VAT. How much VAT should we add to the invoice?
+
+- **Status:** `answered`; flags none; notes none; shown disclosures DR-059, DR-060.
+- **Expected tools (design Section 9.1):** 1 x calculate_liability.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "vat_on_supply", "amount": "2600000", "amount_basis": "value_before_vat"}; `is_error` false; calculation `C1`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `vat_on_supply`, inputs {"amount": "2600000", "amount_basis": "value_before_vat"}, 2 steps by `taxcalc.*`, result `195000.00`, text "VAT of ₦195,000"; working "₦2,600,000 x 7.5% = ₦195,000"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"vat_rate": [1]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('vat_on_supply', '195000.00')]; shown [('vat_on_supply', '195000.00')]; **equal**.
+- **Citations of kept claims:** `nta2025:s148`, `nta2025:s153`; expected nta2025:s148; expected chunks not cited: none.
+- **Claims:** checked 2, kept 2, removed 0, moved 0; verdicts {'supported': 2, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 2, removed 0.
+  - Kept claim 1 [nta2025:s148]: VAT is charged on the value of all taxable supplies at the rate of 7.5%, subject to the provisions of Part IV of Chapter Eight of the Act.
+  - Kept claim 2 [nta2025:s153]: A taxable person who makes a taxable supply must give the purchaser a VAT invoice that shows, among other things, the VAT charged and the rate.
+  - Gap kept: The passages do not say whether printing services are a taxable supply, or whether they are exempt or zero-rated.
+  - Gap kept: Part IV of Chapter Eight, which section 148 refers to, is not among the passages.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0283; log record `c729090f-c261-4eb4-8e0a-b5fdbd543b96`.
+
+#### E02 (compute)
+
+> A customer paid us ₦500,000 for taxable goods, and that price already includes VAT. How much of the ₦500,000 is VAT?
+
+- **Status:** `answered`; flags ['gaps_removed']; notes none; shown disclosures DR-059.
+- **Expected tools (design Section 9.1):** 1 x calculate_liability.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "vat_on_supply", "amount": "500000", "amount_basis": "consideration_including_vat"}; `is_error` false; calculation `C1`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `vat_on_supply`, inputs {"amount": "500000", "amount_basis": "consideration_including_vat"}, 4 steps by `taxcalc.*`, result `34883.72`, text "VAT of ₦34,883.72"; working "₦500,000 x 7.5 / 107.5 = ₦34,883.72"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"vat_rate": [1], "vat_inclusive_value": [2]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('vat_on_supply', '34883.72')]; shown [('vat_on_supply', '34883.72')]; **equal**.
+- **Citations of kept claims:** `nta2025:s148`, `nta2025:s149`; expected nta2025:s148, nta2025:s149; expected chunks not cited: none.
+- **Claims:** checked 2, kept 2, removed 0, moved 0; verdicts {'supported': 2, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 0, removed 1.
+  - Kept claim 1 [nta2025:s148]: VAT is charged on the value of all taxable supplies at the rate of 7.5%, subject to the provisions of Part IV of Chapter Eight of the Act.
+  - Kept claim 2 [nta2025:s149]: For a supply made for a money consideration, its value is the amount which, with the VAT chargeable added, equals the consideration.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0198; log record `ad804015-c9bc-4a9a-8e60-ba90c5c7b42e`.
+
+#### E03 (compute)
+
+> Our company's gross turnover for the year was ₦180 million and its total profits were ₦36 million. Work out its company income tax.
+
+- **Status:** `answered`; flags none; notes none; shown disclosures DR-049, DR-050, DR-150, DR-151, DR-051, DR-052, DR-053, DR-054, DR-055.
+- **Expected tools (design Section 9.1):** 1 x calculate_liability.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "company_income_tax", "amount": "36000000", "gross_turnover": "180000000"}; `is_error` false; calculation `C1`.
+- **Tool call (turn 2):** `calculate_liability` {"scenario": "company_income_tax", "amount": "36000000", "gross_turnover": "180000000"}; `is_error` false; calculation `C2`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `company_income_tax`, inputs {"amount": "36000000", "gross_turnover": "180000000"}, 2 steps by `taxcalc.*`, result `10800000.00`, text "company income tax of ₦10,800,000"; working "Small-company test (section 202): gross turnover of ₦180,000,000 is more than ₦50,000,000, so the company is not a small company; ₦36,000,000 x 30% = ₦10,800,000"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"small_turnover_max": [2], "cit_rate_other": [1]}, "K5": true, "K6": true}.
+- **Computation C2:** `company_income_tax`, inputs {"amount": "36000000", "gross_turnover": "180000000"}, 2 steps by `taxcalc.*`, result `10800000.00`, text "company income tax of ₦10,800,000"; working "Small-company test (section 202): gross turnover of ₦180,000,000 is more than ₦50,000,000, so the company is not a small company; ₦36,000,000 x 30% = ₦10,800,000"; shown **false** (withheld: `not_listed`); checks {"K1": true, "K2": true, "K3": false, "K4": {"small_turnover_max": [2], "cit_rate_other": [1]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('company_income_tax', '10800000.00')]; shown [('company_income_tax', '10800000.00')]; **equal**.
+- **Citations of kept claims:** `nta2025:s202:def:gross-turnover`, `nta2025:s202:def:small-company`, `nta2025:s56`, `nta2025:s57`; expected nta2025:s56, nta2025:s202; expected chunks not cited: none.
+- **Claims:** checked 4, kept 4, removed 0, moved 0; verdicts {'supported': 4, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 3, removed 0.
+  - Kept claim 1 [nta2025:s56]: Tax is levied for each year of assessment on the total profits of every company. A small company is taxed at 0%. Any other company is taxed at the rate of 30 per cent from the commencement of this Act.
+  - Kept claim 2 [nta2025:s202:def:small-company]: A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company.
+  - Kept claim 3 [nta2025:s202:def:gross-turnover]: Gross turnover means the gross inflow of economic benefits during the period arising in the course of the operating activities of an entity, when those inflows result in increases in equity. It includes sales of goods, supply of services, receipt of interest, rents, royalties or dividends, other than increases relating to contributions from equity participants.
+  - Kept claim 4 [nta2025:s57]: Where a company's effective tax rate in a year of assessment is less than 15%, it shall recompute and pay an additional tax that makes its effective tax rate equal to 15%. This applies to a company that is a constituent entity of an MNE group, and to any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.
+  - Gap kept: Whether the company is a constituent entity of an MNE group is not stated in the question.
+  - Gap kept: Whether the company provides professional services, and its total fixed assets, are not stated in the question.
+  - Gap kept: Whether the stated total profits are the company's total profits after any losses and capital allowances under section 27 is not stated. Section 27(6), which section 27(1) refers to for losses, is not among the passages.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0356; log record `64e283c5-5372-4472-9a7c-4b66031f5e79`.
+
+#### E04 (compute)
+
+> A trading company that does not provide professional services has gross turnover of ₦30 million, total fixed assets of ₦12 million and total profits of ₦4.5 million. How much company income tax does it pay?
+
+- **Status:** `answered`; flags none; notes none; shown disclosures DR-150, DR-151, DR-049, DR-050, DR-051, DR-052, DR-053, DR-054, DR-055.
+- **Expected tools (design Section 9.1):** 1 x calculate_liability.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "company_income_tax", "amount": "4500000", "gross_turnover": "30000000", "total_fixed_assets": "12000000", "professional_services": false}; `is_error` false; calculation `C1`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `company_income_tax`, inputs {"amount": "4500000", "gross_turnover": "30000000", "total_fixed_assets": "12000000", "professional_services": false}, 2 steps by `taxcalc.*`, result `0.00`, text "company income tax of ₦0"; working "Small-company test (section 202): gross turnover of ₦30,000,000 is not more than ₦50,000,000, total fixed assets of ₦12,000,000 are not more than ₦250,000,000, and no professional services are provided, so the company is a small company; ₦4,500,000 x 0% = ₦0"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"small_turnover_max": [1], "small_fixed_assets_max": [1], "cit_rate_small": [2]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('company_income_tax', '0.00')]; shown [('company_income_tax', '0.00')]; **equal**.
+- **Citations of kept claims:** `nta2025:s202:def:gross-turnover`, `nta2025:s202:def:small-company`, `nta2025:s56`, `nta2025:s57`; expected nta2025:s56, nta2025:s202; expected chunks not cited: none.
+- **Claims:** checked 5, kept 5, removed 0, moved 0; verdicts {'supported': 5, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 1, removed 0.
+  - Kept claim 1 [nta2025:s202:def:small-company]: A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company.
+  - Kept claim 2 [nta2025:s56]: Tax is levied for each year of assessment on the total profits of every company. For a small company the rate is 0%.
+  - Kept claim 3 [nta2025:s56]: Any other company is taxed at the rate of 30 per cent from the commencement of the Act.
+  - Kept claim 4 [nta2025:s202:def:gross-turnover]: Gross turnover means the gross inflow of economic benefits during the period from the entity's operating activities, when those inflows increase equity. It includes sales of goods, supply of services, interest, rents, royalties or dividends, other than increases from contributions by equity participants.
+  - Kept claim 5 [nta2025:s57]: An additional tax applies where a company's effective tax rate is less than 15%. This covers a company that is a constituent entity of an MNE group and any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.
+  - Gap kept: Whether the company is a constituent entity of an MNE group is not stated in the question.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0202; log record `2274a7d4-f610-4196-b9e8-0f0f6dd814c7`.
+
+#### E05 (compute)
+
+> Our company is resident in Nigeria, its gross turnover is ₦900 million and its assessable profits are ₦250 million. How much development levy is due?
+
+- **Status:** `answered`; flags none; notes none; shown disclosures DR-056, DR-150, DR-151.
+- **Expected tools (design Section 9.1):** 1 x calculate_liability.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "development_levy", "amount": "250000000", "gross_turnover": "900000000", "non_resident": false}; `is_error` false; calculation `C1`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `development_levy`, inputs {"amount": "250000000", "gross_turnover": "900000000", "non_resident": false}, 2 steps by `taxcalc.*`, result `10000000.00`, text "development levy of ₦10,000,000"; working "Small-company test (section 202): gross turnover of ₦900,000,000 is more than ₦50,000,000, so the company is not a small company; ₦250,000,000 x 4% = ₦10,000,000"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"dev_levy_rate": [1], "small_turnover_max": [2]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('development_levy', '10000000.00')]; shown [('development_levy', '10000000.00')]; **equal**.
+- **Citations of kept claims:** `nta2025:s202:def:small-company`, `nta2025:s59`; expected nta2025:s59, nta2025:s202; expected chunks not cited: none.
+- **Claims:** checked 2, kept 2, removed 0, moved 0; verdicts {'supported': 2, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 0, removed 0.
+  - Kept claim 1 [nta2025:s59]: A development levy of 4% is imposed on the assessable profits of all companies chargeable to tax under Chapters Two and Three of this Act, other than small companies and non-resident companies.
+  - Kept claim 2 [nta2025:s202:def:small-company]: A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000, and a business providing professional services is not classified as a small company.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0177; log record `49a206b4-1cf0-4c73-b054-5a6316f97df7`.
+
+#### E06 (compute)
+
+> This year our company had gross turnover of ₦500 million, total profits of ₦80 million and assessable profits of ₦75 million. What are its company income tax and its development levy?
+
+- **Status:** `answered`; flags none; notes none; shown disclosures DR-049, DR-050, DR-150, DR-151, DR-056, DR-051, DR-052, DR-053, DR-054, DR-055.
+- **Expected tools (design Section 9.1):** 2 x calculate_liability.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "company_income_tax", "amount": "80000000", "gross_turnover": "500000000"}; `is_error` false; calculation `C1`.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "development_levy", "amount": "75000000", "gross_turnover": "500000000"}; `is_error` false; calculation `C2`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `company_income_tax`, inputs {"amount": "80000000", "gross_turnover": "500000000"}, 2 steps by `taxcalc.*`, result `24000000.00`, text "company income tax of ₦24,000,000"; working "Small-company test (section 202): gross turnover of ₦500,000,000 is more than ₦50,000,000, so the company is not a small company; ₦80,000,000 x 30% = ₦24,000,000"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"small_turnover_max": [2], "cit_rate_other": [1]}, "K5": true, "K6": true}.
+- **Computation C2:** `development_levy`, inputs {"amount": "75000000", "gross_turnover": "500000000"}, 2 steps by `taxcalc.*`, result `3000000.00`, text "development levy of ₦3,000,000"; working "Small-company test (section 202): gross turnover of ₦500,000,000 is more than ₦50,000,000, so the company is not a small company; ₦75,000,000 x 4% = ₦3,000,000"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"dev_levy_rate": [3], "small_turnover_max": [2]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('company_income_tax', '24000000.00'), ('development_levy', '3000000.00')]; shown [('company_income_tax', '24000000.00'), ('development_levy', '3000000.00')]; **equal**.
+- **Citations of kept claims:** `nta2025:s202:def:small-company`, `nta2025:s56`, `nta2025:s57`, `nta2025:s59`; expected nta2025:s56, nta2025:s59, nta2025:s202; expected chunks not cited: none.
+- **Claims:** checked 5, kept 5, removed 0, moved 0; verdicts {'supported': 5, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 1, removed 0.
+  - Kept claim 1 [nta2025:s56]: Company income tax is levied for each year of assessment on the total profits of every company. A small company is taxed at 0%. Any other company is taxed at the rate of 30 per cent from the commencement of this Act.
+  - Kept claim 2 [nta2025:s202:def:small-company]: A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company.
+  - Kept claim 3 [nta2025:s59]: A development levy of 4% is imposed on the assessable profits of all companies chargeable to tax under Chapters Two and Three of this Act, other than small companies and non-resident companies.
+  - Kept claim 4 [nta2025:s59]: The development levy is not levied on assessable profits computed for the purposes of hydrocarbon tax.
+  - Kept claim 5 [nta2025:s57]: Where a company's effective tax rate in a year of assessment is less than 15%, it shall recompute and pay an additional tax that makes its effective tax rate equal to 15%. This applies to a constituent entity of an MNE group and to any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.
+  - Gap kept: The question does not state the company's total fixed assets, whether it provides professional services, whether it is an MNE group constituent entity, or whether it is resident in Nigeria. These facts bear on the result.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0267; log record `f118e771-211c-4975-a0f6-da06ad67d60c`.
+
+#### E07 (compute)
+
+> Our company paid ₦2,400,000 of tax after the date it was due. Under the Nigeria Tax Administration Act, what sum is added to that tax?
+
+- **Status:** `answered`; flags none; notes none; shown disclosures DR-242, DR-243, DR-244, DR-245.
+- **Expected tools (design Section 9.1):** 1 x calculate_liability.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "late_payment_addition", "amount": "2400000"}; `is_error` false; calculation `C1`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `late_payment_addition`, inputs {"amount": "2400000"}, 2 steps by `taxcalc.*`, result `240000.00`, text "a sum of ₦240,000 added to the tax"; working "₦2,400,000 x 10% = ₦240,000"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"late_payment_addition_rate": [1, 3]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('late_payment_addition', '240000.00')]; shown [('late_payment_addition', '240000.00')]; **equal**.
+- **Citations of kept claims:** `ntaa2025:s65`; expected ntaa2025:s65; expected chunks not cited: none.
+- **Claims:** checked 4, kept 4, removed 0, moved 0; verdicts {'supported': 4, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 2, removed 0.
+  - Kept claim 1 [ntaa2025:s65]: Where any tax is not paid within the period prescribed under the Act, a sum equal to 10% of the amount of the tax payable is added to it. This is subject to section 67 of that Act.
+  - Kept claim 2 [ntaa2025:s65]: The Act's collection and recovery provisions apply to collecting and recovering that added sum.
+  - Kept claim 3 [ntaa2025:s65]: In addition, naira remittances carry interest at the prevailing monetary policy rate of the Central Bank of Nigeria plus a spread determined by the Minister. Foreign currency remittances incur interest at the prevailing SOFR or any successor rate, plus 10% or such other spread as the Minister determines.
+  - Kept claim 4 [ntaa2025:s65]: The penalty and interest under this section are not deemed part of the tax paid for the purpose of claiming relief under the Act or any other tax law.
+  - Gap kept: Section 67, which section 65 refers to, is not among the passages.
+  - Gap kept: The interest amount is not calculated, because the spread and the period are not given.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0205; log record `27ab96f6-b129-4890-898a-fd6f9f6a2da4`.
+
+#### E08 (compute)
+
+> A company failed to file its returns for four months in a row. What is the total administrative penalty under the Nigeria Tax Administration Act?
+
+- **Status:** `answered`; flags none; notes none; shown disclosures DR-248.
+- **Expected tools (design Section 9.1):** 1 x calculate_liability.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "monthly_admin_penalty", "provision": "ntaa2025:s101", "months": 4}; `is_error` false; calculation `C1`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `monthly_admin_penalty`, inputs {"months": 4, "provision": "ntaa2025:s101"}, 4 steps by `taxcalc.*`, result `250000.00`, text "a total administrative penalty of ₦250,000"; working "₦100,000 for the first month + ₦50,000 x 3 later months = ₦250,000"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"s101_first_month": [2], "s101_later_month": [3]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('monthly_admin_penalty', '250000.00')]; shown [('monthly_admin_penalty', '250000.00')]; **equal**.
+- **Citations of kept claims:** `ntaa2025:s101`; expected ntaa2025:s101; expected chunks not cited: none.
+- **Claims:** checked 3, kept 3, removed 0, moved 0; verdicts {'supported': 3, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 1, removed 0.
+  - Kept claim 1 [ntaa2025:s101]: A taxable person who fails or refuses to file returns, or knowingly files incomplete or inaccurate returns, to the relevant tax authority in accordance with the Act is liable to an administrative penalty.
+  - Kept claim 2 [ntaa2025:s101]: The penalty is ₦100,000 in the first month in which the failure occurs.
+  - Kept claim 3 [ntaa2025:s101]: The penalty is ₦50,000 for each subsequent month in which the failure continues.
+  - Gap kept: The passages do not say that the company in the question is a taxable person, so that link is not stated.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0153; log record `0cba6fee-18df-421f-9a4c-68ec48834841`.
+
+#### E09 (compute)
+
+> A business traded for 7 months without registering for tax. What is the total administrative penalty for failing to register?
+
+- **Status:** `answered`; flags none; notes none; shown disclosures none.
+- **Expected tools (design Section 9.1):** 1 x calculate_liability.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "monthly_admin_penalty", "provision": "ntaa2025:s100", "months": 7}; `is_error` false; calculation `C1`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `monthly_admin_penalty`, inputs {"months": 7, "provision": "ntaa2025:s100"}, 4 steps by `taxcalc.*`, result `200000.00`, text "a total administrative penalty of ₦200,000"; working "₦50,000 for the first month + ₦25,000 x 6 later months = ₦200,000"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"s100_first_month": [1], "s100_later_month": [2]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('monthly_admin_penalty', '200000.00')]; shown [('monthly_admin_penalty', '200000.00')]; **equal**.
+- **Citations of kept claims:** `ntaa2025:s100`; expected ntaa2025:s100; expected chunks not cited: none.
+- **Claims:** checked 2, kept 2, removed 0, moved 0; verdicts {'supported': 2, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 1, removed 0.
+  - Kept claim 1 [ntaa2025:s100]: A taxable person who fails or refuses to register for tax under section 4 of the Act is liable to an administrative penalty of ₦50,000 in the first month in which the failure occurs.
+  - Kept claim 2 [ntaa2025:s100]: The same person is liable to an administrative penalty of ₦25,000 for each subsequent month in which the failure continues.
+  - Gap kept: Whether the business is a taxable person required to register under section 4 is not stated in the passages. Section 4 is not among the passages.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0162; log record `d79485f3-5742-4c53-8cd5-9043e174c14f`.
+
+#### E10 (compute)
+
+> We did not process taxable supplies through the fiscalisation system, and the tax due on them was ₦800,000. Leaving interest aside, what is the administrative penalty?
+
+- **Status:** `answered`; flags none; notes none; shown disclosures none.
+- **Expected tools (design Section 9.1):** 1 x calculate_liability.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "fiscalisation_penalty", "amount": "800000"}; `is_error` false; calculation `C1`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `fiscalisation_penalty`, inputs {"amount": "800000"}, 3 steps by `taxcalc.*`, result `1000000.00`, text "an administrative penalty of ₦1,000,000"; working "₦200,000 + ₦800,000 x 100% = ₦1,000,000"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"s104_fixed": [1, 2], "s104_rate": [1, 3]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('fiscalisation_penalty', '1000000.00')]; shown [('fiscalisation_penalty', '1000000.00')]; **equal**.
+- **Citations of kept claims:** `ntaa2025:s104`; expected ntaa2025:s104; expected chunks not cited: none.
+- **Claims:** checked 3, kept 3, removed 0, moved 0; verdicts {'supported': 3, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 1, removed 0.
+  - Kept claim 1 [ntaa2025:s104]: A taxable person that fails to process a taxable supply through the fiscalisation system is liable to an administrative penalty of ₦200,000 plus 100% of the tax due, and interest at the prevailing Central Bank of Nigeria Monetary Policy rate per annum.
+  - Kept claim 2 [ntaa2025:s104]: The administrative penalty has a fixed part of ₦200,000.
+  - Kept claim 3 [ntaa2025:s104]: The administrative penalty also has a further part of 100% of the tax due.
+  - Gap kept: The interest at the Central Bank of Nigeria Monetary Policy rate is not calculated, as the question sets it aside.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0172; log record `e129ed40-5ff8-48ca-8216-9530e0a0db07`.
+
+#### E11 (compute)
+
+> Section 65 of the Nigeria Tax Administration Act is made subject to another section of that Act. What does that other section say, and what sum is added under section 65 when ₦900,000 of tax is paid late?
+
+- **Status:** `answered`; flags none; notes none; shown disclosures DR-242, DR-243, DR-244, DR-245.
+- **Expected tools (design Section 9.1):** lookup_section (section_outside_v1) and 1 x calculate_liability.
+- **Tool call (turn 1):** `lookup_section` {"act": "ntaa2025", "section_number": "67"}; `is_error` true.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "late_payment_addition", "amount": "900000"}; `is_error` false; calculation `C1`.
+- **Extra calls (runner):** none.
+- **Computation C1:** `late_payment_addition`, inputs {"amount": "900000"}, 2 steps by `taxcalc.*`, result `90000.00`, text "a sum of ₦90,000 added to the tax"; working "₦900,000 x 10% = ₦90,000"; shown **true**; checks {"K1": true, "K2": true, "K3": true, "K4": {"late_payment_addition_rate": [2]}, "K5": true, "K6": true}.
+- **Expected vs shown:** expected [('late_payment_addition', '90000.00')]; shown [('late_payment_addition', '90000.00')]; **equal**.
+- **Citations of kept claims:** `ntaa2025:s65`; expected ntaa2025:s65; expected chunks not cited: none.
+- **Claims:** checked 1, kept 1, removed 0, moved 1; verdicts {'supported': 1, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 1, 'unverified': 0}; gaps kept 1, removed 0.
+  - Kept claim 1 [ntaa2025:s65]: Where any tax is not paid within the period prescribed under the Act, a sum equal to 10% of the amount of the tax payable is added to it. The Act's provisions on collection and recovery of tax apply to collecting and recovering that sum.
+  - Gap kept: Section 67 of the Nigeria Tax Administration Act 2025, which section 65 refers to, is not among the passages. What it says cannot be given here.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0229; log record `40eb1354-bf6b-4d08-be02-6e3044e839f5`.
+
+#### X1 (decline)
+
+> Our company sold an office building for ₦300 million; it had cost ₦120 million. Work out the tax on the gain.
+
+- **Status:** `answered`; flags none; notes none; shown disclosures DR-038, DR-039, DR-170.
+- **Expected tools (design Section 9.1):** none, or a declined call.
+- **Tool calls:** none.
+- **Extra calls (runner):** none.
+- **Computations:** none; no computed item shown.
+- **Citations of kept claims:** `nta2025:s27(1)-(4)`, `nta2025:s39`, `nta2025:sch1:pt1:para9`; expected as retrieved; expected chunks not cited: none.
+- **Claims:** checked 4, kept 4, removed 0, moved 0; verdicts {'supported': 4, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 5, removed 0.
+  - Kept claim 1 [nta2025:s39]: Where an asset used for a trade, business, profession or vocation has had capital allowance made under the First Schedule, only the residue of that asset is deducted from the disposal proceeds to compute the chargeable gain.
+  - Kept claim 2 [nta2025:s39]: Where capital allowance has not been made under the First Schedule, the chargeable gain is found by deducting from the disposal proceeds the amount or value of the consideration, in money or money's worth, incurred wholly and exclusively to acquire the asset.
+  - Kept claim 3 [nta2025:s27(1)-(4)]: The total profits of a company for a year of assessment are its total assessable profits from all sources, including chargeable gains computed under Part VIII of Chapter Two, less any loss ascertained under subsection (6) and capital allowance under Part I of the First Schedule.
+  - Kept claim 4 [nta2025:sch1:pt1:para9]: A building, structure or works of a permanent nature is disposed of where the relevant interest in it is sold.
+  - Gap kept: The tax rate that applies to the company's total profits is not among the passages, so the tax on the gain cannot be worked out.
+  - Gap kept: Whether capital allowance was claimed on the building, and the amount of its residue, are not stated, so the gain cannot be computed.
+  - Gap kept: Section 33, which the definition of chargeable gains refers to, is not among the passages.
+  - Gap kept: Subsection (6) of section 27, which section 27(1) refers to for losses, is not among the passages.
+  - Gap kept: Whether the company's other profits, losses or allowances affect the tax is not stated.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0123; log record `e36d04e7-c94c-4d87-af48-b1a3fb4dfc91`.
+
+#### X2 (decline)
+
+> Our company made total profits of ₦25 million this year. How much company income tax does it pay?
+
+- **Status:** `answered`; flags none; notes none; shown disclosures DR-049, DR-050, DR-150, DR-151, DR-051, DR-052, DR-053, DR-054, DR-055.
+- **Expected tools (design Section 9.1):** declined call (missing_input), or none.
+- **Tool call (turn 1):** `calculate_liability` {"scenario": "company_income_tax", "amount": "25000000"}; `is_error` false; calculation `C1`.
+- **Tool call (turn 2):** `lookup_section` {"act": "nta2025", "section_number": "202"}; `is_error` false.
+- **Extra calls (runner):** ['lookup_section'].
+- **Computation C1:** `company_income_tax` **declined** (`missing_input`: "the gross turnover is not stated in the question"); shown false (withheld: `declined`).
+- **Citations of kept claims:** `nta2025:s202:def:small-company`, `nta2025:s56`, `nta2025:s57`; expected nta2025:s56, nta2025:s202; expected chunks not cited: none.
+- **Claims:** checked 3, kept 3, removed 0, moved 0; verdicts {'supported': 3, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 2, removed 0.
+  - Kept claim 1 [nta2025:s56]: Tax is levied for each year of assessment on the total profits of every company. A small company is taxed at 0%. Any other company is taxed at 30 per cent from the commencement of the Act.
+  - Kept claim 2 [nta2025:s202:def:small-company]: A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company.
+  - Kept claim 3 [nta2025:s57]: Where a company's effective tax rate in a year of assessment is less than 15%, it must recompute and pay an additional tax that makes its effective tax rate equal to 15%. This applies to a constituent entity of an MNE group, and to any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.
+  - Gap kept: The amount of tax cannot be worked out because the question does not state the company's gross turnover. It also does not state its total fixed assets, whether it provides professional services, or whether it is an MNE group constituent entity. These facts decide whether the 0% or the 30 per cent rate applies.
+  - Gap kept: The question does not state the company's aggregate turnover, which is needed to see whether the 15% effective tax rate rule applies.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0309; log record `84ce7f31-af7e-4360-80ed-51fc4c0cc0a5`.
+
+#### X3 (decline)
+
+> I am a sole trader and earned ₦6 million from my business this year. Work out my personal income tax.
+
+- **Status:** `not_covered`; flags ['scope_note']; notes ['scope:personal_income_tax']; shown disclosures none.
+- **Expected tools (design Section 9.1):** none.
+- **Tool calls:** none.
+- **Extra calls (runner):** none.
+- **Computations:** none; no computed item shown.
+- **Citations of kept claims:** none; expected as retrieved; expected chunks not cited: none.
+- **Claims:** checked 0, kept 0, removed 0, moved 0; verdicts {'supported': 0, 'unsupported': 0, 'contradicted': 0, 'not_a_claim': 0, 'unverified': 0}; gaps kept 4, removed 0.
+  - Gap kept: The passages do not contain the personal income tax rates or bands, so the tax on a sole trader's profit cannot be worked out.
+  - Gap kept: The passages do not contain any reliefs, allowances or exemptions that would reduce an individual's taxable amount.
+  - Gap kept: The question does not say whether the ₦6 million is turnover or profit after deductible expenses, so the assessable profit is not known.
+  - Gap kept: The calculation tool does not cover personal income tax for individuals, so no figure can be computed.
+- **Auto checks:** correct true, code_ok true, figures true, notes_ok true, lookup_ok true, disclaimer true, auto_pass **true**.
+- **Cost:** $0.0079; log record `3fcfe1f4-4413-4d13-8e2d-f5ced49ea83c`.
+
+### 18.3 Things the record shows, stated without judgment
+
+- **E03 repeated call.** The model made the same `calculate_liability` call twice (turn 1 gave C1, turn 2 gave C2, both `10800000.00`). Only C1 is shown; C2 is withheld as `not_listed` (K3 false for C2). The runner reports no extra call for E03.
+- **E02 removed gap.** One model gap ("Whether these goods are exempt or zero-rated is not established by the question. Section 186 ... is not among the passages.") was removed by the gap check, reason `reference_not_in_passages` (section 186). The runner flags it as `gaps_removed`. The rendered answer has no "Not covered" list.
+- **E11 moved claim.** The model's claim 1 ("Section 65 ... begins with the words 'Subject to section 67 of this Act'") got the verifier verdict `not_a_claim` (`about_passages`) and was moved, not rendered (`moved_not_rendered`). One claim is kept. The rendered answer does not state what Section 67 contains; the gap says it is not among the passages. `lookup_section(ntaa2025, "67")` returned `is_error` true, verdict `section_outside_v1`, text "Section 67 ... is outside the corpus this tool covers (v1)."
+- **X2 extra call.** The model called `calculate_liability` (declined, `missing_input`: "the gross turnover is not stated in the question") and then `lookup_section(nta2025, "202")`, which added three passages (P9 to P11, including the small-company definition). The runner lists `lookup_section` as an extra call; every auto check passes.
+- **X1** answered (not declined): four kept claims on the disposal rules, five gaps, no tool call, no computed item. **X3** is `not_covered` with the note `scope:personal_income_tax`, no claims and four gaps.
+- **Disclosures.** The shown disclosure rows are listed per question above. E01 also shows DR-060 beside the expected DR-059. E03, E04, E06 and X2 show DR-049 to DR-055 beside the expected DR-050, DR-150 and DR-151. E08 shows DR-248; E09 and E10 show none. Each expected disclosure listed in Section 9.1 is present where its section is cited: DR-059 in E01 and E02; DR-050, DR-150 and DR-151 in E03, E04, E06 and X2; DR-243 and DR-245 in E07 and E11. E05 shows DR-056, DR-150 and DR-151.
+- **No claim or gap removed except as above.** Removed claims: 0 in all 14 cases; moved claims: 1 (E11); gaps removed: 1 (E02).
+
+### 18.4 Spend against D-116 (after exit-check run 1)
+
+| Step | Cap | Spent |
+|---|---|---|
+| Design measurement | $0.30 | $0.0531 |
+| Paid checks (A, both attempts, and B) | $0.15 and $0.30 | about $0.1164 (A $0.0357 plus B $0.0807, plus at most about $0.002 for the failed first attempt) |
+| **Exit-check run 1** | **$0.60** | **$0.2916** |
+| **Phase 7 total so far** | **$2.00** | **$0.4611 (at most about $0.464)** |
+
+Run 2, if it is needed, fits: about $0.464 + $0.60 = $1.064 of $2.00.
+
+### 18.5 Review and result (D-132, 2026-11-11)
+
+The record `exit_run1.json` is write-once and still says `review` "pending"; the review is kept in
+`eval/tools/results/exit_run1_review.json`, which pins the record's sha256.
+
+- **Result: PASS on run 1 (D-132).** All six pass rules hold in the same run. Run 2 was not used.
+- **Overseer review (pass rule 3).** All 40 kept claims are supported by their cited text. Two notes:
+  - X1 claim 4 states the Schedule 1 Part I paragraph 9 disposal rule without its "In this Part"
+    (capital allowance) scope, though the citation shows the source.
+  - E07 claim 4 says "this section" where Section 65(3) says "this subsection" (harmless).
+- **Kene's confirmation.** Kene confirmed E02, E06 and E11 on 2026-11-11.
+- **Reported extras (pass rule 5), not failures.** E03 made a duplicate calculation call (C2 not
+  listed, withheld); X2 made an extra lookup of Section 202.
+- **Spend.** Run 1 $0.2916 of its $0.60 cap; Phase 7 total $0.4611 (at most about $0.464) of $2.00.
+  Run 2 was not needed.
