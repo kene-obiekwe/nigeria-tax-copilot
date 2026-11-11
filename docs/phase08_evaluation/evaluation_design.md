@@ -750,6 +750,100 @@ safeguard; it reads labels without the system's answers, so a mistake it misses 
 correctable after the runs, but only against the statute and in the open. This rule is the last
 resort.
 
+## 12. Build record (build plan step 3, 2026-11-11)
+
+Built free, with no paid call, no freeze, no smoke run and no run. The sealed files
+`e2e_v1.jsonl` and `labels_test_v1.jsonl` were never opened by the build; `labels_dev_v1.jsonl` was
+left unread for the second prompt. The harness touches nothing under `python/`.
+
+**Files.** `eval/e2e/run_e2e.py`, `score_e2e.py`, `review_sheet.py`, `blind_calibration_v1.jsonl`
+(195 rows, sha256 `49afc6dabfd3afbbc4dbcd9d4cfea2fb794f21e77835f37e4ee7d540e5537499`, seed
+20261112) and `tests/test_e2e.py`. The runner reuses `current_config()`, the write-once writer and the
+void-record rules of `eval/tools/run_exit_check.py`, `APIStop` and `StopOnAPIError` of
+`eval/guardrails/run_adversarial.py`, and `generate()` of `python/generation/generate.py`.
+
+**Pins.** One `PINS` block in `run_e2e.py` holds the sha256 of `e2e_v1.jsonl`, `labels_test_v1.jsonl`,
+`labels_dev_v1.jsonl`, `blind_calibration_v1.jsonl` and `config_p8.json`, all None for now.
+`--smoke` and `--run` refuse while any is None. `--freeze` refuses while any of the four input pins is
+None; it does not need `config_p8.json`'s own pin, because that file does not exist until the freeze
+(a reading of the build prompt's "any pin"; Section 7.2 itself says the file's hash is pinned after the
+freeze and before the smoke run). A test proves each refusal and that the real runner writes no
+config file and no marker while a pin is None.
+
+**Choices the design left open** (all in code, all reported; none loosens a threshold):
+
+- *Case order:* the 90 sorted ids shuffled with seed 20261111 (`case_order` in `config_p8.json`).
+  Subsets are T (from `labels_test_v1.jsonl` plus the test-split text, loaded through the sha256-checked
+  loader), N and R (from `e2e_v1.jsonl`); the counts must be 30, 20 and 40.
+- *Smoke cases:* Q014 (dev, answered), ADV-017 (model decline), ADV-001 (pre-check refusal), per
+  Section 7.5; the smoke per-case stop has no $0.036 floor, so three cases fit under $0.05.
+- *Stops:* the generation, verifier and tagger clients, the query embedding (a wrapper on the
+  retriever's client) and the database (a connection error, at the first case too) share one stop. A
+  case that raises is not written. An unexpected exception in a case is recorded the same way, with
+  kind `unexpected`, so a crash leaves a void record instead of a marker with no record. Console and
+  record show database and unexpected errors by type only.
+- *Exit codes:* 2 refused by a guard, 3 void (API, embedding, database or unexpected error), 4 stopped on
+  cost (the record is `incomplete`, has no verdict and does not count; Section 7.5 gave no code).
+- *Ledger:* the sum of `cost_usd` of `smoke.json`, `e2e_run<N>.json` and `e2e_run<N>_rerun.json`; a
+  marker whose record is missing counts at its cap ($1.10, smoke $0.05), because its spend is unknown.
+- *Before a paid call:* all five pins; no `TAXY_` variable; input hashes; `config_p8.json` equal to what
+  the code and live configuration give (system part, pins, case order, caps); the ledger; a clean tree
+  outside `eval/e2e/results/` (so run 2 can follow run 1 uncommitted); the database answers.
+- *Run record:* facts only, with no automatic check and no verdict field in any case; it holds the
+  question text, because the run session reads it. Component latencies are not copied from the
+  generation log; the report session reads them there by `record_id`.
+- *Scorer:* only `answered` T and N cases carry (a) and (b) items. (d) counts an `answered` case with
+  no shown claim or computed item as a false refusal (Section 3.4 says an answer that shows one is not
+  a false refusal; an empty answer shows none). A computed item is supported when K1 to K6 are all
+  recorded and none failed, and its result equals the label's hand-worked figure (read from
+  `expected_calc` fields `result`, `figure` or `expected_result`); with no figure in the label the
+  reviewer's `figure_correct` decides. A kept gap needs a `states_law` entry; only a gap that states
+  law counts. Adjudications overlay the reviewer, and both sets of figures are written. The bootstrap
+  uses seed 20261113 and 10,000 resamples over the in-scope questions.
+- *Review file format* is described in the `score_e2e.py` docstring; `review_sheet.py --run N` writes
+  the sheet (cited chunk text and free flags, no verifier output) and an empty template that the
+  scorer refuses until filled.
+- *Blind calibration:* `review_sheet.py` writes the file once; the scorer rebuilds the blind-to-original
+  mapping from the seed and checks the file against it. It writes counts only, never the mapping or a
+  label; the missed blind ids and their class go to the console, for the overseer.
+
+**Tests.** `tests/test_e2e.py` (fake clients, invented sealed files, no key, no database): pins and
+guards, write-once records and marker order, the stop for each of the four clients, a database error
+and an unexpected error, the cost stops and the ledger, the scorer on hand-built records, the blind
+calibration, the review sheet, and the held-out text guard (skipped unless
+`TAXY_OVERSEER_HOLDOUT_CHECK=1`; it fails, not skips, when the pins are not set).
+
+**Overseer's fixes and accepted choices (second prompt, same day).** Accepted as built: exit code 4 for a
+cost stop (the record is `incomplete`, has no verdict and does not count), and an `answered` case with
+nothing shown counts as a false refusal in (d). Fixed:
+
+- *Figure check by scenario.* A shown computed item is matched to the `expected_calc` entry with the
+  same `scenario` (the entry holds `scenario`, `figure`, `currency`, `inputs` and `working`; a mapping or
+  a list of them). The item is supported when K1 to K6 passed and its result equals that entry's figure.
+  When the label has no entry for the item's scenario, for example a second, correct computation on one
+  question as in Phase 7 exit run 1, E06, the reviewer's `figure_correct` decides. A figure that does not
+  equal a matching entry's figure fails whatever the reviewer says. Tests cover a matching entry, a second
+  computation of another scenario marked correct (and one marked wrong), and a wrong figure.
+- *Unexpected-error voids are not re-run automatically.* A void record whose stop kind is `unexpected`
+  (a non-API exception) may be a system defect that belongs in the result, so `--rerun-after-void`
+  refuses it, before any marker or call, with a message that Kene and the overseer decide. A void record
+  from an API, embedding or database error stays re-runnable once.
+- *Command line.* `main()` now passes its context to the smoke and run actions, so the guards are
+  testable through the command line.
+- *Stale Phase 7 test.* `tests/test_tools_exit_check.py::test_config_p7_is_frozen_pinned_and_equal_to_the_live_configuration`
+  now checks the frozen file against the live configuration with an empty results folder, because run 1 has
+  been made (D-132). Test-only; `eval/tools/run_exit_check.py` is unchanged.
+- *Label fields and the replay.* The scorer reads the fields of `labels_dev_v1.jsonl` (`expected_status`,
+  `gold_units`, `expected_citations`, `acceptable_citations`, `required_notes`, `expected_calc`). All 20
+  dev rows are answered statute questions with `expected_calc` null. The Section 7.6 replay scores the six
+  dev cases of `eval/tools/results/regression_sample.json` with `labels_dev_v1.jsonl` and a fixture review
+  built in the test (31 claims, one gap stating law, three deliberate verdicts); the dev file is read, not
+  pinned, because it may change after the label check.
+
+**Still to do:** setting the pins from the step 2a values; running the held-out text guard; the freeze, its
+decision row and the smoke run (steps 4 and 5). The scorer's reading of calculation labels in the sealed
+files is untested on real rows until then.
+
 ---
 
 **Next step:** step 2 (set writer) and step 3 (harness build) in parallel, then step 2a (label

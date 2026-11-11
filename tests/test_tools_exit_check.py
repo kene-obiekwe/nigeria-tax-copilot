@@ -363,4 +363,9 @@ def test_config_p7_is_frozen_pinned_and_equal_to_the_live_configuration():
     assert frozen["tools"]["calc_rates"]["sha256"].startswith("111f3f6f")
     assert frozen["overrides"]["heading_corrections"]["sha256"].startswith("2a7969b8")
     assert frozen["exit_questions"]["sha256"].startswith("ba25dfd2") and frozen["base"]["sha256"].startswith("d088e6cd")
-    assert rec.check_run_allowed(1)["decision"] == "D-123"
+    # Run 1 has since been made (D-132), so the live guard refuses a repeat; check the frozen file against the
+    # live configuration with an empty results folder instead.
+    import tempfile
+    from pathlib import Path as _Path
+    with tempfile.TemporaryDirectory() as empty:
+        assert rec.check_run_allowed(1, results_dir=_Path(empty))["decision"] == "D-123"
