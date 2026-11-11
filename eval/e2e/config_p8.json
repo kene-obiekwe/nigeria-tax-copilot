@@ -1,0 +1,245 @@
+{
+ "base": {
+  "file": "eval/tools/config_p7.json",
+  "sha256": "e2f61fe680759c0778719c01dfc30d2a463d6f484f54e8f7d7989e5a02ceec25"
+ },
+ "overrides": {},
+ "system": {
+  "base": {
+   "file": "eval/guardrails/config_g2_v4.json",
+   "sha256": "d088e6cdde077f7d2b9cb85c2c380790148a998eeb50f02196461de12270a3b5"
+  },
+  "overrides": {
+   "heading_corrections": {
+    "path": "data/curated/heading_corrections.yml",
+    "sha256": "2a7969b82ca80821e28cf8178d11c5c0d455ec773d727c691e840ee6299975ce",
+    "base_sha256": "8ba9de0435238e70c77146989d6a8d9c3cec7af970e25bbe018fd8a7d8f9e4f5",
+    "decision": "D-126",
+    "dq": "DQ-19"
+   }
+  },
+  "tools": {
+   "enabled": true,
+   "tool_defs_version": "tool-defs/2",
+   "tool_defs_sha256": "9953fa739c7471d5c65a0eb0dd5c079ca0e6ee573bd59f3e416f527b9aeac1d1",
+   "tool_choice": [
+    "auto",
+    "auto",
+    "none"
+   ],
+   "max_model_calls": 3,
+   "max_lookup_calls": 2,
+   "max_lookup_chunks": 3,
+   "max_calc_calls": 2,
+   "max_calc_sources": 3,
+   "max_passages": 14,
+   "calc_version": "calc/1",
+   "calc_rates": {
+    "path": "data/curated/calc_rates.yml",
+    "sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+   },
+   "rules": {
+    "vat_inclusive_value": {
+     "chunk_id": "nta2025:s149",
+     "section": "149(1)(a)",
+     "chunk_text_sha256": "9afa1aef9f021459a4bc2d8e5d069ad3e1edf539fdaa9321ea82c08f64b96b95"
+    }
+   },
+   "scenarios": [
+    "vat_on_supply",
+    "company_income_tax",
+    "development_levy",
+    "late_payment_addition",
+    "monthly_admin_penalty",
+    "fiscalisation_penalty"
+   ],
+   "default_assumptions": [
+    "the company is resident in Nigeria (the question does not say otherwise)",
+    "the company is not a constituent entity of an MNE group (the question does not say otherwise)",
+    "the supply is a taxable supply at the standard rate; exemption (section 186) and zero rating (section 187) were not checked",
+    "the amount given as profits is the company's total profits (section 56)",
+    "the amount given as profits is the company's assessable profits (section 59)"
+   ],
+   "vetoes": {
+    "scope:personal_income_tax": [
+     "company_income_tax",
+     "development_levy"
+    ],
+    "scope:petroleum_taxes": [
+     "company_income_tax",
+     "development_levy"
+    ],
+    "scope:economic_development_incentives": [
+     "company_income_tax",
+     "development_levy"
+    ],
+    "scope:pre_2026_periods": [
+     "vat_on_supply",
+     "company_income_tax",
+     "development_levy",
+     "late_payment_addition",
+     "monthly_admin_penalty",
+     "fiscalisation_penalty"
+    ]
+   },
+   "currencies": {
+    "symbols": [
+     "$",
+     "£",
+     "€"
+    ],
+    "words": [
+     "USD",
+     "GBP",
+     "EUR",
+     "dollar",
+     "pound",
+     "euro"
+    ]
+   },
+   "gap_figure_filter": true
+  },
+  "prompts": {
+   "prompt_version": "gen-prompt/9",
+   "system_prompt_sha256": "4b3148793dbfa638c4b46b6722c506c0661949f4c62a9900fb2ee6ce5afeebb1",
+   "schema_version": "gen-schema/2",
+   "schema_sha256": "45482997d8ca487156586f5d7fb8f76f9776fa147aa56e287638f394b026a5f7",
+   "inherited": {
+    "verifier": "ver-prompt/4",
+    "gap": "gap-prompt/3",
+    "tagger": "tag-prompt/3",
+    "normaliser": "norm/7"
+   }
+  }
+ },
+ "inputs": {
+  "questions_v1": {
+   "file": "eval/retrieval/questions_v1.jsonl",
+   "sha256": "48daa9fa13afdec2183b62185dbae20400ec0f3ef9d677623c7ac6199987ba45"
+  },
+  "e2e_v1": {
+   "file": "eval/e2e/e2e_v1.jsonl",
+   "sha256": "dcab23f9cd14cfa45734d3029a202a5ec9d46a248d50425d533b29ca27c96d52"
+  },
+  "labels_test_v1": {
+   "file": "eval/e2e/labels_test_v1.jsonl",
+   "sha256": "03773fc77a6f8ad787130ca6da7baa03d2115dc36b2681d8d9a1912dc92dd3f5"
+  },
+  "labels_dev_v1": {
+   "file": "eval/e2e/labels_dev_v1.jsonl",
+   "sha256": "ad3d89cd228fb5b1225d4a577dc1cf42d2c33e75890e86c06e489b7d8374c94d"
+  },
+  "blind_calibration_v1": {
+   "file": "eval/e2e/blind_calibration_v1.jsonl",
+   "sha256": "49afc6dabfd3afbbc4dbcd9d4cfea2fb794f21e77835f37e4ee7d540e5537499"
+  }
+ },
+ "case_order": {
+  "seed": 20261111,
+  "ids": [
+   "R19",
+   "Q031",
+   "Q002",
+   "Q008",
+   "Q028",
+   "N02",
+   "Q022",
+   "R10",
+   "Q013",
+   "R21",
+   "R05",
+   "N14",
+   "R13",
+   "R15",
+   "R18",
+   "R06",
+   "R16",
+   "N18",
+   "Q036",
+   "R26",
+   "R37",
+   "Q032",
+   "R36",
+   "N01",
+   "R03",
+   "N04",
+   "N05",
+   "Q024",
+   "R22",
+   "R24",
+   "R27",
+   "R23",
+   "N03",
+   "R33",
+   "R40",
+   "Q046",
+   "R02",
+   "Q017",
+   "N12",
+   "Q005",
+   "Q011",
+   "Q037",
+   "R17",
+   "N13",
+   "R38",
+   "Q049",
+   "N09",
+   "Q038",
+   "R01",
+   "Q042",
+   "Q016",
+   "Q020",
+   "Q048",
+   "N20",
+   "N17",
+   "N16",
+   "R14",
+   "R08",
+   "Q012",
+   "R31",
+   "N08",
+   "R04",
+   "R29",
+   "R35",
+   "R28",
+   "N07",
+   "N11",
+   "R20",
+   "R30",
+   "Q009",
+   "R39",
+   "R32",
+   "Q045",
+   "Q027",
+   "N19",
+   "Q021",
+   "R12",
+   "R11",
+   "N06",
+   "N10",
+   "Q006",
+   "N15",
+   "R25",
+   "R34",
+   "Q033",
+   "R09",
+   "Q001",
+   "Q040",
+   "Q023",
+   "R07"
+  ]
+ },
+ "caps": {
+  "run_usd": 1.1,
+  "smoke_usd": 0.05,
+  "ledger_usd": 3.0,
+  "min_case_estimate_usd": 0.036
+ },
+ "smoke_cases": [
+  "Q014",
+  "ADV-017",
+  "ADV-001"
+ ],
+ "frozen_at": "2026-11-11T20:29:03.041525+00:00",
+ "decision": "D-133 to D-142"
+}

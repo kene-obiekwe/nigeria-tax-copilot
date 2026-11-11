@@ -844,6 +844,13 @@ nothing shown counts as a false refusal in (d). Fixed:
 decision row and the smoke run (steps 4 and 5). The scorer's reading of calculation labels in the sealed
 files is untested on real rows until then.
 
+**Pins and the freeze (third prompt, 2026-11-11).** The four input pins were set from the step 2a values
+(`e2e_v1` `dcab23f9...6d52`, `labels_test_v1` `03773fc7...d3f5`, `labels_dev_v1` `ad3d89cd...c94d`,
+`blind_calibration_v1` `49afc6da...7499`), the held-out text guard passed with
+`TAXY_OVERSEER_HOLDOUT_CHECK=1`, and `--freeze` wrote `eval/e2e/config_p8.json` once, sha256
+`28e205155c10ef6702f569cf005df6a4f819084e53aa24e597a8b120141cf36a` (D-144), pinned in `run_e2e.py`. The test of the real command line no longer tries
+`--freeze` once the input pins are set, because it would now succeed.
+
 ---
 
 **Next step:** step 2 (set writer) and step 3 (harness build) in parallel, then step 2a (label

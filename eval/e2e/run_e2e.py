@@ -105,7 +105,7 @@ PINS: dict[str, str | None] = {
     "labels_test_v1": "03773fc77a6f8ad787130ca6da7baa03d2115dc36b2681d8d9a1912dc92dd3f5",
     "labels_dev_v1": "ad3d89cd228fb5b1225d4a577dc1cf42d2c33e75890e86c06e489b7d8374c94d",
     "blind_calibration_v1": "49afc6dabfd3afbbc4dbcd9d4cfea2fb794f21e77835f37e4ee7d540e5537499",
-    "config_p8": None}  # set after the freeze (D-144)
+    "config_p8": "28e205155c10ef6702f569cf005df6a4f819084e53aa24e597a8b120141cf36a"}  # frozen 2026-11-11 (D-144)
 INPUT_PINS = ("e2e_v1", "labels_test_v1", "labels_dev_v1", "blind_calibration_v1")
 P7_CONFIG = ROOT / "eval" / "tools" / "config_p7.json"
 P7_CONFIG_SHA256 = exit_check.CONFIG_SHA256[1]
