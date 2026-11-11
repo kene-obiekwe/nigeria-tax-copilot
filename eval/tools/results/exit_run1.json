@@ -1,0 +1,3531 @@
+{
+ "run": 1,
+ "rerun_after_void": false,
+ "config": {
+  "file": "eval/tools/config_p7.json",
+  "sha256": "e2f61fe680759c0778719c01dfc30d2a463d6f484f54e8f7d7989e5a02ceec25",
+  "frozen_at": "2026-11-11T17:16:16.550420+00:00"
+ },
+ "questions": {
+  "file": "eval/tools/exit_questions_v1.jsonl",
+  "sha256": "ba25dfd29abfd6b039676436aeb32007a2e078897f71767ad6b9f7dbad63b01a"
+ },
+ "started": "2026-11-11T17:46:55.982620+00:00",
+ "finished": "2026-11-11T17:49:36.990834+00:00",
+ "cost_usd": 0.291594,
+ "cap_usd": 0.6,
+ "review": "pending",
+ "stopped_on_api_error": null,
+ "stopped_on_cost": null,
+ "auto_pass": true,
+ "cases": [
+  {
+   "id": "E01",
+   "question": "We are invoicing a customer ₦2,600,000 for printing services, before VAT. How much VAT should we add to the invoice?",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "VAT is charged on the value of all taxable supplies at the rate of 7.5%, subject to the provisions of Part IV of Chapter Eight of the Act.",
+     "chunk_ids": [
+      "nta2025:s148"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "A taxable person who makes a taxable supply must give the purchaser a VAT invoice that shows, among other things, the VAT charged and the rate.",
+     "chunk_ids": [
+      "nta2025:s153"
+     ]
+    }
+   ],
+   "gaps": [
+    "The passages do not say whether printing services are a taxable supply, or whether they are exempt or zero-rated.",
+    "Part IV of Chapter Eight, which section 148 refers to, is not among the passages."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s153",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4372)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s150",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4933)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s148",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4948)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s156",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4957)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s155",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5056)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:s158",
+     "reasons": [
+      "keyword slot: BM25 rank 3 (BM25 11.365, cosine distance 0.5078)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:invoice",
+     "reasons": [
+      "definition attachment: invoice (similarity 0.435, cosine distance 0.5654; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 2,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 2,
+    "claims_kept": 2,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 2,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "vat_on_supply",
+     "status": "computed",
+     "inputs": {
+      "amount": "2600000",
+      "amount_basis": "value_before_vat"
+     },
+     "input_matches": {
+      "amount": "amt:2600000"
+     },
+     "constants": [
+      {
+       "id": "vat_rate",
+       "value": "7.5",
+       "chunk_id": "nta2025:s148",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "vat_rate"
+     ],
+     "steps": [
+      {
+       "op": "mul_pct",
+       "a": "2600000",
+       "b": "7.5",
+       "result": "195000.0",
+       "by": "taxcalc.vat_on_supply"
+      },
+      {
+       "op": "round",
+       "a": "195000.0",
+       "b": "0.01",
+       "result": "195000.00",
+       "by": "taxcalc.vat_on_supply"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "195000.00",
+     "result_kind": "amount",
+     "assumptions": [
+      "the supply is a taxable supply at the standard rate; exemption (section 186) and zero rating (section 187) were not checked"
+     ],
+     "not_computed": [],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "nta2025:s148"
+     ],
+     "what": "VAT on a taxable supply (Nigeria Tax Act 2025, section 148)",
+     "from_question": [
+      "value of the supply before VAT, ₦2,600,000"
+     ],
+     "working": [
+      "₦2,600,000 x 7.5% = ₦195,000"
+     ],
+     "result_text": "VAT of ₦195,000",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "vat_rate": [
+        1
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "vat_on_supply",
+      "amount": "2600000",
+      "amount_basis": "value_before_vat",
+      "gross_turnover": null,
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    }
+   ],
+   "disclosures": [
+    "DR-059",
+    "DR-060"
+   ],
+   "rendered": "VAT is charged on the value of all taxable supplies at the rate of 7.5%, subject to the provisions of Part IV of Chapter Eight of the Act. [Nigeria Tax Act 2025, section 148]\n\nA taxable person who makes a taxable supply must give the purchaser a VAT invoice that shows, among other things, the VAT charged and the rate. [Nigeria Tax Act 2025, section 153]\n\nCalculation (worked out by code from the figures in the question)\n- What: VAT on a taxable supply (Nigeria Tax Act 2025, section 148)\n- From the question: value of the supply before VAT, ₦2,600,000\n- Assumed: the supply is a taxable supply at the standard rate; exemption (section 186) and zero rating (section 187) were not checked\n- Working: ₦2,600,000 x 7.5% = ₦195,000\n- Result: VAT of ₦195,000\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nNot covered by the retrieved provisions:\n- The passages do not say whether printing services are a taxable supply, or whether they are exempt or zero-rated.\n- Part IV of Chapter Eight, which section 148 refers to, is not among the passages.\n\nSources\n- Nigeria Tax Act 2025, section 148 (gazette page A 472)\n- Nigeria Tax Act 2025, section 153 (gazette pages A 473, A 474)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 148: Cross-reference: VAT is charged subject to Part IV of Chapter Eight (gazette) against Part IX of this Chapter (National Assembly). (DR-059)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.028309,
+   "record_id": "c729090f-c261-4eb4-8e0a-b5fdbd543b96",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "E02",
+   "question": "A customer paid us ₦500,000 for taxable goods, and that price already includes VAT. How much of the ₦500,000 is VAT?",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [
+    "gaps_removed"
+   ],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "VAT is charged on the value of all taxable supplies at the rate of 7.5%, subject to the provisions of Part IV of Chapter Eight of the Act.",
+     "chunk_ids": [
+      "nta2025:s148"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "For a supply made for a money consideration, its value is the amount which, with the VAT chargeable added, equals the consideration.",
+     "chunk_ids": [
+      "nta2025:s149"
+     ]
+    }
+   ],
+   "gaps": [],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s148",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4607)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s150",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4610)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s149",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4674)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s156",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4881)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s187",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4907)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:s151",
+     "reasons": [
+      "keyword slot: BM25 rank 2 (BM25 11.536, cosine distance 0.5270)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:taxable-supplies",
+     "reasons": [
+      "definition attachment: taxable supplies (similarity 0.414, cosine distance 0.5862; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 2,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 2,
+    "claims_kept": 2,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 0,
+    "gaps_removed": 1
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "vat_on_supply",
+     "status": "computed",
+     "inputs": {
+      "amount": "500000",
+      "amount_basis": "consideration_including_vat"
+     },
+     "input_matches": {
+      "amount": "amt:500000"
+     },
+     "constants": [
+      {
+       "id": "vat_rate",
+       "value": "7.5",
+       "chunk_id": "nta2025:s148",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "vat_rate",
+      "vat_inclusive_value"
+     ],
+     "steps": [
+      {
+       "op": "add",
+       "a": "100",
+       "b": "7.5",
+       "result": "107.5",
+       "by": "taxcalc.vat_on_supply"
+      },
+      {
+       "op": "mul",
+       "a": "500000",
+       "b": "7.5",
+       "result": "3750000.0",
+       "by": "taxcalc.vat_on_supply"
+      },
+      {
+       "op": "div",
+       "a": "3750000.0",
+       "b": "107.5",
+       "result": "34883.72093023255813953488372093023",
+       "by": "taxcalc.vat_on_supply"
+      },
+      {
+       "op": "round",
+       "a": "34883.72093023255813953488372093023",
+       "b": "0.01",
+       "result": "34883.72",
+       "by": "taxcalc.vat_on_supply"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "34883.72",
+     "result_kind": "amount",
+     "assumptions": [
+      "the supply is a taxable supply at the standard rate; exemption (section 186) and zero rating (section 187) were not checked"
+     ],
+     "not_computed": [],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "nta2025:s148",
+      "nta2025:s149"
+     ],
+     "what": "VAT included in the consideration for a taxable supply (Nigeria Tax Act 2025, sections 148 and 149(1)(a))",
+     "from_question": [
+      "consideration including VAT, ₦500,000"
+     ],
+     "working": [
+      "₦500,000 x 7.5 / 107.5 = ₦34,883.72"
+     ],
+     "result_text": "VAT of ₦34,883.72",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "vat_rate": [
+        1
+       ],
+       "vat_inclusive_value": [
+        2
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "vat_on_supply",
+      "amount": "500000",
+      "amount_basis": "consideration_including_vat",
+      "gross_turnover": null,
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    }
+   ],
+   "disclosures": [
+    "DR-059"
+   ],
+   "rendered": "VAT is charged on the value of all taxable supplies at the rate of 7.5%, subject to the provisions of Part IV of Chapter Eight of the Act. [Nigeria Tax Act 2025, section 148]\n\nFor a supply made for a money consideration, its value is the amount which, with the VAT chargeable added, equals the consideration. [Nigeria Tax Act 2025, section 149]\n\nCalculation (worked out by code from the figures in the question)\n- What: VAT included in the consideration for a taxable supply (Nigeria Tax Act 2025, sections 148 and 149(1)(a))\n- From the question: consideration including VAT, ₦500,000\n- Assumed: the supply is a taxable supply at the standard rate; exemption (section 186) and zero rating (section 187) were not checked\n- Working: ₦500,000 x 7.5 / 107.5 = ₦34,883.72\n- Result: VAT of ₦34,883.72\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nSources\n- Nigeria Tax Act 2025, section 148 (gazette page A 472)\n- Nigeria Tax Act 2025, section 149 (gazette page A 472)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 148: Cross-reference: VAT is charged subject to Part IV of Chapter Eight (gazette) against Part IX of this Chapter (National Assembly). (DR-059)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.019847,
+   "record_id": "ad804015-c9bc-4a9a-8e60-ba90c5c7b42e",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "E03",
+   "question": "Our company's gross turnover for the year was ₦180 million and its total profits were ₦36 million. Work out its company income tax.",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "Tax is levied for each year of assessment on the total profits of every company. A small company is taxed at 0%. Any other company is taxed at the rate of 30 per cent from the commencement of this Act.",
+     "chunk_ids": [
+      "nta2025:s56"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company.",
+     "chunk_ids": [
+      "nta2025:s202:def:small-company"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "Gross turnover means the gross inflow of economic benefits during the period arising in the course of the operating activities of an entity, when those inflows result in increases in equity. It includes sales of goods, supply of services, receipt of interest, rents, royalties or dividends, other than increases relating to contributions from equity participants.",
+     "chunk_ids": [
+      "nta2025:s202:def:gross-turnover"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "Where a company's effective tax rate in a year of assessment is less than 15%, it shall recompute and pay an additional tax that makes its effective tax rate equal to 15%. This applies to a company that is a constituent entity of an MNE group, and to any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.",
+     "chunk_ids": [
+      "nta2025:s57"
+     ]
+    }
+   ],
+   "gaps": [
+    "Whether the company is a constituent entity of an MNE group is not stated in the question.",
+    "Whether the company provides professional services, and its total fixed assets, are not stated in the question.",
+    "Whether the stated total profits are the company's total profits after any losses and capital allowances under section 27 is not stated. Section 27(6), which section 27(1) refers to for losses, is not among the passages."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s27(1)-(4)",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4617)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s202:def:gross-turnover",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4696)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s56",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4841)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s57",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4908)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s6",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4928)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:s18(4)-(6)",
+     "reasons": [
+      "keyword slot: BM25 rank 1 (BM25 14.920, cosine distance 0.5526)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:small-company",
+     "reasons": [
+      "definition attachment: small company (similarity 0.496, cosine distance 0.5037; term used by result 3)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 4,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 4,
+    "claims_kept": 4,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 3,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "company_income_tax",
+     "status": "computed",
+     "inputs": {
+      "amount": "36000000",
+      "gross_turnover": "180000000"
+     },
+     "input_matches": {
+      "amount": "amt:36000000",
+      "gross_turnover": "amt:180000000"
+     },
+     "constants": [
+      {
+       "id": "etr_turnover_min",
+       "value": "20000000000",
+       "chunk_id": "nta2025:s57",
+       "role": "gate"
+      },
+      {
+       "id": "small_turnover_max",
+       "value": "50000000",
+       "chunk_id": "nta2025:s202:def:small-company",
+       "role": "test"
+      },
+      {
+       "id": "cit_rate_other",
+       "value": "30",
+       "chunk_id": "nta2025:s56",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "small_turnover_max",
+      "cit_rate_other"
+     ],
+     "steps": [
+      {
+       "op": "mul_pct",
+       "a": "36000000",
+       "b": "30",
+       "result": "10800000",
+       "by": "taxcalc.company_income_tax"
+      },
+      {
+       "op": "round",
+       "a": "10800000",
+       "b": "0.01",
+       "result": "10800000.00",
+       "by": "taxcalc.company_income_tax"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "10800000.00",
+     "result_kind": "amount",
+     "assumptions": [
+      "the company is not a constituent entity of an MNE group (the question does not say otherwise)",
+      "the amount given as profits is the company's total profits (section 56)"
+     ],
+     "not_computed": [],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "nta2025:s202:def:small-company",
+      "nta2025:s56"
+     ],
+     "what": "Company income tax (Nigeria Tax Act 2025, sections 56 and 202)",
+     "from_question": [
+      "total profits, ₦36,000,000",
+      "gross turnover, ₦180,000,000"
+     ],
+     "working": [
+      "Small-company test (section 202): gross turnover of ₦180,000,000 is more than ₦50,000,000, so the company is not a small company",
+      "₦36,000,000 x 30% = ₦10,800,000"
+     ],
+     "result_text": "company income tax of ₦10,800,000",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "small_turnover_max": [
+        2
+       ],
+       "cit_rate_other": [
+        1
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    },
+    {
+     "id": "C2",
+     "scenario": "company_income_tax",
+     "status": "computed",
+     "inputs": {
+      "amount": "36000000",
+      "gross_turnover": "180000000"
+     },
+     "input_matches": {
+      "amount": "amt:36000000",
+      "gross_turnover": "amt:180000000"
+     },
+     "constants": [
+      {
+       "id": "etr_turnover_min",
+       "value": "20000000000",
+       "chunk_id": "nta2025:s57",
+       "role": "gate"
+      },
+      {
+       "id": "small_turnover_max",
+       "value": "50000000",
+       "chunk_id": "nta2025:s202:def:small-company",
+       "role": "test"
+      },
+      {
+       "id": "cit_rate_other",
+       "value": "30",
+       "chunk_id": "nta2025:s56",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "small_turnover_max",
+      "cit_rate_other"
+     ],
+     "steps": [
+      {
+       "op": "mul_pct",
+       "a": "36000000",
+       "b": "30",
+       "result": "10800000",
+       "by": "taxcalc.company_income_tax"
+      },
+      {
+       "op": "round",
+       "a": "10800000",
+       "b": "0.01",
+       "result": "10800000.00",
+       "by": "taxcalc.company_income_tax"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "10800000.00",
+     "result_kind": "amount",
+     "assumptions": [
+      "the company is not a constituent entity of an MNE group (the question does not say otherwise)",
+      "the amount given as profits is the company's total profits (section 56)"
+     ],
+     "not_computed": [],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "nta2025:s202:def:small-company",
+      "nta2025:s56"
+     ],
+     "what": "Company income tax (Nigeria Tax Act 2025, sections 56 and 202)",
+     "from_question": [
+      "total profits, ₦36,000,000",
+      "gross turnover, ₦180,000,000"
+     ],
+     "working": [
+      "Small-company test (section 202): gross turnover of ₦180,000,000 is more than ₦50,000,000, so the company is not a small company",
+      "₦36,000,000 x 30% = ₦10,800,000"
+     ],
+     "result_text": "company income tax of ₦10,800,000",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": false,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": false,
+      "K4": {
+       "small_turnover_max": [
+        2
+       ],
+       "cit_rate_other": [
+        1
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": false,
+     "withheld_reason": "not_listed"
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "company_income_tax",
+      "amount": "36000000",
+      "amount_basis": null,
+      "gross_turnover": "180000000",
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    },
+    {
+     "turn": 2,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "company_income_tax",
+      "amount": "36000000",
+      "amount_basis": null,
+      "gross_turnover": "180000000",
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C2"
+    }
+   ],
+   "disclosures": [
+    "DR-049",
+    "DR-050",
+    "DR-150",
+    "DR-151",
+    "DR-051",
+    "DR-052",
+    "DR-053",
+    "DR-054",
+    "DR-055"
+   ],
+   "rendered": "Tax is levied for each year of assessment on the total profits of every company. A small company is taxed at 0%. Any other company is taxed at the rate of 30 per cent from the commencement of this Act. [Nigeria Tax Act 2025, section 56]\n\nA small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company. [Nigeria Tax Act 2025, section 202, definition of \"small company\"]\n\nGross turnover means the gross inflow of economic benefits during the period arising in the course of the operating activities of an entity, when those inflows result in increases in equity. It includes sales of goods, supply of services, receipt of interest, rents, royalties or dividends, other than increases relating to contributions from equity participants. [Nigeria Tax Act 2025, section 202, definition of \"gross turnover\"]\n\nWhere a company's effective tax rate in a year of assessment is less than 15%, it shall recompute and pay an additional tax that makes its effective tax rate equal to 15%. This applies to a company that is a constituent entity of an MNE group, and to any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment. [Nigeria Tax Act 2025, section 57]\n\nCalculation (worked out by code from the figures in the question)\n- What: Company income tax (Nigeria Tax Act 2025, sections 56 and 202)\n- From the question: total profits, ₦36,000,000; gross turnover, ₦180,000,000\n- Assumed: the company is not a constituent entity of an MNE group (the question does not say otherwise); the amount given as profits is the company's total profits (section 56)\n- Working: Small-company test (section 202): gross turnover of ₦180,000,000 is more than ₦50,000,000, so the company is not a small company\n- Working: ₦36,000,000 x 30% = ₦10,800,000\n- Result: company income tax of ₦10,800,000\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nNot covered by the retrieved provisions:\n- Whether the company is a constituent entity of an MNE group is not stated in the question.\n- Whether the company provides professional services, and its total fixed assets, are not stated in the question.\n- Whether the stated total profits are the company's total profits after any losses and capital allowances under section 27 is not stated. Section 27(6), which section 27(1) refers to for losses, is not among the passages.\n\nSources\n- Nigeria Tax Act 2025, section 56 (gazette page A 426)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\" (gazette page A 510)\n- Nigeria Tax Act 2025, section 202, definition of \"gross turnover\" (gazette pages A 504, A 505)\n- Nigeria Tax Act 2025, section 57 (gazette page A 426)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 56: The National Assembly text lets the President, on the advice of the National Economic Council, reduce the 30% rate to 25% by order; the gazette has no such provision. (DR-050)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": A small company has gross turnover of ₦50,000,000 or less in the gazette and ₦100,000,000 or less in the National Assembly text, which also says 'business' instead of 'company'. (DR-150)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": The gazette excludes any business providing professional services from being a small company; the National Assembly text has no such exclusion. (DR-151)\n- Nigeria Tax Act 2025, section 57: The minimum tax is measured differently. Gazette: covered tax paid divided by profits, where profits are net profit before tax less 5% of depreciation and personnel cost. National Assembly: covered taxes (companies income tax, petroleum profit tax, hydrocarbon tax, development levy, priority sector tax credit) as a percentage of net income, which excludes franked investment income and unrealised gains or losses. (DR-051)\n- Nigeria Tax Act 2025, section 57: The gazette applies the 15% minimum to every constituent entity of an MNE group; the National Assembly text only where the group's turnover is at least 750 million (printed with a pound sign) or its equivalent. (DR-052)\n- Nigeria Tax Act 2025, section 57: The 15% minimum effective tax rate applies from an aggregate turnover of ₦20,000,000,000 in the gazette and ₦50,000,000,000 in the National Assembly text. (DR-053)\n- Nigeria Tax Act 2025, section 57: The National Assembly text exempts approved free-zone enterprises (except for sales into the customs territory and MNE entities) and lets the Service set a higher turnover threshold by regulation; the gazette has neither and measures turnover in the relevant year of assessment rather than the financial year. (DR-054)\n- Nigeria Tax Act 2025, section 57: The gazette numbers the subsections (1), (2) and (4), with no (3); the labels are kept as printed. The National Assembly text has (1) to (4). (DR-055)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.035571,
+   "record_id": "64e283c5-5372-4472-9a7c-4b66031f5e79",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "E04",
+   "question": "A trading company that does not provide professional services has gross turnover of ₦30 million, total fixed assets of ₦12 million and total profits of ₦4.5 million. How much company income tax does it pay?",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company.",
+     "chunk_ids": [
+      "nta2025:s202:def:small-company"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "Tax is levied for each year of assessment on the total profits of every company. For a small company the rate is 0%.",
+     "chunk_ids": [
+      "nta2025:s56"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "Any other company is taxed at the rate of 30 per cent from the commencement of the Act.",
+     "chunk_ids": [
+      "nta2025:s56"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "Gross turnover means the gross inflow of economic benefits during the period from the entity's operating activities, when those inflows increase equity. It includes sales of goods, supply of services, interest, rents, royalties or dividends, other than increases from contributions by equity participants.",
+     "chunk_ids": [
+      "nta2025:s202:def:gross-turnover"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "An additional tax applies where a company's effective tax rate is less than 15%. This covers a company that is a constituent entity of an MNE group and any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.",
+     "chunk_ids": [
+      "nta2025:s57"
+     ]
+    }
+   ],
+   "gaps": [
+    "Whether the company is a constituent entity of an MNE group is not stated in the question."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s202:def:small-company",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4536)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s56",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4660)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s6",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4832)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s57",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4837)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s27(1)-(4)",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4896)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "ntaa2025:s147:def:small-business",
+     "reasons": [
+      "keyword slot: BM25 rank 2 (BM25 28.858, cosine distance 0.5033)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:gross-turnover",
+     "reasons": [
+      "definition attachment: gross turnover (similarity 0.499, cosine distance 0.5013; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 5,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 5,
+    "claims_kept": 5,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 1,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "company_income_tax",
+     "status": "computed",
+     "inputs": {
+      "amount": "4500000",
+      "gross_turnover": "30000000",
+      "total_fixed_assets": "12000000",
+      "professional_services": false
+     },
+     "input_matches": {
+      "amount": "amt:4500000",
+      "gross_turnover": "amt:30000000",
+      "total_fixed_assets": "amt:12000000"
+     },
+     "constants": [
+      {
+       "id": "etr_turnover_min",
+       "value": "20000000000",
+       "chunk_id": "nta2025:s57",
+       "role": "gate"
+      },
+      {
+       "id": "small_turnover_max",
+       "value": "50000000",
+       "chunk_id": "nta2025:s202:def:small-company",
+       "role": "test"
+      },
+      {
+       "id": "small_fixed_assets_max",
+       "value": "250000000",
+       "chunk_id": "nta2025:s202:def:small-company",
+       "role": "test"
+      },
+      {
+       "id": "cit_rate_small",
+       "value": "0",
+       "chunk_id": "nta2025:s56",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "small_turnover_max",
+      "small_fixed_assets_max",
+      "cit_rate_small"
+     ],
+     "steps": [
+      {
+       "op": "mul_pct",
+       "a": "4500000",
+       "b": "0",
+       "result": "0",
+       "by": "taxcalc.company_income_tax"
+      },
+      {
+       "op": "round",
+       "a": "0",
+       "b": "0.01",
+       "result": "0.00",
+       "by": "taxcalc.company_income_tax"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "0.00",
+     "result_kind": "amount",
+     "assumptions": [
+      "the company is not a constituent entity of an MNE group (the question does not say otherwise)",
+      "the amount given as profits is the company's total profits (section 56)"
+     ],
+     "not_computed": [],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "nta2025:s202:def:small-company",
+      "nta2025:s56"
+     ],
+     "what": "Company income tax (Nigeria Tax Act 2025, sections 56 and 202)",
+     "from_question": [
+      "total profits, ₦4,500,000",
+      "gross turnover, ₦30,000,000",
+      "total fixed assets, ₦12,000,000"
+     ],
+     "working": [
+      "Small-company test (section 202): gross turnover of ₦30,000,000 is not more than ₦50,000,000, total fixed assets of ₦12,000,000 are not more than ₦250,000,000, and no professional services are provided, so the company is a small company",
+      "₦4,500,000 x 0% = ₦0"
+     ],
+     "result_text": "company income tax of ₦0",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "small_turnover_max": [
+        1
+       ],
+       "small_fixed_assets_max": [
+        1
+       ],
+       "cit_rate_small": [
+        2
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "company_income_tax",
+      "amount": "4500000",
+      "amount_basis": null,
+      "gross_turnover": "30000000",
+      "total_fixed_assets": "12000000",
+      "professional_services": false,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    }
+   ],
+   "disclosures": [
+    "DR-150",
+    "DR-151",
+    "DR-049",
+    "DR-050",
+    "DR-051",
+    "DR-052",
+    "DR-053",
+    "DR-054",
+    "DR-055"
+   ],
+   "rendered": "A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company. [Nigeria Tax Act 2025, section 202, definition of \"small company\"]\n\nTax is levied for each year of assessment on the total profits of every company. For a small company the rate is 0%. [Nigeria Tax Act 2025, section 56]\n\nAny other company is taxed at the rate of 30 per cent from the commencement of the Act. [Nigeria Tax Act 2025, section 56]\n\nGross turnover means the gross inflow of economic benefits during the period from the entity's operating activities, when those inflows increase equity. It includes sales of goods, supply of services, interest, rents, royalties or dividends, other than increases from contributions by equity participants. [Nigeria Tax Act 2025, section 202, definition of \"gross turnover\"]\n\nAn additional tax applies where a company's effective tax rate is less than 15%. This covers a company that is a constituent entity of an MNE group and any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment. [Nigeria Tax Act 2025, section 57]\n\nCalculation (worked out by code from the figures in the question)\n- What: Company income tax (Nigeria Tax Act 2025, sections 56 and 202)\n- From the question: total profits, ₦4,500,000; gross turnover, ₦30,000,000; total fixed assets, ₦12,000,000\n- Assumed: the company is not a constituent entity of an MNE group (the question does not say otherwise); the amount given as profits is the company's total profits (section 56)\n- Working: Small-company test (section 202): gross turnover of ₦30,000,000 is not more than ₦50,000,000, total fixed assets of ₦12,000,000 are not more than ₦250,000,000, and no professional services are provided, so the company is a small company\n- Working: ₦4,500,000 x 0% = ₦0\n- Result: company income tax of ₦0\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nNot covered by the retrieved provisions:\n- Whether the company is a constituent entity of an MNE group is not stated in the question.\n\nSources\n- Nigeria Tax Act 2025, section 202, definition of \"small company\" (gazette page A 510)\n- Nigeria Tax Act 2025, section 56 (gazette page A 426)\n- Nigeria Tax Act 2025, section 202, definition of \"gross turnover\" (gazette pages A 504, A 505)\n- Nigeria Tax Act 2025, section 57 (gazette page A 426)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": A small company has gross turnover of ₦50,000,000 or less in the gazette and ₦100,000,000 or less in the National Assembly text, which also says 'business' instead of 'company'. (DR-150)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": The gazette excludes any business providing professional services from being a small company; the National Assembly text has no such exclusion. (DR-151)\n- Nigeria Tax Act 2025, section 56: The National Assembly text lets the President, on the advice of the National Economic Council, reduce the 30% rate to 25% by order; the gazette has no such provision. (DR-050)\n- Nigeria Tax Act 2025, section 57: The minimum tax is measured differently. Gazette: covered tax paid divided by profits, where profits are net profit before tax less 5% of depreciation and personnel cost. National Assembly: covered taxes (companies income tax, petroleum profit tax, hydrocarbon tax, development levy, priority sector tax credit) as a percentage of net income, which excludes franked investment income and unrealised gains or losses. (DR-051)\n- Nigeria Tax Act 2025, section 57: The gazette applies the 15% minimum to every constituent entity of an MNE group; the National Assembly text only where the group's turnover is at least 750 million (printed with a pound sign) or its equivalent. (DR-052)\n- Nigeria Tax Act 2025, section 57: The 15% minimum effective tax rate applies from an aggregate turnover of ₦20,000,000,000 in the gazette and ₦50,000,000,000 in the National Assembly text. (DR-053)\n- Nigeria Tax Act 2025, section 57: The National Assembly text exempts approved free-zone enterprises (except for sales into the customs territory and MNE entities) and lets the Service set a higher turnover threshold by regulation; the gazette has neither and measures turnover in the relevant year of assessment rather than the financial year. (DR-054)\n- Nigeria Tax Act 2025, section 57: The gazette numbers the subsections (1), (2) and (4), with no (3); the labels are kept as printed. The National Assembly text has (1) to (4). (DR-055)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.020229,
+   "record_id": "2274a7d4-f610-4196-b9e8-0f0f6dd814c7",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "E05",
+   "question": "Our company is resident in Nigeria, its gross turnover is ₦900 million and its assessable profits are ₦250 million. How much development levy is due?",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "A development levy of 4% is imposed on the assessable profits of all companies chargeable to tax under Chapters Two and Three of this Act, other than small companies and non-resident companies.",
+     "chunk_ids": [
+      "nta2025:s59"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000, and a business providing professional services is not classified as a small company.",
+     "chunk_ids": [
+      "nta2025:s202:def:small-company"
+     ]
+    }
+   ],
+   "gaps": [],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s59",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.2985)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "ntaa2025:s38",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.3949)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s202:def:gross-turnover",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4023)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s6",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4184)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s57",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4235)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:s202:def:small-company",
+     "reasons": [
+      "keyword slot: BM25 rank 2 (BM25 17.231, cosine distance 0.4319)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:company",
+     "reasons": [
+      "definition attachment: company (similarity 0.509, cosine distance 0.4907; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 2,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 2,
+    "claims_kept": 2,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 0,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "development_levy",
+     "status": "computed",
+     "inputs": {
+      "amount": "250000000",
+      "gross_turnover": "900000000",
+      "non_resident": false
+     },
+     "input_matches": {
+      "amount": "amt:250000000",
+      "gross_turnover": "amt:900000000"
+     },
+     "constants": [
+      {
+       "id": "dev_levy_rate",
+       "value": "4",
+       "chunk_id": "nta2025:s59",
+       "role": "rate"
+      },
+      {
+       "id": "small_turnover_max",
+       "value": "50000000",
+       "chunk_id": "nta2025:s202:def:small-company",
+       "role": "test"
+      }
+     ],
+     "relies_on": [
+      "dev_levy_rate",
+      "small_turnover_max"
+     ],
+     "steps": [
+      {
+       "op": "mul_pct",
+       "a": "250000000",
+       "b": "4",
+       "result": "10000000",
+       "by": "taxcalc.development_levy"
+      },
+      {
+       "op": "round",
+       "a": "10000000",
+       "b": "0.01",
+       "result": "10000000.00",
+       "by": "taxcalc.development_levy"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "10000000.00",
+     "result_kind": "amount",
+     "assumptions": [
+      "the amount given as profits is the company's assessable profits (section 59)"
+     ],
+     "not_computed": [],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "nta2025:s59",
+      "nta2025:s202:def:small-company"
+     ],
+     "what": "Development levy (Nigeria Tax Act 2025, sections 59 and 202)",
+     "from_question": [
+      "assessable profits, ₦250,000,000",
+      "gross turnover, ₦900,000,000"
+     ],
+     "working": [
+      "Small-company test (section 202): gross turnover of ₦900,000,000 is more than ₦50,000,000, so the company is not a small company",
+      "₦250,000,000 x 4% = ₦10,000,000"
+     ],
+     "result_text": "development levy of ₦10,000,000",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "dev_levy_rate": [
+        1
+       ],
+       "small_turnover_max": [
+        2
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "development_levy",
+      "amount": "250000000",
+      "amount_basis": null,
+      "gross_turnover": "900000000",
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": false,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    }
+   ],
+   "disclosures": [
+    "DR-056",
+    "DR-150",
+    "DR-151"
+   ],
+   "rendered": "A development levy of 4% is imposed on the assessable profits of all companies chargeable to tax under Chapters Two and Three of this Act, other than small companies and non-resident companies. [Nigeria Tax Act 2025, section 59]\n\nA small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000, and a business providing professional services is not classified as a small company. [Nigeria Tax Act 2025, section 202, definition of \"small company\"]\n\nCalculation (worked out by code from the figures in the question)\n- What: Development levy (Nigeria Tax Act 2025, sections 59 and 202)\n- From the question: assessable profits, ₦250,000,000; gross turnover, ₦900,000,000\n- Assumed: the amount given as profits is the company's assessable profits (section 59)\n- Working: Small-company test (section 202): gross turnover of ₦900,000,000 is more than ₦50,000,000, so the company is not a small company\n- Working: ₦250,000,000 x 4% = ₦10,000,000\n- Result: development levy of ₦10,000,000\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nSources\n- Nigeria Tax Act 2025, section 59 (gazette page A 427)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\" (gazette page A 510)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": A small company has gross turnover of ₦50,000,000 or less in the gazette and ₦100,000,000 or less in the National Assembly text, which also says 'business' instead of 'company'. (DR-150)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": The gazette excludes any business providing professional services from being a small company; the National Assembly text has no such exclusion. (DR-151)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.017672,
+   "record_id": "49a206b4-1cf0-4c73-b054-5a6316f97df7",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "E06",
+   "question": "This year our company had gross turnover of ₦500 million, total profits of ₦80 million and assessable profits of ₦75 million. What are its company income tax and its development levy?",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "Company income tax is levied for each year of assessment on the total profits of every company. A small company is taxed at 0%. Any other company is taxed at the rate of 30 per cent from the commencement of this Act.",
+     "chunk_ids": [
+      "nta2025:s56"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company.",
+     "chunk_ids": [
+      "nta2025:s202:def:small-company"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "A development levy of 4% is imposed on the assessable profits of all companies chargeable to tax under Chapters Two and Three of this Act, other than small companies and non-resident companies.",
+     "chunk_ids": [
+      "nta2025:s59"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "The development levy is not levied on assessable profits computed for the purposes of hydrocarbon tax.",
+     "chunk_ids": [
+      "nta2025:s59"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "Where a company's effective tax rate in a year of assessment is less than 15%, it shall recompute and pay an additional tax that makes its effective tax rate equal to 15%. This applies to a constituent entity of an MNE group and to any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.",
+     "chunk_ids": [
+      "nta2025:s57"
+     ]
+    }
+   ],
+   "gaps": [
+    "The question does not state the company's total fixed assets, whether it provides professional services, whether it is an MNE group constituent entity, or whether it is resident in Nigeria. These facts bear on the result."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s59",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3520)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s27(1)-(4)",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4069)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s57",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4150)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s56",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4172)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s202:def:gross-turnover",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4206)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:s165",
+     "reasons": [
+      "keyword slot: BM25 rank 1 (BM25 18.383, cosine distance 0.4567)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:small-company",
+     "reasons": [
+      "definition attachment: small company (similarity 0.552, cosine distance 0.4482; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 5,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 5,
+    "claims_kept": 5,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 1,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "company_income_tax",
+     "status": "computed",
+     "inputs": {
+      "amount": "80000000",
+      "gross_turnover": "500000000"
+     },
+     "input_matches": {
+      "amount": "amt:80000000",
+      "gross_turnover": "amt:500000000"
+     },
+     "constants": [
+      {
+       "id": "etr_turnover_min",
+       "value": "20000000000",
+       "chunk_id": "nta2025:s57",
+       "role": "gate"
+      },
+      {
+       "id": "small_turnover_max",
+       "value": "50000000",
+       "chunk_id": "nta2025:s202:def:small-company",
+       "role": "test"
+      },
+      {
+       "id": "cit_rate_other",
+       "value": "30",
+       "chunk_id": "nta2025:s56",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "small_turnover_max",
+      "cit_rate_other"
+     ],
+     "steps": [
+      {
+       "op": "mul_pct",
+       "a": "80000000",
+       "b": "30",
+       "result": "24000000",
+       "by": "taxcalc.company_income_tax"
+      },
+      {
+       "op": "round",
+       "a": "24000000",
+       "b": "0.01",
+       "result": "24000000.00",
+       "by": "taxcalc.company_income_tax"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "24000000.00",
+     "result_kind": "amount",
+     "assumptions": [
+      "the company is not a constituent entity of an MNE group (the question does not say otherwise)",
+      "the amount given as profits is the company's total profits (section 56)"
+     ],
+     "not_computed": [],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "nta2025:s202:def:small-company",
+      "nta2025:s56"
+     ],
+     "what": "Company income tax (Nigeria Tax Act 2025, sections 56 and 202)",
+     "from_question": [
+      "total profits, ₦80,000,000",
+      "gross turnover, ₦500,000,000"
+     ],
+     "working": [
+      "Small-company test (section 202): gross turnover of ₦500,000,000 is more than ₦50,000,000, so the company is not a small company",
+      "₦80,000,000 x 30% = ₦24,000,000"
+     ],
+     "result_text": "company income tax of ₦24,000,000",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "small_turnover_max": [
+        2
+       ],
+       "cit_rate_other": [
+        1
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    },
+    {
+     "id": "C2",
+     "scenario": "development_levy",
+     "status": "computed",
+     "inputs": {
+      "amount": "75000000",
+      "gross_turnover": "500000000"
+     },
+     "input_matches": {
+      "amount": "amt:75000000",
+      "gross_turnover": "amt:500000000"
+     },
+     "constants": [
+      {
+       "id": "dev_levy_rate",
+       "value": "4",
+       "chunk_id": "nta2025:s59",
+       "role": "rate"
+      },
+      {
+       "id": "small_turnover_max",
+       "value": "50000000",
+       "chunk_id": "nta2025:s202:def:small-company",
+       "role": "test"
+      }
+     ],
+     "relies_on": [
+      "dev_levy_rate",
+      "small_turnover_max"
+     ],
+     "steps": [
+      {
+       "op": "mul_pct",
+       "a": "75000000",
+       "b": "4",
+       "result": "3000000",
+       "by": "taxcalc.development_levy"
+      },
+      {
+       "op": "round",
+       "a": "3000000",
+       "b": "0.01",
+       "result": "3000000.00",
+       "by": "taxcalc.development_levy"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "3000000.00",
+     "result_kind": "amount",
+     "assumptions": [
+      "the company is resident in Nigeria (the question does not say otherwise)",
+      "the amount given as profits is the company's assessable profits (section 59)"
+     ],
+     "not_computed": [],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "nta2025:s59",
+      "nta2025:s202:def:small-company"
+     ],
+     "what": "Development levy (Nigeria Tax Act 2025, sections 59 and 202)",
+     "from_question": [
+      "assessable profits, ₦75,000,000",
+      "gross turnover, ₦500,000,000"
+     ],
+     "working": [
+      "Small-company test (section 202): gross turnover of ₦500,000,000 is more than ₦50,000,000, so the company is not a small company",
+      "₦75,000,000 x 4% = ₦3,000,000"
+     ],
+     "result_text": "development levy of ₦3,000,000",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "dev_levy_rate": [
+        3
+       ],
+       "small_turnover_max": [
+        2
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "company_income_tax",
+      "amount": "80000000",
+      "amount_basis": null,
+      "gross_turnover": "500000000",
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    },
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "development_levy",
+      "amount": "75000000",
+      "amount_basis": null,
+      "gross_turnover": "500000000",
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C2"
+    }
+   ],
+   "disclosures": [
+    "DR-049",
+    "DR-050",
+    "DR-150",
+    "DR-151",
+    "DR-056",
+    "DR-051",
+    "DR-052",
+    "DR-053",
+    "DR-054",
+    "DR-055"
+   ],
+   "rendered": "Company income tax is levied for each year of assessment on the total profits of every company. A small company is taxed at 0%. Any other company is taxed at the rate of 30 per cent from the commencement of this Act. [Nigeria Tax Act 2025, section 56]\n\nA small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company. [Nigeria Tax Act 2025, section 202, definition of \"small company\"]\n\nA development levy of 4% is imposed on the assessable profits of all companies chargeable to tax under Chapters Two and Three of this Act, other than small companies and non-resident companies. [Nigeria Tax Act 2025, section 59]\n\nThe development levy is not levied on assessable profits computed for the purposes of hydrocarbon tax. [Nigeria Tax Act 2025, section 59]\n\nWhere a company's effective tax rate in a year of assessment is less than 15%, it shall recompute and pay an additional tax that makes its effective tax rate equal to 15%. This applies to a constituent entity of an MNE group and to any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment. [Nigeria Tax Act 2025, section 57]\n\nCalculation (worked out by code from the figures in the question)\n- What: Company income tax (Nigeria Tax Act 2025, sections 56 and 202)\n- From the question: total profits, ₦80,000,000; gross turnover, ₦500,000,000\n- Assumed: the company is not a constituent entity of an MNE group (the question does not say otherwise); the amount given as profits is the company's total profits (section 56)\n- Working: Small-company test (section 202): gross turnover of ₦500,000,000 is more than ₦50,000,000, so the company is not a small company\n- Working: ₦80,000,000 x 30% = ₦24,000,000\n- Result: company income tax of ₦24,000,000\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nCalculation (worked out by code from the figures in the question)\n- What: Development levy (Nigeria Tax Act 2025, sections 59 and 202)\n- From the question: assessable profits, ₦75,000,000; gross turnover, ₦500,000,000\n- Assumed: the company is resident in Nigeria (the question does not say otherwise); the amount given as profits is the company's assessable profits (section 59)\n- Working: Small-company test (section 202): gross turnover of ₦500,000,000 is more than ₦50,000,000, so the company is not a small company\n- Working: ₦75,000,000 x 4% = ₦3,000,000\n- Result: development levy of ₦3,000,000\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nNot covered by the retrieved provisions:\n- The question does not state the company's total fixed assets, whether it provides professional services, whether it is an MNE group constituent entity, or whether it is resident in Nigeria. These facts bear on the result.\n\nSources\n- Nigeria Tax Act 2025, section 56 (gazette page A 426)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\" (gazette page A 510)\n- Nigeria Tax Act 2025, section 59 (gazette page A 427)\n- Nigeria Tax Act 2025, section 57 (gazette page A 426)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 56: The National Assembly text lets the President, on the advice of the National Economic Council, reduce the 30% rate to 25% by order; the gazette has no such provision. (DR-050)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": A small company has gross turnover of ₦50,000,000 or less in the gazette and ₦100,000,000 or less in the National Assembly text, which also says 'business' instead of 'company'. (DR-150)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": The gazette excludes any business providing professional services from being a small company; the National Assembly text has no such exclusion. (DR-151)\n- Nigeria Tax Act 2025, section 57: The minimum tax is measured differently. Gazette: covered tax paid divided by profits, where profits are net profit before tax less 5% of depreciation and personnel cost. National Assembly: covered taxes (companies income tax, petroleum profit tax, hydrocarbon tax, development levy, priority sector tax credit) as a percentage of net income, which excludes franked investment income and unrealised gains or losses. (DR-051)\n- Nigeria Tax Act 2025, section 57: The gazette applies the 15% minimum to every constituent entity of an MNE group; the National Assembly text only where the group's turnover is at least 750 million (printed with a pound sign) or its equivalent. (DR-052)\n- Nigeria Tax Act 2025, section 57: The 15% minimum effective tax rate applies from an aggregate turnover of ₦20,000,000,000 in the gazette and ₦50,000,000,000 in the National Assembly text. (DR-053)\n- Nigeria Tax Act 2025, section 57: The National Assembly text exempts approved free-zone enterprises (except for sales into the customs territory and MNE entities) and lets the Service set a higher turnover threshold by regulation; the gazette has neither and measures turnover in the relevant year of assessment rather than the financial year. (DR-054)\n- Nigeria Tax Act 2025, section 57: The gazette numbers the subsections (1), (2) and (4), with no (3); the labels are kept as printed. The National Assembly text has (1) to (4). (DR-055)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.026749,
+   "record_id": "f118e771-211c-4975-a0f6-da06ad67d60c",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": [],
+     "C2": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "E07",
+   "question": "Our company paid ₦2,400,000 of tax after the date it was due. Under the Nigeria Tax Administration Act, what sum is added to that tax?",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "Where any tax is not paid within the period prescribed under the Act, a sum equal to 10% of the amount of the tax payable is added to it. This is subject to section 67 of that Act.",
+     "chunk_ids": [
+      "ntaa2025:s65"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "The Act's collection and recovery provisions apply to collecting and recovering that added sum.",
+     "chunk_ids": [
+      "ntaa2025:s65"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "In addition, naira remittances carry interest at the prevailing monetary policy rate of the Central Bank of Nigeria plus a spread determined by the Minister. Foreign currency remittances incur interest at the prevailing SOFR or any successor rate, plus 10% or such other spread as the Minister determines.",
+     "chunk_ids": [
+      "ntaa2025:s65"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "The penalty and interest under this section are not deemed part of the tax paid for the purpose of claiming relief under the Act or any other tax law.",
+     "chunk_ids": [
+      "ntaa2025:s65"
+     ]
+    }
+   ],
+   "gaps": [
+    "Section 67, which section 65 refers to, is not among the passages.",
+    "The interest amount is not calculated, because the spread and the period are not given."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s202:def:aggregate-covered-tax-paid",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3449)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s57",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.3960)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s5",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.3983)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s6",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4021)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s56",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4053)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "ntaa2025:s65",
+     "reasons": [
+      "keyword slot: BM25 rank 1 (BM25 14.317, cosine distance 0.4060)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:tax",
+     "reasons": [
+      "definition attachment: tax (similarity 0.569, cosine distance 0.4310; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 4,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 4,
+    "claims_kept": 4,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 2,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "late_payment_addition",
+     "status": "computed",
+     "inputs": {
+      "amount": "2400000"
+     },
+     "input_matches": {
+      "amount": "amt:2400000"
+     },
+     "constants": [
+      {
+       "id": "late_payment_addition_rate",
+       "value": "10",
+       "chunk_id": "ntaa2025:s65",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "late_payment_addition_rate"
+     ],
+     "steps": [
+      {
+       "op": "mul_pct",
+       "a": "2400000",
+       "b": "10",
+       "result": "240000",
+       "by": "taxcalc.late_payment_addition"
+      },
+      {
+       "op": "round",
+       "a": "240000",
+       "b": "0.01",
+       "result": "240000.00",
+       "by": "taxcalc.late_payment_addition"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "240000.00",
+     "result_kind": "amount",
+     "assumptions": [],
+     "not_computed": [
+      "interest under section 65(1)(b), because its rate is not in the corpus"
+     ],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "ntaa2025:s65"
+     ],
+     "what": "Sum added to tax not paid in time (Nigeria Tax Administration Act 2025, section 65(1)(a))",
+     "from_question": [
+      "tax not paid in time, ₦2,400,000"
+     ],
+     "working": [
+      "₦2,400,000 x 10% = ₦240,000"
+     ],
+     "result_text": "a sum of ₦240,000 added to the tax",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "late_payment_addition_rate": [
+        1,
+        3
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "late_payment_addition",
+      "amount": "2400000",
+      "amount_basis": null,
+      "gross_turnover": null,
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    }
+   ],
+   "disclosures": [
+    "DR-242",
+    "DR-243",
+    "DR-244",
+    "DR-245"
+   ],
+   "rendered": "Where any tax is not paid within the period prescribed under the Act, a sum equal to 10% of the amount of the tax payable is added to it. This is subject to section 67 of that Act. [Nigeria Tax Administration Act 2025, section 65]\n\nThe Act's collection and recovery provisions apply to collecting and recovering that added sum. [Nigeria Tax Administration Act 2025, section 65]\n\nIn addition, naira remittances carry interest at the prevailing monetary policy rate of the Central Bank of Nigeria plus a spread determined by the Minister. Foreign currency remittances incur interest at the prevailing SOFR or any successor rate, plus 10% or such other spread as the Minister determines. [Nigeria Tax Administration Act 2025, section 65]\n\nThe penalty and interest under this section are not deemed part of the tax paid for the purpose of claiming relief under the Act or any other tax law. [Nigeria Tax Administration Act 2025, section 65]\n\nCalculation (worked out by code from the figures in the question)\n- What: Sum added to tax not paid in time (Nigeria Tax Administration Act 2025, section 65(1)(a))\n- From the question: tax not paid in time, ₦2,400,000\n- Working: ₦2,400,000 x 10% = ₦240,000\n- Result: a sum of ₦240,000 added to the tax\n- Not computed: interest under section 65(1)(b), because its rate is not in the corpus.\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nNot covered by the retrieved provisions:\n- Section 67, which section 65 refers to, is not among the passages.\n- The interest amount is not calculated, because the spread and the period are not given.\n\nSources\n- Nigeria Tax Administration Act 2025, section 65 (gazette pages A 298, A 299)\n\nDifferences between official texts\n- Nigeria Tax Administration Act 2025, section 65: Interest is SOFR plus 10% or such other spread as the authority determines in the cited text; the National Assembly text says SOFR plus a spread to be determined, without the 10%. (DR-243)\n- Nigeria Tax Administration Act 2025, section 65: Only the cited text makes the interest in subsection (1)(b) and (c) compound and applies it to tax debts unpaid at commencement. (DR-245)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.020493,
+   "record_id": "27ab96f6-b129-4890-898a-fd6f9f6a2da4",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "E08",
+   "question": "A company failed to file its returns for four months in a row. What is the total administrative penalty under the Nigeria Tax Administration Act?",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "A taxable person who fails or refuses to file returns, or knowingly files incomplete or inaccurate returns, to the relevant tax authority in accordance with the Act is liable to an administrative penalty.",
+     "chunk_ids": [
+      "ntaa2025:s101"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "The penalty is ₦100,000 in the first month in which the failure occurs.",
+     "chunk_ids": [
+      "ntaa2025:s101"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "The penalty is ₦50,000 for each subsequent month in which the failure continues.",
+     "chunk_ids": [
+      "ntaa2025:s101"
+     ]
+    }
+   ],
+   "gaps": [
+    "The passages do not say that the company in the question is a taxable person, so that link is not stated."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "ntaa2025:s101",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.2577)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "ntaa2025:s100",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.2835)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "ntaa2025:s104",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.3046)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "ntaa2025:s102",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.3071)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "ntaa2025:s105",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.3262)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "ntaa2025:s106",
+     "reasons": [
+      "keyword slot: BM25 rank 4 (BM25 16.133, cosine distance 0.3426)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "ntaa2025:s147:def:relevant-tax-authority",
+     "reasons": [
+      "definition attachment: relevant tax authority (similarity 0.527, cosine distance 0.4727; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 3,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 3,
+    "claims_kept": 3,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 1,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "monthly_admin_penalty",
+     "status": "computed",
+     "inputs": {
+      "months": 4,
+      "provision": "ntaa2025:s101"
+     },
+     "input_matches": {
+      "months": "num:4"
+     },
+     "constants": [
+      {
+       "id": "s101_first_month",
+       "value": "100000",
+       "chunk_id": "ntaa2025:s101",
+       "role": "rate"
+      },
+      {
+       "id": "s101_later_month",
+       "value": "50000",
+       "chunk_id": "ntaa2025:s101",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "s101_first_month",
+      "s101_later_month"
+     ],
+     "steps": [
+      {
+       "op": "sub",
+       "a": "4",
+       "b": "1",
+       "result": "3",
+       "by": "taxcalc.monthly_admin_penalty"
+      },
+      {
+       "op": "mul",
+       "a": "50000",
+       "b": "3",
+       "result": "150000",
+       "by": "taxcalc.monthly_admin_penalty"
+      },
+      {
+       "op": "add",
+       "a": "100000",
+       "b": "150000",
+       "result": "250000",
+       "by": "taxcalc.monthly_admin_penalty"
+      },
+      {
+       "op": "round",
+       "a": "250000",
+       "b": "0.01",
+       "result": "250000.00",
+       "by": "taxcalc.monthly_admin_penalty"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "250000.00",
+     "result_kind": "amount",
+     "assumptions": [],
+     "not_computed": [],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "ntaa2025:s101"
+     ],
+     "what": "Administrative penalty for failing to file returns (Nigeria Tax Administration Act 2025, section 101)",
+     "from_question": [
+      "months of failure, 4"
+     ],
+     "working": [
+      "₦100,000 for the first month + ₦50,000 x 3 later months = ₦250,000"
+     ],
+     "result_text": "a total administrative penalty of ₦250,000",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "s101_first_month": [
+        2
+       ],
+       "s101_later_month": [
+        3
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "monthly_admin_penalty",
+      "amount": null,
+      "amount_basis": null,
+      "gross_turnover": null,
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": "ntaa2025:s101",
+      "months": 4
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    }
+   ],
+   "disclosures": [
+    "DR-248"
+   ],
+   "rendered": "A taxable person who fails or refuses to file returns, or knowingly files incomplete or inaccurate returns, to the relevant tax authority in accordance with the Act is liable to an administrative penalty. [Nigeria Tax Administration Act 2025, section 101]\n\nThe penalty is ₦100,000 in the first month in which the failure occurs. [Nigeria Tax Administration Act 2025, section 101]\n\nThe penalty is ₦50,000 for each subsequent month in which the failure continues. [Nigeria Tax Administration Act 2025, section 101]\n\nCalculation (worked out by code from the figures in the question)\n- What: Administrative penalty for failing to file returns (Nigeria Tax Administration Act 2025, section 101)\n- From the question: months of failure, 4\n- Working: ₦100,000 for the first month + ₦50,000 x 3 later months = ₦250,000\n- Result: a total administrative penalty of ₦250,000\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nNot covered by the retrieved provisions:\n- The passages do not say that the company in the question is a taxable person, so that link is not stated.\n\nSources\n- Nigeria Tax Administration Act 2025, section 101 (gazette page A 312)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.015304,
+   "record_id": "0cba6fee-18df-421f-9a4c-68ec48834841",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "E09",
+   "question": "A business traded for 7 months without registering for tax. What is the total administrative penalty for failing to register?",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "A taxable person who fails or refuses to register for tax under section 4 of the Act is liable to an administrative penalty of ₦50,000 in the first month in which the failure occurs.",
+     "chunk_ids": [
+      "ntaa2025:s100"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "The same person is liable to an administrative penalty of ₦25,000 for each subsequent month in which the failure continues.",
+     "chunk_ids": [
+      "ntaa2025:s100"
+     ]
+    }
+   ],
+   "gaps": [
+    "Whether the business is a taxable person required to register under section 4 is not stated in the passages. Section 4 is not among the passages."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "ntaa2025:s100",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4087)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "ntaa2025:s102",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4866)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "ntaa2025:s104",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4919)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "ntaa2025:s101",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5043)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "ntaa2025:s127",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5112)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "ntaa2025:s107",
+     "reasons": [
+      "keyword slot: BM25 rank 4 (BM25 12.674, cosine distance 0.5361)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "ntaa2025:s147:def:business",
+     "reasons": [
+      "definition attachment: business (similarity 0.402, cosine distance 0.5981; term used by result 2)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 2,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 2,
+    "claims_kept": 2,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 1,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "monthly_admin_penalty",
+     "status": "computed",
+     "inputs": {
+      "months": 7,
+      "provision": "ntaa2025:s100"
+     },
+     "input_matches": {
+      "months": "num:7"
+     },
+     "constants": [
+      {
+       "id": "s100_first_month",
+       "value": "50000",
+       "chunk_id": "ntaa2025:s100",
+       "role": "rate"
+      },
+      {
+       "id": "s100_later_month",
+       "value": "25000",
+       "chunk_id": "ntaa2025:s100",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "s100_first_month",
+      "s100_later_month"
+     ],
+     "steps": [
+      {
+       "op": "sub",
+       "a": "7",
+       "b": "1",
+       "result": "6",
+       "by": "taxcalc.monthly_admin_penalty"
+      },
+      {
+       "op": "mul",
+       "a": "25000",
+       "b": "6",
+       "result": "150000",
+       "by": "taxcalc.monthly_admin_penalty"
+      },
+      {
+       "op": "add",
+       "a": "50000",
+       "b": "150000",
+       "result": "200000",
+       "by": "taxcalc.monthly_admin_penalty"
+      },
+      {
+       "op": "round",
+       "a": "200000",
+       "b": "0.01",
+       "result": "200000.00",
+       "by": "taxcalc.monthly_admin_penalty"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "200000.00",
+     "result_kind": "amount",
+     "assumptions": [],
+     "not_computed": [],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "ntaa2025:s100"
+     ],
+     "what": "Administrative penalty for failing to register (Nigeria Tax Administration Act 2025, section 100)",
+     "from_question": [
+      "months of failure, 7"
+     ],
+     "working": [
+      "₦50,000 for the first month + ₦25,000 x 6 later months = ₦200,000"
+     ],
+     "result_text": "a total administrative penalty of ₦200,000",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "s100_first_month": [
+        1
+       ],
+       "s100_later_month": [
+        2
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "monthly_admin_penalty",
+      "amount": null,
+      "amount_basis": null,
+      "gross_turnover": null,
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": "ntaa2025:s100",
+      "months": 7
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    }
+   ],
+   "disclosures": [],
+   "rendered": "A taxable person who fails or refuses to register for tax under section 4 of the Act is liable to an administrative penalty of ₦50,000 in the first month in which the failure occurs. [Nigeria Tax Administration Act 2025, section 100]\n\nThe same person is liable to an administrative penalty of ₦25,000 for each subsequent month in which the failure continues. [Nigeria Tax Administration Act 2025, section 100]\n\nCalculation (worked out by code from the figures in the question)\n- What: Administrative penalty for failing to register (Nigeria Tax Administration Act 2025, section 100)\n- From the question: months of failure, 7\n- Working: ₦50,000 for the first month + ₦25,000 x 6 later months = ₦200,000\n- Result: a total administrative penalty of ₦200,000\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nNot covered by the retrieved provisions:\n- Whether the business is a taxable person required to register under section 4 is not stated in the passages. Section 4 is not among the passages.\n\nSources\n- Nigeria Tax Administration Act 2025, section 100 (gazette page A 312)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.016216,
+   "record_id": "d79485f3-5742-4c53-8cd5-9043e174c14f",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "E10",
+   "question": "We did not process taxable supplies through the fiscalisation system, and the tax due on them was ₦800,000. Leaving interest aside, what is the administrative penalty?",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "A taxable person that fails to process a taxable supply through the fiscalisation system is liable to an administrative penalty of ₦200,000 plus 100% of the tax due, and interest at the prevailing Central Bank of Nigeria Monetary Policy rate per annum.",
+     "chunk_ids": [
+      "ntaa2025:s104"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "The administrative penalty has a fixed part of ₦200,000.",
+     "chunk_ids": [
+      "ntaa2025:s104"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "The administrative penalty also has a further part of 100% of the tax due.",
+     "chunk_ids": [
+      "ntaa2025:s104"
+     ]
+    }
+   ],
+   "gaps": [
+    "The interest at the Central Bank of Nigeria Monetary Policy rate is not calculated, as the question sets it aside."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "ntaa2025:s104",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.2593)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "ntaa2025:s100",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4048)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "ntaa2025:s102",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4201)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "ntaa2025:s108",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4265)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "ntaa2025:s106",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4278)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:s158",
+     "reasons": [
+      "keyword slot: BM25 rank 2 (BM25 20.929, cosine distance 0.5098)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "ntaa2025:s147:def:tax",
+     "reasons": [
+      "definition attachment: tax (similarity 0.467, cosine distance 0.5330; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 3,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 3,
+    "claims_kept": 3,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 1,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "fiscalisation_penalty",
+     "status": "computed",
+     "inputs": {
+      "amount": "800000"
+     },
+     "input_matches": {
+      "amount": "amt:800000"
+     },
+     "constants": [
+      {
+       "id": "s104_fixed",
+       "value": "200000",
+       "chunk_id": "ntaa2025:s104",
+       "role": "rate"
+      },
+      {
+       "id": "s104_rate",
+       "value": "100",
+       "chunk_id": "ntaa2025:s104",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "s104_fixed",
+      "s104_rate"
+     ],
+     "steps": [
+      {
+       "op": "mul_pct",
+       "a": "800000",
+       "b": "100",
+       "result": "800000",
+       "by": "taxcalc.fiscalisation_penalty"
+      },
+      {
+       "op": "add",
+       "a": "200000",
+       "b": "800000",
+       "result": "1000000",
+       "by": "taxcalc.fiscalisation_penalty"
+      },
+      {
+       "op": "round",
+       "a": "1000000",
+       "b": "0.01",
+       "result": "1000000.00",
+       "by": "taxcalc.fiscalisation_penalty"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "1000000.00",
+     "result_kind": "amount",
+     "assumptions": [],
+     "not_computed": [
+      "interest at the Central Bank of Nigeria Monetary Policy Rate under section 104, because its rate is not in the corpus"
+     ],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "ntaa2025:s104"
+     ],
+     "what": "Administrative penalty for failing to use the fiscalisation system (Nigeria Tax Administration Act 2025, section 104)",
+     "from_question": [
+      "tax due on the supplies, ₦800,000"
+     ],
+     "working": [
+      "₦200,000 + ₦800,000 x 100% = ₦1,000,000"
+     ],
+     "result_text": "an administrative penalty of ₦1,000,000",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "s104_fixed": [
+        1,
+        2
+       ],
+       "s104_rate": [
+        1,
+        3
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "fiscalisation_penalty",
+      "amount": "800000",
+      "amount_basis": null,
+      "gross_turnover": null,
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    }
+   ],
+   "disclosures": [],
+   "rendered": "A taxable person that fails to process a taxable supply through the fiscalisation system is liable to an administrative penalty of ₦200,000 plus 100% of the tax due, and interest at the prevailing Central Bank of Nigeria Monetary Policy rate per annum. [Nigeria Tax Administration Act 2025, section 104]\n\nThe administrative penalty has a fixed part of ₦200,000. [Nigeria Tax Administration Act 2025, section 104]\n\nThe administrative penalty also has a further part of 100% of the tax due. [Nigeria Tax Administration Act 2025, section 104]\n\nCalculation (worked out by code from the figures in the question)\n- What: Administrative penalty for failing to use the fiscalisation system (Nigeria Tax Administration Act 2025, section 104)\n- From the question: tax due on the supplies, ₦800,000\n- Working: ₦200,000 + ₦800,000 x 100% = ₦1,000,000\n- Result: an administrative penalty of ₦1,000,000\n- Not computed: interest at the Central Bank of Nigeria Monetary Policy Rate under section 104, because its rate is not in the corpus.\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nNot covered by the retrieved provisions:\n- The interest at the Central Bank of Nigeria Monetary Policy rate is not calculated, as the question sets it aside.\n\nSources\n- Nigeria Tax Administration Act 2025, section 104 (gazette page A 312)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.017161,
+   "record_id": "e129ed40-5ff8-48ca-8216-9530e0a0db07",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "E11",
+   "question": "Section 65 of the Nigeria Tax Administration Act is made subject to another section of that Act. What does that other section say, and what sum is added under section 65 when ₦900,000 of tax is paid late?",
+   "kind": "compute",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "Where any tax is not paid within the period prescribed under the Act, a sum equal to 10% of the amount of the tax payable is added to it. The Act's provisions on collection and recovery of tax apply to collecting and recovering that sum.",
+     "chunk_ids": [
+      "ntaa2025:s65"
+     ]
+    }
+   ],
+   "gaps": [
+    "Section 67 of the Nigeria Tax Administration Act 2025, which section 65 refers to, is not among the passages. What it says cannot be given here."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "ntaa2025:s65",
+     "reasons": [
+      "section lookup: Section 65, Nigeria Tax Administration Act 2025 (cosine distance 0.3291)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "ntaa2025:s49(1)-(6)",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.3567)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "ntaa2025:s36",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.3587)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "ntaa2025:s147:def:tax",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.3661)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s202:def:aggregate-covered-tax-paid",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.3833)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "ntaa2025:s43",
+     "reasons": [
+      "keyword slot: BM25 rank 2 (BM25 11.297, cosine distance 0.3962)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "ntaa2025:s147:def:relevant-tax-authority",
+     "reasons": [
+      "definition attachment: relevant tax authority (similarity 0.595, cosine distance 0.4049; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 1,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 1,
+     "unverified": 0
+    },
+    "claims_checked": 1,
+    "claims_kept": 1,
+    "claims_removed": 0,
+    "claims_moved": 1,
+    "gaps_kept": 1,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "late_payment_addition",
+     "status": "computed",
+     "inputs": {
+      "amount": "900000"
+     },
+     "input_matches": {
+      "amount": "amt:900000"
+     },
+     "constants": [
+      {
+       "id": "late_payment_addition_rate",
+       "value": "10",
+       "chunk_id": "ntaa2025:s65",
+       "role": "rate"
+      }
+     ],
+     "relies_on": [
+      "late_payment_addition_rate"
+     ],
+     "steps": [
+      {
+       "op": "mul_pct",
+       "a": "900000",
+       "b": "10",
+       "result": "90000",
+       "by": "taxcalc.late_payment_addition"
+      },
+      {
+       "op": "round",
+       "a": "90000",
+       "b": "0.01",
+       "result": "90000.00",
+       "by": "taxcalc.late_payment_addition"
+      }
+     ],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": "90000.00",
+     "result_kind": "amount",
+     "assumptions": [],
+     "not_computed": [
+      "interest under section 65(1)(b), because its rate is not in the corpus"
+     ],
+     "declined_code": null,
+     "declined_reason": null,
+     "sources": [
+      "ntaa2025:s65"
+     ],
+     "what": "Sum added to tax not paid in time (Nigeria Tax Administration Act 2025, section 65(1)(a))",
+     "from_question": [
+      "tax not paid in time, ₦900,000"
+     ],
+     "working": [
+      "₦900,000 x 10% = ₦90,000"
+     ],
+     "result_text": "a sum of ₦90,000 added to the tax",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": true,
+     "checks": {
+      "K1": true,
+      "K2": true,
+      "K3": true,
+      "K4": {
+       "late_payment_addition_rate": [
+        2
+       ]
+      },
+      "K5": true,
+      "K6": true
+     },
+     "shown": true,
+     "withheld_reason": null
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "lookup_section",
+     "input": {
+      "act": "ntaa2025",
+      "section_number": "67",
+      "subsection": null
+     },
+     "is_error": true,
+     "limit_hit": null,
+     "calculation_id": null
+    },
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "late_payment_addition",
+      "amount": "900000",
+      "amount_basis": null,
+      "gross_turnover": null,
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    }
+   ],
+   "disclosures": [
+    "DR-242",
+    "DR-243",
+    "DR-244",
+    "DR-245"
+   ],
+   "rendered": "Where any tax is not paid within the period prescribed under the Act, a sum equal to 10% of the amount of the tax payable is added to it. The Act's provisions on collection and recovery of tax apply to collecting and recovering that sum. [Nigeria Tax Administration Act 2025, section 65]\n\nCalculation (worked out by code from the figures in the question)\n- What: Sum added to tax not paid in time (Nigeria Tax Administration Act 2025, section 65(1)(a))\n- From the question: tax not paid in time, ₦900,000\n- Working: ₦900,000 x 10% = ₦90,000\n- Result: a sum of ₦90,000 added to the tax\n- Not computed: interest under section 65(1)(b), because its rate is not in the corpus.\n- Rounded once, to the nearest kobo, half up.\n- This shows how the stated rule applies to the figures given. It is not an assessment.\n\nNot covered by the retrieved provisions:\n- Section 67 of the Nigeria Tax Administration Act 2025, which section 65 refers to, is not among the passages. What it says cannot be given here.\n\nSources\n- Nigeria Tax Administration Act 2025, section 65 (gazette pages A 298, A 299)\n\nDifferences between official texts\n- Nigeria Tax Administration Act 2025, section 65: Interest is SOFR plus 10% or such other spread as the authority determines in the cited text; the National Assembly text says SOFR plus a spread to be determined, without the 10%. (DR-243)\n- Nigeria Tax Administration Act 2025, section 65: Only the cited text makes the interest in subsection (1)(b) and (c) compound and applies it to tax debts unpaid at commencement. (DR-245)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.022918,
+   "record_id": "40eb1354-bf6b-4d08-be02-6e3044e839f5",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {
+     "C1": []
+    },
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "X1",
+   "question": "Our company sold an office building for ₦300 million; it had cost ₦120 million. Work out the tax on the gain.",
+   "kind": "decline",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "Where an asset used for a trade, business, profession or vocation has had capital allowance made under the First Schedule, only the residue of that asset is deducted from the disposal proceeds to compute the chargeable gain.",
+     "chunk_ids": [
+      "nta2025:s39"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "Where capital allowance has not been made under the First Schedule, the chargeable gain is found by deducting from the disposal proceeds the amount or value of the consideration, in money or money's worth, incurred wholly and exclusively to acquire the asset.",
+     "chunk_ids": [
+      "nta2025:s39"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "The total profits of a company for a year of assessment are its total assessable profits from all sources, including chargeable gains computed under Part VIII of Chapter Two, less any loss ascertained under subsection (6) and capital allowance under Part I of the First Schedule.",
+     "chunk_ids": [
+      "nta2025:s27(1)-(4)"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "A building, structure or works of a permanent nature is disposed of where the relevant interest in it is sold.",
+     "chunk_ids": [
+      "nta2025:sch1:pt1:para9"
+     ]
+    }
+   ],
+   "gaps": [
+    "The tax rate that applies to the company's total profits is not among the passages, so the tax on the gain cannot be worked out.",
+    "Whether capital allowance was claimed on the building, and the amount of its residue, are not stated, so the gain cannot be computed.",
+    "Section 33, which the definition of chargeable gains refers to, is not among the passages.",
+    "Subsection (6) of section 27, which section 27(1) refers to for losses, is not among the passages.",
+    "Whether the company's other profits, losses or allowances affect the tax is not stated."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s39",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4956)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s47",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5012)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s51",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5153)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s45",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5164)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s27(1)-(4)",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5179)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:sch1:pt1:para9",
+     "reasons": [
+      "keyword slot: BM25 rank 1 (BM25 14.989, cosine distance 0.5575)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:chargeable-gains",
+     "reasons": [
+      "definition attachment: chargeable gains (similarity 0.444, cosine distance 0.5560; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 4,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 4,
+    "claims_kept": 4,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 5,
+    "gaps_removed": 0
+   },
+   "computations": [],
+   "tool_uses": [],
+   "disclosures": [
+    "DR-038",
+    "DR-039",
+    "DR-170"
+   ],
+   "rendered": "Where an asset used for a trade, business, profession or vocation has had capital allowance made under the First Schedule, only the residue of that asset is deducted from the disposal proceeds to compute the chargeable gain. [Nigeria Tax Act 2025, section 39]\n\nWhere capital allowance has not been made under the First Schedule, the chargeable gain is found by deducting from the disposal proceeds the amount or value of the consideration, in money or money's worth, incurred wholly and exclusively to acquire the asset. [Nigeria Tax Act 2025, section 39]\n\nThe total profits of a company for a year of assessment are its total assessable profits from all sources, including chargeable gains computed under Part VIII of Chapter Two, less any loss ascertained under subsection (6) and capital allowance under Part I of the First Schedule. [Nigeria Tax Act 2025, section 27(1) to (4)]\n\nA building, structure or works of a permanent nature is disposed of where the relevant interest in it is sold. [Nigeria Tax Act 2025, First Schedule, Part I, paragraph 9]\n\nNot covered by the retrieved provisions:\n- The tax rate that applies to the company's total profits is not among the passages, so the tax on the gain cannot be worked out.\n- Whether capital allowance was claimed on the building, and the amount of its residue, are not stated, so the gain cannot be computed.\n- Section 33, which the definition of chargeable gains refers to, is not among the passages.\n- Subsection (6) of section 27, which section 27(1) refers to for losses, is not among the passages.\n- Whether the company's other profits, losses or allowances affect the tax is not stated.\n\nSources\n- Nigeria Tax Act 2025, section 39 (gazette page A 419)\n- Nigeria Tax Act 2025, section 27(1) to (4) (gazette pages A 412, A 413)\n- Nigeria Tax Act 2025, First Schedule, Part I, paragraph 9 (gazette pages A 516, A 517)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 27(1) to (4): The National Assembly text requires companies in the priority sector to obtain a certificate of acceptance from the Industrial Inspectorate Department for qualifying capital expenditure; the gazette has no such condition. (DR-039)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.012301,
+   "record_id": "e36d04e7-c94c-4d87-af48-b1a3fb4dfc91",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {},
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "X2",
+   "question": "Our company made total profits of ₦25 million this year. How much company income tax does it pay?",
+   "kind": "decline",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "Tax is levied for each year of assessment on the total profits of every company. A small company is taxed at 0%. Any other company is taxed at 30 per cent from the commencement of the Act.",
+     "chunk_ids": [
+      "nta2025:s56"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "A small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company.",
+     "chunk_ids": [
+      "nta2025:s202:def:small-company"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "Where a company's effective tax rate in a year of assessment is less than 15%, it must recompute and pay an additional tax that makes its effective tax rate equal to 15%. This applies to a constituent entity of an MNE group, and to any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.",
+     "chunk_ids": [
+      "nta2025:s57"
+     ]
+    }
+   ],
+   "gaps": [
+    "The amount of tax cannot be worked out because the question does not state the company's gross turnover. It also does not state its total fixed assets, whether it provides professional services, or whether it is an MNE group constituent entity. These facts decide whether the 0% or the 30 per cent rate applies.",
+    "The question does not state the company's aggregate turnover, which is needed to see whether the 15% effective tax rate rule applies."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s6",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.3945)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s27(1)-(4)",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.3971)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s56",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4028)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s8",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4079)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s57",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.4086)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:s9",
+     "reasons": [
+      "keyword slot: BM25 rank 1 (BM25 17.600, cosine distance 0.4444)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:nigerian-company",
+     "reasons": [
+      "definition attachment: Nigerian company (similarity 0.498, cosine distance 0.5021; term used by result 1)"
+     ]
+    },
+    {
+     "label": "P9",
+     "chunk_id": "nta2025:s202:def:remainder-of-assessable-profit",
+     "reasons": [
+      "lookup_section: Section 202, Nigeria Tax Act 2025"
+     ]
+    },
+    {
+     "label": "P10",
+     "chunk_id": "nta2025:s202:def:aggregate-covered-tax-paid",
+     "reasons": [
+      "lookup_section: Section 202, Nigeria Tax Act 2025"
+     ]
+    },
+    {
+     "label": "P11",
+     "chunk_id": "nta2025:s202:def:small-company",
+     "reasons": [
+      "lookup_section: Section 202, Nigeria Tax Act 2025"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 3,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 3,
+    "claims_kept": 3,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 2,
+    "gaps_removed": 0
+   },
+   "computations": [
+    {
+     "id": "C1",
+     "scenario": "company_income_tax",
+     "status": "declined",
+     "inputs": {
+      "amount": "25000000"
+     },
+     "input_matches": {
+      "amount": "amt:25000000"
+     },
+     "constants": [],
+     "relies_on": [],
+     "steps": [],
+     "rounding": "0.01 ROUND_HALF_UP",
+     "result": null,
+     "result_kind": null,
+     "assumptions": [],
+     "not_computed": [],
+     "declined_code": "missing_input",
+     "declined_reason": "the gross turnover is not stated in the question",
+     "sources": [],
+     "what": "",
+     "from_question": [],
+     "working": [],
+     "result_text": "",
+     "code": {
+      "calc_version": "calc/1",
+      "rates_sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+     },
+     "listed": false,
+     "checks": {
+      "K1": false,
+      "K2": true,
+      "K3": false,
+      "K4": {},
+      "K5": true,
+      "K6": false
+     },
+     "shown": false,
+     "withheld_reason": "declined"
+    }
+   ],
+   "tool_uses": [
+    {
+     "turn": 1,
+     "name": "calculate_liability",
+     "input": {
+      "scenario": "company_income_tax",
+      "amount": "25000000",
+      "amount_basis": null,
+      "gross_turnover": null,
+      "total_fixed_assets": null,
+      "professional_services": null,
+      "mne_constituent": null,
+      "non_resident": null,
+      "provision": null,
+      "months": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": "C1"
+    },
+    {
+     "turn": 2,
+     "name": "lookup_section",
+     "input": {
+      "act": "nta2025",
+      "section_number": "202",
+      "subsection": null
+     },
+     "is_error": false,
+     "limit_hit": null,
+     "calculation_id": null
+    }
+   ],
+   "disclosures": [
+    "DR-049",
+    "DR-050",
+    "DR-150",
+    "DR-151",
+    "DR-051",
+    "DR-052",
+    "DR-053",
+    "DR-054",
+    "DR-055"
+   ],
+   "rendered": "Tax is levied for each year of assessment on the total profits of every company. A small company is taxed at 0%. Any other company is taxed at 30 per cent from the commencement of the Act. [Nigeria Tax Act 2025, section 56]\n\nA small company is a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000. A business providing professional services is not classified as a small company. [Nigeria Tax Act 2025, section 202, definition of \"small company\"]\n\nWhere a company's effective tax rate in a year of assessment is less than 15%, it must recompute and pay an additional tax that makes its effective tax rate equal to 15%. This applies to a constituent entity of an MNE group, and to any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment. [Nigeria Tax Act 2025, section 57]\n\nNot covered by the retrieved provisions:\n- The amount of tax cannot be worked out because the question does not state the company's gross turnover. It also does not state its total fixed assets, whether it provides professional services, or whether it is an MNE group constituent entity. These facts decide whether the 0% or the 30 per cent rate applies.\n- The question does not state the company's aggregate turnover, which is needed to see whether the 15% effective tax rate rule applies.\n\nSources\n- Nigeria Tax Act 2025, section 56 (gazette page A 426)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\" (gazette page A 510)\n- Nigeria Tax Act 2025, section 57 (gazette page A 426)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 56: The National Assembly text lets the President, on the advice of the National Economic Council, reduce the 30% rate to 25% by order; the gazette has no such provision. (DR-050)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": A small company has gross turnover of ₦50,000,000 or less in the gazette and ₦100,000,000 or less in the National Assembly text, which also says 'business' instead of 'company'. (DR-150)\n- Nigeria Tax Act 2025, section 202, definition of \"small company\": The gazette excludes any business providing professional services from being a small company; the National Assembly text has no such exclusion. (DR-151)\n- Nigeria Tax Act 2025, section 57: The minimum tax is measured differently. Gazette: covered tax paid divided by profits, where profits are net profit before tax less 5% of depreciation and personnel cost. National Assembly: covered taxes (companies income tax, petroleum profit tax, hydrocarbon tax, development levy, priority sector tax credit) as a percentage of net income, which excludes franked investment income and unrealised gains or losses. (DR-051)\n- Nigeria Tax Act 2025, section 57: The gazette applies the 15% minimum to every constituent entity of an MNE group; the National Assembly text only where the group's turnover is at least 750 million (printed with a pound sign) or its equivalent. (DR-052)\n- Nigeria Tax Act 2025, section 57: The 15% minimum effective tax rate applies from an aggregate turnover of ₦20,000,000,000 in the gazette and ₦50,000,000,000 in the National Assembly text. (DR-053)\n- Nigeria Tax Act 2025, section 57: The National Assembly text exempts approved free-zone enterprises (except for sales into the customs territory and MNE entities) and lets the Service set a higher turnover threshold by regulation; the gazette has neither and measures turnover in the relevant year of assessment rather than the financial year. (DR-054)\n- Nigeria Tax Act 2025, section 57: The gazette numbers the subsections (1), (2) and (4), with no (3); the labels are kept as printed. The National Assembly text has (1) to (4). (DR-055)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.030883,
+   "record_id": "84ce7f31-af7e-4360-80ed-51fc4c0cc0a5",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {},
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [
+     "lookup_section"
+    ],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  },
+  {
+   "id": "X3",
+   "question": "I am a sole trader and earned ₦6 million from my business this year. Work out my personal income tax.",
+   "kind": "decline",
+   "status": "not_covered",
+   "refusal_reason": null,
+   "flags": [
+    "scope_note"
+   ],
+   "notes": [
+    "scope:personal_income_tax"
+   ],
+   "claims": [],
+   "gaps": [
+    "The passages do not contain the personal income tax rates or bands, so the tax on a sole trader's profit cannot be worked out.",
+    "The passages do not contain any reliefs, allowances or exemptions that would reduce an individual's taxable amount.",
+    "The question does not say whether the ₦6 million is turnover or profit after deductible expenses, so the assessable profit is not known.",
+    "The calculation tool does not cover personal income tax for individuals, so no figure can be computed."
+   ],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s26",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4809)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s25",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4863)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s22",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4885)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s20(1)(a)-(h)",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5000)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "ntaa2025:s147:def:small-business",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5068)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:s202:def:taxable-person",
+     "reasons": [
+      "keyword slot: BM25 rank 1 (BM25 12.645, cosine distance 0.5538)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:assessable-income",
+     "reasons": [
+      "definition attachment: assessable income (similarity 0.425, cosine distance 0.5746; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "not_covered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 0,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 0,
+    "claims_kept": 0,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 4,
+    "gaps_removed": 0
+   },
+   "computations": [],
+   "tool_uses": [],
+   "disclosures": [],
+   "rendered": "Notes\n- Personal income tax and PAYE are outside the corpus this tool covers (v1). Answers come only from the provisions that are in the corpus.\n\nThe provisions retrieved from the corpus do not answer this question.\n\nNot covered by the retrieved provisions:\n- The passages do not contain the personal income tax rates or bands, so the tax on a sole trader's profit cannot be worked out.\n- The passages do not contain any reliefs, allowances or exemptions that would reduce an individual's taxable amount.\n- The question does not say whether the ₦6 million is turnover or profit after deductible expenses, so the assessable profit is not known.\n- The calculation tool does not cover personal income tax for individuals, so no figure can be computed.\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.007942,
+   "record_id": "3fcfe1f4-4413-4d13-8e2d-f5ced49ea83c",
+   "error": null,
+   "checks": {
+    "correct": true,
+    "code": {},
+    "code_ok": true,
+    "figures": {
+     "unexplained": [],
+     "computed_amount_in_claim_or_gap": [],
+     "passed": true
+    },
+    "notes_ok": true,
+    "lookup_ok": true,
+    "extra_calls": [],
+    "cites_expected": [],
+    "disclaimer": true,
+    "auto_pass": true
+   },
+   "review": {
+    "claims_supported": null
+   }
+  }
+ ]
+}
