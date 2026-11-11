@@ -944,3 +944,158 @@ page check of the two headings left open in section 15.1. No paid call was made.
 | Full suite | without `TAXY_RUN_API_TESTS`: 1373 passed, 24 skipped, 0 failed, in 429 s (11 new tests) |
 
 Spend: $0.00. Phase 7 spend stays $0.0531 of the $2.00 cap (D-116).
+
+## 16. Paid checks record (build plan step 6, 2026-11-11)
+
+Free part built: `tests/test_tools_api.py` (the two `api` tests, on two new questions that no question
+set or exit question holds, with two free tests that check this), `eval/tools/run_regression_sample.py`
+(12 cases, $0.30 cost stop, the D-128 shared API stop with a void record and exit 3, a write-once
+`eval/tools/results/regression_sample.json` that records the live configuration and code hashes, and a
+per-case comparison with `tune_run17.json`) and `tests/test_tools_regression_sample.py` (fake clients).
+Full suite without `TAXY_RUN_API_TESTS`: 1387 passed, 26 skipped (the 24 before plus the 2 new `api`
+tests), 0 failed, in 479 s. Nothing was committed and `config_p7.json` was not frozen.
+
+### 16.1 Step A: the `api` tests (stop rule passed: $0.0531 + $0.15 + $0.30 + 2 x $0.60 = $1.7031 of $2.00)
+
+Run once with `TAXY_RUN_API_TESTS=1`: 2 passed (the free question checks), **2 failed** (both `api`
+tests). Both generation calls were rejected by the API before any answer was produced:
+
+> BadRequestError (HTTP 400): invalid_request_error: tools.1.custom: Invalid schema: Enum value
+> 'value_before_vat' does not match declared type '['string', 'null']'
+
+| Test | Result | Reason |
+|---|---|---|
+| VAT question end to end | failed | `status` `error`: HTTP 400 on the first model call, so no tool call, no computed item |
+| No-calculation question | failed | the same HTTP 400, because the `calculate_liability` definition is sent with every tools-on request |
+
+**Cause (not fixed, by instruction).** `CALCULATE_TOOL.input_schema` in `python/generation/prompt.py`
+declares `amount_basis` and `provision` as `{"type": ["string", "null"], "enum": [..., None]}`. The
+API's tool-schema validator (`tools.1`, the calculator) rejects this: it tests the enum's string values
+against the declared type list and refuses it. The fake-client tests cannot see this, because they never
+validate a schema. The defect is in the code, so the failure is not "outside the code" and the one
+allowed second run was **not** made (it would fail the same way). It affects every tools-on request, so
+exit-check run 1 would be void on its first question until the schema is changed.
+
+**Cost, from the logs** (`logs/generation/2026-11-11.jsonl`, two `gen-log/3` records): no model response
+in either record (`response` null, `error` set), so no generation tokens were billed; the verifier did
+not run. The query embeddings (about 30 tokens each) are negligible. The error records do not log the
+tagger's cost, so the step is reported as **$0.00 of generation, at most about $0.002 in all**
+(embedding plus the tagger at about $0.0003 a call); Kene's console balance is the exact figure.
+
+### 16.2 Step B: the regression sample (not run)
+
+Not run. Every non-refusal case would stop at the same HTTP 400, so the first generation call (Q003)
+would void the record (D-128), and the cases after it would get no answer. The four pre-check refusals
+(ADV-001, ADV-009, ADV-025, ADV-048) would not have been reached either, as they come last. A run now
+would spend a cheap void run and the one re-run D-128 allows, and would show nothing about the non-
+calculation path. The runner is built, tested with fake clients and ready: it has not been run, and
+`eval/tools/results/regression_sample.json` does not exist. The stop rule was not evaluated for step B.
+
+| Case | Run 17 | This run |
+|---|---|---|
+| Q003, Q014, Q025, Q034, Q043, Q047 | answered (4, 8, 6, 4, 5, 7 claims) | not run |
+| ADV-017, ADV-019 | not_covered with scope notes | not run |
+| ADV-001, ADV-009, ADV-025, ADV-048 | refused (no_such_section, section_outside_v1, foreign_law, no_such_section) | not run |
+
+### 16.3 Spend against D-116
+
+| Step | Cap | Spent |
+|---|---|---|
+| Design measurement | $0.30 | $0.0531 |
+| A: `api` tests | $0.15 | about $0.00 (at most about $0.002; two HTTP 400 rejections) |
+| B: regression sample | $0.30 | $0.00 (not run) |
+| **Phase 7 total so far** | **$2.00** | **about $0.0531 (at most about $0.055)** |
+
+Both exit runs (2 x $0.60) are still fully inside the cap. Next step for Kene and the overseer: decide
+how to correct the tool schema (a build fix, which needs approval), then repeat step A once and run
+step B once.
+
+### 16.4 After D-130: the fix, step A again and step B (2026-11-11)
+
+Sections 16.1 to 16.3 above are the record of the first attempt and stay as written. The later results
+are here.
+
+**Fix (D-130).** In `CALCULATE_TOOL.input_schema`, `amount_basis` and `provision` are now
+`anyOf: [{"type": "string", "enum": [...]}, {"type": "null"}]` (the same values, without None);
+no other tool text changed; `TOOL_DEFS_VERSION` is `tool-defs/2`. No test or file held a sha256 of the
+tool definitions, so the only pins to move were the version label and the exit runner's recorded
+`tool_defs_sha256`, which is computed live (`config_p7.json` is not frozen). Sections 6.3 and 15.1
+above still name `tool-defs/1`; they are the earlier record. Free test:
+`test_every_tool_schema_enum_value_matches_its_declared_type` walks both tool schemas (checked: it
+fails on the old form, listing every enum value beside a list type, and passes on the new one), with a
+second test that the walk catches the old form. Full suite without `TAXY_RUN_API_TESTS`: 1389 passed,
+26 skipped, 0 failed, in 435 s.
+
+**Live schema check, free.** The token-count endpoint (`messages.count_tokens`, both tools, one-line
+message, `tool_choice` none) **rejected the old schema** (HTTP 400, the same `tools.1.custom: Invalid
+schema` message) and **accepted the new one** (1,343 input tokens). So the endpoint does check
+schemas, and no `messages.create` check call was needed. Cost: $0.00.
+
+**Step A, `api` tests (stop rule passed: about $0.055 + $0.15 + $0.30 + $1.20 = $1.705 of $2.00).**
+Run once: 4 passed (the 2 free question checks and both `api` tests).
+
+| Test | Result | From the log (`logs/generation/2026-11-11.jsonl`) |
+|---|---|---|
+| VAT question (new, 840,000 before VAT) | passed: `calculate_liability` called, computed item shown, result `63000.00` equal to the expected figure, a kept claim cites `nta2025:s148` | 2 model calls: $0.016787 + $0.009175; verification $0.001092; tagger $0.000798; total $0.027852 |
+| Small company definition (no calculation) | passed: no tool call, no computation | 1 model call $0.006895; verification $0.000815; tagger $0.000181; total $0.007891 |
+
+Step A cost **$0.0357** (the query embeddings are negligible and not logged).
+
+**Step B, regression sample (stop rule passed: about $0.091 + $0.30 + $1.20 = $1.591 of $2.00).**
+Run once; `eval/tools/results/regression_sample.json` (review pending, `config_p7.json` not frozen,
+the code hashes recorded with git HEAD `80ce99b` and a dirty tree: the uncommitted Phase 7 paid-check
+work). No API error, no cost stop. Cost **$0.0807** of $0.30.
+
+| Case | Run 17 | This run | Tool called |
+|---|---|---|---|
+| Q003 | answered, 4 kept, 0 removed | answered, **2 kept**, 0 removed | none |
+| Q014 | answered, 8 kept | answered, 8 kept (notes in a different order) | none |
+| Q025 | answered, 6 kept | answered, **4 kept**, 0 removed | none |
+| Q034 | answered, 4 kept | answered, 4 kept | none |
+| Q043 | answered, 5 kept, no notes | answered, **6 kept**, notes **DR-229 and DR-231 added** | none |
+| Q047 | answered, 7 kept | answered, 7 kept | none |
+| ADV-017 | not_covered, act and scope notes | same | none |
+| ADV-019 | not_covered, petroleum scope note | same | none |
+| ADV-001, ADV-048 | refused `no_such_section` | same | none |
+| ADV-009 | refused `section_outside_v1` | same | none |
+| ADV-025 | refused `foreign_law` | same | none |
+
+No tool was called in any case. Status, refusal reason and notes are the same in 11 of 12 cases (Q014
+shows the same three notes in another order). Removed claims are 0 in every answered case, in both runs.
+Cost per case is within about $0.002 of run 17 everywhere (total $0.0807).
+
+**The differences, explained from the logs.** Three cases differ in the number of kept claims, and Q043
+also in notes. In all three the retrieved passages are identical to run 17 (same chunk ids in the same
+order), every claim was supported by the verifier (0 unsupported, 0 contradicted), and no tool was
+called, so the tool path did not act. The model wrote a different set of claims from the same passages:
+- **Q003 (4 to 2):** run 17 added a combining claim ("a company that meets the small company definition
+  is outside the 4% development levy...") and the hydrocarbon-tax exclusion; this run stated the levy
+  and the small company definition only. The one gap of run 17 (a particular company's figures) is
+  absent.
+- **Q025 (6 to 4):** run 17 split the professional-services proviso into its own claim, added the
+  "consulting is listed" claim and the Section 11 statement-of-accounts claim; this run merged the first
+  two and left out the other two. The gaps were re-worded.
+- **Q043 (5 to 6, notes added):** this run added a claim on interest and penalties and one on the 90-day
+  response, citing `ntaa2025:s41(5)-(8)`. That chunk carries register rows DR-229 and DR-231
+  (`data/curated/discrepancy_register.csv`), and register notes follow the cited chunks (D-61 counts),
+  so the two notes appear because a new claim cites it. The notes are correct for that citation.
+
+Two things can explain a different claim set from identical passages: the model's sampling variation
+(run 17 and this run are separate generations) and the changed generation prompt (`gen-prompt/9` amends
+rule 6 and adds rules 13 and 14, design Section 6). This run cannot tell them apart (one sample, no
+repeat), and nothing here was tuned. It is a check, not a gate (D-124): the non-calculation path
+keeps its statuses, its refusals and its notes, and the tool definitions caused no tool call on any of the
+12 cases.
+
+### 16.5 Spend against D-116 (after the paid checks)
+
+| Step | Cap | Spent |
+|---|---|---|
+| Design measurement | $0.30 | $0.0531 |
+| A, first attempt (two HTTP 400 rejections) | $0.15 | about $0.00 (at most about $0.002, tagger and embedding not logged on errors) |
+| Live schema check (token count) | | $0.00 |
+| A, second run (4 passed) | $0.15 in all with the first attempt | $0.0357 |
+| B, regression sample | $0.30 | $0.0807 |
+| **Phase 7 total so far** | **$2.00** | **$0.1695 (at most about $0.172)** |
+
+Both exit runs (2 x $0.60) fit: $0.172 + $1.20 = $1.372 of $2.00. `config_p7.json` is still not frozen.

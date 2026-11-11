@@ -182,6 +182,48 @@ def test_tools_on_prompt_is_gen_prompt_8_with_exact_replacements():
     assert calc["properties"]["scenario"]["enum"] == list(taxcalc.SCENARIOS)
 
 
+def schema_enum_problems(node, path="input_schema") -> list[str]:
+    """Walks a tool schema: every enum value must match the type declared beside it (the API's tool-schema
+    validator refuses an enum value that its sibling `type` does not allow, for example None beside
+    ["string", "null"]). Returns the paths and values that do not."""
+    kinds = {"string": str, "boolean": bool, "integer": int, "null": type(None), "number": (int, float)}
+    problems = []
+    if isinstance(node, dict):
+        if "enum" in node and "type" in node:
+            types = node["type"] if isinstance(node["type"], list) else [node["type"]]
+            for value in node["enum"]:
+                # a list type with a null member is where the API refused the enum (D-130): never allowed
+                if len(types) > 1 or not isinstance(value, kinds[types[0]]) or (isinstance(value, bool) and types[0] != "boolean"):
+                    problems.append(f"{path}: enum value {value!r} beside type {node['type']!r}")
+        for key, child in node.items():
+            problems += schema_enum_problems(child, f"{path}.{key}")
+    elif isinstance(node, list):
+        for i, child in enumerate(node):
+            problems += schema_enum_problems(child, f"{path}[{i}]")
+    return problems
+
+
+def test_every_tool_schema_enum_value_matches_its_declared_type():
+    """D-130: step A's HTTP 400 came from a nullable enum. Walks both tool schemas."""
+    assert prompt.TOOL_DEFS_VERSION == "tool-defs/2"
+    for tool in prompt.TOOL_DEFS:
+        assert schema_enum_problems(tool["input_schema"], tool["name"]) == [], tool["name"]
+    props = prompt.TOOL_DEFS[1]["input_schema"]["properties"]
+    for field in ("amount_basis", "provision"):
+        assert {"type": "null"} in props[field]["anyOf"] and "enum" not in props[field]
+        assert None not in props[field]["anyOf"][0]["enum"]
+
+
+def test_the_schema_walk_catches_the_old_nullable_enum_form():
+    old = {"type": "object", "properties": {
+        "amount_basis": {"type": ["string", "null"], "enum": ["value_before_vat", "consideration_including_vat", None]},
+        "provision": {"type": ["string", "null"], "enum": ["ntaa2025:s100", None]},
+        "scenario": {"type": "string", "enum": ["a", 1]}}}
+    problems = schema_enum_problems(old)
+    assert len(problems) == 6  # 3 + 2 values beside a list type, and 1 beside "string"
+    assert any("amount_basis" in p and "None" in p for p in problems) and any("scenario" in p and "1" in p for p in problems)
+
+
 # The loop ----------------------------------------------------------------------------------------
 
 

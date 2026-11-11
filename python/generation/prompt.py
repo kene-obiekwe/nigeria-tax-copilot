@@ -109,7 +109,7 @@ OUTPUT_SCHEMA = {
 
 TOOLS_PROMPT_VERSION = "gen-prompt/9"
 TOOLS_SCHEMA_VERSION = "gen-schema/2"
-TOOL_DEFS_VERSION = "tool-defs/1"
+TOOL_DEFS_VERSION = "tool-defs/2"
 MAX_TOOL_PASSAGES = 14  # P1 to P8 from retrieval, P9 to P14 added by tools
 TOOL_LABELS = tuple(f"P{i}" for i in range(1, MAX_TOOL_PASSAGES + 1))
 TOOL_PASSAGE_LABELS = TOOL_LABELS[MAX_PASSAGES:]  # P9 to P14
@@ -211,14 +211,15 @@ CALCULATE_TOOL = {
                                                     "late_payment_addition", "monthly_admin_penalty",
                                                     "fiscalisation_penalty"]},
             "amount": {"type": ["string", "null"]},
-            "amount_basis": {"type": ["string", "null"],
-                             "enum": ["value_before_vat", "consideration_including_vat", None]},
+            "amount_basis": {"anyOf": [{"type": "string", "enum": ["value_before_vat", "consideration_including_vat"]},
+                                       {"type": "null"}]},
             "gross_turnover": {"type": ["string", "null"]},
             "total_fixed_assets": {"type": ["string", "null"]},
             "professional_services": {"type": ["boolean", "null"]},
             "mne_constituent": {"type": ["boolean", "null"]},
             "non_resident": {"type": ["boolean", "null"]},
-            "provision": {"type": ["string", "null"], "enum": ["ntaa2025:s100", "ntaa2025:s101", None]},
+            "provision": {"anyOf": [{"type": "string", "enum": ["ntaa2025:s100", "ntaa2025:s101"]},
+                                    {"type": "null"}]},
             "months": {"type": ["integer", "null"]},
         },
     },
