@@ -351,3 +351,16 @@ def test_re_run_guards(tmp_path):
     write(rec.result_path(1, tmp_path, rerun=True), {"review": "pending", "stopped_on_api_error": None,
                                                      "auto_pass": False, "cases": []})
     assert allowed(2)["decision"] == "D-123"  # the complete re-run counts as run 1
+
+
+def test_config_p7_is_frozen_pinned_and_equal_to_the_live_configuration():
+    """D-131: config_p7.json is frozen for run 1; its sha256 is pinned and it equals the live configuration."""
+    assert rec.CONFIG_SHA256[1] == "e2f61fe680759c0778719c01dfc30d2a463d6f484f54e8f7d7989e5a02ceec25"
+    assert rec.sha256_file(rec.CONFIGS[1]) == rec.CONFIG_SHA256[1] and rec.CONFIG_SHA256[2] is None
+    frozen = json.loads(rec.CONFIGS[1].read_text(encoding="utf-8"))
+    assert {k: v for k, v in frozen.items() if k not in rec.FREEZE_FIELDS} == rec.current_config()
+    assert frozen["tools"]["tool_defs_version"] == "tool-defs/2"
+    assert frozen["tools"]["calc_rates"]["sha256"].startswith("111f3f6f")
+    assert frozen["overrides"]["heading_corrections"]["sha256"].startswith("2a7969b8")
+    assert frozen["exit_questions"]["sha256"].startswith("ba25dfd2") and frozen["base"]["sha256"].startswith("d088e6cd")
+    assert rec.check_run_allowed(1)["decision"] == "D-123"

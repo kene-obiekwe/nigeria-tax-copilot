@@ -1099,3 +1099,26 @@ keeps its statuses, its refusals and its notes, and the tool definitions caused 
 | **Phase 7 total so far** | **$2.00** | **$0.1695 (at most about $0.172)** |
 
 Both exit runs (2 x $0.60) fit: $0.172 + $1.20 = $1.372 of $2.00. `config_p7.json` is still not frozen.
+
+## 17. The freeze of `config_p7.json` (D-131, 2026-11-11)
+
+Kene approved D-131: the regression sample is the D-124 check result (Section 16.4; the Q003 and Q025
+claim-count drops are a Phase 8 usefulness watch item), and the configuration is frozen for exit-check
+run 1. No paid call was made for this step ($0.00).
+
+- **Commit 1** (`78997e7`): the D-130 schema fix, the `api` tests, the regression runner and its result.
+- **Freeze.** `run_exit_check.py --freeze 1` wrote `eval/tools/config_p7.json` once (`frozen_at`
+  2026-11-11T17:16:16+00:00, decision D-123, LF line endings). Its sha256 is
+  `e2f61fe680759c0778719c01dfc30d2a463d6f484f54e8f7d7989e5a02ceec25`, pinned in `CONFIG_SHA256[1]`.
+- **What it records, checked:** `tool-defs/2` (definitions sha256
+  `9953fa739c7471d5c65a0eb0dd5c079ca0e6ee573bd59f3e416f527b9aeac1d1`); the rate table sha256
+  `111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700`; the heading corrections override
+  sha256 `2a7969b82ca80821e28cf8178d11c5c0d455ec773d727c691e840ee6299975ce`; the exit questions sha256
+  `ba25dfd29abfd6b039676436aeb32007a2e078897f71767ad6b9f7dbad63b01a`; the base `config_g2_v4.json` sha256
+  `d088e6cdde077f7d2b9cb85c2c380790148a998eeb50f02196461de12270a3b5`.
+- **Status.** `run_exit_check.py --status` shows run 1 frozen, pinned and allowed; run 2 needs a counted
+  run 1. A new free test (`tests/test_tools_exit_check.py`) pins the sha256 and checks that the file equals
+  the live configuration; `tests/test_tools_regression_sample.py` now compares `config_p7_frozen` with
+  the file's existence instead of False.
+- **Rules from here.** The file is never edited. A fix before run 2 makes `config_p7_r2.json`. Exit-check
+  run 1 is the next paid step (cap $0.60); it is not started.

@@ -1,0 +1,114 @@
+{
+ "base": {
+  "file": "eval/guardrails/config_g2_v4.json",
+  "sha256": "d088e6cdde077f7d2b9cb85c2c380790148a998eeb50f02196461de12270a3b5"
+ },
+ "overrides": {
+  "heading_corrections": {
+   "path": "data/curated/heading_corrections.yml",
+   "sha256": "2a7969b82ca80821e28cf8178d11c5c0d455ec773d727c691e840ee6299975ce",
+   "base_sha256": "8ba9de0435238e70c77146989d6a8d9c3cec7af970e25bbe018fd8a7d8f9e4f5",
+   "decision": "D-126",
+   "dq": "DQ-19"
+  }
+ },
+ "tools": {
+  "enabled": true,
+  "tool_defs_version": "tool-defs/2",
+  "tool_defs_sha256": "9953fa739c7471d5c65a0eb0dd5c079ca0e6ee573bd59f3e416f527b9aeac1d1",
+  "tool_choice": [
+   "auto",
+   "auto",
+   "none"
+  ],
+  "max_model_calls": 3,
+  "max_lookup_calls": 2,
+  "max_lookup_chunks": 3,
+  "max_calc_calls": 2,
+  "max_calc_sources": 3,
+  "max_passages": 14,
+  "calc_version": "calc/1",
+  "calc_rates": {
+   "path": "data/curated/calc_rates.yml",
+   "sha256": "111f3f6f5de526f60231fb52b721bf01f9cd8f97c5253a83b1a3ecbac992c700"
+  },
+  "rules": {
+   "vat_inclusive_value": {
+    "chunk_id": "nta2025:s149",
+    "section": "149(1)(a)",
+    "chunk_text_sha256": "9afa1aef9f021459a4bc2d8e5d069ad3e1edf539fdaa9321ea82c08f64b96b95"
+   }
+  },
+  "scenarios": [
+   "vat_on_supply",
+   "company_income_tax",
+   "development_levy",
+   "late_payment_addition",
+   "monthly_admin_penalty",
+   "fiscalisation_penalty"
+  ],
+  "default_assumptions": [
+   "the company is resident in Nigeria (the question does not say otherwise)",
+   "the company is not a constituent entity of an MNE group (the question does not say otherwise)",
+   "the supply is a taxable supply at the standard rate; exemption (section 186) and zero rating (section 187) were not checked",
+   "the amount given as profits is the company's total profits (section 56)",
+   "the amount given as profits is the company's assessable profits (section 59)"
+  ],
+  "vetoes": {
+   "scope:personal_income_tax": [
+    "company_income_tax",
+    "development_levy"
+   ],
+   "scope:petroleum_taxes": [
+    "company_income_tax",
+    "development_levy"
+   ],
+   "scope:economic_development_incentives": [
+    "company_income_tax",
+    "development_levy"
+   ],
+   "scope:pre_2026_periods": [
+    "vat_on_supply",
+    "company_income_tax",
+    "development_levy",
+    "late_payment_addition",
+    "monthly_admin_penalty",
+    "fiscalisation_penalty"
+   ]
+  },
+  "currencies": {
+   "symbols": [
+    "$",
+    "£",
+    "€"
+   ],
+   "words": [
+    "USD",
+    "GBP",
+    "EUR",
+    "dollar",
+    "pound",
+    "euro"
+   ]
+  },
+  "gap_figure_filter": true
+ },
+ "prompts": {
+  "prompt_version": "gen-prompt/9",
+  "system_prompt_sha256": "4b3148793dbfa638c4b46b6722c506c0661949f4c62a9900fb2ee6ce5afeebb1",
+  "schema_version": "gen-schema/2",
+  "schema_sha256": "45482997d8ca487156586f5d7fb8f76f9776fa147aa56e287638f394b026a5f7",
+  "inherited": {
+   "verifier": "ver-prompt/4",
+   "gap": "gap-prompt/3",
+   "tagger": "tag-prompt/3",
+   "normaliser": "norm/7"
+  }
+ },
+ "exit_questions": {
+  "file": "eval/tools/exit_questions_v1.jsonl",
+  "sha256": "ba25dfd29abfd6b039676436aeb32007a2e078897f71767ad6b9f7dbad63b01a"
+ },
+ "frozen_at": "2026-11-11T17:16:16.550420+00:00",
+ "decision": "D-123"
+}

@@ -72,7 +72,7 @@ def test_a_complete_fake_run_records_the_comparison_config_and_code(tmp_path, ca
     assert record["review"] == "pending" and record["stopped_on_api_error"] is None and record["stopped_on_cost"] is None
     assert [c["id"] for c in record["cases"]] == IDS and record["live_config"] == LIVE
     assert record["code"]["files"].keys() == set(rs.CODE_FILES) and record["check_not_gate"] is True
-    assert record["baseline"]["sha256"] == rs.sha256_file(rs.BASELINE) and record["config_p7_frozen"] is False
+    assert record["baseline"]["sha256"] == rs.sha256_file(rs.BASELINE) and record["config_p7_frozen"] is rs.rec.CONFIGS[1].exists()
     first = record["cases"][0]
     assert set(first["comparison"]) >= {"status", "refusal_reason", "claims_kept", "claims_removed", "notes_shown",
                                         "tool_called", "cost_usd", "differs"}
