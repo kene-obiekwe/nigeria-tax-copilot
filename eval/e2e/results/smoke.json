@@ -1,0 +1,267 @@
+{
+ "smoke": true,
+ "decision": "D-133 to D-142",
+ "config": {
+  "file": "eval/e2e/config_p8.json",
+  "sha256": "28e205155c10ef6702f569cf005df6a4f819084e53aa24e597a8b120141cf36a"
+ },
+ "commit": "626eb9f9a471880d1a33b65f4fc5aa3466fc9f6f",
+ "case_ids": [
+  "Q014",
+  "ADV-017",
+  "ADV-001"
+ ],
+ "started": "2026-11-11T20:30:51.984041+00:00",
+ "finished": "2026-11-11T20:31:19.771563+00:00",
+ "cap_usd": 0.05,
+ "ledger_before_usd": 0,
+ "cost_usd": 0.032522,
+ "review": "incomplete",
+ "stopped_on_api_error": null,
+ "stopped_on_cost": {
+  "before": "ADV-001",
+  "spent_usd": 0.032522,
+  "cap_usd": 0.05
+ },
+ "cases": [
+  {
+   "id": "Q014",
+   "subset": "smoke",
+   "category": "vat",
+   "question": "This month the VAT I paid on purchases is more than the VAT I collected on sales. What happens to the extra?",
+   "status": "answered",
+   "refusal_reason": null,
+   "flags": [],
+   "notes": [],
+   "claims": [
+    {
+     "no": 1,
+     "text": "Where input VAT exceeds output VAT, a taxable person is entitled to use the excess tax as a credit against subsequent months. This applies not later than the due date for rendering the relevant tax return prescribed by the Nigeria Tax Administration Act, 2025.",
+     "chunk_ids": [
+      "nta2025:s156"
+     ]
+    },
+    {
+     "no": 2,
+     "text": "A taxable person is entitled to a refund of excess VAT not used as a credit, upon request to the Service and provision of such information or documents as the Service may require.",
+     "chunk_ids": [
+      "nta2025:s156"
+     ]
+    },
+    {
+     "no": 3,
+     "text": "VAT a taxable person pays to a supplier on taxable supplies made to the person is called input VAT, and VAT collected on making taxable supplies is called output VAT.",
+     "chunk_ids": [
+      "nta2025:s152",
+      "nta2025:s154"
+     ]
+    },
+    {
+     "no": 4,
+     "text": "Input tax on a taxable supply to a registered person may be deducted from the tax payable on its taxable supplies at the end of the tax period in which the supply occurred, but only to the extent it was incurred for consumption, use or supply in the course of making taxable supplies.",
+     "chunk_ids": [
+      "nta2025:s156"
+     ]
+    },
+    {
+     "no": 5,
+     "text": "Where input tax is incurred in making both taxable and non-taxable supplies, only the proportion relating to making taxable supplies may be deducted.",
+     "chunk_ids": [
+      "nta2025:s156"
+     ]
+    },
+    {
+     "no": 6,
+     "text": "Input tax is allowable for deduction within five years after the end of the tax period in which it was incurred.",
+     "chunk_ids": [
+      "nta2025:s156"
+     ]
+    },
+    {
+     "no": 7,
+     "text": "The input tax that may be deducted is limited to taxable supplies made as from the commencement of the Act.",
+     "chunk_ids": [
+      "nta2025:s156"
+     ]
+    }
+   ],
+   "gaps": [
+    "The passages do not say how long a refund takes or what information the Service may require."
+   ],
+   "computations": [],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s156",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.5173)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s155",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.5296)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s154",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.5357)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s149",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.5357)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s152",
+     "reasons": [
+      "vector rank 5 (cosine distance 0.5426)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:s190(2)-(7)",
+     "reasons": [
+      "keyword slot: BM25 rank 3 (BM25 10.847, cosine distance 0.6584)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "answered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 7,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 7,
+    "claims_kept": 7,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 1,
+    "gaps_removed": 0
+   },
+   "tool_uses": [],
+   "disclosures": [
+    "DR-066",
+    "DR-067",
+    "DR-068",
+    "DR-061",
+    "DR-062"
+   ],
+   "rendered": "Where input VAT exceeds output VAT, a taxable person is entitled to use the excess tax as a credit against subsequent months. This applies not later than the due date for rendering the relevant tax return prescribed by the Nigeria Tax Administration Act, 2025. [Nigeria Tax Act 2025, section 156]\n\nA taxable person is entitled to a refund of excess VAT not used as a credit, upon request to the Service and provision of such information or documents as the Service may require. [Nigeria Tax Act 2025, section 156]\n\nVAT a taxable person pays to a supplier on taxable supplies made to the person is called input VAT, and VAT collected on making taxable supplies is called output VAT. [Nigeria Tax Act 2025, section 152; Nigeria Tax Act 2025, section 154]\n\nInput tax on a taxable supply to a registered person may be deducted from the tax payable on its taxable supplies at the end of the tax period in which the supply occurred, but only to the extent it was incurred for consumption, use or supply in the course of making taxable supplies. [Nigeria Tax Act 2025, section 156]\n\nWhere input tax is incurred in making both taxable and non-taxable supplies, only the proportion relating to making taxable supplies may be deducted. [Nigeria Tax Act 2025, section 156]\n\nInput tax is allowable for deduction within five years after the end of the tax period in which it was incurred. [Nigeria Tax Act 2025, section 156]\n\nThe input tax that may be deducted is limited to taxable supplies made as from the commencement of the Act. [Nigeria Tax Act 2025, section 156]\n\nNot covered by the retrieved provisions:\n- The passages do not say how long a refund takes or what information the Service may require.\n\nSources\n- Nigeria Tax Act 2025, section 156 (gazette pages A 474, A 475)\n- Nigeria Tax Act 2025, section 152 (gazette page A 473)\n- Nigeria Tax Act 2025, section 154 (gazette page A 474)\n\nDifferences between official texts\n- Nigeria Tax Act 2025, section 156: The gazette lets a person whose supplies are zero-rated pay VAT on its inputs and then claim a refund; the National Assembly text has no such subsection. (DR-067)\n- Nigeria Tax Act 2025, section 156: Because of the gazette's extra subsection (4), gazette (5) and (6) are National Assembly (4) and (5). (DR-068)\n- Nigeria Tax Act 2025, section 154: Cross-reference: the rate is in section 148 (gazette); the National Assembly text cites section 146, which is not its rate section (147). (DR-061)\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.023356,
+   "latency_s": 13.509,
+   "record_id": "2d0686ab-b00e-4fe9-9616-a03cf59a811b",
+   "error": null
+  },
+  {
+   "id": "ADV-017",
+   "subset": "smoke",
+   "category": "A3",
+   "question": "What does section 33 of the Personal Income Tax Act say about reliefs for a sole trader?",
+   "status": "not_covered",
+   "refusal_reason": null,
+   "flags": [
+    "act_note",
+    "scope_note"
+   ],
+   "notes": [
+    "act:personal_income_tax_act",
+    "scope:personal_income_tax"
+   ],
+   "claims": [],
+   "gaps": [
+    "The text of section 33 of the Personal Income Tax Act is not among the passages. The Personal Income Tax Act, Cap. P8, is only listed as a repealed enactment in the passages.",
+    "The passages do not give the reliefs that applied to a sole trader under that repealed Act."
+   ],
+   "computations": [],
+   "passages": [
+    {
+     "label": "P1",
+     "chunk_id": "nta2025:s196",
+     "reasons": [
+      "act-name lookup: names the Personal Income Tax Act (cosine distance 0.5592)"
+     ]
+    },
+    {
+     "label": "P2",
+     "chunk_id": "nta2025:s25",
+     "reasons": [
+      "vector rank 1 (cosine distance 0.4418)"
+     ]
+    },
+    {
+     "label": "P3",
+     "chunk_id": "nta2025:s20(1)(a)-(h)",
+     "reasons": [
+      "vector rank 2 (cosine distance 0.4521)"
+     ]
+    },
+    {
+     "label": "P4",
+     "chunk_id": "nta2025:s163(1)(a)-(c)",
+     "reasons": [
+      "vector rank 3 (cosine distance 0.4701)"
+     ]
+    },
+    {
+     "label": "P5",
+     "chunk_id": "nta2025:s21(a)-(o)",
+     "reasons": [
+      "vector rank 4 (cosine distance 0.4737)"
+     ]
+    },
+    {
+     "label": "P6",
+     "chunk_id": "nta2025:s202:def:chargeable-gains",
+     "reasons": [
+      "keyword slot: BM25 rank 1 (BM25 8.594, cosine distance 0.5566)"
+     ]
+    },
+    {
+     "label": "P7",
+     "chunk_id": "nta2025:s202:def:income-tax",
+     "reasons": [
+      "definition attachment: income tax (similarity 0.473, cosine distance 0.5274; term used by result 1)"
+     ]
+    }
+   ],
+   "verification": {
+    "outcome": "passed",
+    "status": "not_covered",
+    "refusal_reason": null,
+    "verdicts": {
+     "supported": 0,
+     "unsupported": 0,
+     "contradicted": 0,
+     "not_a_claim": 0,
+     "unverified": 0
+    },
+    "claims_checked": 0,
+    "claims_kept": 0,
+    "claims_removed": 0,
+    "claims_moved": 0,
+    "gaps_kept": 2,
+    "gaps_removed": 0
+   },
+   "tool_uses": [],
+   "disclosures": [],
+   "rendered": "Notes\n- The Personal Income Tax Act is not in the corpus this tool covers. Section numbers in the answer refer to the Nigeria Tax Act 2025 or the Nigeria Tax Administration Act 2025.\n- Personal income tax and PAYE are outside the corpus this tool covers (v1). Answers come only from the provisions that are in the corpus.\n\nThe provisions retrieved from the corpus do not answer this question.\n\nNot covered by the retrieved provisions:\n- The text of section 33 of the Personal Income Tax Act is not among the passages. The Personal Income Tax Act, Cap. P8, is only listed as a repealed enactment in the passages.\n- The passages do not give the reliefs that applied to a sole trader under that repealed Act.\n\nThis is a research and reference tool. It is not tax advice and is not a substitute for a licensed tax professional. It must not be used for an actual filing or compliance decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax Administration Act 2025 (Official Gazette text, corpus snapshot 18 October 2026).",
+   "cost_usd": 0.009166,
+   "latency_s": 4.247,
+   "record_id": "79795bf2-5953-4378-b77c-84a683148b3c",
+   "error": null
+  }
+ ]
+}

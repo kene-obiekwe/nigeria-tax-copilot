@@ -1,0 +1,7 @@
+{
+ "started_at": "2026-11-11T20:30:51+00:00",
+ "smoke": true,
+ "config_sha256": "28e205155c10ef6702f569cf005df6a4f819084e53aa24e597a8b120141cf36a",
+ "commit": "626eb9f9a471880d1a33b65f4fc5aa3466fc9f6f",
+ "cap_usd": 0.05
+}
