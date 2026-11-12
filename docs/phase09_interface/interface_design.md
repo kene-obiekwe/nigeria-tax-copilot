@@ -1139,3 +1139,78 @@ Built 2026-11-12: Section 12 steps 1 to 3. No change under `python/generation/`,
 schemas and roles on the local container, fail if it is down, and an autouse guard makes building
 any real model or embedding client raise. Full suite: 1654 passed, 29 skipped (24 `api` tests and 5
 opt-in or conditional skips in earlier test files; none in the new files), 0 failed, in 415.8 s.
+
+## Build record (Build B)
+
+Built 2026-11-12: Section 12 steps 4 to 7. No change under `python/generation/`, `python/retrieval/`,
+`python/tools/`, `eval/` or `data/`; no change to any Build A file; no new dependency; no paid call ($0.00).
+Nothing was run against the real model or embedding APIs (that is step 8, after the overseer reviews
+`app/examples.yml` and Kene gives the go).
+
+**What was built.**
+
+- **The app** (`app/`): `main.py` (the one page: title, status strip, disclaimer, scope box, privacy line,
+  examples, this session's cards, the question box, sidebar), `cards.py` (`answer_blocks()`, the parity
+  rule D-155 with the plain-text fallback, the card, citation chips, the section reader, the Markdown
+  export, feedback), `copy.py` (every UI text), `services.py` (the injectable services object and the real
+  wiring), `examples.yml` (10 new example questions), `pages/my_questions.py` (history and "Delete my
+  history"), and `.streamlit/config.toml` (usage statistics off). `.streamlit/secrets.toml` is in
+  `.gitignore`.
+- **The local viewer and CLIs**: `app/review.py` (ten sections, evidence quotes highlighted inside the
+  cited chunk text, hidden disclosures marked, the drift flag), `python/audit/report.py` (the one report
+  that the viewer and the CLI share), `python/audit/show_query.py` (Markdown or `--json`),
+  `python/audit/compare_log.py` (database rows against the JSONL record, field by field, exit code 1 on any
+  difference), and `python/audit/grant_review.py` (the D-169 reviewer grant on the corpus tables: a dry run
+  by default, `--apply` runs it as the owner; no test applies it to the real tables).
+- **Tests**: `tests/test_app.py` and `tests/test_review.py`.
+
+**Deviations, with reasons.**
+
+1. **The question box is a text area in a form, not `st.chat_input` (C-11, approved by Kene at the Build B
+   start).** Streamlit 1.66 `st.chat_input` cannot be pre-filled, and Sections 3.6 and 7.5 need a box that an
+   example click and "Edit question" can fill. The box is `st.text_area(max_chars=2000)` with an Ask button
+   (Ctrl+Enter also submits). Nothing else in Section 3.1 changes.
+2. **`app/copy.py` is imported as `from app import copy`.** Its design name would shadow the standard
+   library `copy` if `app/` were first on `sys.path`, so every app module imports through the `app`
+   package (the repository root is put on `sys.path` by each page script).
+3. **Files beyond the design's list:** `app/services.py` (the injectable object of Section 10; the real wiring
+   is built once per process with `st.cache_resource`), `python/audit/report.py` and
+   `python/audit/grant_review.py`.
+4. **Feedback** is thumbs, then an optional reason from the fixed list, then a Send button (the reason needs
+   a second step, so one click on the thumbs cannot save a reason). No free text anywhere.
+5. **"My questions" is always in Streamlit's page list.** The page itself says that sign-in is needed and
+   shows nothing without it. The sign-out after "Delete my history" is a hook (`services.extra["sign_out"]`)
+   that Phase 11 wires to `st.logout()`.
+6. **Wording not fixed by the design**, all in `app/copy.py` for the overseer's review: the shared
+   anonymous-pool limit text, the privacy-details popover (a short form of Sections 6.1 and 6.2), the
+   empty-question line, and the viewer's titles and warnings.
+7. **Limit display.** The question box is disabled when the count limit for the tier is already used up
+   (from `count_since`); `open_query` still refuses a question that gets through, with the reason's text.
+8. **A blocked question** is held in the session's memory only so that "Edit question" can put it back in the
+   box. It is never sent, never written to the database or a log, and not shown on the page while blocked.
+9. **The viewer's field labels** (score, distance, state, ...) are the audit column names and stay inline in
+   `app/review.py`; its titles, messages, buttons and filters are in `app/copy.py`. Without
+   `REVIEW_DATABASE_URL` the viewer uses the project connection and says so on screen; it only reads.
+10. **Config on refusals.** For a pre-check or floor refusal the header shows the `app_starts`
+    configuration, labelled "from the app start" (Build A deviation 10).
+
+**Tests.** 110 new tests, all passing: `test_app.py` 67 (parity for each of the 12 fixture statuses, each
+status's card, the citation popover and the section reader for a definition and a subsection group, export,
+feedback, the screen, limits by reason, receipt and close failures, the timeout path, "My questions" for two
+users, examples, one-place-for-text checks) and `test_review.py` 43 (report items, evidence highlighting,
+hidden disclosures, drift flag, reference prefixes, list filters, `compare_log.py` with zero differences on
+every status and the changed field named, `show_query.py`, the viewer in AppTest, and the grant on a
+throwaway schema and role only). They run on throwaway schemas in the local container, fail if it is down,
+and the autouse guard makes building any real model or embedding client raise. Full default suite: 1764
+passed, 29 skipped (the same 29 as Build A: 24 `api` tests and 5 opt-in or conditional skips; none in the new
+files), 0 failed, in 535.8 s.
+
+**Real start-up check, no question asked.** `streamlit run app\main.py` loaded in the browser pane against the
+local container: the page showed the title, snapshot strip, disclaimer, scope box, privacy line and the
+question box; the new `app_starts` row has `outcome` `ok` and no problems; no question was asked and no
+`audit.queries` row exists. Building a model or embedding client was made to raise during the AppTest run of
+the same page.
+
+**Not done here (by design).** Step 8 (the capped live check) and step 9; the D-169 grant on the corpus
+tables (an owner-run step: `python\audit\grant_review.py --apply`); a login role for the reviewer and its
+password (Kene); sign-in and the hosted gate (Phase 11).

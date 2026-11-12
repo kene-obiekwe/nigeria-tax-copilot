@@ -1,0 +1,7 @@
+# Streamlit settings for the app (interface design, Section 6.3; D-161).
+# Streamlit's own usage statistics are off. No analytics script is added anywhere.
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"

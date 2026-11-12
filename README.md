@@ -35,6 +35,28 @@ model fine-tuning, and any integration with real filing systems.
 
 **Phase 1**: corpus acquired and hash-pinned. No parsing, retrieval or generation code yet.
 
+## Run the app
+
+The Streamlit app answers one question at a time from the Nigeria Tax Act 2025 and the selected parts of the
+Nigeria Tax Administration Act 2025, with citations and the cited statute text. From the repository root, in
+PowerShell:
+
+1. Start the database: `docker compose up -d`, then `docker compose ps` (expect `healthy` on port 5434).
+2. Activate the environment: `.venv\Scripts\Activate.ps1`.
+3. Start the app: `.venv\Scripts\streamlit run app\main.py`, then open the local address it prints.
+
+On the first page load the app checks, without any paid call, that it runs the shipped configuration and the
+expected corpus and audit schema. If the check fails the page shows "This service is not available right now"
+and no question box. Asking a question calls the language-model and embedding services and needs the keys in
+`.env` (see `.env.example`). The local app keeps each question, answer and its checks in the `audit` schema of
+the project database, and the full request log in `logs/generation/` (git-ignored).
+
+To look at a past query, run the local viewer with `.venv\Scripts\streamlit run app\review.py`, or print one
+with `.venv\Scripts\python python\audit\show_query.py Q-xxxxxxxx`. Both read the audit log only. The viewer
+reads chunk text through a read-only role; the owner grants it once with
+`.venv\Scripts\python python\audit\grant_review.py --apply` (run without `--apply` it only prints the
+statements). See the [interface design](docs/phase09_interface/interface_design.md).
+
 ## Documentation
 
 See the [documentation index](docs/README.md).

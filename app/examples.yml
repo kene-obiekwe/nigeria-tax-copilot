@@ -1,0 +1,26 @@
+# Example questions by topic (interface design, Section 7.5; D-165).
+# Written new for the app. None is copied from, or close to, a sealed or spent evaluation set.
+# Each passes the personal-data screen and the free pre-check (tests/test_app.py checks both).
+# Clicking one puts it in the question box; it is not sent until the user presses Ask.
+# Hints in the UI never say what the law says; neither do these questions.
+
+- topic: Company income tax and the development levy
+  question: At what rate is a company taxed on its profits, and does the development levy apply on top of that?
+- topic: Deductions and gains
+  question: Which expenses does the Nigeria Tax Act say a company may not deduct from its profits?
+- topic: VAT
+  question: Which supplies of goods and services can be zero-rated for VAT?
+- topic: Exemptions
+  question: Is the hire or lease of tractors used for farming exempt from VAT?
+- topic: Definitions
+  question: What does the Nigeria Tax Act mean by "taxable supply"?
+- topic: Schedules
+  question: Which kinds of assets does the First Schedule to the Nigeria Tax Act deal with for capital allowances?
+- topic: Registration and returns
+  question: Who must register with the tax authority and get a Tax ID?
+- topic: Assessment and objection
+  question: If a company disagrees with a tax assessment, how can it object, and by when?
+- topic: Payment and penalties
+  question: What happens if a company pays its tax after the due date?
+- topic: Calculation
+  question: A company with gross turnover of ₦320 million had assessable profits of ₦47,350,000 for the year. How much development levy does it owe on those profits?
