@@ -233,7 +233,9 @@ There is no "Send anyway". An amount written as 10 or more plain digits is block
 tells the user how to write it so that it passes. Amounts with commas (`1,000,000,000`) or with the naira
 sign (`₦1000000000`) pass. The screen never stores or logs the matched text, the pattern names or the
 blocked question. Every stored question has passed the screen, so no screen field is kept. The screen runs
-before the pipeline and does not touch the pipeline's own pre-check.
+before the pipeline and does not touch the pipeline's own pre-check. A phone number written with spaces,
+hyphens or dots between digit groups (`0803 123 4567`, `+234 803 123 4567`) is blocked too (Kene, option (a),
+2026-11-12, within D-160).
 
 ### 3.7 Scope and out-of-scope wording (overseer open item 7, D-64)
 
@@ -647,7 +649,7 @@ reviewer role can read.
 
 1. `REVOKE EXECUTE ON ALL FUNCTIONS IN SCHEMA <audit> FROM PUBLIC;`
 2. `ALTER DEFAULT PRIVILEGES FOR ROLE <owner> IN SCHEMA <audit> REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;`
-   so that functions added by later migrations also start with no `PUBLIC` grant;
+   so that functions added by later migrations also start with no `PUBLIC` grant (see C-10: this statement alone cannot revoke the global default, so the runner revokes after every migration);
 3. `GRANT USAGE ON SCHEMA <audit>` to the app role and the reviewer role;
 4. `GRANT EXECUTE ON FUNCTION <audit>.<name>(<argument types>) TO <app role>`, one statement for each of
    the ten app functions listed above, and none for any other function;
@@ -1072,3 +1074,68 @@ approved options are recorded in the [decision log](../00_planning/decision_log.
 | D-166 | Personalisation | (a) out of v1: a business profile, conversation memory and preferences that change retrieval or the prompt go to v1.1, each needing a new held-out measurement; (b) a business profile in v1 | **(a)**: anything that changes what is sent to the model changes the system G3 measured | v1.1 |
 | D-167 | UI and README wording | (a) the texts in Sections 3.1, 3.2, 3.7 and 6.4 (title "Nigerian SME Tax Reference", the scope box with personal income tax first, the privacy line, the README privacy paragraph); Kene names the contact route for deletion requests; (b) Kene's own wording | **(a)**, closing overseer open item 7 for the UI; the README copy lands in Phase 10 | 9 (UI), 10 (README) |
 | D-168 | Exit-gate procedure and spend | (a) Section 11: 13 live questions plus 4 free fault cases, `compare_log.py` zero differences, an overseer sample of 3, Kene's 2 references; cap $0.40 for the phase, stop rule as Section 12; (b) the overseer reads all 13, with no comparator | **(a)**: the comparator checks every field mechanically, and the people check that the viewer is readable | 9 |
+
+## Build record (Build A)
+
+Built 2026-11-12: Section 12 steps 1 to 3. No change under `python/generation/`, `python/retrieval/`,
+`python/tools/`, `eval/` or `data/`; no new dependency; no paid call ($0.00).
+
+**What was built.**
+
+- **Audit schema** (`python/audit/`): migrations `0001_audit.sql` (the 11 tables of Section 4.3 with
+  their checks and indexes, RLS on every table, and a `queries` guard trigger), `0002_functions.sql`
+  (the write and read functions of Section 4.6, SECURITY DEFINER with a pinned `search_path`) and
+  `0003_roles.sql` (NOLOGIN group roles, grants and the reviewer policy); the runner `migrate.py` with
+  sha256 records and `check_schema`; the projection `project.py` from one `gen-log/3` record; the
+  store `store.py`.
+- **Start-up check** (`python/interface/startup.py`): the checks of Section 3.8, fail closed, one
+  `app_starts` row per start, problem names only in the log.
+- **App service** (`python/interface/service.py`, `screen.py`, `limits.py`, `identity.py`,
+  `app/limits.yml`): the personal-data screen as a hard block (D-160), the gate hook with
+  `LocalGate` and `TierGate`, the worker pool, the temp-directory record, close with one retry,
+  deliveries, history, erase and feedback, and the identity abstraction with a fake identity.
+- **Real local database**: the migrations were applied once as schema `audit` (versions 1 to 3,
+  `audit-schema/1`; a second run and `--check` report up to date). Roles `taxy_app` and
+  `taxy_review` exist as NOLOGIN, not superuser, no BYPASSRLS. No login role was created and no
+  password was set.
+
+**Deviations, with reasons.**
+
+1. **`PUBLIC` revoke after every migration (C-10).** The per-schema default-privilege statement in
+   Section 4.6, step 2 cannot revoke the global `PUBLIC` default. It is kept, and the runner also
+   revokes `EXECUTE` on every function in the schema from `PUBLIC` after every migration in the
+   same transaction; the start-up check fails closed (`audit_public_execute`) otherwise.
+2. **Reviewer corpus grant (D-169).** Not in the templated migrations; a separate owner-run grant
+   added with the viewer in Build B.
+3. **`search_path` order.** Pinned as `<audit>, pg_catalog, pg_temp`, with `pg_temp` last so that a
+   caller's temporary table cannot shadow an audit table.
+4. **Two owner-only helpers** beyond the ten app functions and the two owner functions:
+   `wat_day_start` (the WAT day used by the limits) and `queries_guard` (the trigger). Neither is
+   executable by the app, the reviewer or `PUBLIC`.
+5. **Deletes.** The guard trigger refuses a `DELETE` on `queries` unless a transaction-local flag is
+   on; only `erase_user`, `erase_query` and `purge_expired` set it, and they reset it before
+   returning. Updates are allowed only from `received` to a final status, and the receipt columns
+   never change.
+6. **Close-time details.** The app reads `chunk_text_sha256` from the corpus table for the passages
+   it records; the D-155 parity check runs at close time and sets `ui_fallback`; a record that does
+   not match the answer, or cannot be projected, is treated as a close failure and the answer is
+   withheld (delivery `withheld_log_failure`).
+7. **No `unavailable` admission count.** When `open_query` itself fails there is no app function
+   that could record it without adding an eleventh; the question is not sent and the user sees the
+   unavailable message.
+8. **AppTest case moved.** The start-up fail-closed case is tested at service level here; "on
+   failure the app shows no question box" needs `app/main.py` and moves to Build B.
+9. **Placement and switches.** The start-up check is in `python/interface/startup.py`;
+   `gate_for("hosted")` refuses until Phase 11; the start-up check also verifies the app role's
+   table privileges, that every function is definer with a pinned path, and the policies.
+10. **Config fields on refusals.** `config_file` and `config_sha256` are NULL for pre-check and
+    floor refusals, because their `gen-log/3` records have no tools block; the viewer should show
+    the `app_starts` configuration for those rows (Build B).
+11. **Phone numbers with separators.** Kene chose option (a) at review: the screen also blocks up to
+    three spaces, hyphens or dots between digit groups, with or without `+234` or `234` (within D-160).
+
+**Tests.** 172 new tests, all passing (52.0 s): `test_audit_schema.py` 24, `test_audit_write.py` 42,
+`test_audit_limits.py` 13, `test_startup.py` 15, `test_app_service.py` 78 (52 before the phone-separator fix). They use throwaway
+schemas and roles on the local container, fail if it is down, and an autouse guard makes building
+any real model or embedding client raise. Full suite: 1654 passed, 29 skipped (24 `api` tests and 5
+opt-in or conditional skips in earlier test files; none in the new files), 0 failed, in 415.8 s.

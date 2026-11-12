@@ -1,0 +1,16 @@
+# Limits for TierGate (interface design, Section 8; D-162). Read by python/interface/limits.py.
+# Phase 9: unit tested, NOT enabled. Phase 11 sets the final values and switches TierGate on for
+# TAXY_DEPLOYMENT=hosted. The values below are the suggested starting values (Section 7.1).
+# A null value means no limit. The day runs from midnight West Africa Time.
+
+cost_cap_day_usd: "0.50"   # global daily cost cap for all hosted use, checked first
+reserve_usd: "0.05"        # counted for a question until its real cost is recorded
+
+tiers:
+  anonymous:
+    per_session: 3         # questions per browser session
+    pool_per_day: 50       # shared by all anonymous use
+  signed_in:
+    per_day: 20
+  reviewer:
+    per_day: 100
