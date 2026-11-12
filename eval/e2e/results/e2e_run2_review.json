@@ -1,0 +1,3225 @@
+{
+ "run": 2,
+ "reviewer": "Phase 8 run session",
+ "claims": {
+  "Q031:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q031:claim:1. Section 145.",
+   "support": "Subject to the exemptions in Part IV of Chapter Eight of this Act, VAT shall be paid on all taxable supplies in Nigeria.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s145": "accurate"
+   }
+  },
+  "Q031:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 148.",
+   "support": "Subject to the provisions of Part IV of Chapter Eight of this Act, VAT shall be charged on the value of all taxable supplies at the rate of 7.5%.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s148": "accurate"
+   }
+  },
+  "Q031:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 186(2).",
+   "support": "Notwithstanding the provisions of Chapter Six of this Act, VAT shall not be collected on the items specified in paragraph 1 of the Eleventh Schedule to this Act except where the Minister by an order, published in the Official Gazette, specifies the date of collection of VAT on the items listed in the order.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s186": "accurate"
+   }
+  },
+  "Q031:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q031:claim:4. Eleventh Schedule paragraph 1(a) to (e).",
+   "support": "(a) petroleum products; (b) renewable energy equipment; (c) compressed natural gas (CNG); (d) Liquefied Petroleum Gas (LPG); and (e) other gaseous hydrocarbons.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch11": "accurate"
+   }
+  },
+  "Q031:claim:5": {
+   "verdict": "supported",
+   "reason": "Eleventh Schedule paragraph 1.",
+   "support": "Charging and collection of VAT on the following items shall commence on the date indicated by the Minister, or suspended where it is expedient to do so in the public interest, by an order issued in the Official Gazette",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch11": "accurate"
+   }
+  },
+  "Q031:claim:6": {
+   "verdict": "supported",
+   "reason": "Eleventh Schedule paragraph 3.",
+   "support": "\"petroleum products\" means automotive gas oil, aviation turbine kerosene, premium motor spirit, household kerosene and locally produced liquefied petroleum gas",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch11": "accurate"
+   }
+  },
+  "Q031:claim:7": {
+   "verdict": "supported",
+   "reason": "Eleventh Schedule paragraph 2.",
+   "support": "The following items may be classified as exempt or zero-rated supplies by an order issued by the Minister in the Official Gazette all - (a) equipment, components and infrastructure related to the conversion and installation or expansion of Compressed Natural Gas (CNG) and Liquefied Petroleum Gas (LPG), including conversion kits; and (b) services relating to the conversion and installation of Compressed Natural Gas (CNG) and Liquefied Petroleum Gas (LPG).",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch11": "accurate"
+   }
+  },
+  "Q002:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 57(1).",
+   "support": "Notwithstanding any provision of this Act or any other enactment, where, in any year of assessment, the effective tax rate of a company is less than 15%, such company shall recompute and pay an additional tax that makes its effective tax rate equal to 15%.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s57": "accurate"
+   }
+  },
+  "Q002:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 57(2).",
+   "support": "The provisions of this section shall apply to - (a) a company that is a constituent entity of an MNE group; and (b) any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s57": "accurate"
+   }
+  },
+  "Q002:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q002:claim:4. Section 57(4).",
+   "support": "\"effective tax rate\" means the rate produced by dividing the aggregate covered tax paid by a company for a year of assessment by the profits of the company",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s57": "accurate"
+   }
+  },
+  "Q002:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 57(4) definition of profits.",
+   "support": "\"profits\" means the net profits before tax as reported in the audited financial statement less 5% of depreciation and personnel cost for the year.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s57": "accurate"
+   }
+  },
+  "Q002:claim:5": {
+   "verdict": "supported",
+   "reason": "Section 202 definition of aggregate covered tax paid.",
+   "support": "\"aggregate covered tax paid\" means the addition of the income taxes paid by a company for a year of assessment under this Act",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:aggregate-covered-tax-paid": "accurate"
+   }
+  },
+  "Q002:claim:6": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q002:claim:7. Section 202 definition.",
+   "support": "\"minimum effective tax rate\" means rate of 15%",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:minimum-effective-tax-rate": "accurate"
+   }
+  },
+  "Q008:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q008:claim:1. Section 21(p); the imported-items limb is left out but nothing absolute is asserted.",
+   "support": "(p) any expense on which Value Added Tax is due under this Act but was not charged",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s21(p)": "accurate"
+   }
+  },
+  "Q008:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 155(2).",
+   "support": "The Service may direct a taxable person to whom taxable supplies is made in Nigeria and issued an invoice on which VAT is not included, to self-account for the VAT payable and remit it to the Service.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s155": "accurate"
+   }
+  },
+  "Q008:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 155(4).",
+   "support": "The VAT collected, withheld or self-accounted under this section shall be remitted to the Service on or before the 14th day of the month immediately following the month of the transaction or as may be prescribed by the Service.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s155": "accurate"
+   }
+  },
+  "Q028:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 202 definition of exported service.",
+   "support": "\"exported service'' means a service rendered to a non-resident person outside Nigeria by a taxable person regardless of where the service is rendered",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:exported-service": "accurate"
+   }
+  },
+  "Q028:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q028:claim:2. Proviso to the Section 202 definition of exported service.",
+   "support": "provided that a service rendered to the Nigerian permanent establishment of a non-resident person shall not qualify as exported service",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:exported-service": "accurate"
+   }
+  },
+  "N02:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 20(1) opening words.",
+   "support": "Except where the provisions of section 18 of this Act or Part IX of Chapter Two apply, for the purposes of ascertaining the profits or loss from any trade, business, profession or vocation under this Act, there shall be deducted all expenses for that period wholly and exclusively incurred in the production of the income, including",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   }
+  },
+  "N02:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 20(1)(j) first limb.",
+   "support": "(j) any other expense incurred during any previous period for the purpose of such trade or business, or specifically for the period which the profits are being ascertained",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(i)-(m)": "accurate"
+   }
+  },
+  "N02:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 20(1)(j) proviso.",
+   "support": "provided that any expenditure incurred within six years prior to commencement of business which would have been deductible if incurred after commencement of business, shall be deemed to have been incurred on the first day of commencing the trade or business",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(i)-(m)": "accurate"
+   }
+  },
+  "N02:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 20(1)(c)(i) and (ii); 'also' is framing.",
+   "support": "(c) any outlay or expenses incurred in respect of - (i) salary, wages or other remuneration paid to employees, and (ii) cost to the company of any benefit or allowance provided to its employees",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   }
+  },
+  "N02:claim:5": {
+   "verdict": "supported",
+   "reason": "Section 20(1) research and development paragraph.",
+   "support": "any expense incurred by the trade, business, profession or vocation on research and development for the period",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(i)-(m)": "accurate"
+   }
+  },
+  "N02:claim:6": {
+   "verdict": "supported",
+   "reason": "Section 165(1) and (2).",
+   "support": "there shall be deducted the amount incurred in that period by that company for research and development. (2) The deduction to be allowed to a company under subsection (1) for any year of assessment shall not exceed an amount which is equal to 5% of the turnover for that year.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s165": "accurate"
+   }
+  },
+  "Q022:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 164(1) and (5).",
+   "support": "any fund, body or institution in Nigeria to which this section applies ... The total deduction to be allowed to a company, under this section, for any year of assessment, shall not exceed an amount equal to 10% of the profit before tax of that company for that year.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s164": "accurate"
+   }
+  },
+  "Q022:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 164(3).",
+   "support": "This section shall apply to donations made to - (a) public funds; (b) statutory bodies or institutions; (c) religious, charitable, educational and scientific institutions, established in Nigeria; (d) bodies recognised under the Diplomatic Immunities and Privileges Act; or (e) any pandemic, natural disaster or other public emergency interventions.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s164": "accurate"
+   }
+  },
+  "Q022:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 164(4).",
+   "support": "A company making a deduction for a donation shall provide requisite document evidencing the donation to the relevant tax authority.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s164": "accurate"
+   }
+  },
+  "Q022:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 164(6).",
+   "support": "In the case of a donation other than in cash, the value for the purpose of this section shall be the lower of the market value at the time of the donation or the consideration paid for the item when it was acquired.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s164": "accurate"
+   }
+  },
+  "Q013:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 153(1) opening words.",
+   "support": "A taxable person who makes a taxable supply shall maintain a sequential invoice numbering, and shall in respect of a supply, furnish the purchaser with a VAT invoice",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q013:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 153(1)(a).",
+   "support": "(a) supplier's tax ID",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q013:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 153(1)(b).",
+   "support": "(b) an invoice number",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q013:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 153(1)(c).",
+   "support": "(c) name and address of the supplier",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q013:claim:5": {
+   "verdict": "supported",
+   "reason": "Section 153(1)(d).",
+   "support": "(d) supplier's incorporation or business registration number as applicable",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q013:claim:6": {
+   "verdict": "supported",
+   "reason": "Section 153(1)(e).",
+   "support": "(e) the date of supply",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q013:claim:7": {
+   "verdict": "supported",
+   "reason": "Section 153(1)(f).",
+   "support": "(f) name of purchaser or client",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q013:claim:8": {
+   "verdict": "supported",
+   "reason": "Section 153(1)(g).",
+   "support": "(g) gross amount of transaction",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q013:claim:9": {
+   "verdict": "supported",
+   "reason": "Section 153(1)(h).",
+   "support": "(h) VAT charged and the rate.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q013:claim:10": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q013:claim:5. Section 153(2).",
+   "support": "VAT invoice shall be issued on supply whether or not payment is made at the time of supply.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q013:claim:11": {
+   "verdict": "supported",
+   "reason": "Section 153(4).",
+   "support": "the Service may direct any taxable person who makes taxable supplies to adopt the use of electronic invoice, provided that it gives a notice of, at least 30 days to the person.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "N14:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N14:claim:1. Section 74 is wholly about rejecting advance ruling applications.",
+   "support": "The relevant tax authority may reject an application for an advance ruling",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": "accurate"
+   }
+  },
+  "N14:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N14:claim:2. Section 74(a).",
+   "support": "may reject an application for an advance ruling where it requires the rendering of an opinion, conclusion or determination regarding- (a) the application or interpretation of the laws of a foreign country",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": "accurate"
+   }
+  },
+  "N14:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N14:claim:3. Section 74(b).",
+   "support": "(b) an issue already before a court or tribunal of competent jurisdiction",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": "accurate"
+   }
+  },
+  "N14:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N14:claim:4. Section 74(c).",
+   "support": "(c) the interpretation of the Constitution of the Federal Republic of Nigeria",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": "accurate"
+   }
+  },
+  "N14:claim:5": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N14:claim:5. Section 74(d).",
+   "support": "(d) an issue that is academic, hypothetical, frivolous or vexatious",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": "accurate"
+   }
+  },
+  "N14:claim:6": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N14:claim:6. Section 74(e).",
+   "support": "(e) a ruling that will interfere substantially with an ongoing audit, investigation or other proceeding involving the applicant or persons connected to the applicant.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": "accurate"
+   }
+  },
+  "N14:claim:7": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N14:claim:7. NTAA Section 147 definition.",
+   "support": "\"relevant tax authority\" means Nigeria Revenue Service, the Internal Revenue Service of a State or the Federal Capital Territory in Nigeria",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:relevant-tax-authority": "accurate"
+   }
+  },
+  "N18:claim:1": {
+   "verdict": "supported",
+   "reason": "NTAA Section 65(1) opening words and paragraph (a).",
+   "support": "Subject to section 67 of this Act, where any tax is not paid within the period prescribed under this Act- (a) a sum equal to 10% of the amount of the tax payable shall be added to it",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": "accurate"
+   }
+  },
+  "N18:claim:2": {
+   "verdict": "supported",
+   "reason": "NTAA Section 65(1)(a).",
+   "support": "the provisions of this Act relating to the collection and recovery of tax shall apply to the collection and recovery of the sum",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": "accurate"
+   }
+  },
+  "N18:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N18:claim:3. NTAA Section 65(3); the text says 'this subsection' but plainly refers to the penalty and interest of the section, so 'this section' changes nothing.",
+   "support": "The penalty and interest imposed under this subsection shall not be deemed to be part of the tax paid for the purpose of claiming relief under any of the provisions of this Act or any other tax law.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": "accurate"
+   }
+  },
+  "N18:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N18:claim:4. NTAA Section 147 definition of tax.",
+   "support": "\"tax\" includes any duty, levy or other revenue accruable to the Government in full or in part under this Act, the Nigeria Tax Act, 2025, or any other law",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:tax": "accurate"
+   }
+  },
+  "Q036:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q036:claim:1. NTAA Section 31(1).",
+   "support": "Every person, including a company granted exemption from incorporation, shall, whether or not the person is liable to pay tax, maintain books or records of accounts.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s31": "accurate"
+   }
+  },
+  "Q036:claim:2": {
+   "verdict": "supported",
+   "reason": "NTAA Section 31(5).",
+   "support": "Any book or record required to be kept under this section shall be kept for a period not less than six years after the year of assessment in which the income relates.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s31": "accurate"
+   }
+  },
+  "Q036:claim:3": {
+   "verdict": "supported",
+   "reason": "NTAA Section 102(a), (b), (i) and (ii).",
+   "support": "A taxable person who- (a) fails to keep accounts, books and records of business transactions and income ... (b) upon request by the relevant tax authority, fails to provide any record or book prescribed in this Act shall be liable to pay an administrative penalty in the case of - (i) a person other than a company, ₦10,000, and (ii) a company, ₦50,000.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s102": "accurate"
+   }
+  },
+  "Q032:claim:1": {
+   "verdict": "supported",
+   "reason": "Thirteenth Schedule table, crop production row.",
+   "support": "Sub-sector: Crop Production | Activity: Growing of perennial and non-perennial crops",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch13:table1": "accurate"
+   }
+  },
+  "Q032:claim:2": {
+   "verdict": "supported",
+   "reason": "Thirteenth Schedule table, livestock processing row.",
+   "support": "Activity: Livestock processing",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch13:table1": "accurate"
+   }
+  },
+  "N01:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N01:claim:1. Section 10(1).",
+   "support": "Where a Nigerian company controlled by not more than five individuals has not distributed to its shareholders as dividend, profits made in any period for which accounts have been made up by such company, the Service may direct that the proportion of the profits of the company, which could have been distributed without detriment to the company's business, be construed as distributed.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s10(1)-(6)": "accurate"
+   }
+  },
+  "N01:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N01:claim:2. Section 10(2).",
+   "support": "The gross amount of profits construed as distributed under the provisions of subsection (1) shall constitute a taxable income in the hand of individual shareholders of the company in proportion to their shareholdings in the ordinary capital of the company on the day of the deemed distribution.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s10(1)-(6)": "accurate"
+   }
+  },
+  "N01:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 10(3).",
+   "support": "Any direction by the Service under this section shall be made in writing, and be served on the company, and shall specify the - (a) day to be taken for the purposes of this section; (b) gross amount of those profits so deemed to be distributed; (c) rate applied for the deduction at source, being the rate prescribed by Nigeria Tax Administration Act, 2025; and (d) net amount after the deduction at source.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s10(1)-(6)": "accurate"
+   }
+  },
+  "N01:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 10(6).",
+   "support": "Any direction by the Service under this section with respect to the profits of any accounting period of a company shall be made not later than three years after the receipt by the Service of the duly audited accounts of the company for that period.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s10(1)-(6)": "accurate"
+   }
+  },
+  "N01:claim:5": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N01:claim:5. Section 10(7).",
+   "support": "A company in respect of which a direction is made under this section, shall have a right of appeal in accordance with Chapter Two of Nigeria Tax Administration Act, 2025.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s10(7)": "accurate"
+   }
+  },
+  "N04:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 150 opening words.",
+   "support": "The value of imported taxable supply for the purposes of Chapter Six of this Act shall be the amount which is equal to the price of the taxable supply imported plus",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s150": "accurate"
+   }
+  },
+  "N04:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 150(a).",
+   "support": "(a) taxes, duties and other charges levied either outside or by reason of importation into Nigeria, other than VAT imposed under this Act",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s150": "accurate"
+   }
+  },
+  "N04:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 150(b).",
+   "support": "(b) costs by way of commission, parking, transport and insurance up to the port or point of entry.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s150": "accurate"
+   }
+  },
+  "N04:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N04:claim:2. Section 202 definition of import.",
+   "support": "\"import\" means bringing in goods and services from another country or from an export processing zone",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:import": "accurate"
+   }
+  },
+  "N04:claim:5": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N04:claim:3. Section 156(3).",
+   "support": "An importer of taxable goods shall, before clearing those goods, pay to the Service the VAT on the goods.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s156": "accurate"
+   }
+  },
+  "Q024:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q024:claim:1. Section 202 definition of small company.",
+   "support": "\"small company\" means a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:small-company": "accurate"
+   }
+  },
+  "Q024:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q024:claim:2. Proviso to the definition.",
+   "support": "provided that any business providing professional services shall not be classified as a small company",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:small-company": "accurate"
+   }
+  },
+  "Q024:claim:3": {
+   "verdict": "supported",
+   "reason": "NTAA Section 22(7).",
+   "support": "In determining whether a person meets the threshold of being a small company, the value of the following taxable supplies shall be excluded- (a) supply of a capital asset of the person ; and (b) supply made solely as a consequence of the person selling the whole or a part of its business or permanently ceasing to carry on business.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   }
+  },
+  "N03:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 147(3)(a), which opens 'notwithstanding subsections (1) or (2)'.",
+   "support": "Notwithstanding the provisions of subsections (1) or (2) - (a) where goods are supplied under any rental agreement or where services are furnished under any agreement or law which provides for periodic payments, they shall be deemed to be successively supplied for successive parts of the periods of the agreement",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(3)": "accurate"
+   }
+  },
+  "N03:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N03:claim:2. Section 147(3)(a).",
+   "support": "each of the successive supplies shall be deemed to occur when payment becomes due or is received, whichever is earlier",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(3)": "accurate"
+   }
+  },
+  "N03:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N03:claim:3. Section 147(1).",
+   "support": "a taxable supply shall be deemed to take place at the time an invoice or receipt is issued by the supplier, or where goods are delivered or made available for use, or payment is due to or received by the supplier in respect of that supply, whichever occurs first.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": "accurate"
+   }
+  },
+  "N03:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N03:claim:4. Section 202 definition of supply of goods.",
+   "support": "the letting out of taxable goods on hire or leasing",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:supply-of-goods": "accurate"
+   }
+  },
+  "N03:claim:5": {
+   "verdict": "supported",
+   "reason": "Section 153(2).",
+   "support": "VAT invoice shall be issued on supply whether or not payment is made at the time of supply.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q046:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q046:claim:1. Section 23(1).",
+   "support": "Where a taxable person changes the date to which it usually computes its assessable profits",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s23": "accurate"
+   }
+  },
+  "Q046:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 23(1).",
+   "support": "the basis period for the computation of the assessable profits for the relevant year of assessment shall be the period commencing from the first day after the basis period of the immediately preceding year of assessment up to the new date on which the account was made",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s23": "accurate"
+   }
+  },
+  "Q046:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 23(1).",
+   "support": "the assessable profits of subsequent years of assessments shall be computed on the basis of the new accounting period.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s23": "accurate"
+   }
+  },
+  "Q046:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 23(2).",
+   "support": "Where there is a change in the accounting date under subsection (1), the taxable person shall notify the relevant tax authority not later than 30 days before the usual due date of filing its income tax returns.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s23": "accurate"
+   }
+  },
+  "Q046:claim:5": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q046:claim:5. Section 202 definition.",
+   "support": "\"relevant tax authority\" is in accordance with the provision of this Act and section 3 of the Nigeria tax Administration Act, 2025",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:relevant-tax-authority": "accurate"
+   }
+  },
+  "Q046:claim:6": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q046:claim:6. Section 202 definition.",
+   "support": "\"income tax\" means any tax chargeable under Chapters Two and Three of this Act",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:income-tax": "accurate"
+   }
+  },
+  "Q017:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 190(6).",
+   "support": "VAT charged under Chapter Six of this Act shall not apply to business restructuring carried out in accordance with this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": "accurate"
+   }
+  },
+  "Q017:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 190(7).",
+   "support": "Where a business or a part of the business, which is capable of separate operation is transferred as a going concern and the purchaser uses the assets in the same kind of business, such transfer shall not be treated as a supply of goods or services for the purposes of VAT, provided that the purchaser is registered in accordance with Part II of the Nigeria Tax Administration Act, 2025 , or registerable as a result of the transfer.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": "accurate"
+   }
+  },
+  "Q017:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 157.",
+   "support": "The provisions of section 190 of this Act shall apply in respect of sale or transfer of trade, business, profession or vocation carried on in Nigeria.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s157": "accurate"
+   }
+  },
+  "Q017:claim:4": {
+   "verdict": "supported",
+   "reason": "NTAA Section 22(7)(b).",
+   "support": "In determining whether a person meets the threshold of being a small company, the value of the following taxable supplies shall be excluded- ... (b) supply made solely as a consequence of the person selling the whole or a part of its business or permanently ceasing to carry on business.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   }
+  },
+  "N12:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N12:claim:1. NTAA Section 105.",
+   "support": "A person who has an obligation to collect, deduct or withhold tax under the relevant tax laws, and fails to collect, deduct or withhold the tax due is liable to an administrative penalty of 40% of the amount not deducted.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s105": "accurate"
+   }
+  },
+  "N12:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N12:claim:2. NTAA Section 147 definition of tax.",
+   "support": "\"tax\" includes any duty, levy or other revenue accruable to the Government in full or in part under this Act, the Nigeria Tax Act, 2025, or any other law",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:tax": "accurate"
+   }
+  },
+  "Q005:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q005:claim:1. Section 11(1).",
+   "support": "Where two or more companies carry out a trade or business in a partnership, joint venture or a similar arrangement in Nigeria, any income or profit arising therefrom shall constitute a source of profits and each company's share shall be taxed separately.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s11": "accurate"
+   }
+  },
+  "Q005:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q005:claim:2. Section 11(2).",
+   "support": "Where any of the companies in the partnership is a non-resident, its share of income or profit from the partnership is chargeable to tax under this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s11": "accurate"
+   }
+  },
+  "Q005:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 11(4).",
+   "support": "The provisions of this section shall not apply to any partnership engaged in petroleum operations under Chapter Three of this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s11": "accurate"
+   }
+  },
+  "Q011:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 27(5) proviso (c); the proviso is part of subsection (5).",
+   "support": "(c) the loss shall be deducted to the extent possible from the amount of the assessable profits of the first year of assessment after that in which the loss was incurred, and in subsequent years until the loss is fully recouped",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": "accurate"
+   }
+  },
+  "Q011:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 27(5) proviso (a).",
+   "support": "(a) in no circumstances shall the aggregate loss deductions from the assessable profits or income exceed the amount of that loss",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": "accurate"
+   }
+  },
+  "Q011:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 27(5) proviso (b).",
+   "support": "(b) loss can only be deducted from the trade or business in which the loss was incurred",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": "accurate"
+   }
+  },
+  "Q011:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 27(5) proviso (d).",
+   "support": "(d) the loss incurred during any year of assessment shall be computed, in accordance with the basis period provided in sections 22 to 25 of this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": "accurate"
+   }
+  },
+  "Q011:claim:5": {
+   "verdict": "supported",
+   "reason": "Section 27(6).",
+   "support": "any loss incurred in any period from sales, disposal or any other transaction in digital assets shall only be deductible in determining the profits from the business relating to digital or virtual assets.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": "accurate"
+   }
+  },
+  "Q011:claim:6": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q011:claim:1. Section 27(1).",
+   "support": "The total profits of a company for any year of assessment, shall be the amount of its total assessable profits from all sources, including chargeable gains ... less the amount of any loss ascertained in accordance with subsection (6), and capital allowance in accordance with the provisions of Part I of the First Schedule to this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(1)-(4)": "accurate"
+   }
+  },
+  "Q037:claim:1": {
+   "verdict": "supported",
+   "reason": "NTAA Section 22(1).",
+   "support": "A taxable person shall, in respect of value added tax, with or without a notice, and whether or not an economic activity has taken place, submit a return to the Service in the prescribed form, on or before the 21st day of the following month.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   }
+  },
+  "Q037:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q037:claim:2. NTAA Section 22(4).",
+   "support": "The provision of subsection (1) shall not apply to a small business.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   }
+  },
+  "Q037:claim:3": {
+   "verdict": "supported",
+   "reason": "NTAA Section 147 definition of small business.",
+   "support": "\"small business\" means a business that earns gross turnover of ₦100,000,000 or less per annum with a total fixed assets less than ₦250,000,000",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:small-business": "accurate"
+   }
+  },
+  "Q037:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q037:claim:4. Proviso to the definition.",
+   "support": "provided that any business providing professional services shall not be classified as a small business",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:small-business": "accurate"
+   }
+  },
+  "Q037:claim:5": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q037:claim:5. NTAA Section 22(5).",
+   "support": "A small business may, subject to a written notice addressed to the Service, choose to opt out of the exemption granted to small businesses under this Part including registration, charging of tax on its taxable supplies and filing of returns.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   }
+  },
+  "Q037:claim:6": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q037:claim:6. NTAA Section 22(6).",
+   "support": "A business, upon ceasing to be a small business, shall file monthly VAT returns.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   }
+  },
+  "Q037:claim:7": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q037:claim:7. NTAA Section 22(9).",
+   "support": "The provisions of subsection (5) shall not apply to companies engaged in petroleum operations as defined in the Nigeria Tax Act, 2025.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   }
+  },
+  "Q037:claim:8": {
+   "verdict": "supported",
+   "reason": "NTAA Section 22(7).",
+   "support": "In determining whether a person meets the threshold of being a small company, the value of the following taxable supplies shall be excluded- (a) supply of a capital asset of the person ; and (b) supply made solely as a consequence of the person selling the whole or a part of its business or permanently ceasing to carry on business.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   }
+  },
+  "N13:claim:1": {
+   "verdict": "supported",
+   "reason": "NTAA Section 55(1).",
+   "support": "There shall be refunded to taxpayers, after an audit by the relevant tax authority, such overpayment or any excess of tax as is due.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s55": "accurate"
+   }
+  },
+  "N13:claim:2": {
+   "verdict": "supported",
+   "reason": "NTAA Section 55(7).",
+   "support": "No claim for refund of tax under this section shall be allowed unless it is made in writing within six years after the end of the year of assessment to which it relates.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s55": "accurate"
+   }
+  },
+  "N13:claim:3": {
+   "verdict": "supported",
+   "reason": "NTAA Section 55(3).",
+   "support": "Any tax refund due shall be made within 90 days of the decision of the relevant tax authority made pursuant to subsection (2), with the option of a set-off against any tax liability of the taxpayer.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s55": "accurate"
+   }
+  },
+  "N13:claim:4": {
+   "verdict": "supported",
+   "reason": "NTAA Section 55(2).",
+   "support": "The relevant tax authority may make such rules and conditions necessary to facilitate the refund mentioned in subsection (1).",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s55": "accurate"
+   }
+  },
+  "N13:claim:5": {
+   "verdict": "supported",
+   "reason": "NTAA Section 121.",
+   "support": "A person that receives a refund under section 55 of this Act, through a false or fictitious claim, is in addition to the recovery of the amount so received, liable to a penalty of 50% of that amount, plus interest at the prevailing Central Bank of Nigeria Monetary Policy Rate.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s121": "accurate"
+   }
+  },
+  "Q049:claim:1": {
+   "verdict": "supported",
+   "reason": "NTAA Section 72(1).",
+   "support": "Whenever the relevant tax authority is of the opinion that tax assessed on profits or income of a person has been fully paid or that no tax is due on such profits or income, it shall issue a tax clearance certificate to the person within two weeks of the demand for such certificate by that person or, if not, give reasons for the denial.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s72": "accurate"
+   }
+  },
+  "Q049:claim:2": {
+   "verdict": "supported",
+   "reason": "NTAA Section 147 definition of relevant tax authority.",
+   "support": "\"relevant tax authority\" means Nigeria Revenue Service, the Internal Revenue Service of a State or the Federal Capital Territory in Nigeria",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:relevant-tax-authority": "accurate"
+   }
+  },
+  "Q049:claim:3": {
+   "verdict": "supported",
+   "reason": "NTAA Section 72(2).",
+   "support": "Any Ministry, department or agency of Government or any commercial bank with whom any person has any dealing with respect to any of the transactions mentioned in subsection (4), shall demand from such person a tax clearance certificate of three years immediately preceding the current year of assessment.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s72": "accurate"
+   }
+  },
+  "Q049:claim:4": {
+   "verdict": "supported",
+   "reason": "NTAA Section 72(4).",
+   "support": "(a) application for certificate of occupancy; (b) approval of building plans ; (c) application for award of contract by government or its agencies ; (d) application for firearms licence ; (e) application for import and export licence ; and (f) application for trade licence.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s72": "accurate"
+   }
+  },
+  "Q049:claim:5": {
+   "verdict": "supported",
+   "reason": "NTAA Section 72(3).",
+   "support": "A tax clearance certificate shall disclose in respect of the last three years of assessment- (a) total profits or chargeable income ; (b) tax payable ; (c) tax paid ; and (d) tax outstanding or alternatively a statement to the effect that no tax is due.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s72": "accurate"
+   }
+  },
+  "Q049:claim:6": {
+   "verdict": "supported",
+   "reason": "NTAA Section 72(5) with its proviso.",
+   "support": "Where a person is able to produce evidence that he suffered tax by deduction at source and that the assessment year to which the tax relates falls within the period covered by the tax clearance certificate, such a person may not be denied a tax clearance certificate: Provided that any balance of tax after credit has been given for the tax so deducted has been fully paid.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s72": "accurate"
+   }
+  },
+  "N09:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N09:claim:1. NTAA Section 10(1).",
+   "support": "Where a taxable person temporarily ceases to carry on a trade or business in Nigeria, the taxable person shall notify the relevant tax authority of its intention to suspend its registration for tax purposes within 30 days of such temporary cessation of trade or business.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s10": "accurate"
+   }
+  },
+  "N09:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N09:claim:2. NTAA Section 10(2).",
+   "support": "The relevant tax authority shall classify the Tax ID as dormant and place it on suspension.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s10": "accurate"
+   }
+  },
+  "N09:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N09:claim:3. NTAA Section 10(6).",
+   "support": "A taxable person whose Tax ID has been suspended, shall, upon reapplication, be re-issued with the same Tax ID.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s10": "accurate"
+   }
+  },
+  "N09:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N09:claim:4. NTAA Section 7(5).",
+   "support": "A taxable person having a valid Tax ID shall not apply for, or be issued with another Tax ID.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s7": "accurate"
+   }
+  },
+  "N09:claim:5": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N09:claim:5. NTAA Section 7(7).",
+   "support": "A Tax ID issued to one taxable person is not transferable or usable by another taxable person.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s7": "accurate"
+   }
+  },
+  "Q038:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q038:claim:1. NTAA Section 35(1).",
+   "support": "Where a taxable person has not delivered a tax return as provided under this Act, and the relevant tax authority is of the opinion that such taxable person is liable to pay tax, it may, to the best of its judgement, determine the amount of the tax due from the taxable person and make an assessment accordingly.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s35": "accurate"
+   }
+  },
+  "Q038:claim:2": {
+   "verdict": "supported",
+   "reason": "NTAA Section 35(2).",
+   "support": "The assessment issued under subsection (1) shall not affect the imposition of any other liability specified in this Act or any other law, incurred by the taxable person by reason of its failure or neglect to deliver a return.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s35": "accurate"
+   }
+  },
+  "Q038:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q038:claim:3. NTAA Section 35(3).",
+   "support": "The relevant tax authority may prescribe the rules, guidelines and procedures for the issuance of administrative assessment under this section.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s35": "accurate"
+   }
+  },
+  "Q038:claim:4": {
+   "verdict": "supported",
+   "reason": "NTAA Section 101.",
+   "support": "A taxable person who fails or refuses to file returns or knowingly files incomplete or inaccurate returns to the relevant tax authority in accordance with the provisions of this Act, shall be liable to pay an administrative penalty of- (a) ₦100,000 in the first month in which the failure occurs ; and (b) ₦50,000 for each subsequent month in which the failure continues.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s101": "accurate"
+   }
+  },
+  "Q038:claim:5": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q038:claim:8. NTAA Section 66.",
+   "support": "The relevant tax authority may, for any good cause shown, remit the whole or any part of penalty or interest due under this Act or any other tax law",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s66": "accurate"
+   }
+  },
+  "Q038:claim:6": {
+   "verdict": "supported",
+   "reason": "NTAA Section 34(4).",
+   "support": "Where a taxable person has delivered a tax return, under subsection (1), the relevant tax authority may - (a) accept the tax return without making an additional assessment ; (b) accept the tax return and make additional assessment ; or (c) reject the tax return and, to the best of its judgement, determine the amount of the tax due from the taxable person and make an assessment accordingly.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s34": "accurate"
+   }
+  },
+  "Q042:claim:1": {
+   "verdict": "supported",
+   "reason": "NTAA Section 49(5).",
+   "support": "Any balance of tax unpaid as at the due date shall attract interest and penalties as provided in this Act or any other relevant law.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s49(1)-(6)": "accurate"
+   }
+  },
+  "Q042:claim:2": {
+   "verdict": "supported",
+   "reason": "NTAA Section 65(1)(a).",
+   "support": "Subject to section 67 of this Act, where any tax is not paid within the period prescribed under this Act- (a) a sum equal to 10% of the amount of the tax payable shall be added to it",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": "accurate"
+   }
+  },
+  "Q042:claim:3": {
+   "verdict": "supported",
+   "reason": "NTAA Section 65(1)(b); 'subject to section 67' governs all of subsection (1).",
+   "support": "Subject to section 67 of this Act ... (b) in the case of naira remittances, the tax due shall carry interest at the prevailing monetary policy rate of the Central Bank of Nigeria plus spread to be determined by the Minister from the date when the tax becomes payable until it is paid",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": "accurate"
+   }
+  },
+  "Q042:claim:4": {
+   "verdict": "supported",
+   "reason": "NTAA Section 65(1)(c).",
+   "support": "(c) in the case of foreign currency remittance, the tax due shall incur interest at the prevailing Secured Overnight Financing Rate (\"SOFR\") or any successor rate, plus 10% or such other spread to be determined by the Minister from the date when the tax becomes payable until it is paid",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": "accurate"
+   }
+  },
+  "Q042:claim:5": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q042:claim:5. NTAA Section 65(4).",
+   "support": "the interest specified in subsection (1)(b) and (c) shall be compound interest and shall apply to all tax debts that remain unpaid as at the commencement of this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": "accurate"
+   }
+  },
+  "Q042:claim:6": {
+   "verdict": "supported",
+   "reason": "NTAA Section 65(3).",
+   "support": "The penalty and interest imposed under this subsection shall not be deemed to be part of the tax paid for the purpose of claiming relief under any of the provisions of this Act or any other tax law.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": "accurate"
+   }
+  },
+  "Q042:claim:7": {
+   "verdict": "supported",
+   "reason": "NTAA Section 49(6); 'original due date' reads 'the due date of payment of the tax'.",
+   "support": "Where the relevant tax authority grants a taxable person an extension of the period for the payment of a tax and the person fails to make the payment within that period of extension, penalty and interest shall accrue from the due date of payment of the tax as if the extension was never granted.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s49(1)-(6)": "accurate"
+   }
+  },
+  "Q042:claim:8": {
+   "verdict": "supported",
+   "reason": "NTAA Section 107(1) and (2).",
+   "support": "fails to remit the amount deducted, collected or withheld by the 21st day of the month immediately succeeding the month in which the amount was deducted, collected or withheld, is liable to pay- (a) the amount deducted, collected or withheld but not remitted ; (b) an administrative penalty of 10% per annum of the tax deducted, collected or withheld but not remitted ; and (c) interest at the prevailing Central Bank of Nigeria monetary policy rate. (2) A person required to self-account under this Act and fails to self-account within the time prescribed by this Act, is liable to pay",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s107": "accurate"
+   }
+  },
+  "Q042:claim:9": {
+   "verdict": "supported",
+   "reason": "NTAA Section 65(2).",
+   "support": "The relevant tax authority shall serve a demand notice on the company or person in whose name a tax is chargeable and where payment is not made within 30 days from the date of the service of such demand notice, the relevant tax authority may proceed to enforce payment under this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": "accurate"
+   }
+  },
+  "Q016:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 155(1) and (1)(a).",
+   "support": "Without prejudice to any provision of this Act or any other tax law, the following persons shall collect or withhold VAT on taxable supplies made to them and remit it to the Service within the time prescribed by this Act, the Nigeria Tax Administration Act, 2025, or any regulation made pursuant thereto - (a) Federal, State, Local Government and their respective Ministries, Departments or Agencies",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s155": "accurate"
+   }
+  },
+  "Q016:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 155(4).",
+   "support": "The VAT collected, withheld or self-accounted under this section shall be remitted to the Service on or before the 14th day of the month immediately following the month of the transaction or as may be prescribed by the Service.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s155": "accurate"
+   }
+  },
+  "Q016:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q016:claim:4. Section 155(3).",
+   "support": "shall be accompanied with a schedule showing the name, Tax ID and address of the contractor or supplier, invoice number, gross amount of invoice, amount of the VAT and the month to which the return relates.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s155": "accurate"
+   }
+  },
+  "Q016:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 186(1) opening words and paragraphs (c), (d) and (l).",
+   "support": "The following supplies are exempt from the VAT imposed under Chapter Six of this Act ... (c) goods purchased for use in humanitarian donor funded projects; (d) baby products ... (l) land or building including interest in land or building",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s186": "accurate"
+   }
+  },
+  "Q020:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q020:claim:1. Section 163(1)(p) in the (m) to (v) chunk; 'exempt from tax under chapter two' is the opening of Section 163(1) in the (a) to (c) chunk. Each chunk states a part the claim relies on.",
+   "support": "nta2025:s163(1)(m)-(v): (p) income generated by companies engaged in agricultural businesses including crop production, livestock, aquaculture, forestry, dairy and such other businesses as described in the Thirteenth Schedule to this Act, for the first five years upon commencement of business | nta2025:s163(1)(a)-(c): There is exempt from tax under chapter two of this Act",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s163(1)(m)-(v)": "accurate",
+    "nta2025:s163(1)(a)-(c)": "accurate"
+   }
+  },
+  "Q020:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q020:claim:2. Thirteenth Schedule table, headed with Section 163(1)(p).",
+   "support": "Sections 163(1) (p), and 187 ... Sub-sector: Crop Production | Activity: Growing of perennial and non-perennial crops",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch13:table1": "accurate"
+   }
+  },
+  "Q048:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q048:claim:1. Section 190(1) opening words.",
+   "support": "The following rules shall apply in the event of restructuring of trades or businesses",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": "accurate"
+   }
+  },
+  "Q048:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 190(1)(a)(i).",
+   "support": "(i) a new trade or business shall not be deemed to have commenced as a result of the merger, and the provisions of this Act as they relate to cessation of trade or business shall not apply to the trade or business that ceased as a result of the merger",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": "accurate"
+   }
+  },
+  "Q048:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 190(1)(a)(ii).",
+   "support": "(ii) the provisions of Part VIII of Chapter Two of this Act as they relate to chargeable gains shall not apply to the assets transferred to the new or surviving trade or business as a result of the merger",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": "accurate"
+   }
+  },
+  "Q048:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 190(1)(a)(iii) and (iv).",
+   "support": "(iii) assets of the merging trades or businesses shall be deemed to have been transferred at the residue of the qualifying capital expenditure on the day following the merger, (iv) the provisions of the First Schedule to this Act shall apply on the remaining useful life of the asset transferred as a result of the merger",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": "accurate"
+   }
+  },
+  "Q048:claim:5": {
+   "verdict": "supported",
+   "reason": "Section 190(1)(a)(v) and (vii).",
+   "support": "(v) unutilised capital allowance on the assets transferred shall be available for the use of the new or surviving trade or business ... (vii) taxes deducted at source in respect of the merged trades or businesses shall be available to the merged trade or business",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": "accurate"
+   }
+  },
+  "Q048:claim:6": {
+   "verdict": "supported",
+   "reason": "Section 190(1)(a)(vi).",
+   "support": "(vi) unabsorbed losses of the merging entities shall be available to the surviving trade or business provided that such losses were incurred by the merged trade or business",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": "accurate"
+   }
+  },
+  "Q048:claim:7": {
+   "verdict": "supported",
+   "reason": "Section 190(1)(b)(i) to (iii).",
+   "support": "(i) the provisions of Part V of Chapter Two of this Act as regards cessation of trade, business, profession or vocation shall apply to the trade or business that was sold or transferred, (ii) for the purposes of the First Schedule to this Act, the asset sold or transferred shall be recognised at the value at which they are sold or transferred, (iii) the provisions of Part VIII of Chapter two of this Act as they relate to chargeable gains shall apply on any asset sold or transferred",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(b)-(c)": "accurate"
+   }
+  },
+  "Q048:claim:8": {
+   "verdict": "supported",
+   "reason": "Section 190(1)(b)(iv) to (vi).",
+   "support": "(iv) unutilised capital allowance on the assets sold or transferred shall not be available for use in the new or surviving trade or business, (v) unabsorbed losses of the old business shall not be available for use in the new or surviving trade, business, profession or vocation, and (vi) taxes deducted at source from the old trade or business, shall not be available for use by the new or surviving trade or business",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(b)-(c)": "accurate"
+   }
+  },
+  "Q048:claim:9": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q048:claim:11. Section 190(1)(c)(i).",
+   "support": "in the case of a sale or transfer of a business asset which does not result into the cessation of the trade or business, and where the parties agreed to sell or transfer the asset for an amount not exceeding the sum of the residue of the qualifying capital expenditure and unutilised capital allowance of the asset - (i) capital allowance under the provisions of the First Schedule to this Act shall apply to the residue of the asset only",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(b)-(c)": "accurate"
+   }
+  },
+  "Q048:claim:10": {
+   "verdict": "supported",
+   "reason": "Section 190(1)(c)(ii) to (iv).",
+   "support": "(ii) the unutilised capital allowance on the asset sold or transferred shall be available for use by the buying trade or business, (iii) the trade or business that sold or transferred the assets shall not claim any part of the unutilised capital allowance pertaining to the asset sold or transferred, and (iv) the provisions of Part VIII of Chapter Two of this Act as regards chargeable gains shall not apply to the asset sold or transferred under this paragraph.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(b)-(c)": "accurate"
+   }
+  },
+  "Q048:claim:11": {
+   "verdict": "supported",
+   "reason": "Section 190(2).",
+   "support": "Notwithstanding the provisions of subsection (1), in the case of companies engaged in upstream petroleum operations, where business restructuring results in the formation of a new company and cessation of the old business, the accounting period of the company acquiring that trade or business shall commence on - (a) the date on which the sale or transfer of the trade or business to the new company takes place; or (b) such date within the calendar month in which the sale or transfer takes place, as may be elected by the company with the approval of the Service, and end on 31 December of the same year, provided that any gap between the old and surviving business shall be treated as being part of the new or surviving company.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": "accurate"
+   }
+  },
+  "Q048:claim:12": {
+   "verdict": "supported",
+   "reason": "Section 190(3).",
+   "support": "The period referred to in subsection (2), shall constitute \"Accounting Period\" under Chapter Three of this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": "accurate"
+   }
+  },
+  "Q048:claim:13": {
+   "verdict": "supported",
+   "reason": "Section 190(4).",
+   "support": "The relevant tax authority shall be notified of any restructuring of a trade, business, profession or vocation prior to commencing such arrangement.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": "accurate"
+   }
+  },
+  "Q048:claim:14": {
+   "verdict": "supported",
+   "reason": "Section 190(5).",
+   "support": "Reference to a trade or business in this section include references to any part of the trade or business.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": "accurate"
+   }
+  },
+  "Q048:claim:15": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q048:claim:17. Section 190(6).",
+   "support": "VAT charged under Chapter Six of this Act shall not apply to business restructuring carried out in accordance with this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": "accurate"
+   }
+  },
+  "Q048:claim:16": {
+   "verdict": "supported",
+   "reason": "Section 190(7).",
+   "support": "Where a business or a part of the business, which is capable of separate operation is transferred as a going concern and the purchaser uses the assets in the same kind of business, such transfer shall not be treated as a supply of goods or services for the purposes of VAT, provided that the purchaser is registered in accordance with Part II of the Nigeria Tax Administration Act, 2025 , or registerable as a result of the transfer.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": "accurate"
+   }
+  },
+  "Q048:claim:17": {
+   "verdict": "supported",
+   "reason": "Section 157.",
+   "support": "The provisions of section 190 of this Act shall apply in respect of sale or transfer of trade, business, profession or vocation carried on in Nigeria.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s157": "accurate"
+   }
+  },
+  "N20:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N20:claim:1. NTAA Section 104.",
+   "support": "A taxable person that fails to process a taxable supply through the fiscalisation system is liable to an administrative penalty of ₦200,000 plus 100% of the tax due and an interest at the prevailing Central Bank of Nigeria Monetary Policy rate per annum.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s104": "accurate"
+   }
+  },
+  "N20:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N20:claim:2. Section 158(1).",
+   "support": "A taxable person making a taxable supply shall implement the fiscalisation system deployed by the Service in accordance with Nigeria Tax Administration Act, 2025.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s158": "accurate"
+   }
+  },
+  "N17:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N17:claim:1. Section 59(1).",
+   "support": "A development levy of 4% is imposed on the assessable profits of all companies chargeable to tax under Chapters Two and Three of this Act, other than small companies and non-resident companies.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s59": "accurate"
+   }
+  },
+  "N17:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N17:claim:2. Section 59(4); the context header shows 'this Part' is Part X Development Levy.",
+   "support": "The tax imposed under this Part shall not be levied on assessable profits computed for the purposes of hydrocarbon tax.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s59": "accurate"
+   }
+  },
+  "N17:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 202 definition of small company with its proviso.",
+   "support": "\"small company\" means a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000, provided that any business providing professional services shall not be classified as a small company",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:small-company": "accurate"
+   }
+  },
+  "N17:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 59(2).",
+   "support": "The Service shall collect the levy and pay it into a special account created for that purpose.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s59": "accurate"
+   }
+  },
+  "N16:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N16:claim:1. Section 56 opening words and paragraph (a).",
+   "support": "Tax shall be levied, for each year of assessment in respect of total profits of every company, in the case of - (a) a small company, at 0%",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s56": "accurate"
+   }
+  },
+  "N16:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 56(b).",
+   "support": "(b) any other company, at the rate of 30 per cent from the commencement of this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s56": "accurate"
+   }
+  },
+  "N16:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 202 definition of small company with its proviso.",
+   "support": "\"small company\" means a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000, provided that any business providing professional services shall not be classified as a small company",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:small-company": "accurate"
+   }
+  },
+  "Q012:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q012:claim:1. Section 147(1).",
+   "support": "a taxable supply shall be deemed to take place at the time an invoice or receipt is issued by the supplier, or where goods are delivered or made available for use, or payment is due to or received by the supplier in respect of that supply, whichever occurs first.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": "accurate"
+   }
+  },
+  "Q012:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q012:claim:2. Section 147(2)(a).",
+   "support": "where the supplier and recipient are connected persons and invoices are not issued, in the case of - (a) a supply of goods which are to be removed, the time of removal of the goods",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": "accurate"
+   }
+  },
+  "Q012:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q012:claim:3. Section 147(2)(b).",
+   "support": "(b) a supply of goods which is not to be removed at the time when they are available to the recipient",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": "accurate"
+   }
+  },
+  "Q012:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q012:claim:4. Section 147(2)(c).",
+   "support": "(c) furnishing of a service, upon commencement of the furnishing of the service",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": "accurate"
+   }
+  },
+  "Q012:claim:5": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q012:claim:5. Section 147(2)(d).",
+   "support": "(d) an incorporeal, when such incorporeal becomes available for the use of the recipient.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": "accurate"
+   }
+  },
+  "Q012:claim:6": {
+   "verdict": "supported",
+   "reason": "Section 147(3)(a).",
+   "support": "where goods are supplied under any rental agreement or where services are furnished under any agreement or law which provides for periodic payments, they shall be deemed to be successively supplied for successive parts of the periods of the agreement or as determined by such law, and each of the successive supplies shall be deemed to occur when payment becomes due or is received, whichever is earlier",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(3)": "accurate"
+   }
+  },
+  "Q012:claim:7": {
+   "verdict": "supported",
+   "reason": "Section 147(3)(b).",
+   "support": "the supplies shall be deemed to be successively made, and each successive supply shall be deemed to take place whenever any payment becomes due or is received or an invoice relating to only that payment is issued, whichever occurs first",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(3)": "accurate"
+   }
+  },
+  "Q012:claim:8": {
+   "verdict": "supported",
+   "reason": "Section 147(3)(c).",
+   "support": "where a taxable supply is made under an instalment credit agreement, the supply shall be deemed to take place at the time the taxable supply is delivered or the time any payment of consideration is received by the supplier in respect of the supply, whichever occurs first.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(3)": "accurate"
+   }
+  },
+  "Q012:claim:9": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q012:claim:10. Section 153(2).",
+   "support": "VAT invoice shall be issued on supply whether or not payment is made at the time of supply.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": "accurate"
+   }
+  },
+  "Q012:claim:10": {
+   "verdict": "supported",
+   "reason": "Section 202 definition of invoice.",
+   "support": "\"invoice\" includes any document issued as evidence of demand for payment",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:invoice": "accurate"
+   }
+  },
+  "N08:claim:1": {
+   "verdict": "supported",
+   "reason": "First Schedule Part I paragraph 2 opening words.",
+   "support": "This Part shall apply in relation to any asset acquired by any hirer or lessee under a hire-purchase or finance lease agreement, subject to the following modifications",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para2-3": "accurate"
+   }
+  },
+  "N08:claim:2": {
+   "verdict": "supported",
+   "reason": "First Schedule Part I paragraph 2(a).",
+   "support": "the qualifying capital expenditure in any basis period shall, in relation to any asset so acquired under that agreement, be limited to the amount of the instalments paid by the hirer or lessee up to that basis period, excluding any interest paid under the agreement",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para2-3": "accurate"
+   }
+  },
+  "N08:claim:3": {
+   "verdict": "supported",
+   "reason": "First Schedule Part I paragraph 2(b).",
+   "support": "the \"owner\" of the asset shall be construed to be the hirer or lessee under the hire-purchase or finance lease agreement",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para2-3": "accurate"
+   }
+  },
+  "N08:claim:4": {
+   "verdict": "supported",
+   "reason": "First Schedule Part I paragraph 15(2).",
+   "support": "Where an asset is acquired for use by a hirer or lessee under a hire purchase or finance lease contract for the purpose of a trade or business carried on by such hirer or lessee, the hirer or lessee shall be deemed to be the owner of the asset and the provisions of this Part shall apply to the hirer or lessee, to the exclusion of the hiree or lessor under the contract.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para15-17": "accurate"
+   }
+  },
+  "N08:claim:5": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N08:claim:5. First Schedule Part I paragraph 2(c).",
+   "support": "the person letting the asset to the hirer or lessee under the agreement shall not be entitled to an allowance under sections 27 and 28 of this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para2-3": "accurate"
+   }
+  },
+  "N08:claim:6": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N08:claim:6. Section 202 definition of hire purchase.",
+   "support": "\"hire purchase\" means a financial arrangement in which a person acquires immediate use of an asset by making regular instalment payments over a specified period and may gain ownership of the asset on the completion of the payments",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:hire-purchase": "accurate"
+   }
+  },
+  "N08:claim:7": {
+   "verdict": "supported",
+   "reason": "First Schedule Part I paragraph 15(3); 'for this purpose' follows the paragraph 15 lease rule in claim 4, which is the scope the passage gives.",
+   "support": "For the purposes of this paragraph in relation to the trade or business, the basis period for any year of assessment shall be taken to be the year immediately preceding that year of assessment.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para15-17": "accurate"
+   }
+  },
+  "N08:claim:8": {
+   "verdict": "supported",
+   "reason": "First Schedule Part I paragraph 16(1) and (2).",
+   "support": "Where the owner of an asset partly uses the asset for a trade or business, the allowance computed in accordance with the provisions of this Part, shall, as may be reasonable, be apportioned to the trade or business. (2) Where the relevant tax authority is of the opinion that the basis of apportionment is not just and reasonable, having regard to all the circumstances and to the provisions of this Part of this Schedule, the relevant tax authority shall make necessary adjustments as may be deemed fit.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para15-17": "accurate"
+   }
+  },
+  "N07:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N07:claim:1. Section 202 definition of digital assets.",
+   "support": "\"digital assets\" means digital representation of value that can be digitally exchanged, including crypto assets, utility tokens, security tokens, non-fungible tokens (NFT), such other similar digital representation or derivatives of any of the listed or similar assets and any other asset as may be defined by the relevant regulatory authority",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:digital-assets": "accurate"
+   }
+  },
+  "N07:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 34(1)(a); 'that Part' is Part VIII per the context header.",
+   "support": "Subject to exemptions as may be provided in Part I of Chapter Eight of this Act, all forms of property shall be chargeable assets for the purpose of this Part, whether situated in Nigeria or not, including - (a) any form of asset, shares, options, rights, debts, digital or virtual assets",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s34": "accurate"
+   }
+  },
+  "N07:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 27(6).",
+   "support": "any loss incurred in any period from sales, disposal or any other transaction in digital assets shall only be deductible in determining the profits from the business relating to digital or virtual assets.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": "accurate"
+   }
+  },
+  "N11:claim:1": {
+   "verdict": "supported",
+   "reason": "NTAA Section 41(1).",
+   "support": "Where a taxable person disputes a tax assessment, the taxable person may, by a written notice of objection delivered in person, by courier service or via electronic means, apply to the relevant tax authority for the revision and amendment of the assessment made on it.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   }
+  },
+  "N11:claim:2": {
+   "verdict": "supported",
+   "reason": "NTAA Section 41(2)(a) and (b).",
+   "support": "An application under subsection (1) shall only be valid if it - (a) is delivered to the relevant tax authority within 30 days from the date of service of the disputed notice of assessment ; and (b) contains the grounds of objection to the assessment",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   }
+  },
+  "N11:claim:3": {
+   "verdict": "supported",
+   "reason": "NTAA Section 41(2)(b)(ii) and (iii); 'also' is framing.",
+   "support": "(ii) amendment required to be made so as to resolve the dispute or correct the error, (iii) justification for the amendments",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   }
+  },
+  "N11:claim:4": {
+   "verdict": "supported",
+   "reason": "NTAA Section 41(2)(b)(iv).",
+   "support": "(iv) amount of assessable and total profits, income or value of transactions admitted by the taxable person for the relevant reporting period",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   }
+  },
+  "N11:claim:5": {
+   "verdict": "supported",
+   "reason": "NTAA Section 41(2)(b)(v).",
+   "support": "(v) amount of tax admitted by the taxable person or that no amount of tax is admitted as payable.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   }
+  },
+  "N11:claim:6": {
+   "verdict": "supported",
+   "reason": "NTAA Section 41(3); 'despite the 30-day period' reads 'notwithstanding subsection (2)'.",
+   "support": "Notwithstanding the provisions of subsection (2), the relevant tax authority may, for any satisfactory and good cause shown, extend the time for making the application referred to in subsection (1) to such reasonable time in the particular circumstances.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   }
+  },
+  "Q009:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 34(1)(a) proviso, paragraph (i).",
+   "support": "Provided that gains accruing to a person on disposal of shares in any Nigerian company shall not be chargeable gains where the - (i) disposal proceeds, in aggregate, is less than ₦150,000,000 and the chargeable gain does not exceed ₦10,000,000 in any 12 consecutive months",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s34": "accurate"
+   }
+  },
+  "Q009:claim:2": {
+   "verdict": "supported",
+   "reason": "Borderline, flagged for the overseer's sample. 'Subject to exemptions as may be provided in Part I of Chapter Eight' heads Section 34(1), and the share-disposal proviso sits inside that subsection, so the subsection as a whole, proviso included, is read as subject to those exemptions. No outcome changes.",
+   "support": "Subject to exemptions as may be provided in Part I of Chapter Eight of this Act, all forms of property shall be chargeable assets ... Provided that gains accruing to a person on disposal of shares in any Nigerian company shall not be chargeable gains",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s34": "accurate"
+   }
+  },
+  "Q009:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 47; 'separately' is framing.",
+   "support": "Gains accruing to any person in respect of a disposal of shares by a non-resident shall be a chargeable gain under this Act where the disposal results into a change - (a) in the ownership structure or group membership of any Nigerian company; or (b) of ownership of, title in, or interest in any asset located in Nigeria.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s47": "accurate"
+   }
+  },
+  "Q009:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 202 definition of Nigerian company; 'includes' is weaker than 'means' and contradicts nothing.",
+   "support": "\"Nigerian company\" means a company - (a) formed, registered or incorporated under any law in Nigeria; (b) whose central place of management or control is Nigeria; or (c) whose effective place of management or control is Nigeria",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:nigerian-company": "accurate"
+   }
+  },
+  "Q045:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q045:claim:1. NTAA Section 107(1)(a).",
+   "support": "A person, that deducts, collects or withholds any tax under this Act, and fails to remit the amount deducted, collected or withheld by the 21st day of the month immediately succeeding the month in which the amount was deducted, collected or withheld, is liable to pay- (a) the amount deducted, collected or withheld but not remitted",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s107": "accurate"
+   }
+  },
+  "Q045:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q045:claim:2. NTAA Section 107(1)(b).",
+   "support": "(b) an administrative penalty of 10% per annum of the tax deducted, collected or withheld but not remitted",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s107": "accurate"
+   }
+  },
+  "Q045:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q045:claim:3. NTAA Section 107(1)(c).",
+   "support": "(c) interest at the prevailing Central Bank of Nigeria monetary policy rate.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s107": "accurate"
+   }
+  },
+  "Q045:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q045:claim:4. NTAA Section 107(3).",
+   "support": "A person convicted of any of the offences under this section, shall be liable to a term of imprisonment not exceeding three years, or a fine of not less than the principal amount due plus penalty of not more than 50% of the sum, or both.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s107": "accurate"
+   }
+  },
+  "Q027:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q027:claim:1. Section 202 definition of year of assessment.",
+   "support": "\"year of assessment\" means government tax year being 1 January to 31 December of any year.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:year-of-assessment": "accurate"
+   }
+  },
+  "Q027:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q027:claim:2. NTAA Section 147 definition of calendar year.",
+   "support": "\"calendar year\" means a period of 12 months commencing from 1 January and ending 31 December",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:calendar-year": "accurate"
+   }
+  },
+  "N19:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N19:claim:1. NTAA Section 101 opening words.",
+   "support": "A taxable person who fails or refuses to file returns or knowingly files incomplete or inaccurate returns to the relevant tax authority in accordance with the provisions of this Act, shall be liable to pay an administrative penalty",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s101": "accurate"
+   }
+  },
+  "N19:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N19:claim:2. NTAA Section 101(a).",
+   "support": "(a) ₦100,000 in the first month in which the failure occurs",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s101": "accurate"
+   }
+  },
+  "N19:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N19:claim:3. NTAA Section 101(b).",
+   "support": "(b) ₦50,000 for each subsequent month in which the failure continues.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s101": "accurate"
+   }
+  },
+  "Q021:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 163(1) opening words, paragraph (a) and subparagraph (ii).",
+   "support": "There is exempt from tax under chapter two of this Act - (a) the profits accruing to, or gains from disposal of assets of any person being - ... (ii) a co-operative society registered under any enactment or law relating to co-operative societies, not being profits or gains from any trade or business carried on by that society",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s163(1)(a)-(c)": "accurate"
+   }
+  },
+  "Q021:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 55(1)(c) with its proviso.",
+   "support": "Any property held in trust for - ... (c) any co-operative society registered under the co-operative societies law of any State ... shall not be subject to the provisions of Chapter Two of this Act, provided that the gain is not derived from the disposal of an asset acquired in connection with any trade or business carried on by the institution, society or trade union, and the gain is applied solely for the purpose of the institution, society or trade union.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s55": "accurate"
+   }
+  },
+  "N06:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 202 definition of gross turnover.",
+   "support": "\"gross turnover\" means the gross inflow of economic benefits during the period arising in the course of the operating activities of an entity when those inflows result in increases in equity",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:gross-turnover": "accurate"
+   }
+  },
+  "N06:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 202 definition of gross turnover.",
+   "support": "including sales of goods, supply of services, receipt of interest, rents, royalties or dividends",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:gross-turnover": "accurate"
+   }
+  },
+  "N06:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N06:claim:3. Section 202 definition of gross turnover.",
+   "support": "other than increases relating to contributions from equity participants",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:gross-turnover": "accurate"
+   }
+  },
+  "N06:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N06:claim:4. Section 202 definition of small company with its proviso.",
+   "support": "\"small company\" means a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000, provided that any business providing professional services shall not be classified as a small company",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:small-company": "accurate"
+   }
+  },
+  "N10:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N10:claim:1. NTAA Section 11(5)(b).",
+   "support": "(b) in the case of a newly incorporated company, within 18 months from the date of its incorporation or not later than six months after the end of its first accounting period, whichever is earlier",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s11(3)-(6)": "accurate"
+   }
+  },
+  "N10:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 N10:claim:2. NTAA Section 11(5) opening words.",
+   "support": "Subject to this Act, any tax law or regulation, the time of filing returns shall be",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s11(3)-(6)": "accurate"
+   }
+  },
+  "N10:claim:3": {
+   "verdict": "supported",
+   "reason": "NTAA Section 11(5)(a).",
+   "support": "(a) in the case of a company that has been in business for more than 18 months, not more than six months after the end of its accounting year",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s11(3)-(6)": "accurate"
+   }
+  },
+  "N10:claim:4": {
+   "verdict": "supported",
+   "reason": "NTAA Section 11(1).",
+   "support": "Every company, including a company granted exemption from incorporation, whether or not it is liable to pay tax under Nigeria Tax Act, 2025 or any other tax law, for a year of assessment, with or without notice from the Service, shall file a self-assessment return with the Service in the prescribed form at least once a year",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s11(1)-(2)": "accurate"
+   }
+  },
+  "Q006:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 20(1) opening words.",
+   "support": "Except where the provisions of section 18 of this Act or Part IX of Chapter Two apply, for the purposes of ascertaining the profits or loss from any trade, business, profession or vocation under this Act, there shall be deducted all expenses for that period wholly and exclusively incurred in the production of the income",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   }
+  },
+  "Q006:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 20(1)(c)(i).",
+   "support": "(c) any outlay or expenses incurred in respect of - (i) salary, wages or other remuneration paid to employees",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   }
+  },
+  "Q006:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 20(1)(c)(ii); 'also' is framing.",
+   "support": "(ii) cost to the company of any benefit or allowance provided to its employees",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   }
+  },
+  "Q006:claim:4": {
+   "verdict": "supported",
+   "reason": "Section 21(c).",
+   "support": "(c) domestic or private expense, or expenditure on assets not used for the purpose of trade, business, profession or vocation",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s21(a)-(o)": "accurate"
+   }
+  },
+  "Q006:claim:5": {
+   "verdict": "supported",
+   "reason": "Section 21(i).",
+   "support": "(i) any payment to a connected person that is not consistent with the Transfer Pricing Regulations issued by the Service",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s21(a)-(o)": "accurate"
+   }
+  },
+  "Q006:claim:6": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q006:claim:7. Section 20(4).",
+   "support": "an expense incurred in a currency other than the Naira may only be deducted to the extent of its Naira equivalent at the official exchange rate published by the Central Bank of Nigeria for the relevant date or period.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(2)-(4)": "accurate"
+   }
+  },
+  "N15:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 148.",
+   "support": "Subject to the provisions of Part IV of Chapter Eight of this Act, VAT shall be charged on the value of all taxable supplies at the rate of 7.5%.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s148": "accurate"
+   }
+  },
+  "N15:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 149(1)(a).",
+   "support": "(a) for a money consideration, its value shall be the amount which with the addition of the VAT chargeable is equal to the consideration",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s149": "accurate"
+   }
+  },
+  "Q033:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q033:claim:1. NTAA Section 9(1).",
+   "support": "Every taxable person shall, within 30 days of the occurrence of a change in its particulars, notify the relevant tax authority of the change.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s9": "accurate"
+   }
+  },
+  "Q033:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q033:claim:2. NTAA Section 9(2)(a).",
+   "support": "The change referred to in subsection (1) includes- (a) name, including trading name, location of business, telephone numbers or e-mail address and registered address",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s9": "accurate"
+   }
+  },
+  "Q001:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 56 opening words and paragraph (b).",
+   "support": "Tax shall be levied, for each year of assessment in respect of total profits of every company, in the case of ... (b) any other company, at the rate of 30 per cent from the commencement of this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s56": "accurate"
+   }
+  },
+  "Q001:claim:2": {
+   "verdict": "supported",
+   "reason": "Section 56(a) states the 0% rate; the Section 202 small company definition states the test and proviso. Each cited chunk states a part and contradicts none.",
+   "support": "nta2025:s56: (a) a small company, at 0% | nta2025:s202:def:small-company: \"small company\" means a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000, provided that any business providing professional services shall not be classified as a small company",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s56": "accurate",
+    "nta2025:s202:def:small-company": "accurate"
+   }
+  },
+  "Q001:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 57(1) and (2).",
+   "support": "where, in any year of assessment, the effective tax rate of a company is less than 15%, such company shall recompute and pay an additional tax that makes its effective tax rate equal to 15%. (2) The provisions of this section shall apply to - (a) a company that is a constituent entity of an MNE group; and (b) any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s57": "accurate"
+   }
+  },
+  "Q040:claim:1": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q040:claim:1. NTAA Section 41(6).",
+   "support": "The relevant tax authority shall respond to the objection notice within 90 days, otherwise the objection of the taxpayer shall be upheld.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(5)-(8)": "accurate"
+   }
+  },
+  "Q040:claim:2": {
+   "verdict": "supported",
+   "reason": "NTAA Section 41(2)(a) and (b).",
+   "support": "An application under subsection (1) shall only be valid if it - (a) is delivered to the relevant tax authority within 30 days from the date of service of the disputed notice of assessment ; and (b) contains the grounds of objection to the assessment",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   }
+  },
+  "Q040:claim:3": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q040:claim:3. NTAA Section 41(3); the application referred to in subsection (1) is the objection.",
+   "support": "the relevant tax authority may, for any satisfactory and good cause shown, extend the time for making the application referred to in subsection (1) to such reasonable time in the particular circumstances.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   }
+  },
+  "Q040:claim:4": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q040:claim:4. NTAA Section 49(3); leaving out 'or appeal' does not change the claim.",
+   "support": "Subject to the provisions of section 11 of this Act, collection of tax in any case where notice of an objection or appeal has been given by the taxable person shall remain in abeyance until such objection or appeal is determined, provided that the taxable person shall pay the tax which is not the subject of an objection or appeal.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s49(1)-(6)": "accurate"
+   }
+  },
+  "Q040:claim:5": {
+   "verdict": "supported",
+   "reason": "NTAA Section 41(7).",
+   "support": "Where the relevant tax authority considers the notice of objection submitted by the taxable person as invalid or where the taxable person and the relevant tax authority do not agree as to the amount of tax to be assessed, the taxpayer may exercise the right of appeal.",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(5)-(8)": "accurate"
+   }
+  },
+  "Q023:claim:1": {
+   "verdict": "supported",
+   "reason": "Section 165(1); 'despite section 20' reads 'notwithstanding anything contained in section 20'.",
+   "support": "Notwithstanding anything contained in section 20 of this Act, for the purpose of ascertaining the profit or loss of any company for any period from any source chargeable with tax under Chapter Two of this Act, there shall be deducted the amount incurred in that period by that company for research and development.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s165": "accurate"
+   }
+  },
+  "Q023:claim:2": {
+   "verdict": "supported",
+   "reason": "Same as run 1 Q023:claim:2. Section 165(2).",
+   "support": "The deduction to be allowed to a company under subsection (1) for any year of assessment shall not exceed an amount which is equal to 5% of the turnover for that year.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s165": "accurate"
+   }
+  },
+  "Q023:claim:3": {
+   "verdict": "supported",
+   "reason": "Section 165(3).",
+   "support": "Where a company to which this section applies subsequently sells or transfers the outcome of the research and development to another person for exploitation or commercialisation, the proceeds of such sale or transfer shall be taxed under Chapter Two of this Act.",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s165": "accurate"
+   }
+  }
+ },
+ "gaps": {
+  "Q031:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q031:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not contain; not law."
+  },
+  "Q031:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q002:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question and passages do not say; not law."
+  },
+  "Q002:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says figures are not provided; not law."
+  },
+  "Q008:gap:1": {
+   "states_law": true,
+   "verdict": "supported",
+   "reason": "The second sentence states law in general terms. Shown P4, Section 186(1), exempts listed supplies from VAT, and shown P2, Section 187, charges listed taxable supplies at 0%, so they are treated differently from supplies on which VAT is due."
+  },
+  "Q008:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question and passages do not say; not law."
+  },
+  "Q008:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "Q028:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q028:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q028:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N02:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N02:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N02:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says facts are not given; not law."
+  },
+  "N02:gap:4": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "N02:gap:5": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q022:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q022:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says a calculation is not done; not law."
+  },
+  "Q013:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Same as run 1 Q013:gap:1. States what the passages do not say about the reader's business; not law."
+  },
+  "N18:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "N18:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N18:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says interest is not calculated; not law."
+  },
+  "Q036:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q032:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Describes what the table prints (no products), like a 'passages do not state' gap; not law."
+  },
+  "Q032:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "N01:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N01:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "N04:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N04:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not give; not law."
+  },
+  "N04:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says figures are not given; not law."
+  },
+  "Q024:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say about the company; not law."
+  },
+  "Q024:gap:2": {
+   "states_law": true,
+   "verdict": "supported",
+   "reason": "The first sentence states law: shown P2, NTAA Section 147 'small business' (₦100,000,000 turnover, fixed assets less than ₦250,000,000), has different limits from shown P1 'small company'. The second sentence is about the passages."
+  },
+  "N03:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N03:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says facts are not given; not law."
+  },
+  "Q046:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q017:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question does not say; not law."
+  },
+  "Q017:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question does not say; not law."
+  },
+  "Q017:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N12:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N12:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says figures are not given; not law."
+  },
+  "N12:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q005:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not give; not law."
+  },
+  "Q005:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q005:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q011:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question does not say; not law."
+  },
+  "Q011:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "Q011:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says a calculation is not done; not law."
+  },
+  "Q037:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q037:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not define; not law."
+  },
+  "N13:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N13:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N13:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N09:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N09:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N09:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q042:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "Q042:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says facts are not given; not law."
+  },
+  "Q042:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what is not among the passages; not law."
+  },
+  "Q016:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question and passages do not say; not law."
+  },
+  "Q016:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what is not among the passages; not law."
+  },
+  "Q020:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q020:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q020:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what is not among the passages; not law."
+  },
+  "Q048:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "Q048:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages (pointer, as in N02:gap:3); not law."
+  },
+  "Q048:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "N20:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N20:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says interest is left aside as asked; not law."
+  },
+  "N17:gap:1": {
+   "states_law": true,
+   "verdict": "supported",
+   "reason": "As run 1 N17:gap:1: mostly about the tool not calculating, but its last sentence states how the levy is found (4% rate applied to assessable profits); shown passage P1, Section 59(1), states it."
+  },
+  "N17:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N16:gap:1": {
+   "states_law": true,
+   "verdict": "supported",
+   "reason": "States law: whether the Section 57 top-up applies turns on aggregate turnover (Section 57(2)(b)) and covered tax paid (the effective tax rate in Section 57(4)); shown passage P3, Section 57, states both. Not exclusive, so leaving out profits is not a failure. The rest is about the question."
+  },
+  "Q012:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question does not say; not law."
+  },
+  "N08:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Same as run 1 N08:gap:1. States what the passages do not contain; not law."
+  },
+  "N08:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Same as run 1 N08:gap:2. States which sections are not among the passages; not law."
+  },
+  "N08:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says figures are not given and no calculation was done; not law."
+  },
+  "N07:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N07:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what is not among the passages; not law."
+  },
+  "N11:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q009:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says a comparison is not done; not law."
+  },
+  "Q009:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question does not say; not law."
+  },
+  "Q009:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question does not say; not law."
+  },
+  "Q009:gap:4": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question does not say; not law."
+  },
+  "Q009:gap:5": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Same as run 1 Q009:gap:3. States which provisions are not among the passages (the cross-reference is a pointer, as in N02:gap:3); not law."
+  },
+  "Q045:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States a link the passages do not make; not law."
+  },
+  "Q045:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says a calculation is not done; not law."
+  },
+  "Q027:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N19:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q021:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N06:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "N10:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question does not give; not law."
+  },
+  "N10:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says a calculation is not done; not law."
+  },
+  "N10:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "Q006:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Same as run 1 Q006:gap:1. States which provisions are not among the passages; not law."
+  },
+  "Q006:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says facts are not settled by the passages; not law."
+  },
+  "Q006:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Describes the passage (the list continues after paragraph (o)); not law."
+  },
+  "N15:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "N15:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q033:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Same as run 1 Q033:gap:1. States what the passages do not say; not law."
+  },
+  "Q033:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q040:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States which provisions are not among the passages; not law."
+  },
+  "Q040:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q040:gap:3": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the question does not say; not law."
+  },
+  "Q023:gap:1": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "States what the passages do not say; not law."
+  },
+  "Q023:gap:2": {
+   "states_law": false,
+   "verdict": null,
+   "reason": "Says figures and a calculation are not provided; not law."
+  }
+ },
+ "computations": {
+  "N18:calc:C1": {
+   "figure_correct": true,
+   "reason": "Same as run 1 N18:calc:C1. ₦3,400,000 x 10% = ₦340,000, equal to the label figure 340000.00; checks K1 to K6 passed; NTAA Section 65(1)(a) states the 10%.",
+   "rate_citations": {
+    "ntaa2025:s65": "accurate"
+   }
+  },
+  "N20:calc:C1": {
+   "figure_correct": true,
+   "reason": "Same as run 1 N20:calc:C1. ₦200,000 + ₦90,000 x 100% = ₦290,000, equal to the label figure 290000.00; checks K1 to K6 passed; NTAA Section 104 states both parts of the penalty.",
+   "rate_citations": {
+    "ntaa2025:s104": "accurate"
+   }
+  },
+  "N16:calc:C1": {
+   "figure_correct": true,
+   "reason": "Same as run 1 N16:calc:C1. Turnover ₦320,000,000 is above ₦50,000,000, so not a small company; ₦45,000,000 x 30% = ₦13,500,000, equal to the label figure 13500000.00; checks K1 to K6 passed. The small company definition states the test and Section 56(b) the 30%.",
+   "rate_citations": {
+    "nta2025:s202:def:small-company": "accurate",
+    "nta2025:s56": "accurate"
+   }
+  },
+  "N19:calc:C1": {
+   "figure_correct": true,
+   "reason": "Same as run 1 N19:calc:C1. ₦100,000 + 4 x ₦50,000 = ₦300,000, equal to the label figure 300000.00; checks K1 to K6 passed; NTAA Section 101 states both amounts.",
+   "rate_citations": {
+    "ntaa2025:s101": "accurate"
+   }
+  },
+  "N15:calc:C1": {
+   "figure_correct": true,
+   "reason": "Same as run 1 N15:calc:C1. ₦860,000 x 7.5 / 107.5 = ₦60,000, equal to the label figure 60000.00; checks K1 to K6 passed. Section 148 states the 7.5% rate and Section 149(1)(a) the VAT-exclusive value.",
+   "rate_citations": {
+    "nta2025:s148": "accurate",
+    "nta2025:s149": "accurate"
+   }
+  }
+ },
+ "adjudications": {},
+ "answers": {
+  "Q031": {
+   "key_points_stated": [
+    1,
+    2,
+    3
+   ],
+   "key_points_total": 3,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 5, KP2 by claim 3, KP3 by claim 6. The 7.5% rate (claim 2) is stated generally, not as settled for petrol and gas; no start date given."
+  },
+  "Q002": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 2, KP2 by claim 1. Both limbs of Section 57(2) given, so not 'only MNE members'."
+  },
+  "Q008": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (carried)."
+  },
+  "Q028": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1, KP2 by claim 2 (carried). The branch is not said to count as an exported service."
+  },
+  "N02": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 3 (six years, deemed first day)."
+  },
+  "Q022": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (10% of profit before tax), KP2 by claims 1 and 2."
+  },
+  "Q013": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claims 2 to 9, KP2 by claim 1. Claim 10 (carried) says the invoice is issued whether or not payment is made."
+  },
+  "N14": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "Same claims and computed items as run 1. KP1 by claims 1 to 6."
+  },
+  "N18": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1, KP2 by computed item C1 (₦340,000, carried). No interest figure given."
+  },
+  "Q036": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 2 (not less than six years)."
+  },
+  "Q032": {
+   "key_points_stated": [],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": false,
+   "reason": "KP1 only in part (two of six activities: crops and livestock processing); KP2 (five years) not stated."
+  },
+  "N01": {
+   "key_points_stated": [
+    1,
+    2,
+    3
+   ],
+   "key_points_total": 3,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1, KP2 by claim 2 (both carried), KP3 by claim 4 (three years)."
+  },
+  "N04": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claims 1 and 2, KP2 by claim 3. Not the purchase price alone."
+  },
+  "Q024": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1, KP2 by claim 2 (both carried). The ₦100,000,000 figure is not given as the small company test."
+  },
+  "N03": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1, KP2 by claim 2 (carried). Not due at signing."
+  },
+  "Q046": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claims 1 to 3, KP2 by claim 4."
+  },
+  "Q017": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 2 (with conditions), KP2 by claim 3."
+  },
+  "N12": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "Same claims and computed items as run 1. KP1 by claim 1; the late-remittance penalty is not given as the answer."
+  },
+  "Q005": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (carried): each company's share taxed separately."
+  },
+  "Q011": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1, KP2 by claim 3. No time limit and no carry-back stated."
+  },
+  "Q037": {
+   "key_points_stated": [
+    1,
+    2,
+    3
+   ],
+   "key_points_total": 3,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 2, KP2 by claims 3 and 4, KP3 by claim 5 (2, 4 and 5 carried). The ₦50,000,000 limit is not used as the test."
+  },
+  "N13": {
+   "key_points_stated": [
+    1,
+    2,
+    3
+   ],
+   "key_points_total": 3,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 2, KP2 by claim 1, KP3 by claim 3. No 30-day VAT period."
+  },
+  "Q049": {
+   "key_points_stated": [
+    1,
+    2,
+    3
+   ],
+   "key_points_total": 3,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (two weeks), KP2 by claims 3 and 4, KP3 by claim 5."
+  },
+  "N09": {
+   "key_points_stated": [
+    1,
+    2,
+    3
+   ],
+   "key_points_total": 3,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "Same claims and computed items as run 1. KP1 by claim 1, KP2 by claim 2, KP3 by claim 3; the deregistration rule is not applied."
+  },
+  "Q038": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (carried), KP2 by claim 2."
+  },
+  "Q042": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 2, KP2 by claim 3. The only numeric rate given (SOFR plus 10%, claim 4) is stated in the text, so MUST_NOT1 is not met."
+  },
+  "Q016": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1, KP2 by claim 2."
+  },
+  "Q020": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "Same claims and computed items as run 1. KP1 by claim 1 (five years)."
+  },
+  "Q048": {
+   "key_points_stated": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "key_points_total": 5,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1, KP2 by claims 2, 3, 5 and 6, KP3 by claims 7 and 8, KP4 by claim 13, KP5 by claims 15 and 16."
+  },
+  "N20": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "Same claims and computed items as run 1. KP1 by claim 1, KP2 by computed item C1 (₦290,000); no interest figure given."
+  },
+  "N17": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": false,
+   "reason": "KP1 by claim 1 (carried). KP2 (₦2,900,000) is not stated: no computed item is shown."
+  },
+  "N16": {
+   "key_points_stated": [
+    1,
+    2,
+    3
+   ],
+   "key_points_total": 3,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 3 with the small-company test in C1's working, KP2 by claim 2, KP3 by C1 (₦13,500,000, carried). 0% not applied; no levy added."
+  },
+  "Q012": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (carried; whichever occurs first)."
+  },
+  "N08": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 2 (instalments paid, interest excluded), KP2 by claims 3 and 4."
+  },
+  "N07": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (carried; crypto assets and NFTs included)."
+  },
+  "N11": {
+   "key_points_stated": [
+    1,
+    2,
+    4
+   ],
+   "key_points_total": 4,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": false,
+   "reason": "KP1 by claim 1, KP2 by claim 2, KP4 by claim 6. KP3 only in part: grounds (ii) to (v) are stated, but ground (i), the disputed issues with their monetary values, is not."
+  },
+  "Q009": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": false,
+   "reason": "KP1 by claim 1. KP2 not stated: gap 1 says the comparison with the ₦80 million and ₦5 million figures is not done."
+  },
+  "Q045": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "Same claims and computed items as run 1. KP1 by claims 1 to 3 (amount, 10% a year, CBN monetary policy rate interest); no 40% penalty stated."
+  },
+  "Q027": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "Same claims and computed items as run 1. KP1 by claim 1."
+  },
+  "N19": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "Same claims and computed items as run 1. KP1 by claims 2 and 3, KP2 by computed item C1 (₦300,000); no ₦50,000/₦25,000 registration amounts; ₦100,000 not charged every month."
+  },
+  "Q021": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (exempt except trade or business profits); trading profits not said to be exempt."
+  },
+  "N06": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claims 1 and 2 (interest and rents included), KP2 by claim 3 (carried)."
+  },
+  "N10": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (carried). The more-than-18-months rule (claim 3) is given alongside it, not as the only rule."
+  },
+  "Q006": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claims 1 and 2 (salaries deductible as expenses wholly and exclusively incurred)."
+  },
+  "N15": {
+   "key_points_stated": [
+    1,
+    2,
+    3
+   ],
+   "key_points_total": 3,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "As run 1: KP1 by claim 1, KP2 by claim 2 applied in C1's working (x 7.5 / 107.5); the ₦800,000 value itself is not written out, counted as stated in substance. KP3 by C1 (₦60,000, carried). ₦64,500 not given."
+  },
+  "Q033": {
+   "key_points_stated": [
+    1,
+    2
+   ],
+   "key_points_total": 2,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "Same claims and computed items as run 1. KP1 by claim 1 (30 days), KP2 by claim 2."
+  },
+  "Q001": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (30% of total profits); no other rate and no medium-company rate stated."
+  },
+  "Q040": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 1 (carried; 90 days, else upheld). Appeal (claim 5) is tied to invalidity or disagreement, not to the missing reply, so MUST_NOT1 is not stated."
+  },
+  "Q023": {
+   "key_points_stated": [
+    1
+   ],
+   "key_points_total": 1,
+   "must_not_stated": [],
+   "omitted_proviso": false,
+   "answer_correct": true,
+   "reason": "KP1 by claim 2 (carried; 5% of turnover)."
+  }
+ }
+}

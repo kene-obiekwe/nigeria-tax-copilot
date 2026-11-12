@@ -1,0 +1,2458 @@
+{
+ "run": 2,
+ "reviewer": null,
+ "claims": {
+  "Q031:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s145": null
+   }
+  },
+  "Q031:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s148": null
+   }
+  },
+  "Q031:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s186": null
+   }
+  },
+  "Q031:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch11": null
+   }
+  },
+  "Q031:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch11": null
+   }
+  },
+  "Q031:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch11": null
+   }
+  },
+  "Q031:claim:7": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch11": null
+   }
+  },
+  "Q002:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s57": null
+   }
+  },
+  "Q002:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s57": null
+   }
+  },
+  "Q002:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s57": null
+   }
+  },
+  "Q002:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s57": null
+   }
+  },
+  "Q002:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:aggregate-covered-tax-paid": null
+   }
+  },
+  "Q002:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:minimum-effective-tax-rate": null
+   }
+  },
+  "Q008:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s21(p)": null
+   }
+  },
+  "Q008:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s155": null
+   }
+  },
+  "Q008:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s155": null
+   }
+  },
+  "Q028:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:exported-service": null
+   }
+  },
+  "Q028:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:exported-service": null
+   }
+  },
+  "N02:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(a)-(h)": null
+   }
+  },
+  "N02:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(i)-(m)": null
+   }
+  },
+  "N02:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(i)-(m)": null
+   }
+  },
+  "N02:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(a)-(h)": null
+   }
+  },
+  "N02:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(i)-(m)": null
+   }
+  },
+  "N02:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s165": null
+   }
+  },
+  "Q022:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s164": null
+   }
+  },
+  "Q022:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s164": null
+   }
+  },
+  "Q022:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s164": null
+   }
+  },
+  "Q022:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s164": null
+   }
+  },
+  "Q013:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q013:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q013:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q013:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q013:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q013:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q013:claim:7": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q013:claim:8": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q013:claim:9": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q013:claim:10": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q013:claim:11": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "N14:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": null
+   }
+  },
+  "N14:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": null
+   }
+  },
+  "N14:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": null
+   }
+  },
+  "N14:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": null
+   }
+  },
+  "N14:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": null
+   }
+  },
+  "N14:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s74": null
+   }
+  },
+  "N14:claim:7": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:relevant-tax-authority": null
+   }
+  },
+  "N18:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": null
+   }
+  },
+  "N18:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": null
+   }
+  },
+  "N18:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": null
+   }
+  },
+  "N18:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:tax": null
+   }
+  },
+  "Q036:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s31": null
+   }
+  },
+  "Q036:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s31": null
+   }
+  },
+  "Q036:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s102": null
+   }
+  },
+  "Q032:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch13:table1": null
+   }
+  },
+  "Q032:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch13:table1": null
+   }
+  },
+  "N01:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s10(1)-(6)": null
+   }
+  },
+  "N01:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s10(1)-(6)": null
+   }
+  },
+  "N01:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s10(1)-(6)": null
+   }
+  },
+  "N01:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s10(1)-(6)": null
+   }
+  },
+  "N01:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s10(7)": null
+   }
+  },
+  "N04:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s150": null
+   }
+  },
+  "N04:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s150": null
+   }
+  },
+  "N04:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s150": null
+   }
+  },
+  "N04:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:import": null
+   }
+  },
+  "N04:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s156": null
+   }
+  },
+  "Q024:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:small-company": null
+   }
+  },
+  "Q024:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:small-company": null
+   }
+  },
+  "Q024:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": null
+   }
+  },
+  "N03:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(3)": null
+   }
+  },
+  "N03:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(3)": null
+   }
+  },
+  "N03:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": null
+   }
+  },
+  "N03:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:supply-of-goods": null
+   }
+  },
+  "N03:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q046:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s23": null
+   }
+  },
+  "Q046:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s23": null
+   }
+  },
+  "Q046:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s23": null
+   }
+  },
+  "Q046:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s23": null
+   }
+  },
+  "Q046:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:relevant-tax-authority": null
+   }
+  },
+  "Q046:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:income-tax": null
+   }
+  },
+  "Q017:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": null
+   }
+  },
+  "Q017:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": null
+   }
+  },
+  "Q017:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s157": null
+   }
+  },
+  "Q017:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": null
+   }
+  },
+  "N12:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s105": null
+   }
+  },
+  "N12:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:tax": null
+   }
+  },
+  "Q005:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s11": null
+   }
+  },
+  "Q005:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s11": null
+   }
+  },
+  "Q005:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s11": null
+   }
+  },
+  "Q011:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": null
+   }
+  },
+  "Q011:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": null
+   }
+  },
+  "Q011:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": null
+   }
+  },
+  "Q011:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": null
+   }
+  },
+  "Q011:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": null
+   }
+  },
+  "Q011:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(1)-(4)": null
+   }
+  },
+  "Q037:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": null
+   }
+  },
+  "Q037:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": null
+   }
+  },
+  "Q037:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:small-business": null
+   }
+  },
+  "Q037:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:small-business": null
+   }
+  },
+  "Q037:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": null
+   }
+  },
+  "Q037:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": null
+   }
+  },
+  "Q037:claim:7": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": null
+   }
+  },
+  "Q037:claim:8": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s22(1)-(10)": null
+   }
+  },
+  "N13:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s55": null
+   }
+  },
+  "N13:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s55": null
+   }
+  },
+  "N13:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s55": null
+   }
+  },
+  "N13:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s55": null
+   }
+  },
+  "N13:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s121": null
+   }
+  },
+  "Q049:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s72": null
+   }
+  },
+  "Q049:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:relevant-tax-authority": null
+   }
+  },
+  "Q049:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s72": null
+   }
+  },
+  "Q049:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s72": null
+   }
+  },
+  "Q049:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s72": null
+   }
+  },
+  "Q049:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s72": null
+   }
+  },
+  "N09:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s10": null
+   }
+  },
+  "N09:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s10": null
+   }
+  },
+  "N09:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s10": null
+   }
+  },
+  "N09:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s7": null
+   }
+  },
+  "N09:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s7": null
+   }
+  },
+  "Q038:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s35": null
+   }
+  },
+  "Q038:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s35": null
+   }
+  },
+  "Q038:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s35": null
+   }
+  },
+  "Q038:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s101": null
+   }
+  },
+  "Q038:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s66": null
+   }
+  },
+  "Q038:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s34": null
+   }
+  },
+  "Q042:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s49(1)-(6)": null
+   }
+  },
+  "Q042:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": null
+   }
+  },
+  "Q042:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": null
+   }
+  },
+  "Q042:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": null
+   }
+  },
+  "Q042:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": null
+   }
+  },
+  "Q042:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": null
+   }
+  },
+  "Q042:claim:7": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s49(1)-(6)": null
+   }
+  },
+  "Q042:claim:8": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s107": null
+   }
+  },
+  "Q042:claim:9": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s65": null
+   }
+  },
+  "Q016:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s155": null
+   }
+  },
+  "Q016:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s155": null
+   }
+  },
+  "Q016:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s155": null
+   }
+  },
+  "Q016:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s186": null
+   }
+  },
+  "Q020:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s163(1)(m)-(v)": null,
+    "nta2025:s163(1)(a)-(c)": null
+   }
+  },
+  "Q020:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch13:table1": null
+   }
+  },
+  "Q048:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": null
+   }
+  },
+  "Q048:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": null
+   }
+  },
+  "Q048:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": null
+   }
+  },
+  "Q048:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": null
+   }
+  },
+  "Q048:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": null
+   }
+  },
+  "Q048:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(a)": null
+   }
+  },
+  "Q048:claim:7": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(b)-(c)": null
+   }
+  },
+  "Q048:claim:8": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(b)-(c)": null
+   }
+  },
+  "Q048:claim:9": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(b)-(c)": null
+   }
+  },
+  "Q048:claim:10": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(1)(b)-(c)": null
+   }
+  },
+  "Q048:claim:11": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": null
+   }
+  },
+  "Q048:claim:12": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": null
+   }
+  },
+  "Q048:claim:13": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": null
+   }
+  },
+  "Q048:claim:14": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": null
+   }
+  },
+  "Q048:claim:15": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": null
+   }
+  },
+  "Q048:claim:16": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s190(2)-(7)": null
+   }
+  },
+  "Q048:claim:17": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s157": null
+   }
+  },
+  "N20:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s104": null
+   }
+  },
+  "N20:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s158": null
+   }
+  },
+  "N17:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s59": null
+   }
+  },
+  "N17:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s59": null
+   }
+  },
+  "N17:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:small-company": null
+   }
+  },
+  "N17:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s59": null
+   }
+  },
+  "N16:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s56": null
+   }
+  },
+  "N16:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s56": null
+   }
+  },
+  "N16:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:small-company": null
+   }
+  },
+  "Q012:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": null
+   }
+  },
+  "Q012:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": null
+   }
+  },
+  "Q012:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": null
+   }
+  },
+  "Q012:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": null
+   }
+  },
+  "Q012:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(1)-(2)": null
+   }
+  },
+  "Q012:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(3)": null
+   }
+  },
+  "Q012:claim:7": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(3)": null
+   }
+  },
+  "Q012:claim:8": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s147(3)": null
+   }
+  },
+  "Q012:claim:9": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s153": null
+   }
+  },
+  "Q012:claim:10": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:invoice": null
+   }
+  },
+  "N08:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para2-3": null
+   }
+  },
+  "N08:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para2-3": null
+   }
+  },
+  "N08:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para2-3": null
+   }
+  },
+  "N08:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para15-17": null
+   }
+  },
+  "N08:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para2-3": null
+   }
+  },
+  "N08:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:hire-purchase": null
+   }
+  },
+  "N08:claim:7": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para15-17": null
+   }
+  },
+  "N08:claim:8": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:sch1:pt1:para15-17": null
+   }
+  },
+  "N07:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:digital-assets": null
+   }
+  },
+  "N07:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s34": null
+   }
+  },
+  "N07:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s27(5)-(6)": null
+   }
+  },
+  "N11:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": null
+   }
+  },
+  "N11:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": null
+   }
+  },
+  "N11:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": null
+   }
+  },
+  "N11:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": null
+   }
+  },
+  "N11:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": null
+   }
+  },
+  "N11:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": null
+   }
+  },
+  "Q009:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s34": null
+   }
+  },
+  "Q009:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s34": null
+   }
+  },
+  "Q009:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s47": null
+   }
+  },
+  "Q009:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:nigerian-company": null
+   }
+  },
+  "Q045:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s107": null
+   }
+  },
+  "Q045:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s107": null
+   }
+  },
+  "Q045:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s107": null
+   }
+  },
+  "Q045:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s107": null
+   }
+  },
+  "Q027:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:year-of-assessment": null
+   }
+  },
+  "Q027:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s147:def:calendar-year": null
+   }
+  },
+  "N19:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s101": null
+   }
+  },
+  "N19:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s101": null
+   }
+  },
+  "N19:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s101": null
+   }
+  },
+  "Q021:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s163(1)(a)-(c)": null
+   }
+  },
+  "Q021:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s55": null
+   }
+  },
+  "N06:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:gross-turnover": null
+   }
+  },
+  "N06:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:gross-turnover": null
+   }
+  },
+  "N06:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:gross-turnover": null
+   }
+  },
+  "N06:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s202:def:small-company": null
+   }
+  },
+  "N10:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s11(3)-(6)": null
+   }
+  },
+  "N10:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s11(3)-(6)": null
+   }
+  },
+  "N10:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s11(3)-(6)": null
+   }
+  },
+  "N10:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s11(1)-(2)": null
+   }
+  },
+  "Q006:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(a)-(h)": null
+   }
+  },
+  "Q006:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(a)-(h)": null
+   }
+  },
+  "Q006:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(1)(a)-(h)": null
+   }
+  },
+  "Q006:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s21(a)-(o)": null
+   }
+  },
+  "Q006:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s21(a)-(o)": null
+   }
+  },
+  "Q006:claim:6": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s20(2)-(4)": null
+   }
+  },
+  "N15:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s148": null
+   }
+  },
+  "N15:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s149": null
+   }
+  },
+  "Q033:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s9": null
+   }
+  },
+  "Q033:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s9": null
+   }
+  },
+  "Q001:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s56": null
+   }
+  },
+  "Q001:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s56": null,
+    "nta2025:s202:def:small-company": null
+   }
+  },
+  "Q001:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s57": null
+   }
+  },
+  "Q040:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(5)-(8)": null
+   }
+  },
+  "Q040:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": null
+   }
+  },
+  "Q040:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(1)-(4)": null
+   }
+  },
+  "Q040:claim:4": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s49(1)-(6)": null
+   }
+  },
+  "Q040:claim:5": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "ntaa2025:s41(5)-(8)": null
+   }
+  },
+  "Q023:claim:1": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s165": null
+   }
+  },
+  "Q023:claim:2": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s165": null
+   }
+  },
+  "Q023:claim:3": {
+   "verdict": null,
+   "reason": "",
+   "support_not_cited": false,
+   "citations": {
+    "nta2025:s165": null
+   }
+  }
+ },
+ "gaps": {
+  "Q031:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q031:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q031:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q002:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q002:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q008:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q008:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q008:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q028:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q028:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q028:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N02:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N02:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N02:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N02:gap:4": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N02:gap:5": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q022:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q022:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q013:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N18:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N18:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N18:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q036:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q032:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q032:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N01:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N01:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N04:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N04:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N04:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q024:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q024:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N03:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N03:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q046:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q017:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q017:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q017:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N12:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N12:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N12:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q005:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q005:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q005:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q011:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q011:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q011:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q037:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q037:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N13:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N13:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N13:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N09:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N09:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N09:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q042:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q042:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q042:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q016:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q016:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q020:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q020:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q020:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q048:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q048:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q048:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N20:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N20:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N17:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N17:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N16:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q012:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N08:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N08:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N08:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N07:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N07:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N11:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q009:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q009:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q009:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q009:gap:4": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q009:gap:5": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q045:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q045:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q027:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N19:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q021:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N06:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N10:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N10:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N10:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q006:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q006:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q006:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N15:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "N15:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q033:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q033:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q040:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q040:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q040:gap:3": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q023:gap:1": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  },
+  "Q023:gap:2": {
+   "states_law": null,
+   "verdict": null,
+   "reason": ""
+  }
+ },
+ "computations": {
+  "N18:calc:C1": {
+   "figure_correct": null,
+   "reason": "",
+   "rate_citations": {
+    "ntaa2025:s65": null
+   }
+  },
+  "N20:calc:C1": {
+   "figure_correct": null,
+   "reason": "",
+   "rate_citations": {
+    "ntaa2025:s104": null
+   }
+  },
+  "N16:calc:C1": {
+   "figure_correct": null,
+   "reason": "",
+   "rate_citations": {
+    "nta2025:s202:def:small-company": null,
+    "nta2025:s56": null
+   }
+  },
+  "N19:calc:C1": {
+   "figure_correct": null,
+   "reason": "",
+   "rate_citations": {
+    "ntaa2025:s101": null
+   }
+  },
+  "N15:calc:C1": {
+   "figure_correct": null,
+   "reason": "",
+   "rate_citations": {
+    "nta2025:s148": null,
+    "nta2025:s149": null
+   }
+  }
+ },
+ "adjudications": {}
+}
