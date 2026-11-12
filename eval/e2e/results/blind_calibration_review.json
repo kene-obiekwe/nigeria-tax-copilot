@@ -1,0 +1,981 @@
+{
+  "reviewer": "Phase 8 run session",
+  "method": ".agents/phase8_run/review_method.md",
+  "items": {
+    "BC-001": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 41(8) says a party dissatisfied with the High Court 'may' appeal to the Court of Appeal; the claim says it must. The Supreme Court part is correct.",
+      "support": ""
+    },
+    "BC-002": {
+      "verdict": "supported",
+      "reason": "NTAA Section 41(3); 'that time' is the time for making the objection, the only time the chunk lets the authority extend.",
+      "support": "the relevant tax authority may, for any satisfactory and good cause shown, extend the time for making the application referred to in subsection (1)"
+    },
+    "BC-003": {
+      "verdict": "supported",
+      "reason": "NTAA Section 36(2).",
+      "support": "The six-year limitation period stipulated in subsection (1) shall not preclude the relevant tax authority from continuing with a tax audit and for raising additional assessment where the tax audit commenced before the expiration of the six-year limit."
+    },
+    "BC-004": {
+      "verdict": "supported",
+      "reason": "Section 8(1) and (2).",
+      "support": "A company shall include dividend income in its profits, gross of any tax paid or deducted at source. (2) Dividends received by a Nigerian company by way of shares of the paying company shall not be included in its profits chargeable to tax under this Act"
+    },
+    "BC-005": {
+      "verdict": "supported",
+      "reason": "Paragraph (m) of the basic food items definition (citation label names the definition).",
+      "support": "(m) tubers (roots) of yam, cocoyam, potatoes, water-yam, cassava, whether in raw form, flakes or flour for human consumption;"
+    },
+    "BC-006": {
+      "verdict": "supported",
+      "reason": "The Section 202 definition of small company states both thresholds; the professional-services proviso is left out but nothing absolute is asserted.",
+      "support": "\"small company\" means a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000"
+    },
+    "BC-007": {
+      "verdict": "contradicted",
+      "reason": "Section 192(1)(b) says the company shall report the arrangement in the prescribed form and manner; the claim says it need not.",
+      "support": ""
+    },
+    "BC-008": {
+      "verdict": "supported",
+      "reason": "Section 192(1)(a); 'must' matches 'shall'.",
+      "support": "A company involved in an arrangement with a related party shall - (a) ensure that the terms and conditions for which the arrangement is carried out is at arm's length;"
+    },
+    "BC-009": {
+      "verdict": "supported",
+      "reason": "Section 191(1): disregard an artificial or fictitious disposition or transaction, or direct adjustments, and issue an assessment or additional assessment. The tax-reducing condition is left out but nothing absolute is asserted.",
+      "support": "it may disregard any such disposition or transaction, or direct that such adjustments be made with respect to liability to tax as it considers appropriate, to counteract the reduction of liability to tax and issue an assessment or additional assessment accordingly."
+    },
+    "BC-010": {
+      "verdict": "supported",
+      "reason": "Restates Section 151(3).",
+      "support": "The Service may, by notice, appoint any person, including a non-resident supplier of taxable supplies, to collect the VAT and remit it to the Service."
+    },
+    "BC-011": {
+      "verdict": "contradicted",
+      "reason": "Section 56(a) sets 0% for a small company, not 1%; the 30 per cent part is correct.",
+      "support": ""
+    },
+    "BC-012": {
+      "verdict": "supported",
+      "reason": "Section 155(4); 'under this section' is Section 155 per the context header.",
+      "support": "The VAT collected, withheld or self-accounted under this section shall be remitted to the Service on or before the 14th day of the month immediately following the month of the transaction or as may be prescribed by the Service."
+    },
+    "BC-013": {
+      "verdict": "supported",
+      "reason": "First Schedule Part I paragraph 21(1).",
+      "support": "An allowance shall not be made to a person for a year of assessment unless it is claimed by the person for that year or where the relevant tax authority is of the opinion that it would be just to the taxpayer and reasonable to do so."
+    },
+    "BC-014": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 49(7) allows enforcement where there is no objection or appeal; the claim says where there is one.",
+      "support": ""
+    },
+    "BC-015": {
+      "verdict": "supported",
+      "reason": "Section 21(m).",
+      "support": "A deduction shall not be allowed ... (m) any tax or penalty borne on behalf of another person;"
+    },
+    "BC-016": {
+      "verdict": "supported",
+      "reason": "Section 56(a) and (b).",
+      "support": "Tax shall be levied, for each year of assessment in respect of total profits of every company, in the case of - (a) a small company, at 0%; and (b) any other company, at the rate of 30 per cent from the commencement of this Act."
+    },
+    "BC-017": {
+      "verdict": "supported",
+      "reason": "Section 57(1) and (2).",
+      "support": "where, in any year of assessment, the effective tax rate of a company is less than 15%, such company shall recompute and pay an additional tax that makes its effective tax rate equal to 15%. (2) The provisions of this section shall apply to - (a) a company that is a constituent entity of an MNE group; and (b) any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment."
+    },
+    "BC-018": {
+      "verdict": "unsupported",
+      "reason": "The cited chunk is First Schedule Part I paragraph 10 (value of an asset on disposal); it does not contain Table I, Class 3 or the 25% rate.",
+      "support": ""
+    },
+    "BC-019": {
+      "verdict": "supported",
+      "reason": "Section 9(1)(b): the charge also arises where total profits are less than the dividend declared, whether or not the recipient is a Nigerian company. 'The same' is the Section 9(1) charge.",
+      "support": "(b) total profits which are less than the amount of dividend which it declared, whether or not the recipient of the dividend is a Nigerian company, the company paying the dividend shall be charged to tax"
+    },
+    "BC-020": {
+      "verdict": "supported",
+      "reason": "The proviso in the Section 202 definition of small company.",
+      "support": "provided that any business providing professional services shall not be classified as a small company;"
+    },
+    "BC-021": {
+      "verdict": "supported",
+      "reason": "NTAA Section 49(4).",
+      "support": "Upon the determination of an objection or appeal, the relevant tax authority shall serve the taxable person, a notice of the tax payable as so determined, and that tax shall be payable within 30 days of the date of service of such notice."
+    },
+    "BC-022": {
+      "verdict": "unsupported",
+      "reason": "The cited chunk is NTAA Section 11(3) to (6) (final-tax non-residents, cessation, filing times, representatives); the small-company statement of accounts proviso is in Section 11(1)(b), which is not cited.",
+      "support": ""
+    },
+    "BC-023": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 36(1) says the relevant tax authority 'may' assess within six years; the claim says it must.",
+      "support": ""
+    },
+    "BC-024": {
+      "verdict": "supported",
+      "reason": "Section 9(2)(d); 'the rule' is the Section 9(1) charge.",
+      "support": "(2) The provisions of subsection (1) shall not apply to - ... (d) distributions made by a real estate investment company to its shareholders from rental income and dividend income received on behalf of those shareholders, whether such dividends are paid out of profits of the year in which the dividend is declared or out of profits of previous reporting periods."
+    },
+    "BC-025": {
+      "verdict": "contradicted",
+      "reason": "Section 155(3) requires the schedule to show the amount of the VAT, not excise duty.",
+      "support": ""
+    },
+    "BC-026": {
+      "verdict": "supported",
+      "reason": "Section 155(2). The claim leaves out 'to whom taxable supplies is made in Nigeria' but asserts nothing absolute and the omission does not change the power stated.",
+      "support": "The Service may direct a taxable person to whom taxable supplies is made in Nigeria and issued an invoice on which VAT is not included, to self-account for the VAT payable and remit it to the Service."
+    },
+    "BC-027": {
+      "verdict": "supported",
+      "reason": "Section 21 opening words and paragraph (l).",
+      "support": "A deduction shall not be allowed for the purposes of ascertaining the profits or income from any trade, business, profession or vocation in respect of ... (l) penalty or fine imposed under any law;"
+    },
+    "BC-028": {
+      "verdict": "supported",
+      "reason": "Section 192(1)(a).",
+      "support": "A company involved in an arrangement with a related party shall - (a) ensure that the terms and conditions for which the arrangement is carried out is at arm's length;"
+    },
+    "BC-029": {
+      "verdict": "partly_supported",
+      "reason": "The charge of VAT on all taxable supplies subject to the Part IV exemptions is stated in Section 145. That bottled drinking water sold by a shop is a taxable supply is not stated; it needs outside knowledge of what is taxable or exempt.",
+      "support": "Subject to the exemptions in Part IV of Chapter Eight of this Act, VAT shall be paid on all taxable supplies in Nigeria."
+    },
+    "BC-030": {
+      "verdict": "supported",
+      "reason": "Section 9(1)(a) and (b).",
+      "support": "Where a Nigerian company declares dividend out of profits on which no tax is payable due to - (a) there being no total profits, or (b) total profits which are less than the amount of dividend which it declared ... the company paying the dividend shall be charged to tax"
+    },
+    "BC-031": {
+      "verdict": "supported",
+      "reason": "First Schedule Part I paragraph 6, proviso (a).",
+      "support": "(a) there shall be recorded in the capital allowance computation schedule for statistical purposes 1% of qualifying capital expenditure until the asset is disposed which being a notional amount, shall not increase or reduce the amount of capital allowance claimable;"
+    },
+    "BC-032": {
+      "verdict": "supported",
+      "reason": "Restates Section 155(4).",
+      "support": "The VAT collected, withheld or self-accounted under this section shall be remitted to the Service on or before the 14th day of the month immediately following the month of the transaction or as may be prescribed by the Service."
+    },
+    "BC-033": {
+      "verdict": "supported",
+      "reason": "NTAA Section 11(1): the return of every company shall contain items (a) to (e); the small-company proviso replaces only the audited financial statements in (b), so the other items remain.",
+      "support": "such return shall contain - (a) a duly completed self-assessment form as may be prescribed by the Service ; ... Provided that the return of a small company may contain a statement of accounts attested to by the taxpayer in place of audited financial statements ; (c) evidence of payment of the tax due ; (d) computation of the effective tax rate and additional tax payable, where applicable ; and (e) an attestation of the information contained in the tax returns signed by a principal officer of the company."
+    },
+    "BC-034": {
+      "verdict": "supported",
+      "reason": "NTAA Section 49(4).",
+      "support": "Upon the determination of an objection or appeal, the relevant tax authority shall serve the taxable person, a notice of the tax payable as so determined, and that tax shall be payable within 30 days of the date of service of such notice."
+    },
+    "BC-035": {
+      "verdict": "supported",
+      "reason": "NTAA Section 49(3): the abeyance rule is subject to section 11 and its proviso keeps the undisputed tax payable; 'this rule' resolves to subsection (3), the only one with both parts.",
+      "support": "Subject to the provisions of section 11 of this Act, collection of tax in any case where notice of an objection or appeal has been given by the taxable person shall remain in abeyance until such objection or appeal is determined, provided that the taxable person shall pay the tax which is not the subject of an objection or appeal."
+    },
+    "BC-036": {
+      "verdict": "supported",
+      "reason": "Section 202 definition of small company.",
+      "support": "\"small company\" means a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000"
+    },
+    "BC-037": {
+      "verdict": "supported",
+      "reason": "Section 9(2)(c).",
+      "support": "The provisions of subsection (1) shall not apply to - ... (c) franked investment income as provided in this Act;"
+    },
+    "BC-038": {
+      "verdict": "supported",
+      "reason": "NTAA Section 49(2).",
+      "support": "Tax charged by any assessment which is not or has not been the subject of an objection or appeal shall be payable ... within 30 days of service of such notice upon the taxable person, provided that the relevant tax authority, in its discretion, may extend the time within which payment is to be made."
+    },
+    "BC-039": {
+      "verdict": "contradicted",
+      "reason": "Section 192(3) says the relevant tax authority 'may' make rules or regulations; the claim makes it a duty.",
+      "support": ""
+    },
+    "BC-040": {
+      "verdict": "partly_supported",
+      "reason": "The no-withholding rule and its exception are Section 151(4). That this includes services supplied by ride-hailing drivers is not stated anywhere in the chunk.",
+      "support": "Where a person appointed under subsection (3) has made a taxable supply to a taxable person in Nigeria, the taxable person shall not have the obligation to withhold the VAT, except where the person appointed has failed to collect the VAT."
+    },
+    "BC-041": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 41(7) says the taxpayer 'may' exercise the right of appeal; the claim says must.",
+      "support": ""
+    },
+    "BC-042": {
+      "verdict": "supported",
+      "reason": "Paragraph 7 sets ownership and use at the end of the basis period as the conditions for the allowance, under the heading 'Asset to be in use at end of basis period', and paragraph 8(2) says the allowance shall only be made for an asset in use then. 'Company' fits the Part I heading.",
+      "support": "A capital allowance in respect of qualifying expenditure incurred in respect of an asset shall be made to a person for a year of assessment if at the end of a basis period, the person - (a) is the owner of the asset; and (b) used the asset for the purposes of its trade or business. ... capital allowance shall only be made for an asset that is in use for the purpose of the trade or business at the end of the basis period"
+    },
+    "BC-043": {
+      "verdict": "supported",
+      "reason": "Section 192(1)(b).",
+      "support": "(b) report the arrangement in the form and manner prescribed by the relevant tax authority."
+    },
+    "BC-044": {
+      "verdict": "supported",
+      "reason": "NTAA Section 36(2).",
+      "support": "The six-year limitation period stipulated in subsection (1) shall not preclude the relevant tax authority from continuing with a tax audit and for raising additional assessment where the tax audit commenced before the expiration of the six-year limit."
+    },
+    "BC-045": {
+      "verdict": "supported",
+      "reason": "NTAA Section 11(1)(b), proviso.",
+      "support": "Provided that the return of a small company may contain a statement of accounts attested to by the taxpayer in place of audited financial statements"
+    },
+    "BC-046": {
+      "verdict": "contradicted",
+      "reason": "Section 192(2) says the authority 'may' effect adjustments; the claim says it must.",
+      "support": ""
+    },
+    "BC-047": {
+      "verdict": "supported",
+      "reason": "NTAA Section 36(5).",
+      "support": "All relevant facts shall be considered in the computation of the amount or additional amount of tax that should have been charged under subsection (1), even where such facts were not known when a prior assessment or additional assessment was made for the taxable person in the same year."
+    },
+    "BC-048": {
+      "verdict": "contradicted",
+      "reason": "The deadline is Section 155(4), but Section 155 ('Collection of VAT by persons other than the supplier') covers persons who collect or withhold VAT on supplies made to them; a supermarket charging VAT to its customers is the supplier, so the second sentence conflicts with the cited text.",
+      "support": ""
+    },
+    "BC-049": {
+      "verdict": "supported",
+      "reason": "Section 187(a), with the paragraph 2 Thirteenth Schedule proviso.",
+      "support": "Subject to paragraph 2 of the Thirtenth Schedule to this Act, the following taxable supplies are charged to VAT at the rate of 0% - (a) basic food items;"
+    },
+    "BC-050": {
+      "verdict": "partly_supported",
+      "reason": "The no-withholding rule and its exception are Section 151(4). That a foreign streaming service selling subscriptions is an appointed person is not stated; appointment is by notice of the Service under subsection (3) and no appointee is named.",
+      "support": "Where a person appointed under subsection (3) has made a taxable supply to a taxable person in Nigeria, the taxable person shall not have the obligation to withhold the VAT, except where the person appointed has failed to collect the VAT."
+    },
+    "BC-051": {
+      "verdict": "supported",
+      "reason": "Follows directly from the proviso: meeting the turnover test does not make a professional-services business a small company.",
+      "support": "provided that any business providing professional services shall not be classified as a small company;"
+    },
+    "BC-052": {
+      "verdict": "supported",
+      "reason": "NTAA Section 49(3).",
+      "support": "collection of tax in any case where notice of an objection or appeal has been given by the taxable person shall remain in abeyance until such objection or appeal is determined"
+    },
+    "BC-053": {
+      "verdict": "supported",
+      "reason": "Section 192(1)(b).",
+      "support": "(b) report the arrangement in the form and manner prescribed by the relevant tax authority."
+    },
+    "BC-054": {
+      "verdict": "contradicted",
+      "reason": "Section 151(6) says the non-resident person 'may' appoint a representative; the claim makes it mandatory.",
+      "support": ""
+    },
+    "BC-055": {
+      "verdict": "contradicted",
+      "reason": "The definition sets the turnover limit at ₦50,000,000, not ₦150,000,000.",
+      "support": ""
+    },
+    "BC-056": {
+      "verdict": "contradicted",
+      "reason": "Section 151(1) requires VAT on the invoice, not excise duty.",
+      "support": ""
+    },
+    "BC-057": {
+      "verdict": "unsupported",
+      "reason": "The cited Section 7 defines Nigerian dividends and when dividend income arises; it says nothing about distributions by a real estate investment company or any rule not applying to them.",
+      "support": ""
+    },
+    "BC-058": {
+      "verdict": "supported",
+      "reason": "Section 192(4)(b).",
+      "support": "\"arm's length terms and conditions\" means such terms and conditions obtainable if the transaction or arrangement was between unrelated parties dealing in comparative circumstances."
+    },
+    "BC-059": {
+      "verdict": "supported",
+      "reason": "Section 20(1) states the wholly and exclusively rule; Section 21 lists deductions not allowed and paragraph (l) covers a fine.",
+      "support": "nta2025:s20(1)(a)-(h): there shall be deducted all expenses for that period wholly and exclusively incurred in the production of the income | nta2025:s21(a)-(o): A deduction shall not be allowed ... (l) penalty or fine imposed under any law;"
+    },
+    "BC-060": {
+      "verdict": "contradicted",
+      "reason": "The definition says a professional-services business is not a small company, not a 'small individual'; the claim misstates the term the conclusion rests on.",
+      "support": ""
+    },
+    "BC-061": {
+      "verdict": "supported",
+      "reason": "Section 9(1): the words 'whether or not the recipient of the dividend is a Nigerian company' sit in paragraph (b), but paragraph (a) sets no recipient condition, so reading them over the whole charge does not change any outcome.",
+      "support": "whether or not the recipient of the dividend is a Nigerian company, the company paying the dividend shall be charged to tax"
+    },
+    "BC-062": {
+      "verdict": "supported",
+      "reason": "Section 202 definition of small company.",
+      "support": "\"small company\" means a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000"
+    },
+    "BC-063": {
+      "verdict": "partly_supported",
+      "reason": "NTAA Section 49(7) allows enforcement where there is no objection or appeal. The 'only' (no enforcement where there is an objection) is not stated in the cited subsection.",
+      "support": "Where there is no objection or appeal, the relevant tax authority may proceed to enforce the recovery of the tax payable in accordance with the provisions of this Act."
+    },
+    "BC-064": {
+      "verdict": "supported",
+      "reason": "Section 148 sets 7.5% on the value of all taxable supplies, subject to Part IV of Chapter Eight; calling it the general rate follows from the 'subject to' wording.",
+      "support": "Subject to the provisions of Part IV of Chapter Eight of this Act, VAT shall be charged on the value of all taxable supplies at the rate of 7.5%."
+    },
+    "BC-065": {
+      "verdict": "supported",
+      "reason": "Restates Section 151(3).",
+      "support": "The Service may, by notice, appoint any person, including a non-resident supplier of taxable supplies, to collect the VAT and remit it to the Service."
+    },
+    "BC-066": {
+      "verdict": "supported",
+      "reason": "Section 9(2)(b).",
+      "support": "The provisions of subsection (1) shall not apply to - ... (b) dividends declared out of profits or gains that are exempt from income tax by this Act;"
+    },
+    "BC-067": {
+      "verdict": "supported",
+      "reason": "Section 187(a), with the paragraph 2 Thirteenth Schedule proviso.",
+      "support": "Subject to paragraph 2 of the Thirtenth Schedule to this Act, the following taxable supplies are charged to VAT at the rate of 0% - (a) basic food items;"
+    },
+    "BC-068": {
+      "verdict": "contradicted",
+      "reason": "Section 9(1) applies where a Nigerian company declares the dividend, not a Ghanaian company.",
+      "support": ""
+    },
+    "BC-069": {
+      "verdict": "supported",
+      "reason": "NTAA Section 36(1), in plain words.",
+      "support": "Where the relevant tax authority discovers or is of the opinion, at any time, that any taxable person liable to tax has not been assessed or has been assessed at an amount less than that which ought to have been charged, the relevant tax authority may, within six years of the assessment, assess the taxable person at such amount or additional amount, as ought to have been charged."
+    },
+    "BC-070": {
+      "verdict": "supported",
+      "reason": "The chunk is the whole of Section 186; its list of exempt supplies, paragraphs (a) to (o), names neither rice nor garri, and subsection (2) names no items.",
+      "support": "(1) The following supplies are exempt from the VAT imposed under Chapter Six of this Act ... (a) oil and gas exports; ... (o) Assistive devices and disability-related products including hearing aids, wheelchairs, and braille materials."
+    },
+    "BC-071": {
+      "verdict": "supported",
+      "reason": "NTAA Section 36(5).",
+      "support": "All relevant facts shall be considered in the computation of the amount or additional amount of tax that should have been charged under subsection (1), even where such facts were not known when a prior assessment or additional assessment was made for the taxable person in the same year."
+    },
+    "BC-072": {
+      "verdict": "supported",
+      "reason": "First Schedule Part I paragraph 7.",
+      "support": "A capital allowance in respect of qualifying expenditure incurred in respect of an asset shall be made to a person for a year of assessment if at the end of a basis period, the person - (a) is the owner of the asset; and (b) used the asset for the purposes of its trade or business."
+    },
+    "BC-073": {
+      "verdict": "supported",
+      "reason": "Section 8(1) and (2).",
+      "support": "A company shall include dividend income in its profits, gross of any tax paid or deducted at source. (2) Dividends received by a Nigerian company by way of shares of the paying company shall not be included in its profits chargeable to tax under this Act"
+    },
+    "BC-074": {
+      "verdict": "supported",
+      "reason": "The NTAA Section 147 definition of small business states the ₦100,000,000 and ₦250,000,000 limits and the professional-services exclusion. 'Similar' only links to the rest of the answer and adds no legal content.",
+      "support": "\"small business\" means a business that earns gross turnover of ₦100,000,000 or less per annum with a total fixed assets less than ₦250,000,000, provided that any business providing professional services shall not be classified as a small business"
+    },
+    "BC-075": {
+      "verdict": "supported",
+      "reason": "Section 192(4)(a).",
+      "support": "an \"arrangement\" includes any agreement, understanding, scheme, financial or commercial relation, transaction or series of transactions;"
+    },
+    "BC-076": {
+      "verdict": "supported",
+      "reason": "Section 56(b).",
+      "support": "(b) any other company, at the rate of 30 per cent from the commencement of this Act."
+    },
+    "BC-077": {
+      "verdict": "supported",
+      "reason": "Section 9(1), closing words.",
+      "support": "the company paying the dividend shall be charged to tax at the rate prescribed in section 56 of this Act as if the dividend is the total profits of the company for the year of assessment to which the accounts, out of which the dividend is declared, relates."
+    },
+    "BC-078": {
+      "verdict": "supported",
+      "reason": "First Schedule Part I paragraph 6.",
+      "support": "Where in a basis period for a year of assessment, a person has incurred qualifying expenditure wholly and exclusively for the purposes of its trade or business, there shall be made to the person for each year of assessment in the basis period for which that asset was used for the purposes of that trade or business, an allowance (capital allowance) at the rate specified in Table I of this Part"
+    },
+    "BC-079": {
+      "verdict": "contradicted",
+      "reason": "Section 56(a) sets 0% for a small company, not 1%.",
+      "support": ""
+    },
+    "BC-080": {
+      "verdict": "contradicted",
+      "reason": "Section 27(1) says total profits are total assessable profits from all sources including chargeable gains, less loss and capital allowance; the claim negates this.",
+      "support": ""
+    },
+    "BC-081": {
+      "verdict": "contradicted",
+      "reason": "Paragraph 6 proviso (b) applies where the basis period is less than one year, not 'not less than one year'.",
+      "support": ""
+    },
+    "BC-082": {
+      "verdict": "supported",
+      "reason": "First Schedule Part I paragraph 6, proviso (b).",
+      "support": "(b) where the basis period for any year of assessment is a period of less than one year, the allowance for that year of assessment shall be granted proportionately."
+    },
+    "BC-083": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 41(2)(a) sets 30 days from service of the notice of assessment, not 60 days.",
+      "support": ""
+    },
+    "BC-084": {
+      "verdict": "supported",
+      "reason": "The context header places the passage in NTAA Chapter Two, Section 41 (so not Chapter Four), and Section 41(1) gives the written notice and the three means of delivery.",
+      "support": "Nigeria Tax Administration Act 2025 > Chapter TWO RETURNS, ASSESSMENT AND PAYMENTS > Part II ASSESSMENT AND COMPLIANCE > s41 ... the taxable person may, by a written notice of objection delivered in person, by courier service or via electronic means, apply to the relevant tax authority for the revision and amendment of the assessment made on it."
+    },
+    "BC-085": {
+      "verdict": "supported",
+      "reason": "Restates Section 155(3).",
+      "support": "The remission of the VAT under subsections (1) and (2) shall be accompanied with a schedule showing the name, Tax ID and address of the contractor or supplier, invoice number, gross amount of invoice, amount of the VAT and the month to which the return relates."
+    },
+    "BC-086": {
+      "verdict": "supported",
+      "reason": "First Schedule Part I paragraph 21(1).",
+      "support": "An allowance shall not be made to a person for a year of assessment unless it is claimed by the person for that year or where the relevant tax authority is of the opinion that it would be just to the taxpayer and reasonable to do so."
+    },
+    "BC-087": {
+      "verdict": "supported",
+      "reason": "NTAA Section 41(8).",
+      "support": "A party dissatisfied with the decision of the High Court may appeal to the Court of Appeal, while an appeal against the judgement of the Court of Appeal shall be to the Supreme Court."
+    },
+    "BC-088": {
+      "verdict": "contradicted",
+      "reason": "Section 9(1) applies both where there are no total profits (paragraph (a)) and where total profits are less than the dividend (paragraph (b)); 'only' in the claim excludes paragraph (a).",
+      "support": ""
+    },
+    "BC-089": {
+      "verdict": "supported",
+      "reason": "Table I, Class 3.",
+      "support": "Class: 3 | Rate: 25% | Qualifying Capital Expenditure: (i) Motor Vehicle Expenditure"
+    },
+    "BC-090": {
+      "verdict": "supported",
+      "reason": "NTAA Section 11(1)(b).",
+      "support": "(b) the audited financial statements, tax and capital allowances computation for the year of assessment in respect of the profit from each and every source computed"
+    },
+    "BC-091": {
+      "verdict": "supported",
+      "reason": "Section 191(2).",
+      "support": "The provisions relating to objections and appeals under Chapter Four of the Nigeria Tax Administration Act, 2025 , shall apply to a direction made under this section."
+    },
+    "BC-092": {
+      "verdict": "supported",
+      "reason": "Section 27(1).",
+      "support": "The total profits of a company for any year of assessment, shall be the amount of its total assessable profits from all sources, including chargeable gains computed in accordance with Part VIII of Chapter Two, less the amount of any loss ascertained in accordance with subsection (6), and capital allowance in accordance with the provisions of Part I of the First Schedule to this Act."
+    },
+    "BC-093": {
+      "verdict": "supported",
+      "reason": "Section 192(2).",
+      "support": "Where, in the opinion of a relevant tax authority, a company has entered into an arrangement with a related party which is not at arm's length, it may effect necessary adjustments to bring the arrangement in conformity to arm's length terms as provided under the Transfer Pricing Regulations."
+    },
+    "BC-094": {
+      "verdict": "supported",
+      "reason": "Section 9(2)(d).",
+      "support": "(d) distributions made by a real estate investment company to its shareholders from rental income and dividend income received on behalf of those shareholders, whether such dividends are paid out of profits of the year in which the dividend is declared or out of profits of previous reporting periods."
+    },
+    "BC-095": {
+      "verdict": "supported",
+      "reason": "The opening words of Section 20(1).",
+      "support": "Except where the provisions of section 18 of this Act or Part IX of Chapter Two apply, for the purposes of ascertaining the profits or loss from any trade, business, profession or vocation under this Act, there shall be deducted all expenses for that period wholly and exclusively incurred in the production of the income"
+    },
+    "BC-096": {
+      "verdict": "supported",
+      "reason": "NTAA Section 49(3).",
+      "support": "collection of tax in any case where notice of an objection or appeal has been given by the taxable person shall remain in abeyance until such objection or appeal is determined"
+    },
+    "BC-097": {
+      "verdict": "unsupported",
+      "reason": "The cited chunk is Section 20(1)(i) to (m), the deductions allowed; it says nothing about a bar on deducting tax or penalty borne for another person, and Section 21 is not cited.",
+      "support": ""
+    },
+    "BC-098": {
+      "verdict": "supported",
+      "reason": "Section 56(a) and (b).",
+      "support": "(a) a small company, at 0%; and (b) any other company, at the rate of 30 per cent from the commencement of this Act."
+    },
+    "BC-099": {
+      "verdict": "contradicted",
+      "reason": "Section 9(1) treats the dividend as the total profits of the company, not of an individual.",
+      "support": ""
+    },
+    "BC-100": {
+      "verdict": "contradicted",
+      "reason": "Both definitions define a foreign company as one other than a Nigerian company, not a Ghanaian company.",
+      "support": ""
+    },
+    "BC-101": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 41(6) says that without a response in 90 days the objection shall be upheld; the claim says it is not upheld.",
+      "support": ""
+    },
+    "BC-102": {
+      "verdict": "contradicted",
+      "reason": "Section 192(1) puts the arm's length duty on a company; the claim puts it on an individual.",
+      "support": ""
+    },
+    "BC-103": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 11(1) requires every return to contain items (a), (c), (d) and (e); the small-company proviso relaxes only the audited financial statements. The claim says those items need not be included.",
+      "support": ""
+    },
+    "BC-104": {
+      "verdict": "supported",
+      "reason": "Section 192(3) word for word.",
+      "support": "The relevant tax authority may make rules or regulations for the administration of this section."
+    },
+    "BC-105": {
+      "verdict": "partly_supported",
+      "reason": "The first part is the Section 202 proviso and the attested statement of accounts is the NTAA Section 11(1)(b) proviso for a small company. Joining them needs a bridging fact the chunks do not state: that 'small company' in the NTAA carries the meaning in the NTA definition (which applies 'in this Act'); an unstated link between provisions (D-89).",
+      "support": "nta2025:s202:def:small-company: provided that any business providing professional services shall not be classified as a small company; | ntaa2025:s11(1)-(2): Provided that the return of a small company may contain a statement of accounts attested to by the taxpayer in place of audited financial statements"
+    },
+    "BC-106": {
+      "verdict": "partly_supported",
+      "reason": "The exclusions for exempt profits and franked investment income are Section 9(2)(b) and (c). That agricultural profits in the first five years are exempt profits is not stated in the chunk.",
+      "support": "(b) dividends declared out of profits or gains that are exempt from income tax by this Act; (c) franked investment income as provided in this Act;"
+    },
+    "BC-107": {
+      "verdict": "unsupported",
+      "reason": "The cited Section 194 deals with references to income taxed by deduction at source and apportionment; it says nothing about the relevant tax authority making rules or regulations.",
+      "support": ""
+    },
+    "BC-108": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 41(6) sets 90 days, not 180 days.",
+      "support": ""
+    },
+    "BC-109": {
+      "verdict": "supported",
+      "reason": "Section 9(2)(a).",
+      "support": "(a) dividends declared out of the retained earnings of a company, to the extent that the profits or gains included in the retained earnings have been taxed under the provisions of this Act ;"
+    },
+    "BC-110": {
+      "verdict": "supported",
+      "reason": "NTAA Section 43(4).",
+      "support": "The provisions of section 41 of this Act shall not prevent the tax authority from making any assessment or additional assessment for any year which does not involve re-opening any issue on the same facts, which has been determined for that year of assessment under section 41(5) of this Act by agreement or on appeal."
+    },
+    "BC-111": {
+      "verdict": "supported",
+      "reason": "The Section 192 heading in the context header states this.",
+      "support": "s192 Transactions between related parties to be at arm's length"
+    },
+    "BC-112": {
+      "verdict": "supported",
+      "reason": "NTAA Section 41(2), which itself says 'shall only be valid if'. The extension power in subsection (3) is left out, but the claim applies the rule to no case where that would change the result.",
+      "support": "An application under subsection (1) shall only be valid if it - (a) is delivered to the relevant tax authority within 30 days from the date of service of the disputed notice of assessment ; and (b) contains the grounds of objection to the assessment"
+    },
+    "BC-113": {
+      "verdict": "supported",
+      "reason": "Section 151(1); 'must' matches 'shall'.",
+      "support": "A non-resident person who makes taxable supplies to Nigeria shall register for tax and include VAT on its invoice for all taxable supplies."
+    },
+    "BC-114": {
+      "verdict": "partly_supported",
+      "reason": "The meaning of 'arrangement' is Section 192(4)(a). That it covers income from cryptocurrency trading is not stated in the chunk.",
+      "support": "an \"arrangement\" includes any agreement, understanding, scheme, financial or commercial relation, transaction or series of transactions;"
+    },
+    "BC-115": {
+      "verdict": "supported",
+      "reason": "Section 145 states the charge and the Part IV exemption carve-out in these terms.",
+      "support": "Subject to the exemptions in Part IV of Chapter Eight of this Act, VAT shall be paid on all taxable supplies in Nigeria."
+    },
+    "BC-116": {
+      "verdict": "supported",
+      "reason": "NTAA Section 147 and NTA Section 202 both define a foreign company as one other than a Nigerian company; the NTA definition adds a non-resident company.",
+      "support": "ntaa2025:s147:def:foreign-company: \"foreign company\" means any company other than a Nigerian Company | nta2025:s202:def:foreign-company: \"foreign company\" means a non-resident company or any company other than a Nigerian company"
+    },
+    "BC-117": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 36(4) says the relevant tax authority 'may' assess at any time; the claim says it must.",
+      "support": ""
+    },
+    "BC-118": {
+      "verdict": "supported",
+      "reason": "NTAA Section 36(4).",
+      "support": "Notwithstanding the time limit specified in subsection (1), where there is a deliberate misstatement by a taxable person in connection with any tax imposed under the Nigeria Tax Act, 2025 or any other tax law, the relevant tax authority may at any time, and as often as may be necessary, assess the taxable person to such amount or additional amount as may be necessary for the purpose of making good any loss of tax attributable to the deliberate misstatement."
+    },
+    "BC-119": {
+      "verdict": "partly_supported",
+      "reason": "Paragraph (m) supports the tubers sentence and the chunk indeed does not name garri, but that garri is made from cassava is outside knowledge not stated in the chunk.",
+      "support": "(m) tubers (roots) of yam, cocoyam, potatoes, water-yam, cassava, whether in raw form, flakes or flour for human consumption;"
+    },
+    "BC-120": {
+      "verdict": "supported",
+      "reason": "Restates Section 148.",
+      "support": "Subject to the provisions of Part IV of Chapter Eight of this Act, VAT shall be charged on the value of all taxable supplies at the rate of 7.5%."
+    },
+    "BC-121": {
+      "verdict": "contradicted",
+      "reason": "The proviso says a professional-services business shall not be classified as a small company, not a 'small individual'.",
+      "support": ""
+    },
+    "BC-122": {
+      "verdict": "supported",
+      "reason": "Section 151(1) word for word.",
+      "support": "A non-resident person who makes taxable supplies to Nigeria shall register for tax and include VAT on its invoice for all taxable supplies."
+    },
+    "BC-123": {
+      "verdict": "contradicted",
+      "reason": "The proviso says the small company return 'may' contain an attested statement of accounts; the claim makes it mandatory.",
+      "support": ""
+    },
+    "BC-124": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 36(5) says all relevant facts shall be considered; the claim says they are not.",
+      "support": ""
+    },
+    "BC-125": {
+      "verdict": "contradicted",
+      "reason": "Section 8(2) applies to dividends received by a Nigerian company, not a Ghanaian company; the first sentence is correct.",
+      "support": ""
+    },
+    "BC-126": {
+      "verdict": "unsupported",
+      "reason": "The cited chunk is the NTAA Section 147 definition of 'dispute'; it says nothing about collection being held in abeyance.",
+      "support": ""
+    },
+    "BC-127": {
+      "verdict": "supported",
+      "reason": "Section 56 opening words; the context header places it under taxation of income, rates of tax for companies, so calling it company income tax adds nothing outside the chunk.",
+      "support": "Tax shall be levied, for each year of assessment in respect of total profits of every company"
+    },
+    "BC-128": {
+      "verdict": "contradicted",
+      "reason": "Table I sets Class 3 at 25%, not 75%.",
+      "support": ""
+    },
+    "BC-129": {
+      "verdict": "supported",
+      "reason": "NTAA Section 11(1)(b), proviso.",
+      "support": "Provided that the return of a small company may contain a statement of accounts attested to by the taxpayer in place of audited financial statements"
+    },
+    "BC-130": {
+      "verdict": "supported",
+      "reason": "Restates Section 155(3); remittance means remission.",
+      "support": "shall be accompanied with a schedule showing the name, Tax ID and address of the contractor or supplier, invoice number, gross amount of invoice, amount of the VAT and the month to which the return relates."
+    },
+    "BC-131": {
+      "verdict": "contradicted",
+      "reason": "The proviso says a professional-services business shall not be classified as a small company, not a 'small individual'.",
+      "support": ""
+    },
+    "BC-132": {
+      "verdict": "partly_supported",
+      "reason": "The charge where there are no total profits is Section 9(1)(a). That this covers income from cryptocurrency trading is not stated in the chunk.",
+      "support": "Where a Nigerian company declares dividend out of profits on which no tax is payable due to - (a) there being no total profits ... the company paying the dividend shall be charged to tax"
+    },
+    "BC-133": {
+      "verdict": "supported",
+      "reason": "NTAA Section 11(1) opening words and paragraph (b); the claim follows the subsection's own structure.",
+      "support": "Every company ... shall file a self-assessment return with the Service in the prescribed form at least once a year, and such return shall contain - ... (b) the audited financial statements, tax and capital allowances computation for the year of assessment"
+    },
+    "BC-134": {
+      "verdict": "supported",
+      "reason": "The proviso in the Section 202 definition.",
+      "support": "provided that any business providing professional services shall not be classified as a small company;"
+    },
+    "BC-135": {
+      "verdict": "supported",
+      "reason": "Restates Section 151(2).",
+      "support": "Where a non-resident person is making taxable supplies from outside Nigeria to persons in Nigeria, the taxable person to whom the supply is made in Nigeria shall withhold the VAT due on the supply and remit it to the Service."
+    },
+    "BC-136": {
+      "verdict": "contradicted",
+      "reason": "The proviso says a professional-services business shall not be classified as a small company.",
+      "support": ""
+    },
+    "BC-137": {
+      "verdict": "supported",
+      "reason": "NTAA Section 49(3), proviso.",
+      "support": "provided that the taxable person shall pay the tax which is not the subject of an objection or appeal."
+    },
+    "BC-138": {
+      "verdict": "supported",
+      "reason": "NTAA Section 49(7).",
+      "support": "Where there is no objection or appeal, the relevant tax authority may proceed to enforce the recovery of the tax payable in accordance with the provisions of this Act."
+    },
+    "BC-139": {
+      "verdict": "supported",
+      "reason": "Section 56(a).",
+      "support": "(a) a small company, at 0%;"
+    },
+    "BC-140": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 49(4) makes the tax payable within 30 days of service, not 60 days.",
+      "support": ""
+    },
+    "BC-141": {
+      "verdict": "supported",
+      "reason": "First Schedule Part I paragraph 6.",
+      "support": "Where in a basis period for a year of assessment, a person has incurred qualifying expenditure wholly and exclusively for the purposes of its trade or business, there shall be made to the person for each year of assessment in the basis period for which that asset was used for the purposes of that trade or business, an allowance (capital allowance) at the rate specified in Table I of this Part"
+    },
+    "BC-142": {
+      "verdict": "supported",
+      "reason": "Section 9(1)(a).",
+      "support": "Where a Nigerian company declares dividend out of profits on which no tax is payable due to - (a) there being no total profits ... the company paying the dividend shall be charged to tax"
+    },
+    "BC-143": {
+      "verdict": "supported",
+      "reason": "First Schedule Part I paragraph 6, proviso (b).",
+      "support": "(b) where the basis period for any year of assessment is a period of less than one year, the allowance for that year of assessment shall be granted proportionately."
+    },
+    "BC-144": {
+      "verdict": "supported",
+      "reason": "Section 192(2); 'may' kept.",
+      "support": "Where, in the opinion of a relevant tax authority, a company has entered into an arrangement with a related party which is not at arm's length, it may effect necessary adjustments to bring the arrangement in conformity to arm's length terms as provided under the Transfer Pricing Regulations."
+    },
+    "BC-145": {
+      "verdict": "supported",
+      "reason": "NTAA Section 41(7).",
+      "support": "Where the relevant tax authority considers the notice of objection submitted by the taxable person as invalid or where the taxable person and the relevant tax authority do not agree as to the amount of tax to be assessed, the taxpayer may exercise the right of appeal."
+    },
+    "BC-146": {
+      "verdict": "supported",
+      "reason": "Section 192(4)(a).",
+      "support": "an \"arrangement\" includes any agreement, understanding, scheme, financial or commercial relation, transaction or series of transactions;"
+    },
+    "BC-147": {
+      "verdict": "supported",
+      "reason": "Section 191(2).",
+      "support": "The provisions relating to objections and appeals under Chapter Four of the Nigeria Tax Administration Act, 2025 , shall apply to a direction made under this section."
+    },
+    "BC-148": {
+      "verdict": "partly_supported",
+      "reason": "The filing duty and contents are NTAA Section 11(1). That this includes software licences sold by foreign companies is not stated in the chunk.",
+      "support": "Every company ... shall file a self-assessment return with the Service in the prescribed form at least once a year, and such return shall contain - ... (b) the audited financial statements, tax and capital allowances computation for the year of assessment"
+    },
+    "BC-149": {
+      "verdict": "supported",
+      "reason": "Restates Section 151(4); 'appointed in this way' is the subsection (3) appointment.",
+      "support": "Where a person appointed under subsection (3) has made a taxable supply to a taxable person in Nigeria, the taxable person shall not have the obligation to withhold the VAT, except where the person appointed has failed to collect the VAT."
+    },
+    "BC-150": {
+      "verdict": "supported",
+      "reason": "Section 145 states the charge and the Part IV exemption carve-out in these terms.",
+      "support": "Subject to the exemptions in Part IV of Chapter Eight of this Act, VAT shall be paid on all taxable supplies in Nigeria."
+    },
+    "BC-151": {
+      "verdict": "contradicted",
+      "reason": "Section 148 sets the rate at 7.5%, not 22.5%.",
+      "support": ""
+    },
+    "BC-152": {
+      "verdict": "supported",
+      "reason": "NTAA Section 41(1), (2)(a) and (3).",
+      "support": "by a written notice of objection ... (a) is delivered to the relevant tax authority within 30 days from the date of service of the disputed notice of assessment ... the relevant tax authority may, for any satisfactory and good cause shown, extend the time for making the application"
+    },
+    "BC-153": {
+      "verdict": "supported",
+      "reason": "Section 155(5): records, returns, remittances, and the compliance provisions apply as though it is the taxable person.",
+      "support": "A person having an obligation to collect VAT under Chapter Six of this Act shall keep proper records, make appropriate returns and remittances, and all provisions relating to compliance obligation ... shall apply to such person as though it is the taxable person."
+    },
+    "BC-154": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 36(5) says all relevant facts shall be considered; the claim says they are not.",
+      "support": ""
+    },
+    "BC-155": {
+      "verdict": "supported",
+      "reason": "NTAA Section 36(4).",
+      "support": "where there is a deliberate misstatement by a taxable person in connection with any tax imposed under the Nigeria Tax Act, 2025 or any other tax law, the relevant tax authority may at any time, and as often as may be necessary, assess the taxable person ... for the purpose of making good any loss of tax attributable to the deliberate misstatement."
+    },
+    "BC-156": {
+      "verdict": "supported",
+      "reason": "NTAA Section 41(6).",
+      "support": "The relevant tax authority shall respond to the objection notice within 90 days, otherwise the objection of the taxpayer shall be upheld."
+    },
+    "BC-157": {
+      "verdict": "partly_supported",
+      "reason": "The arm's length duty is Section 192(1)(a). That mobile phones and laptops are treated the same way is not stated anywhere in the chunk.",
+      "support": "A company involved in an arrangement with a related party shall - (a) ensure that the terms and conditions for which the arrangement is carried out is at arm's length;"
+    },
+    "BC-158": {
+      "verdict": "supported",
+      "reason": "Section 151(6): a non-resident person making a taxable supply to a person in Nigeria may appoint a representative for VAT compliance.",
+      "support": "A non-resident person that makes a taxable supply to a person in Nigeria may appoint a representative for the purpose of compliance with its VAT obligations."
+    },
+    "BC-159": {
+      "verdict": "supported",
+      "reason": "Restates Section 151(4).",
+      "support": "Where a person appointed under subsection (3) has made a taxable supply to a taxable person in Nigeria, the taxable person shall not have the obligation to withhold the VAT, except where the person appointed has failed to collect the VAT."
+    },
+    "BC-160": {
+      "verdict": "supported",
+      "reason": "Section 9(1), closing words.",
+      "support": "the company paying the dividend shall be charged to tax at the rate prescribed in section 56 of this Act as if the dividend is the total profits of the company for the year of assessment to which the accounts, out of which the dividend is declared, relates."
+    },
+    "BC-161": {
+      "verdict": "supported",
+      "reason": "Section 202 definition of small company; Act named in the context header.",
+      "support": "\"small company\" means a company that earns gross turnover of ₦50,000,000 or less per annum with total fixed assets not exceeding ₦250,000,000"
+    },
+    "BC-162": {
+      "verdict": "supported",
+      "reason": "NTAA Section 11(1) opening words.",
+      "support": "Every company, including a company granted exemption from incorporation, whether or not it is liable to pay tax under Nigeria Tax Act, 2025 or any other tax law, for a year of assessment, with or without notice from the Service, shall file a self-assessment return with the Service in the prescribed form at least once a year"
+    },
+    "BC-163": {
+      "verdict": "supported",
+      "reason": "Follows from NTAA Section 49(3): collection is in abeyance while the objection is pending, but the tax not under objection must be paid.",
+      "support": "collection of tax in any case where notice of an objection or appeal has been given by the taxable person shall remain in abeyance until such objection or appeal is determined, provided that the taxable person shall pay the tax which is not the subject of an objection or appeal."
+    },
+    "BC-164": {
+      "verdict": "supported",
+      "reason": "Section 151(2) word for word.",
+      "support": "Where a non-resident person is making taxable supplies from outside Nigeria to persons in Nigeria, the taxable person to whom the supply is made in Nigeria shall withhold the VAT due on the supply and remit it to the Service."
+    },
+    "BC-165": {
+      "verdict": "partly_supported",
+      "reason": "The general rule (Section 20(1)) and the fines bar (Section 21(l)) are stated. That a sponsorship fee for stadium advertising is wholly and exclusively incurred in producing the income is not stated; it is a judgement the chunks do not make.",
+      "support": "nta2025:s20(1)(a)-(h): there shall be deducted all expenses for that period wholly and exclusively incurred in the production of the income | nta2025:s21(a)-(o): (l) penalty or fine imposed under any law;"
+    },
+    "BC-166": {
+      "verdict": "supported",
+      "reason": "The NTAA Section 147 definition of small business states both limits and the professional-services exclusion. 'Similar' only links to the rest of the answer.",
+      "support": "\"small business\" means a business that earns gross turnover of ₦100,000,000 or less per annum with a total fixed assets less than ₦250,000,000, provided that any business providing professional services shall not be classified as a small business"
+    },
+    "BC-167": {
+      "verdict": "supported",
+      "reason": "Section 9(2)(b) and (c).",
+      "support": "(b) dividends declared out of profits or gains that are exempt from income tax by this Act; (c) franked investment income as provided in this Act;"
+    },
+    "BC-168": {
+      "verdict": "contradicted",
+      "reason": "Section 187(a) lists basic food items among taxable supplies charged at 0%; the claim says they are not.",
+      "support": ""
+    },
+    "BC-169": {
+      "verdict": "supported",
+      "reason": "Restates Section 155(2).",
+      "support": "The Service may direct a taxable person to whom taxable supplies is made in Nigeria and issued an invoice on which VAT is not included, to self-account for the VAT payable and remit it to the Service."
+    },
+    "BC-170": {
+      "verdict": "supported",
+      "reason": "Table I, Class 3.",
+      "support": "Class: 3 | Rate: 25% | Qualifying Capital Expenditure: (i) Motor Vehicle Expenditure"
+    },
+    "BC-171": {
+      "verdict": "unsupported",
+      "reason": "The cited Section 158 is about fiscalisation systems; it says nothing about the Service appointing persons to collect and remit VAT.",
+      "support": ""
+    },
+    "BC-172": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 49(4) makes the tax payable within 30 days of service, not 90 days.",
+      "support": ""
+    },
+    "BC-173": {
+      "verdict": "supported",
+      "reason": "A statement about the cited passage: it is paragraphs (l) to (p) of the basic food items definition (pulses, tubers, salt, vegetables, water) and does not name rice. All of that is true of the chunk; it asserts nothing about rice beyond the passage.",
+      "support": "(l) pulses for human consumption ... (m) tubers (roots) of yam ... (n) salt for only culinary use ... (o) vegetables including pepper ... (p) water means natural water and table water"
+    },
+    "BC-174": {
+      "verdict": "supported",
+      "reason": "Section 9(2)(a).",
+      "support": "(a) dividends declared out of the retained earnings of a company, to the extent that the profits or gains included in the retained earnings have been taxed under the provisions of this Act ;"
+    },
+    "BC-175": {
+      "verdict": "supported",
+      "reason": "Section 57(1) and (2).",
+      "support": "where, in any year of assessment, the effective tax rate of a company is less than 15%, such company shall recompute and pay an additional tax that makes its effective tax rate equal to 15%. (2) The provisions of this section shall apply to - (a) a company that is a constituent entity of an MNE group; and (b) any other company with an aggregate turnover of ₦20,000,000,000 and above in the relevant year of assessment."
+    },
+    "BC-176": {
+      "verdict": "supported",
+      "reason": "Section 21 opening words and paragraph (l).",
+      "support": "A deduction shall not be allowed for the purposes of ascertaining the profits or income from any trade, business, profession or vocation in respect of ... (l) penalty or fine imposed under any law;"
+    },
+    "BC-177": {
+      "verdict": "unsupported",
+      "reason": "The cited chunk is the Section 202 definition of 'tax'; it does not define arm's length terms and conditions.",
+      "support": ""
+    },
+    "BC-178": {
+      "verdict": "supported",
+      "reason": "NTAA Section 11(1): items (a), (c), (d) and (e) apply to every return; the proviso replaces only the audited financial statements.",
+      "support": "(a) a duly completed self-assessment form as may be prescribed by the Service ; ... (c) evidence of payment of the tax due ; (d) computation of the effective tax rate and additional tax payable, where applicable ; and (e) an attestation of the information contained in the tax returns signed by a principal officer of the company."
+    },
+    "BC-179": {
+      "verdict": "supported",
+      "reason": "Section 192(3).",
+      "support": "The relevant tax authority may make rules or regulations for the administration of this section."
+    },
+    "BC-180": {
+      "verdict": "supported",
+      "reason": "Section 192(4)(b).",
+      "support": "\"arm's length terms and conditions\" means such terms and conditions obtainable if the transaction or arrangement was between unrelated parties dealing in comparative circumstances."
+    },
+    "BC-181": {
+      "verdict": "unsupported",
+      "reason": "The cited chunk is the Section 202 definition of 'tax'; it says nothing about arm's length adjustments or the Transfer Pricing Regulations.",
+      "support": ""
+    },
+    "BC-182": {
+      "verdict": "contradicted",
+      "reason": "Section 56(b) sets 30 per cent, not 60 per cent.",
+      "support": ""
+    },
+    "BC-183": {
+      "verdict": "supported",
+      "reason": "NTAA Section 49(3) opens 'Subject to the provisions of section 11 of this Act'.",
+      "support": "Subject to the provisions of section 11 of this Act, collection of tax in any case where notice of an objection or appeal has been given by the taxable person shall remain in abeyance"
+    },
+    "BC-184": {
+      "verdict": "supported",
+      "reason": "NTAA Section 43(4), read with Section 43(1) of the same section ('Assessments to be final and conclusive'). Reading subsection (4) as qualifying finality does not change the outcome the claim states: the authority may still assess for the year without re-opening an issue already determined (D-91).",
+      "support": "such assessment shall be final and conclusive for all purposes of this Act ... (4) The provisions of section 41 of this Act shall not prevent the tax authority from making any assessment or additional assessment for any year which does not involve re-opening any issue on the same facts, which has been determined for that year of assessment under section 41(5) of this Act by agreement or on appeal."
+    },
+    "BC-185": {
+      "verdict": "supported",
+      "reason": "Section 151(6) word for word.",
+      "support": "A non-resident person that makes a taxable supply to a person in Nigeria may appoint a representative for the purpose of compliance with its VAT obligations."
+    },
+    "BC-186": {
+      "verdict": "supported",
+      "reason": "NTAA Section 36(1).",
+      "support": "Where the relevant tax authority discovers or is of the opinion, at any time, that any taxable person liable to tax has not been assessed or has been assessed at an amount less than that which ought to have been charged, the relevant tax authority may, within six years of the assessment, assess the taxable person at such amount or additional amount, as ought to have been charged."
+    },
+    "BC-187": {
+      "verdict": "supported",
+      "reason": "Section 56(b).",
+      "support": "(b) any other company, at the rate of 30 per cent from the commencement of this Act."
+    },
+    "BC-188": {
+      "verdict": "supported",
+      "reason": "NTAA Section 11(1)(b), proviso.",
+      "support": "Provided that the return of a small company may contain a statement of accounts attested to by the taxpayer in place of audited financial statements"
+    },
+    "BC-189": {
+      "verdict": "contradicted",
+      "reason": "NTAA Section 41(3) says the authority 'may' extend the time; the claim says it must.",
+      "support": ""
+    },
+    "BC-190": {
+      "verdict": "supported",
+      "reason": "Section 27(1), shortened.",
+      "support": "The total profits of a company for any year of assessment, shall be the amount of its total assessable profits from all sources, including chargeable gains ... less the amount of any loss ... and capital allowance"
+    },
+    "BC-191": {
+      "verdict": "unsupported",
+      "reason": "The cited chunk is NTAA Section 11(3) to (6); the annual self-assessment filing duty 'whether or not liable to pay tax' is in Section 11(1), which is not cited.",
+      "support": ""
+    },
+    "BC-192": {
+      "verdict": "supported",
+      "reason": "The proviso in the Section 202 definition.",
+      "support": "provided that any business providing professional services shall not be classified as a small company;"
+    },
+    "BC-193": {
+      "verdict": "supported",
+      "reason": "NTAA Section 41(6).",
+      "support": "The relevant tax authority shall respond to the objection notice within 90 days, otherwise the objection of the taxpayer shall be upheld."
+    },
+    "BC-194": {
+      "verdict": "supported",
+      "reason": "Section 56 opening words and paragraph (a).",
+      "support": "Tax shall be levied, for each year of assessment in respect of total profits of every company, in the case of - (a) a small company, at 0%;"
+    },
+    "BC-195": {
+      "verdict": "supported",
+      "reason": "The Section 192 heading and subsection (1) (a company in an arrangement with a related party).",
+      "support": "s192 Transactions between related parties to be at arm's length ... A company involved in an arrangement with a related party shall - (a) ensure that the terms and conditions for which the arrangement is carried out is at arm's length;"
+    }
+  }
+}
