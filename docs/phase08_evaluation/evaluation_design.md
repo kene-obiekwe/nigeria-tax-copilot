@@ -851,6 +851,13 @@ files is untested on real rows until then.
 `28e205155c10ef6702f569cf005df6a4f819084e53aa24e597a8b120141cf36a` (D-144), pinned in `run_e2e.py`. The test of the real command line no longer tries
 `--freeze` once the input pins are set, because it would now succeed.
 
+**Smoke run and blind calibration (2026-11-11 to 2026-11-12).** The smoke run stopped on cost after
+two of its three cases ($0.0325; a cold prompt cache on the first call) and is accepted as incomplete
+with no new smoke run (D-145). The run session's blind calibration met every D-138 target on attempt 1
+(60 of 60 mutations, 2 of 2 real unsupported, 1 of 131 human-supported flagged; D-148), applying
+D-147 (a definition chunk's citation label counts as part of its context header). A successor
+reviewer, if needed, uses the same written method (D-146). Next: the two final runs, back to back.
+
 ---
 
 **Next step:** step 2 (set writer) and step 3 (harness build) in parallel, then step 2a (label

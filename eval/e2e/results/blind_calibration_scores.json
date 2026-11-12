@@ -1,0 +1,36 @@
+{
+ "mutations_flagged": 60,
+ "mutations": 60,
+ "per_type": {
+  "bridging": 10,
+  "citation_move": 10,
+  "figure": 10,
+  "hardening": 10,
+  "negation": 10,
+  "subject_swap": 10
+ },
+ "per_type_sizes": {
+  "bridging": 10,
+  "citation_move": 10,
+  "figure": 10,
+  "hardening": 10,
+  "negation": 10,
+  "subject_swap": 10
+ },
+ "real_unsupported_flagged": 2,
+ "real_unsupported": 2,
+ "human_supported_flagged": 1,
+ "human_supported": 131,
+ "not_a_claim_items": {
+  "count": 2,
+  "judged_not_a_claim": 0
+ },
+ "targets": {
+  "mutations_flagged": true,
+  "per_type": true,
+  "real_unsupported": true,
+  "human_supported": true
+ },
+ "passed": true,
+ "attempt": 1
+}
