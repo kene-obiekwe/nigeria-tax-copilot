@@ -1,0 +1,558 @@
+{
+  "schema": "live-check/1",
+  "started": "2026-11-12T20:52:05+00:00",
+  "deployment": "local",
+  "cap_usd": "0.40",
+  "next_question_margin_usd": "0.04",
+  "complete": true,
+  "stopped": null,
+  "total_usd": "0.167020",
+  "results": [
+    {
+      "n": 1,
+      "source": "examples.yml #1",
+      "topic": "Company income tax and the development levy",
+      "question": "At what rate is a company taxed on its profits, and does the development levy apply on top of that?",
+      "expected": null,
+      "wall_s": 24.9,
+      "entry_kind": "card",
+      "reference": "Q-9681c177",
+      "query_id": "9681c177-87cd-48d8-8e5c-056f0493aeec",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "stage": null,
+        "record_id": "9aa8a1d0-e0ea-49a8-9551-3d726142ecbf",
+        "flags": [],
+        "cost_usd": "0.021994",
+        "generation_cost_usd": "0.019113",
+        "verification_cost_usd": "0.002111",
+        "tagger_cost_usd": "0.000770",
+        "latency_ms": 21985,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "fbe3041027714c25425e7bb8fe3879e9fca7279cb37454c582c5b1a597da541e"
+          }
+        ]
+      },
+      "record_id": "9aa8a1d0-e0ea-49a8-9551-3d726142ecbf",
+      "status": "answered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.021994",
+      "total_after_usd": "0.021994",
+      "problem": null
+    },
+    {
+      "n": 2,
+      "source": "examples.yml #2",
+      "topic": "Deductions and gains",
+      "question": "Which expenses does the Nigeria Tax Act say a company may not deduct from its profits?",
+      "expected": null,
+      "wall_s": 22.9,
+      "entry_kind": "card",
+      "reference": "Q-65990e11",
+      "query_id": "65990e11-75b0-4c50-8674-6da9340871b5",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "stage": null,
+        "record_id": "f9d7e3cc-249c-42eb-860e-aaa0fce51458",
+        "flags": [],
+        "cost_usd": "0.022217",
+        "generation_cost_usd": "0.018417",
+        "verification_cost_usd": "0.003587",
+        "tagger_cost_usd": "0.000213",
+        "latency_ms": 21656,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "fc09abb6d2b61ad4cf84925680ebefd44dd04f8371ac6545352a55bb92081249"
+          }
+        ]
+      },
+      "record_id": "f9d7e3cc-249c-42eb-860e-aaa0fce51458",
+      "status": "answered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.022217",
+      "total_after_usd": "0.044211",
+      "problem": null
+    },
+    {
+      "n": 3,
+      "source": "examples.yml #3",
+      "topic": "VAT",
+      "question": "Which supplies of goods and services can be zero-rated for VAT?",
+      "expected": null,
+      "wall_s": 15.0,
+      "entry_kind": "card",
+      "reference": "Q-53d294ba",
+      "query_id": "53d294ba-bcca-4326-8e5f-6c915ac137e9",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "stage": null,
+        "record_id": "cdb412d3-2c1f-41a5-946f-00dd4c01d60c",
+        "flags": [],
+        "cost_usd": "0.020031",
+        "generation_cost_usd": "0.017533",
+        "verification_cost_usd": "0.002302",
+        "tagger_cost_usd": "0.000196",
+        "latency_ms": 14016,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "fbe54585db3dca4d7ec8511e614f00f30b6c62e1e85d89d0aff942a336688058"
+          }
+        ]
+      },
+      "record_id": "cdb412d3-2c1f-41a5-946f-00dd4c01d60c",
+      "status": "answered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.020031",
+      "total_after_usd": "0.064242",
+      "problem": null
+    },
+    {
+      "n": 4,
+      "source": "examples.yml #4",
+      "topic": "Exemptions",
+      "question": "Is the hire or lease of tractors used for farming exempt from VAT?",
+      "expected": null,
+      "wall_s": 11.1,
+      "entry_kind": "card",
+      "reference": "Q-2b9fa0d4",
+      "query_id": "2b9fa0d4-495c-4ffa-8f3a-011cb27c73ab",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "stage": null,
+        "record_id": "89f0a824-3398-4e19-8247-e026b5cce45f",
+        "flags": [],
+        "cost_usd": "0.009901",
+        "generation_cost_usd": "0.009009",
+        "verification_cost_usd": "0.000649",
+        "tagger_cost_usd": "0.000244",
+        "latency_ms": 10141,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "69cb4e3ccf12146c042d804df0b769464040641f205701623735d9be72d75df6"
+          }
+        ]
+      },
+      "record_id": "89f0a824-3398-4e19-8247-e026b5cce45f",
+      "status": "answered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.009901",
+      "total_after_usd": "0.074143",
+      "problem": null
+    },
+    {
+      "n": 5,
+      "source": "examples.yml #5",
+      "topic": "Definitions",
+      "question": "What does the Nigeria Tax Act mean by \"taxable supply\"?",
+      "expected": null,
+      "wall_s": 13.4,
+      "entry_kind": "card",
+      "reference": "Q-bbb63b82",
+      "query_id": "bbb63b82-5a42-4e04-85cc-4938bb655b13",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "stage": null,
+        "record_id": "40b8de15-cbbf-4e00-ae09-6dc56b6be8a9",
+        "flags": [],
+        "cost_usd": "0.011304",
+        "generation_cost_usd": "0.009945",
+        "verification_cost_usd": "0.001183",
+        "tagger_cost_usd": "0.000176",
+        "latency_ms": 11860,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "ca19175abf4b7a287d91a7639d64e90b36987ed015f76901dd8befeb7c6e957f"
+          }
+        ]
+      },
+      "record_id": "40b8de15-cbbf-4e00-ae09-6dc56b6be8a9",
+      "status": "answered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.011304",
+      "total_after_usd": "0.085447",
+      "problem": null
+    },
+    {
+      "n": 6,
+      "source": "examples.yml #6",
+      "topic": "Schedules",
+      "question": "Which kinds of assets does the First Schedule to the Nigeria Tax Act deal with for capital allowances?",
+      "expected": null,
+      "wall_s": 6.9,
+      "entry_kind": "card",
+      "reference": "Q-72833378",
+      "query_id": "72833378-c595-4ea7-b8e6-f776427297c0",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "not_covered",
+        "reason": null,
+        "stage": null,
+        "record_id": "24fa41c7-f3b3-429c-8f49-92a2a1d87fcd",
+        "flags": [],
+        "cost_usd": "0.009845",
+        "generation_cost_usd": "0.009579",
+        "verification_cost_usd": "0.000041",
+        "tagger_cost_usd": "0.000225",
+        "latency_ms": 5750,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "c6e12bd96f097d2f053bf3f59c47abdfeea29df19bb1f8cd40eb16d2afa86393"
+          }
+        ]
+      },
+      "record_id": "24fa41c7-f3b3-429c-8f49-92a2a1d87fcd",
+      "status": "not_covered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.009845",
+      "total_after_usd": "0.095292",
+      "problem": null
+    },
+    {
+      "n": 7,
+      "source": "examples.yml #7",
+      "topic": "Registration and returns",
+      "question": "Who must register with the tax authority and get a Tax ID?",
+      "expected": null,
+      "wall_s": 10.7,
+      "entry_kind": "card",
+      "reference": "Q-3a8fd25b",
+      "query_id": "3a8fd25b-084b-44a0-8e8f-ec7006970aaa",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "stage": null,
+        "record_id": "7d31166b-eea1-4339-8dcf-d2113cc0368b",
+        "flags": [],
+        "cost_usd": "0.011868",
+        "generation_cost_usd": "0.010349",
+        "verification_cost_usd": "0.001299",
+        "tagger_cost_usd": "0.000220",
+        "latency_ms": 9218,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "d11ef652d39e0677193308a921ce9bb9526484f2e9830a629e081e9f99aabebb"
+          }
+        ]
+      },
+      "record_id": "7d31166b-eea1-4339-8dcf-d2113cc0368b",
+      "status": "answered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.011868",
+      "total_after_usd": "0.107160",
+      "problem": null
+    },
+    {
+      "n": 8,
+      "source": "examples.yml #8",
+      "topic": "Assessment and objection",
+      "question": "If a company disagrees with a tax assessment, how can it object, and by when?",
+      "expected": null,
+      "wall_s": 15.8,
+      "entry_kind": "card",
+      "reference": "Q-48648f63",
+      "query_id": "48648f63-e872-497e-b483-7c2f54bdd90c",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "stage": null,
+        "record_id": "a98debb1-125a-4db6-a244-a828ea85120b",
+        "flags": [],
+        "cost_usd": "0.017588",
+        "generation_cost_usd": "0.014985",
+        "verification_cost_usd": "0.002391",
+        "tagger_cost_usd": "0.000211",
+        "latency_ms": 14592,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "6a03f0cee3bc7e1fa4476404c4227be73278276b28b45d969dc19cec85366e2f"
+          }
+        ]
+      },
+      "record_id": "a98debb1-125a-4db6-a244-a828ea85120b",
+      "status": "answered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.017588",
+      "total_after_usd": "0.124748",
+      "problem": null
+    },
+    {
+      "n": 9,
+      "source": "examples.yml #9",
+      "topic": "Payment and penalties",
+      "question": "What happens if a company pays its tax after the due date?",
+      "expected": null,
+      "wall_s": 21.5,
+      "entry_kind": "card",
+      "reference": "Q-4799467a",
+      "query_id": "4799467a-2358-4d9a-b214-5166b7885930",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "stage": null,
+        "record_id": "bcd66cc6-63f3-45ae-83c6-2ce6ec49c585",
+        "flags": [],
+        "cost_usd": "0.023500",
+        "generation_cost_usd": "0.020593",
+        "verification_cost_usd": "0.002698",
+        "tagger_cost_usd": "0.000209",
+        "latency_ms": 19984,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "6f5485eb0c56bc16184e9077b3213e71e21e617631a611393ad22456498da33c"
+          }
+        ]
+      },
+      "record_id": "bcd66cc6-63f3-45ae-83c6-2ce6ec49c585",
+      "status": "answered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.023500",
+      "total_after_usd": "0.148248",
+      "problem": null
+    },
+    {
+      "n": 10,
+      "source": "examples.yml #10",
+      "topic": "Calculation",
+      "question": "A company with gross turnover of ₦320 million had assessable profits of ₦47,350,000 for the year. How much development levy does it owe on those profits?",
+      "expected": null,
+      "wall_s": 8.3,
+      "entry_kind": "card",
+      "reference": "Q-970ec365",
+      "query_id": "970ec365-abdf-4611-8b1d-80c92cefe736",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "stage": null,
+        "record_id": "b7871449-7b02-41fb-89b6-6ca29163f8da",
+        "flags": [],
+        "cost_usd": "0.018223",
+        "generation_cost_usd": "0.017596",
+        "verification_cost_usd": "0.000409",
+        "tagger_cost_usd": "0.000218",
+        "latency_ms": 7500,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "bca9e6eb84d30f08e12c636f22a0abaf91666123bb60fea833c9f38273b9194d"
+          }
+        ]
+      },
+      "record_id": "b7871449-7b02-41fb-89b6-6ca29163f8da",
+      "status": "answered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.018223",
+      "total_after_usd": "0.166471",
+      "problem": null
+    },
+    {
+      "n": 11,
+      "source": "design Section 11",
+      "topic": "no_such_section",
+      "question": "What does Section 412 of the Nigeria Tax Act 2025 say?",
+      "expected": {
+        "status": "refused",
+        "reason": "no_such_section"
+      },
+      "wall_s": 3.7,
+      "entry_kind": "card",
+      "reference": "Q-e88f33ea",
+      "query_id": "e88f33ea-086d-4d03-92e3-239c0e36258f",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "refused",
+        "reason": "no_such_section",
+        "stage": "pre_check",
+        "record_id": "d6197d84-8826-4bd7-b07c-191837201ee6",
+        "flags": [],
+        "cost_usd": "0.000204",
+        "generation_cost_usd": "0.000000",
+        "verification_cost_usd": "0.000000",
+        "tagger_cost_usd": "0.000204",
+        "latency_ms": 2610,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "cebc889a4a513c70cde684f36953a00773252b1c9d0c450fe7e134275b988256"
+          }
+        ]
+      },
+      "record_id": "d6197d84-8826-4bd7-b07c-191837201ee6",
+      "status": "refused",
+      "refusal_reason": "no_such_section",
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.000204",
+      "total_after_usd": "0.166675",
+      "matches_expected": true,
+      "problem": null
+    },
+    {
+      "n": 12,
+      "source": "design Section 11",
+      "topic": "foreign_law",
+      "question": "What is the standard VAT rate in Botswana?",
+      "expected": {
+        "status": "refused",
+        "reason": "foreign_law"
+      },
+      "wall_s": 3.3,
+      "entry_kind": "card",
+      "reference": "Q-67c8ea25",
+      "query_id": "67c8ea25-f46a-4775-ba3e-92335effe933",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "refused",
+        "reason": "foreign_law",
+        "stage": "pre_check",
+        "record_id": "e9cab4f5-f865-46a9-bf84-29955bf0cd64",
+        "flags": [],
+        "cost_usd": "0.000213",
+        "generation_cost_usd": "0.000000",
+        "verification_cost_usd": "0.000000",
+        "tagger_cost_usd": "0.000213",
+        "latency_ms": 2202,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "5a279d0481427163449a3f8e70883f0ac11bb16fd18b7dae620ef77d6354cd0c"
+          }
+        ]
+      },
+      "record_id": "e9cab4f5-f865-46a9-bf84-29955bf0cd64",
+      "status": "refused",
+      "refusal_reason": "foreign_law",
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.000213",
+      "total_after_usd": "0.166888",
+      "matches_expected": true,
+      "problem": null
+    },
+    {
+      "n": 13,
+      "source": "design Section 11",
+      "topic": "low_relevance",
+      "question": "What is a good recipe for jollof rice?",
+      "expected": {
+        "status": "refused",
+        "reason": "low_relevance"
+      },
+      "wall_s": 3.4,
+      "entry_kind": "card",
+      "reference": "Q-7de5acb2",
+      "query_id": "7de5acb2-f355-4db2-a6c8-4ac9ff4879db",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "refused",
+        "reason": "low_relevance",
+        "stage": "relevance_floor",
+        "record_id": "2cadd12b-4c60-4573-ba93-15087cc1a530",
+        "flags": [],
+        "cost_usd": "0.000132",
+        "generation_cost_usd": "0.000000",
+        "verification_cost_usd": "0.000000",
+        "tagger_cost_usd": "0.000132",
+        "latency_ms": 2327,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "ed895e3922f95a046481b6317767b6342b7ad4ddc7441fe365b49e41ed3c552c"
+          }
+        ]
+      },
+      "record_id": "2cadd12b-4c60-4573-ba93-15087cc1a530",
+      "status": "refused",
+      "refusal_reason": "low_relevance",
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.000132",
+      "total_after_usd": "0.167020",
+      "matches_expected": true,
+      "problem": null
+    }
+  ],
+  "finished": "2026-11-12T20:54:46+00:00"
+}

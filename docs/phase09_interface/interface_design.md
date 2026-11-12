@@ -1214,3 +1214,129 @@ the same page.
 **Not done here (by design).** Step 8 (the capped live check) and step 9; the D-169 grant on the corpus
 tables (an owner-run step: `python\audit\grant_review.py --apply`); a login role for the reviewer and its
 password (Kene); sign-in and the hosted gate (Phase 11).
+
+### Live check (step 8)
+
+Run 2026-11-12 after Kene's go and the D-169 grant. No file under `python/`, `app/` (existing files) or
+`data/` changed. New files: `eval/interface/run_live_check.py`, `run_fault_injection.py`, `view_faults.py`,
+`results/live_check_v1.json`, `results/fault_cases_v1.json`, and `tests/test_app_live.py`.
+
+**Pre-flight (free).** The container was healthy on 5434; `migrate.py --check` exited 0; `has_table_privilege
+('taxy_review', 'public.corpus_chunks', 'SELECT')` was true; the start-up check gave an `app_starts` row with
+outcome `ok`; the free pre-check on the 13 questions gave no refusal for 1 to 10 and 13, `no_such_section` for
+11 and `foreign_law` for 12.
+
+**The 13 live questions** (`TAXY_DEPLOYMENT=local`, `app/main.py` under AppTest with the real services, a fresh
+page session each; the page's own card code wrote each `shown` delivery). The run is write-once in
+`live_check_v1.json`.
+
+| # | Reference | Status | Reason | Delivery | Cost (USD) | Running total |
+|---|---|---|---|---|---|---|
+| 1 | Q-9681c177 | answered | none | shown | 0.021994 | 0.021994 |
+| 2 | Q-65990e11 | answered | none | shown | 0.022217 | 0.044211 |
+| 3 | Q-53d294ba | answered | none | shown | 0.020031 | 0.064242 |
+| 4 | Q-2b9fa0d4 | answered | none | shown | 0.009901 | 0.074143 |
+| 5 | Q-bbb63b82 | answered | none | shown | 0.011304 | 0.085447 |
+| 6 | Q-72833378 | not_covered | none | shown | 0.009845 | 0.095292 |
+| 7 | Q-3a8fd25b | answered | none | shown | 0.011868 | 0.107160 |
+| 8 | Q-48648f63 | answered | none | shown | 0.017588 | 0.124748 |
+| 9 | Q-4799467a | answered | none | shown | 0.023500 | 0.148248 |
+| 10 | Q-970ec365 | answered | none | shown | 0.018223 | 0.166471 |
+| 11 | Q-e88f33ea | refused | no_such_section | shown | 0.000204 | 0.166675 |
+| 12 | Q-67c8ea25 | refused | foreign_law | shown | 0.000213 | 0.166888 |
+| 13 | Q-7de5acb2 | refused | low_relevance | shown | 0.000132 | 0.167020 |
+
+All 13 have a `final` row and a `shown` delivery (none `shown_plain`, so the parity check held on every card).
+Question 13 was refused at the relevance floor after the embedding call, as expected. Question 6 (the First
+Schedule question) came back `not_covered`; the gate does not force a status (Section 11).
+
+**The `api` test** (`tests/test_app_live.py`, `TAXY_RUN_API_TESTS=1`, run once): example 6 through the real
+service, reference **Q-519b2c2d**, `not_covered`, delivery `shown`, cost $0.009874 (cap $0.05), 1 passed in 18.6 s.
+Deviation: the test accepts `answered` or `not_covered` as a correct final row, because the same question was
+`not_covered` in the live check and the gate checks the log entry, not the answer.
+
+**Spend against the cap.** Live check $0.167020 plus the `api` test $0.009874 = **$0.176894** of the $0.40 cap
+(the sum of `total_cost_usd` over the 14 rows in `audit.queries`). The stop rule never fired. Cost is the
+pipeline's `total_cost_usd` (generation, verification and tagger); the query embedding call is not in it.
+
+**`compare_log.py`** on the 13 live references: 12 with 0 differences and **1 difference**, exit code 1:
+
+```
+Q-48648f63: 1 difference(s)
+  queries.total_cost_usd: database Decimal('0.017588') != record 0.017587
+13 query(ies) compared, 1 difference(s) in all
+```
+
+On the `api` test query (Q-519b2c2d): 0 differences. `--all-final` (14 queries): the same one difference.
+**Cause (checked, nothing changed):** the pipeline stores `total_cost_usd` as the rounded sum of the unrounded
+parts (0.017588); the record holds each part rounded to six places (generation 0.014985, verification 0.002391,
+tagger 0.000211), and `compare_log.py` sums those rounded parts (0.017587). The two differ by exactly one unit of
+the sixth decimal, and in floating point 0.017588 - 0.017587 is 1.0000000000000286e-06, just over the
+`TOLERANCE` of 1e-6. The stored figure is the more exact one; the row is not wrong, the check is too strict. The
+pass rule asks for zero differences, so this is reported as it came out, not hidden. Proposed fix: the
+cost-total check allows three units of the sixth decimal (one per rounded part) and `tests/test_review.py` gets
+a case for it; free, no rerun of any question.
+
+**Fault injection** (free, fake clients, no key, kept schema `audit_faults`, created by
+`migrate.py --schema audit_faults`; JSONL records in `logs/generation_faults/`; nothing written to `audit`).
+Each case ran through `app/main.py`:
+
+| Case | Reference | Section 9 says | What happened |
+|---|---|---|---|
+| Verifier outage | Q-dc2e1ce0 | `error` / `verification_unavailable`, the pipeline's text | row final, `error` / `verification_unavailable`, the card showed "The answer could not be checked, so it is not shown. Please try again later."; delivery `shown`; `compare_log.py` 0 differences |
+| Embedding failure | Q-65ec16a2 | `app_error`, `record_id` NULL, `ERROR_TEXT` and no exception text | row final, `app_error`, `record_id` NULL, `app_error` = `OSError: embedding service unreachable`; the page showed the error text and not the exception text; delivery `shown`; `compare_log.py` 0 differences (no record to compare) |
+| Close failure (twice) | Q-d5a1105c | row stays `received`, delivery `withheld_log_failure`, answer not shown | row `received`, delivery `withheld_log_failure`; the page showed the withheld text with the reference and not the answer text. `compare_log.py` names `queries.state: database 'received' != record 'final'`: expected, since the record is the answer that could not be logged |
+| UI timeout (wait set to 0.4 s) | Q-cb1dda3c | timeout text with the reference, delivery `ui_timeout`, the worker still finishes | the page showed the timeout text; the row was `received` with delivery `ui_timeout` at that moment and `final` / `answered` after the worker was released. `compare_log.py` names the missing `shown` delivery: expected, since nothing was shown |
+
+To look at them: the viewer, `.venv\Scripts\streamlit run eval\interface\view_faults.py` (it opens
+`app/review.py` unchanged on schema `audit_faults`; read only); a single query, `.venv\Scripts\python
+python\audit\show_query.py --schema audit_faults Q-dc2e1ce0`; the comparison, `.venv\Scripts\python
+python\audit\compare_log.py --schema audit_faults Q-dc2e1ce0`. The schema and the JSONL records are kept.
+
+**Free suite after the run:** 1764 passed, 30 skipped (the earlier 29 plus the new `api` test, which skips
+without `TAXY_RUN_API_TESTS=1`), 0 failed, in 523.6 s.
+
+**After the overseer's review (C-12, D-170; 2026-11-12).** The text above is kept as it was written; this
+part records what followed.
+
+- **C-12, the cost-total comparison (free).** `compare_log.py` now compares `queries.total_cost_usd` with its own
+  `TOTAL_COST_TOLERANCE = 2.5e-6`; every other field keeps `TOLERANCE = 1e-6`. Three tests were added to
+  `tests/test_review.py` (a 2e-6 total gap passes, a 3e-6 gap fails, a 2e-6 gap on `generation_cost_usd` still
+  fails). No audit row or record changed. `compare_log.py` on the 13 live references and on Q-519b2c2d now
+  reports **0 differences in all 14** (exit code 0), including Q-48648f63.
+- **D-170, the example 6 rerun.** Example 6 was `not_covered` in the live check (Q-72833378) and in the `api`
+  test (Q-519b2c2d); retrieval had missed Table I of the First Schedule. The question was replaced in
+  `app/examples.yml` with "Under the First Schedule to the Nigeria Tax Act, what capital allowance rate applies
+  to building expenditure?" (topic "Schedules"). **Gate (retrieval alone, embedding only):** the screen and the
+  free pre-check passed it, the relevance floor did not refuse, and the passages shown to the model were, in
+  order, P1 `nta2025:sch1:pt1:table1`, P2 `nta2025:sch1:pt1:para4-5`, P3 `nta2025:sch1:pt1:para23`, P4
+  `nta2025:sch1:pt1:para1:def:qualifying-capital-expenditure(j)`, P5 `nta2025:sch1:pt1:para13-14`, P6
+  `nta2025:sch1:pt1:para1:def:qualifying-capital-expenditure(a)-(d)` and P7 `nta2025:s202:def:building`, so
+  Table I was P1. **The rerun:** `run_live_check.py --rerun-example 6`, once, written to
+  `live_check_v1_rerun6.json` (`live_check_v1.json` is untouched): reference **Q-bea16f3e**, `answered`, delivery
+  `shown`, cost $0.024144 (its cap was $0.05). `compare_log.py` on Q-bea16f3e: 0 differences. Q-72833378 and
+  Q-519b2c2d stay in the log as valid records.
+- **Spend now:** $0.176894 (live check and `api` test) + $0.024144 (rerun) = **$0.201038 of the $0.40 cap**
+  (the sum of `total_cost_usd` over the 15 rows in `audit.queries`; the gate's one embedding call, a few
+  hundredths of a cent, is not in that figure).
+- **Tests:** `test_app.py` and `test_review.py` 112 passed (67 and 45); the full default suite 1766 passed, 30
+  skipped, 0 failed, in 487.5 s (the two new tests are the only change from 1764).
+
+**Step 9 exit-gate review (2026-11-12). Gate result: PASSED.**
+
+- **Overseer sample:** seed 20261113 drew positions 1, 3 and 13 of the 13 live questions: Q-9681c177,
+  Q-53d294ba and Q-7de5acb2. Items 1 to 8 of Section 11 were present and agreed with the JSONL records on all
+  three.
+- **Fault cases:** all four read in `audit_faults` (Q-dc2e1ce0, Q-65ec16a2, Q-d5a1105c, Q-cb1dda3c); each
+  behaves as Section 9 says.
+- **Kene's two references:** Q-bea16f3e (7 passages, 5 claims) and Q-4799467a (6 passages, 10 claims), opened in
+  the viewer. He confirmed that he can see what was retrieved and how each shown statement was checked.
+- **`compare_log.py`:** 15 compared, 0 differences.
+- **Phase spend:** $0.201038 of the $0.40 cap.
+- **Report wording:** after the review, the heading of report Section 4 reads "Retrieval (passages retrieved; no
+  model was called)" when no generator call was made (the request is null: pre-check and relevance-floor
+  refusals), and "Retrieval (passages shown to the model)" otherwise (`python/audit/report.py`, with a test in
+  `tests/test_review.py`). The viewer's own title for the section is unchanged.
+- **Note on the `low_relevance` question:** Section 11 calls it "embedding only", but the note tagger (Haiku) also
+  ran on it (Q-7de5acb2, $0.000132), and the log records that faithfully. The design text keeps its wording; this
+  note points to the record.

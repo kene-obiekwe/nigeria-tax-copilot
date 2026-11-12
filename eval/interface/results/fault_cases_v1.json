@@ -1,0 +1,113 @@
+{
+  "schema": "fault-cases/1",
+  "run": "2026-11-12T20:53:29+00:00",
+  "audit_schema": "audit_faults",
+  "jsonl_dir": "logs/generation_faults",
+  "paid_calls": 0,
+  "cases": [
+    {
+      "case": "verifier_outage",
+      "design": "Section 9: Verifier outage",
+      "reference": "Q-dc2e1ce0",
+      "expected": "status error / reason verification_unavailable; the card shows the pipeline's error text; delivery shown",
+      "card_status": "error",
+      "card_reason": "verification_unavailable",
+      "card_text_first_line": "The answer could not be checked, so it is not shown. Please try again later.",
+      "row": {
+        "query_id": "dc2e1ce0-05e8-4c38-9fa7-dddfcc982291",
+        "state": "final",
+        "status": "error",
+        "reason": "verification_unavailable",
+        "record_id": "ea6bce43-32d7-4f2a-97d3-396ece30eced",
+        "app_error": null,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "34e24f28897546148ef67a86137ff6a0b87855b9b010076a87e026497ac964b8"
+          }
+        ]
+      }
+    },
+    {
+      "case": "embedding_failure",
+      "design": "Section 9: Embedding or database failure inside generate()",
+      "reference": "Q-65ec16a2",
+      "expected": "status app_error, record_id NULL, app_error = exception type and message through redact(); user sees ERROR_TEXT + disclaimer, no exception text; delivery shown",
+      "card_status": "app_error",
+      "shows_error_text": true,
+      "exception_text_on_page": false,
+      "row": {
+        "query_id": "65ec16a2-44db-4cbc-9b0d-0e279a573d89",
+        "state": "final",
+        "status": "app_error",
+        "reason": null,
+        "record_id": null,
+        "app_error": "OSError: embedding service unreachable",
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "b67e9091a534561e2c7389d69a0b59723a200b50d5ee5656258ead170128e0e4"
+          }
+        ]
+      }
+    },
+    {
+      "case": "close_failure",
+      "design": "Section 9: Close fails twice",
+      "reference": "Q-d5a1105c",
+      "expected": "row stays received; delivery withheld_log_failure; user sees WITHHELD_TEXT with the reference; the answer text is not on the page",
+      "entry_kind": "message",
+      "withheld_text_shown": true,
+      "answer_text_on_page": false,
+      "row": {
+        "query_id": "d5a1105c-132c-402f-95fe-275f851d12a9",
+        "state": "received",
+        "status": null,
+        "reason": null,
+        "record_id": null,
+        "app_error": null,
+        "deliveries": [
+          {
+            "outcome": "withheld_log_failure",
+            "shown_sha256": null
+          }
+        ]
+      }
+    },
+    {
+      "case": "ui_timeout",
+      "design": "Section 9: UI wait over 120 s (wait shortened to 0.4 s for the test)",
+      "reference": "Q-cb1dda3c",
+      "expected": "the timeout text with the reference; delivery ui_timeout; the worker still finishes: row final",
+      "timeout_text_shown": true,
+      "row_at_timeout": {
+        "query_id": "cb1dda3c-e851-42c1-bdb6-943fa7acc40b",
+        "state": "received",
+        "status": null,
+        "reason": null,
+        "record_id": null,
+        "app_error": null,
+        "deliveries": [
+          {
+            "outcome": "ui_timeout",
+            "shown_sha256": null
+          }
+        ]
+      },
+      "row": {
+        "query_id": "cb1dda3c-e851-42c1-bdb6-943fa7acc40b",
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "record_id": "faace681-1e59-4f1d-a78b-ede78b2d6ea1",
+        "app_error": null,
+        "deliveries": [
+          {
+            "outcome": "ui_timeout",
+            "shown_sha256": null
+          }
+        ]
+      }
+    }
+  ]
+}

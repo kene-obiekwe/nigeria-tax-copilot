@@ -157,6 +157,17 @@ def test_every_status_gives_a_report_and_markdown(name, audit_db, tmp_path, monk
         assert "below" in report["checks"]["floor_line"]
 
 
+@pytest.mark.parametrize("name,called", [("answered_calc", True), ("verification_unavailable", True),
+                                         ("low_relevance", False), ("no_such_section", False),
+                                         ("foreign_law", False)])
+def test_section_4_title_says_whether_a_model_was_called(name, called, audit_db, tmp_path, monkeypatch):
+    query_id, _ = write_query(audit_db, tmp_path, monkeypatch, name)
+    md = rpt.render_markdown(report_of(audit_db, query_id))
+    shown = "## 4. Retrieval (passages shown to the model)"
+    none = "## 4. Retrieval (passages retrieved; no model was called)"
+    assert (shown in md, none in md) == ((True, False) if called else (False, True))
+
+
 # Finding a query ----------------------------------------------------------------------------------------------------
 
 
@@ -233,6 +244,35 @@ def test_compare_log_names_the_field_that_changed(audit_db, tmp_path, monkeypatc
     assert {"queries.rendered", "queries.rendered_sha256", "claims[1].verdict", "passages[P2].score",
             "computations[C1].shown", "gaps.count"} <= named
     assert all(isinstance(d.line(), str) and d.where in d.line() for d in compare_log.compare(data, changed))
+
+
+def test_compare_log_total_cost_has_its_own_tolerance_c12(audit_db, tmp_path, monkeypatch):
+    from decimal import Decimal
+    query_id, out = write_query(audit_db, tmp_path, monkeypatch, "answered_calc")
+    data = rpt.fetch_query(audit_db.conn, query_id, audit_db.names.schema)
+    record = copy.deepcopy(out.record)
+    assert compare_log.compare(data, record) == []
+    assert (compare_log.TOLERANCE, compare_log.TOTAL_COST_TOLERANCE) == (1e-6, 2.5e-6)
+
+    def total_gap(gap: str) -> list[str]:                  # the stored total moved by `gap` from the record's parts
+        moved = copy.deepcopy(data)
+        moved["query"]["total_cost_usd"] = data["query"]["total_cost_usd"] + Decimal(gap)
+        return [d.where for d in compare_log.compare(moved, record)]
+
+    assert total_gap("0.000002") == []                     # 2e-6: the rounding of three parts, passes (Q-48648f63 had 1e-6)
+    assert total_gap("0.000001") == []
+    assert total_gap("-0.000002") == []
+    assert total_gap("0.000003") == ["queries.total_cost_usd"]   # 3e-6: a real difference
+    assert total_gap("-0.000003") == ["queries.total_cost_usd"]
+
+
+def test_compare_log_a_part_cost_keeps_the_strict_tolerance_c12(audit_db, tmp_path, monkeypatch):
+    query_id, out = write_query(audit_db, tmp_path, monkeypatch, "answered_calc")
+    data = rpt.fetch_query(audit_db.conn, query_id, audit_db.names.schema)
+    changed = copy.deepcopy(out.record)
+    changed["tools"]["cost_usd"] = (changed["tools"]["cost_usd"] or 0.0) + 2e-6   # generation part off by 2e-6
+    named = [d.where for d in compare_log.compare(data, changed)]
+    assert named == ["queries.generation_cost_usd"]        # the part fails; the total (also 2e-6 off) is within 2.5e-6
 
 
 def test_compare_log_flags_a_missing_record_and_a_missing_delivery(audit_db, tmp_path, monkeypatch):

@@ -348,7 +348,12 @@ def render_markdown(report: dict) -> str:
     add(f"- Refusal: reason {_fmt(c['refusal']['reason'])}, stage {_fmt(c['refusal']['stage'])}, "
         f"text {_fmt(c['refusal']['text'])}")
 
-    add("\n## 4. Retrieval (passages shown to the model)")
+    # No generator call (pre-check or relevance-floor refusal: the request is null) means nothing was "shown to
+    # the model"; say what the passages are.
+    if report["header"]["models"]["generator"] is None:
+        add("\n## 4. Retrieval (passages retrieved; no model was called)")
+    else:
+        add("\n## 4. Retrieval (passages shown to the model)")
     if not report["corpus_text_available"]:
         add("- Chunk text is not available: the reviewer role cannot read the corpus tables (D-169 grant not applied).")
     if not report["passages"]:

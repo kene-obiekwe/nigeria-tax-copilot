@@ -1,0 +1,60 @@
+{
+  "schema": "live-check/1",
+  "mode": "rerun_example_6",
+  "started": "2026-11-12T21:16:03+00:00",
+  "deployment": "local",
+  "cap_usd": "0.40",
+  "next_question_margin_usd": "0.04",
+  "phase_spend_before_usd": "0.176894",
+  "rerun_cap_usd": "0.05",
+  "complete": true,
+  "stopped": null,
+  "total_usd": "0.024144",
+  "results": [
+    {
+      "n": 6,
+      "source": "examples.yml #6",
+      "topic": "Schedules",
+      "question": "Under the First Schedule to the Nigeria Tax Act, what capital allowance rate applies to building expenditure?",
+      "expected": null,
+      "wall_s": 22.2,
+      "entry_kind": "card",
+      "reference": "Q-bea16f3e",
+      "query_id": "bea16f3e-58f2-42c4-a829-f48814b0c3b6",
+      "ui_fallback": false,
+      "row": {
+        "found": true,
+        "state": "final",
+        "status": "answered",
+        "reason": null,
+        "stage": null,
+        "record_id": "cdc5d0e7-bc7e-47c6-a143-0bde3b59f9e4",
+        "flags": [],
+        "cost_usd": "0.024144",
+        "generation_cost_usd": "0.021049",
+        "verification_cost_usd": "0.002247",
+        "tagger_cost_usd": "0.000848",
+        "latency_ms": 19031,
+        "deliveries": [
+          {
+            "outcome": "shown",
+            "shown_sha256": "25c1baff6305f21fe6186c20305b52038873ae64ab535da051e7070e8eb21074"
+          }
+        ]
+      },
+      "record_id": "cdc5d0e7-bc7e-47c6-a143-0bde3b59f9e4",
+      "status": "answered",
+      "refusal_reason": null,
+      "delivery": [
+        "shown"
+      ],
+      "cost_usd": "0.024144",
+      "total_after_usd": "0.024144",
+      "phase_total_usd": "0.201038",
+      "over_rerun_cap": false,
+      "problem": null
+    }
+  ],
+  "finished": "2026-11-12T21:16:26+00:00",
+  "phase_total_usd": "0.201038"
+}

@@ -38,6 +38,10 @@ from audit.store import reference  # noqa: E402
 from generation.audit_log import LOG_DIR, read_records  # noqa: E402
 
 TOLERANCE = 1e-6
+# C-12: the record holds three cost parts, each rounded to 6 places, so their sum can differ from the stored
+# round(total, 6) by up to 2e-6 (0.5e-6 per part plus 0.5e-6 for the total), plus float slack. Only the total
+# gets this tolerance; every other field keeps TOLERANCE.
+TOTAL_COST_TOLERANCE = 2.5e-6
 
 
 @dataclass(frozen=True)
@@ -78,15 +82,15 @@ def _norm(value):
     return value
 
 
-def same(stored, expected) -> bool:
+def same(stored, expected, tolerance: float = TOLERANCE) -> bool:
     stored, expected = _norm(stored), _norm(expected)
     if isinstance(stored, (int, float)) and isinstance(expected, (int, float)) and not isinstance(stored, bool) \
             and not isinstance(expected, bool):
-        return abs(stored - expected) <= TOLERANCE
+        return abs(stored - expected) <= tolerance
     if isinstance(stored, dict) and isinstance(expected, dict):
-        return stored.keys() == expected.keys() and all(same(stored[k], expected[k]) for k in stored)
+        return stored.keys() == expected.keys() and all(same(stored[k], expected[k], tolerance) for k in stored)
     if isinstance(stored, list) and isinstance(expected, list):
-        return len(stored) == len(expected) and all(same(a, b) for a, b in zip(stored, expected))
+        return len(stored) == len(expected) and all(same(a, b, tolerance) for a, b in zip(stored, expected))
     return stored == expected
 
 
@@ -189,8 +193,8 @@ def compare(data: dict, record: dict | None) -> list[Diff]:
         return [Diff("record", "no JSONL record with this record_id", "a gen-log/3 record")]
     diffs: list[Diff] = []
 
-    def check(where, stored, expected):
-        if not same(stored, expected):
+    def check(where, stored, expected, tolerance: float = TOLERANCE):
+        if not same(stored, expected, tolerance):
             diffs.append(Diff(where, stored, expected))
 
     status = expected_status(record)
@@ -199,7 +203,7 @@ def compare(data: dict, record: dict | None) -> list[Diff]:
         check(f"queries.{key}", q[key], value)
     check("queries.total_cost_usd", q["total_cost_usd"], _sum(expected["generation_cost_usd"],
                                                               expected["verification_cost_usd"],
-                                                              expected["tagger_cost_usd"]))
+                                                              expected["tagger_cost_usd"]), TOTAL_COST_TOLERANCE)
     check("queries.state", q["state"], "final")
 
     claims = proj._claims(record.get("verification"), status)
