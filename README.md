@@ -4,6 +4,14 @@
 > substitute for a licensed tax professional. It must not be used for an actual filing or
 > compliance decision. It holds **no real taxpayer data**; all test scenarios use synthetic figures.
 
+> **Evaluation (gate G3, passed 2026-11-12).** On a held-out end-to-end set of 90 cases, run twice with
+> the shipped configuration, both runs met every threshold: groundedness 244 of 244 and 245 of 245
+> shown items supported (threshold 95%); citation accuracy 246 of 246 and 245 of 245 (95%); 0 of 40
+> must-refuse cases answered in each run; false refusals 1 of 50 in each run (at most 5 of 50).
+> Judged by a calibrated model session, not an independent person, on a small set; personal income
+> tax is out of scope. Method, intervals and limitations:
+> [evaluation report](docs/phase08_evaluation/evaluation_report.md).
+
 A grounded retrieval-augmented generation (RAG) system over Nigerian tax statutes, aimed at
 questions from small and medium enterprises. It retrieves the relevant statutory passages first,
 answers only from those passages with section-level citations, verifies each claim against the

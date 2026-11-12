@@ -1,0 +1,189 @@
+{
+ "gate": "G3",
+ "decision": "D-149",
+ "date": "2026-11-12",
+ "records": {
+  "commit_runs": "8ff3b16",
+  "commit_reviews": "bd59e73",
+  "sha256": {
+   "e2e_run1.json": "de4bafb44c07226f06532b794eb59621b6950b6941e4dc7631195b778fc491ee",
+   "e2e_run2.json": "94e6f68501f89c77837aff4156c174457bf136713fefa420b145119fbff752b4",
+   "e2e_run1_review.json": "c2ac8ba739f87fd704bd029d7c6eddc9bd7c758e0e9a60d13ac52da84bea8714",
+   "e2e_run2_review.json": "4741b919fab094360eb4f1e0007b77653aa76d7b6b9abdec3551eecdaee70af7",
+   "e2e_run1_scores.json": "dce44cd79e025a8ad9146458121a5a499530f32dec51587da9179ed8e9e6113c",
+   "e2e_run2_scores.json": "53c2bcd8592a42393eeebed2de2760432207b3ee9a279cc4f2c2627e814b8841",
+   "g3_result.json": "b3ba66dd250481f79b15c4dc9ef19e4ce8382a60ae252b47c6f704812dd23938"
+  }
+ },
+ "reviewer": "Phase 8 run session (one reviewer named in both review files; blind calibration D-148)",
+ "overseer_check": {
+  "design": "evaluation design Section 4.1 point 3",
+  "method": "seeded random 10% of the shown claims, read against the text of the cited chunks",
+  "claims_per_run": 24,
+  "seed_rule": "20261112 + run number",
+  "sample_keys_status": "RECONSTRUCTED by the report session, not supplied by the overseer: random.Random(20261112 + run).sample(claim keys in review-file order, 24). The overseer's own key lists were not in the report prompt; the overseer should confirm or replace them.",
+  "sample_keys": {
+   "run1": [
+    "Q036:claim:2",
+    "Q031:claim:5",
+    "N10:claim:2",
+    "N14:claim:1",
+    "Q037:claim:7",
+    "Q012:claim:1",
+    "Q031:claim:3",
+    "Q038:claim:6",
+    "Q028:claim:1",
+    "Q016:claim:2",
+    "Q040:claim:4",
+    "Q022:claim:3",
+    "Q002:claim:7",
+    "Q049:claim:1",
+    "Q008:claim:1",
+    "Q048:claim:6",
+    "Q013:claim:2",
+    "Q048:claim:18",
+    "Q005:claim:1",
+    "Q002:claim:2",
+    "N12:claim:1",
+    "Q042:claim:8",
+    "Q031:claim:4",
+    "Q012:claim:5"
+   ],
+   "run2": [
+    "Q028:claim:1",
+    "N04:claim:2",
+    "Q048:claim:3",
+    "Q048:claim:12",
+    "Q038:claim:6",
+    "Q042:claim:6",
+    "Q009:claim:4",
+    "Q013:claim:6",
+    "Q042:claim:4",
+    "Q031:claim:7",
+    "Q049:claim:6",
+    "Q027:claim:1",
+    "Q006:claim:2",
+    "N04:claim:1",
+    "Q049:claim:4",
+    "N11:claim:4",
+    "N14:claim:1",
+    "Q001:claim:2",
+    "Q006:claim:3",
+    "Q049:claim:1",
+    "N10:claim:3",
+    "N20:claim:2",
+    "Q012:claim:3",
+    "Q045:claim:2"
+   ]
+  },
+  "result": {
+   "run1": "24 of 24 agree",
+   "run2": "24 of 24 agree",
+   "total": "48 of 48 agree"
+  },
+  "close_calls": [
+   {
+    "run": 2,
+    "item": "Q009 claim 2",
+    "summary": "The opening words of Section 34(1) ('Subject to exemptions ... Part I of Chapter Eight') are read as covering the share-disposal proviso inside the subsection; no outcome changes. Overseer agrees."
+   },
+   {
+    "run": 2,
+    "item": "N08 claim 7",
+    "summary": "First Schedule Part I paragraph 15(3) ('for this purpose' follows the paragraph 15 lease rule in claim 4). Overseer agrees."
+   },
+   {
+    "run": 1,
+    "item": "N17 gap 1",
+    "summary": "Mostly about the tool not calculating; its last sentence states how the levy is found (rate applied to assessable profits), backed by shown passage Section 59(1). Counted as a gap stating law, supported. Overseer agrees."
+   },
+   {
+    "run": 2,
+    "item": "Q024 gap 2",
+    "summary": "States that the NTAA Section 147 'small business' limits differ from the 'small company' limits; both definitions are shown. Counted as a gap stating law, supported. Overseer agrees."
+   }
+  ],
+  "other_notes": [
+   "Q028 claim 1 omits the permanent-establishment proviso but claim 2 states it."
+  ],
+  "gaps_judged_not_stating_law": {
+   "sampled": 16,
+   "agree": 16,
+   "note": "Q032 gap 'table prints no exempted products' is literally true: the chunk shows '(none printed)'."
+  },
+  "adjudications": 0,
+  "also_read_by_overseer": "every R case (0 answered in both runs; exact status match 34 of 40), every false refusal (N05 in both runs) and every item the reviewer judged not supported (none)."
+ },
+ "kene_spot_check": {
+  "design": "evaluation design Section 4.1 point 4",
+  "date": "2026-11-12",
+  "cases_total": 10,
+  "confirmed": 10,
+  "guide": "read the question, what the system showed and the law text; confirm the verdict",
+  "cases": [
+   {
+    "run": 1,
+    "id": "N15",
+    "kind": "answered, calculation",
+    "confirmed": true
+   },
+   {
+    "run": 1,
+    "id": "Q028",
+    "kind": "answered",
+    "confirmed": true
+   },
+   {
+    "run": 1,
+    "id": "Q049",
+    "kind": "answered",
+    "confirmed": true
+   },
+   {
+    "run": 1,
+    "id": "N05",
+    "kind": "false refusal (retrieval miss: Section 163(1)(r) not retrieved)",
+    "confirmed": true
+   },
+   {
+    "run": 1,
+    "id": "R21",
+    "kind": "correct refusal (foreign_law)",
+    "confirmed": true
+   },
+   {
+    "run": 2,
+    "id": "N16",
+    "kind": "answered, calculation",
+    "confirmed": true
+   },
+   {
+    "run": 2,
+    "id": "Q009",
+    "kind": "answered",
+    "confirmed": true
+   },
+   {
+    "run": 2,
+    "id": "N12",
+    "kind": "answered",
+    "confirmed": true
+   },
+   {
+    "run": 2,
+    "id": "R07",
+    "kind": "correct decline (section_outside_v1)",
+    "confirmed": true,
+    "first_questioned": true
+   },
+   {
+    "run": 2,
+    "id": "R13",
+    "kind": "correct decline (personal income tax, not_covered)",
+    "confirmed": true,
+    "first_questioned": true
+   }
+  ],
+  "r07_r13_record": "Kene first questioned R07 and R13: an outside AI model had judged them against the whole Act. The overseer then showed that Section 13, Section 58 and the Fourth Schedule are outside the v1 corpus (D-10, D-64; the v1 corpus definition). Kene confirmed both as correct declines."
+ }
+}

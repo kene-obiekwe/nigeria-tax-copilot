@@ -1,0 +1,61 @@
+{
+ "gate": "G3",
+ "rule": "D-137: each run must meet (a) to (d) on its own",
+ "runs": {
+  "1": {
+   "pass": {
+    "a": true,
+    "b": true,
+    "c": true,
+    "d": true
+   },
+   "g3_run_pass": true
+  },
+  "2": {
+   "pass": {
+    "a": true,
+    "b": true,
+    "c": true,
+    "d": true
+   },
+   "g3_run_pass": true
+  }
+ },
+ "pooled": {
+  "a": {
+   "supported": 489,
+   "total": 489,
+   "rate": 1.0,
+   "wilson": [
+    0.992205,
+    1.0
+   ]
+  },
+  "b": {
+   "accurate": 491,
+   "total": 491,
+   "rate": 1.0,
+   "wilson": [
+    0.992237,
+    1.0
+   ]
+  },
+  "c": {
+   "cases": 80,
+   "failed": 0,
+   "wilson": [
+    -0.0,
+    0.04582
+   ]
+  },
+  "d": {
+   "cases": 100,
+   "false_refusals": 2,
+   "wilson": [
+    0.005502,
+    0.070013
+   ]
+  }
+ },
+ "verdict": "pass"
+}

@@ -1,0 +1,4726 @@
+{
+ "run": 1,
+ "rerun_after_void": false,
+ "reviewer": "Phase 8 run session",
+ "thresholds": "D-134 with D-137 (each run on its own) and D-139",
+ "a": {
+  "supported": 244,
+  "total": 244,
+  "rate": 1.0,
+  "wilson": [
+   0.9845,
+   1.0
+  ],
+  "threshold": 0.95,
+  "pass": true,
+  "by_subset": {
+   "N": {
+    "count": 86,
+    "total": 86,
+    "rate": 1.0,
+    "wilson": [
+     0.95724,
+     1.0
+    ]
+   },
+   "T": {
+    "count": 158,
+    "total": 158,
+    "rate": 1.0,
+    "wilson": [
+     0.976263,
+     1.0
+    ]
+   }
+  },
+  "bootstrap": [
+   1.0,
+   1.0
+  ],
+  "support_not_cited": []
+ },
+ "b": {
+  "accurate": 246,
+  "total": 246,
+  "rate": 1.0,
+  "wilson": [
+   0.984624,
+   1.0
+  ],
+  "threshold": 0.95,
+  "pass": true,
+  "by_subset": {
+   "N": {
+    "count": 87,
+    "total": 87,
+    "rate": 1.0,
+    "wilson": [
+     0.957711,
+     1.0
+    ]
+   },
+   "T": {
+    "count": 159,
+    "total": 159,
+    "rate": 1.0,
+    "wilson": [
+     0.976409,
+     1.0
+    ]
+   }
+  },
+  "bootstrap": [
+   1.0,
+   1.0
+  ]
+ },
+ "c": {
+  "cases": 40,
+  "failed": 0,
+  "failed_ids": [],
+  "rate": 0.0,
+  "wilson": [
+   -0.0,
+   0.087625
+  ],
+  "pass": true,
+  "error_cases": [],
+  "exact_status_match": 34,
+  "by_category": {
+   "R1": {
+    "cases": 6,
+    "failed": 0
+   },
+   "R2": {
+    "cases": 6,
+    "failed": 0
+   },
+   "R3": {
+    "cases": 8,
+    "failed": 0
+   },
+   "R4": {
+    "cases": 6,
+    "failed": 0
+   },
+   "R5": {
+    "cases": 6,
+    "failed": 0
+   },
+   "R6": {
+    "cases": 8,
+    "failed": 0
+   }
+  },
+  "reason_classes": {
+   "foreign_law": 3,
+   "low_relevance": 7,
+   "no_such_section": 3,
+   "not_covered": 20,
+   "section_outside_v1": 7
+  }
+ },
+ "d": {
+  "cases": 50,
+  "false_refusals": 1,
+  "ids": [
+   "N05"
+  ],
+  "causes": {
+   "N05": {
+    "status": "not_covered",
+    "refusal_reason": null
+   }
+  },
+  "rate": 0.02,
+  "wilson": [
+   0.003539,
+   0.104957
+  ],
+  "threshold": 0.1,
+  "pass": true,
+  "by_subset": {
+   "T": {
+    "cases": 30,
+    "false_refusals": 0,
+    "wilson": [
+     -0.0,
+     0.113517
+    ]
+   },
+   "N": {
+    "cases": 20,
+    "false_refusals": 1,
+    "wilson": [
+     0.008881,
+     0.236136
+    ]
+   }
+  }
+ },
+ "reviewer_own": {
+  "a": {
+   "supported": 244,
+   "total": 244,
+   "rate": 1.0,
+   "wilson": [
+    0.9845,
+    1.0
+   ],
+   "threshold": 0.95,
+   "pass": true,
+   "by_subset": {
+    "N": {
+     "count": 86,
+     "total": 86,
+     "rate": 1.0,
+     "wilson": [
+      0.95724,
+      1.0
+     ]
+    },
+    "T": {
+     "count": 158,
+     "total": 158,
+     "rate": 1.0,
+     "wilson": [
+      0.976263,
+      1.0
+     ]
+    }
+   },
+   "support_not_cited": []
+  },
+  "b": {
+   "accurate": 246,
+   "total": 246,
+   "rate": 1.0,
+   "wilson": [
+    0.984624,
+    1.0
+   ],
+   "threshold": 0.95,
+   "pass": true,
+   "by_subset": {
+    "N": {
+     "count": 87,
+     "total": 87,
+     "rate": 1.0,
+     "wilson": [
+      0.957711,
+      1.0
+     ]
+    },
+    "T": {
+     "count": 159,
+     "total": 159,
+     "rate": 1.0,
+     "wilson": [
+      0.976409,
+      1.0
+     ]
+    }
+   }
+  }
+ },
+ "adjudicated_items": [],
+ "pass": {
+  "a": true,
+  "b": true,
+  "c": true,
+  "d": true
+ },
+ "g3_run_pass": true,
+ "reported": {
+  "hit_at_5": {
+   "T": {
+    "cases": 30,
+    "hit@5": 30,
+    "hit_any_shown": 30
+   },
+   "N": {
+    "cases": 20,
+    "hit@5": 19,
+    "hit_any_shown": 19
+   }
+  },
+  "citation_recall": {
+   "answered": 49,
+   "citing_expected_or_acceptable": 49
+  },
+  "usefulness": {
+   "claims_removed": 4,
+   "claims_moved": 6,
+   "answered": 49
+  },
+  "notes": {
+   "required": 0,
+   "required_shown": 0,
+   "shown_not_required": 4
+  },
+  "disclaimer_at_end": {
+   "answered": 49,
+   "present": 49
+  },
+  "answer_coverage": {
+   "Q031": {
+    "key_points_stated": [
+     1,
+     2,
+     3
+    ],
+    "key_points_total": 3,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 5, KP2 by claim 3, KP3 by claim 6. Claim 2 gives the general 7.5% rate subject to Part IV, not a settled rule for petrol and gas."
+   },
+   "Q002": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 3, KP2 by claim 1."
+   },
+   "Q008": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1; nothing says the expense stays deductible."
+   },
+   "Q028": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by claim 2; the answer does not say the branch service counts as exported."
+   },
+   "N02": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 3; six years stated; nothing says pre-trading costs can never be deducted."
+   },
+   "Q022": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 3 (10% of profit before tax), KP2 by claims 1 and 2."
+   },
+   "Q013": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claims 2 to 4, KP2 by claim 1; claim 5 says the invoice is issued whether or not payment is made."
+   },
+   "N14": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claims 1 to 6."
+   },
+   "N18": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by computed item C1; no interest figure given."
+   },
+   "Q036": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 2."
+   },
+   "Q032": {
+    "key_points_stated": [],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": false,
+    "reason": "KP1 only in part: crop production and cocoa processing are stated, but livestock, livestock processing, forestry and dairy are not. KP2 (five-year exemption) is not stated."
+   },
+   "N01": {
+    "key_points_stated": [
+     1,
+     2,
+     3
+    ],
+    "key_points_total": 3,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by claim 2, KP3 by claim 4 (three years)."
+   },
+   "N04": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 and KP2 by claim 1; the answer does not say VAT is on the price alone."
+   },
+   "Q024": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by claim 2. Claim 4 presents the NTAA small business limit as a separate definition, not as the small company test."
+   },
+   "N03": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by claim 2."
+   },
+   "Q046": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claims 1 to 3, KP2 by claim 4."
+   },
+   "Q017": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 2 (with the registration proviso), KP2 by claim 3; nothing says VAT applies without condition."
+   },
+   "N12": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1; the late-remittance penalty is not given as the answer."
+   },
+   "Q005": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1; each company's share taxed separately, not the venture as one taxpayer."
+   },
+   "Q011": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 2, KP2 by claim 4; no time limit or carry-back stated."
+   },
+   "Q037": {
+    "key_points_stated": [
+     1,
+     2,
+     3
+    ],
+    "key_points_total": 3,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 2, KP2 by claims 3 and 4, KP3 by claim 5; the ₦50,000,000 small company limit is not used as the test."
+   },
+   "N13": {
+    "key_points_stated": [
+     1,
+     2,
+     3
+    ],
+    "key_points_total": 3,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 2, KP2 by claim 1, KP3 by claim 3; no 30-day VAT period given."
+   },
+   "Q049": {
+    "key_points_stated": [
+     1,
+     2,
+     3
+    ],
+    "key_points_total": 3,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1 (two weeks), KP2 by claims 3 and 4, KP3 by claim 5."
+   },
+   "N09": {
+    "key_points_stated": [
+     1,
+     2,
+     3
+    ],
+    "key_points_total": 3,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by claim 2, KP3 by claim 3; the deregistration rule is not applied."
+   },
+   "Q038": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by claim 2."
+   },
+   "Q042": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 2, KP2 by claim 3; the only numeric interest element (10% plus SOFR) is stated by the text."
+   },
+   "Q016": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by claim 3."
+   },
+   "Q020": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1 (five years)."
+   },
+   "Q048": {
+    "key_points_stated": [
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "key_points_total": 5,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by claims 2, 3, 5 and 6, KP3 by claims 8 and 10, KP4 by claim 15, KP5 by claims 17 and 18."
+   },
+   "N20": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by computed item C1 (₦290,000); no interest figure given."
+   },
+   "N17": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": false,
+    "reason": "KP1 by claim 1. KP2 (₦2,900,000) is not stated: no computed item is shown."
+   },
+   "N16": {
+    "key_points_stated": [
+     1,
+     2,
+     3
+    ],
+    "key_points_total": 3,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 3 with the small-company test in C1's working, KP2 by claim 2, KP3 by C1 (₦13,500,000); 0% not applied; no levy added."
+   },
+   "Q012": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1 (whichever occurs first)."
+   },
+   "N08": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 3 (instalments paid, interest excluded), KP2 by claims 1 and 4."
+   },
+   "N07": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1 (crypto assets and NFTs included)."
+   },
+   "N11": {
+    "key_points_stated": [
+     1,
+     2,
+     4
+    ],
+    "key_points_total": 4,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": false,
+    "reason": "KP1 by claim 1, KP2 by claim 2, KP4 by claim 3. KP3 only in part: grounds (iii) to (v) are stated, but the disputed issues with their monetary values and the amendment required are not."
+   },
+   "Q009": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": false,
+    "reason": "KP1 by claim 1. KP2 not stated: the answer does not apply the thresholds to the ₦80 million and ₦5 million figures (gap 2 leaves it open)."
+   },
+   "Q045": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claims 1 to 3 (amount, 10% a year, CBN monetary policy rate interest); no 40% penalty stated."
+   },
+   "Q027": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1."
+   },
+   "N19": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claims 2 and 3, KP2 by computed item C1 (₦300,000); no ₦50,000/₦25,000 registration amounts; ₦100,000 not charged every month."
+   },
+   "Q021": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claims 1 and 2 (exempt except trade or business profits); trading profits not said to be exempt."
+   },
+   "N06": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claims 1 and 2 (interest and rents included), KP2 by claim 3."
+   },
+   "N10": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1 (18 months or six months after the first accounting period, whichever is earlier); the more-than-18-months rule is given alongside it, not as the only rule."
+   },
+   "Q006": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1 (salaries deductible as expenses wholly and exclusively incurred)."
+   },
+   "N15": {
+    "key_points_stated": [
+     1,
+     2,
+     3
+    ],
+    "key_points_total": 3,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1, KP2 by claim 2 applied in C1's working (x 7.5 / 107.5); the ₦800,000 value itself is not written out, counted as stated in substance. KP3 by C1 (₦60,000). ₦64,500 not given."
+   },
+   "Q033": {
+    "key_points_stated": [
+     1,
+     2
+    ],
+    "key_points_total": 2,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1 (30 days), KP2 by claim 2."
+   },
+   "Q001": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1 (30% of total profits); no other rate and no medium-company rate stated."
+   },
+   "Q040": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 1 (90 days, else upheld). Appeal (claim 5) is tied to invalidity or disagreement, not to the missing reply, so MUST_NOT1 is not stated."
+   },
+   "Q023": {
+    "key_points_stated": [
+     1
+    ],
+    "key_points_total": 1,
+    "must_not_stated": [],
+    "omitted_proviso": false,
+    "answer_correct": true,
+    "reason": "KP1 by claim 2 (5% of turnover)."
+   }
+  },
+  "latency_s": {
+   "all": {
+    "n": 90,
+    "mean": 8.200778,
+    "median": 8.254,
+    "p90": 12.96,
+    "max": 46.772
+   },
+   "by_status": {
+    "answered": {
+     "n": 49,
+     "mean": 11.876449,
+     "median": 10.557,
+     "p90": 15.141,
+     "max": 46.772
+    },
+    "not_covered": {
+     "n": 21,
+     "mean": 5.486143,
+     "median": 5.45,
+     "p90": 6.013,
+     "max": 10.07
+    },
+    "refused": {
+     "n": 20,
+     "mean": 2.04575,
+     "median": 1.927,
+     "p90": 2.624,
+     "max": 3.208
+    }
+   }
+  },
+  "cost_usd": {
+   "all": {
+    "n": 90,
+    "mean": 0.009086,
+    "median": 0.009039,
+    "p90": 0.016385,
+    "max": 0.025857
+   },
+   "total": 0.817714,
+   "by_status": {
+    "answered": {
+     "n": 49,
+     "mean": 0.013472,
+     "median": 0.012963,
+     "p90": 0.018163,
+     "max": 0.025857
+    },
+    "not_covered": {
+     "n": 21,
+     "mean": 0.007335,
+     "median": 0.00706,
+     "p90": 0.008073,
+     "max": 0.016305
+    },
+    "refused": {
+     "n": 20,
+     "mean": 0.000179,
+     "median": 0.000177,
+     "p90": 0.000216,
+     "max": 0.000277
+    }
+   },
+   "by_subset": {
+    "T": {
+     "n": 30,
+     "mean": 0.012903,
+     "median": 0.012713,
+     "p90": 0.015795,
+     "max": 0.025857
+    },
+    "N": {
+     "n": 20,
+     "mean": 0.01404,
+     "median": 0.013036,
+     "p90": 0.018163,
+     "max": 0.021527
+    },
+    "R": {
+     "n": 40,
+     "mean": 0.003746,
+     "median": 0.002033,
+     "p90": 0.007688,
+     "max": 0.016305
+    }
+   }
+  }
+ },
+ "items": [
+  {
+   "key": "Q031:claim:1",
+   "kind": "claim",
+   "case": "Q031",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s145": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q031:claim:2",
+   "kind": "claim",
+   "case": "Q031",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s148": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q031:claim:3",
+   "kind": "claim",
+   "case": "Q031",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s186": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q031:claim:4",
+   "kind": "claim",
+   "case": "Q031",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch11": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q031:claim:5",
+   "kind": "claim",
+   "case": "Q031",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch11": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q031:claim:6",
+   "kind": "claim",
+   "case": "Q031",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch11": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q031:gap:1",
+   "kind": "gap",
+   "case": "Q031",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q031:gap:2",
+   "kind": "gap",
+   "case": "Q031",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q031:gap:3",
+   "kind": "gap",
+   "case": "Q031",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q002:claim:1",
+   "kind": "claim",
+   "case": "Q002",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s57": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q002:claim:2",
+   "kind": "claim",
+   "case": "Q002",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s57": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q002:claim:3",
+   "kind": "claim",
+   "case": "Q002",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s57": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q002:claim:4",
+   "kind": "claim",
+   "case": "Q002",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s57": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q002:claim:5",
+   "kind": "claim",
+   "case": "Q002",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:aggregate-covered-tax-paid": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q002:claim:6",
+   "kind": "claim",
+   "case": "Q002",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s57": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q002:claim:7",
+   "kind": "claim",
+   "case": "Q002",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:minimum-effective-tax-rate": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q002:gap:1",
+   "kind": "gap",
+   "case": "Q002",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q002:gap:2",
+   "kind": "gap",
+   "case": "Q002",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q002:gap:3",
+   "kind": "gap",
+   "case": "Q002",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q008:claim:1",
+   "kind": "claim",
+   "case": "Q008",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s21(p)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q008:claim:2",
+   "kind": "claim",
+   "case": "Q008",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s155": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q008:claim:3",
+   "kind": "claim",
+   "case": "Q008",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s155": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q008:gap:1",
+   "kind": "gap",
+   "case": "Q008",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q008:gap:2",
+   "kind": "gap",
+   "case": "Q008",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q008:gap:3",
+   "kind": "gap",
+   "case": "Q008",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q028:claim:1",
+   "kind": "claim",
+   "case": "Q028",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:exported-service": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q028:claim:2",
+   "kind": "claim",
+   "case": "Q028",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:exported-service": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q028:gap:1",
+   "kind": "gap",
+   "case": "Q028",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q028:gap:2",
+   "kind": "gap",
+   "case": "Q028",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N02:claim:1",
+   "kind": "claim",
+   "case": "N02",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N02:claim:2",
+   "kind": "claim",
+   "case": "N02",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s20(1)(i)-(m)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N02:claim:3",
+   "kind": "claim",
+   "case": "N02",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s20(1)(i)-(m)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N02:claim:4",
+   "kind": "claim",
+   "case": "N02",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N02:gap:1",
+   "kind": "gap",
+   "case": "N02",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N02:gap:2",
+   "kind": "gap",
+   "case": "N02",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N02:gap:3",
+   "kind": "gap",
+   "case": "N02",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q022:claim:1",
+   "kind": "claim",
+   "case": "Q022",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s164": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q022:claim:2",
+   "kind": "claim",
+   "case": "Q022",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s164": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q022:claim:3",
+   "kind": "claim",
+   "case": "Q022",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s164": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q022:claim:4",
+   "kind": "claim",
+   "case": "Q022",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s164": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q022:claim:5",
+   "kind": "claim",
+   "case": "Q022",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s164": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q022:gap:1",
+   "kind": "gap",
+   "case": "Q022",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q013:claim:1",
+   "kind": "claim",
+   "case": "Q013",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s153": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q013:claim:2",
+   "kind": "claim",
+   "case": "Q013",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s153": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q013:claim:3",
+   "kind": "claim",
+   "case": "Q013",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s153": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q013:claim:4",
+   "kind": "claim",
+   "case": "Q013",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s153": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q013:claim:5",
+   "kind": "claim",
+   "case": "Q013",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s153": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q013:claim:6",
+   "kind": "claim",
+   "case": "Q013",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s153": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q013:gap:1",
+   "kind": "gap",
+   "case": "Q013",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N14:claim:1",
+   "kind": "claim",
+   "case": "N14",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s74": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N14:claim:2",
+   "kind": "claim",
+   "case": "N14",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s74": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N14:claim:3",
+   "kind": "claim",
+   "case": "N14",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s74": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N14:claim:4",
+   "kind": "claim",
+   "case": "N14",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s74": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N14:claim:5",
+   "kind": "claim",
+   "case": "N14",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s74": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N14:claim:6",
+   "kind": "claim",
+   "case": "N14",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s74": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N14:claim:7",
+   "kind": "claim",
+   "case": "N14",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s147:def:relevant-tax-authority": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N18:claim:1",
+   "kind": "claim",
+   "case": "N18",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s65": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N18:claim:2",
+   "kind": "claim",
+   "case": "N18",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s65": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N18:claim:3",
+   "kind": "claim",
+   "case": "N18",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s65": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N18:claim:4",
+   "kind": "claim",
+   "case": "N18",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s147:def:tax": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N18:gap:1",
+   "kind": "gap",
+   "case": "N18",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N18:gap:2",
+   "kind": "gap",
+   "case": "N18",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N18:calc:C1",
+   "kind": "calc",
+   "case": "N18",
+   "verdict": null,
+   "states_law": null,
+   "figure_correct": true,
+   "cites": {
+    "ntaa2025:s65": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q036:claim:1",
+   "kind": "claim",
+   "case": "Q036",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s31": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q036:claim:2",
+   "kind": "claim",
+   "case": "Q036",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s31": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q036:claim:3",
+   "kind": "claim",
+   "case": "Q036",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s31": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q036:gap:1",
+   "kind": "gap",
+   "case": "Q036",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q032:claim:1",
+   "kind": "claim",
+   "case": "Q032",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch13:table1": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q032:claim:2",
+   "kind": "claim",
+   "case": "Q032",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch13:table1": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q032:gap:1",
+   "kind": "gap",
+   "case": "Q032",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N01:claim:1",
+   "kind": "claim",
+   "case": "N01",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s10(1)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N01:claim:2",
+   "kind": "claim",
+   "case": "N01",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s10(1)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N01:claim:3",
+   "kind": "claim",
+   "case": "N01",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s10(1)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N01:claim:4",
+   "kind": "claim",
+   "case": "N01",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s10(1)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N01:claim:5",
+   "kind": "claim",
+   "case": "N01",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s10(7)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N01:gap:1",
+   "kind": "gap",
+   "case": "N01",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N01:gap:2",
+   "kind": "gap",
+   "case": "N01",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N04:claim:1",
+   "kind": "claim",
+   "case": "N04",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s150": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N04:claim:2",
+   "kind": "claim",
+   "case": "N04",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:import": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N04:claim:3",
+   "kind": "claim",
+   "case": "N04",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s156": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N04:gap:1",
+   "kind": "gap",
+   "case": "N04",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N04:gap:2",
+   "kind": "gap",
+   "case": "N04",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q024:claim:1",
+   "kind": "claim",
+   "case": "Q024",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:small-company": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q024:claim:2",
+   "kind": "claim",
+   "case": "Q024",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:small-company": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q024:claim:3",
+   "kind": "claim",
+   "case": "Q024",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q024:claim:4",
+   "kind": "claim",
+   "case": "Q024",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s147:def:small-business": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q024:gap:1",
+   "kind": "gap",
+   "case": "Q024",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q024:gap:2",
+   "kind": "gap",
+   "case": "Q024",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N03:claim:1",
+   "kind": "claim",
+   "case": "N03",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(3)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N03:claim:2",
+   "kind": "claim",
+   "case": "N03",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(3)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N03:claim:3",
+   "kind": "claim",
+   "case": "N03",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(1)-(2)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N03:claim:4",
+   "kind": "claim",
+   "case": "N03",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:supply-of-goods": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N03:claim:5",
+   "kind": "claim",
+   "case": "N03",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(3)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N03:gap:1",
+   "kind": "gap",
+   "case": "N03",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N03:gap:2",
+   "kind": "gap",
+   "case": "N03",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q046:claim:1",
+   "kind": "claim",
+   "case": "Q046",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s23": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q046:claim:2",
+   "kind": "claim",
+   "case": "Q046",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s23": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q046:claim:3",
+   "kind": "claim",
+   "case": "Q046",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s23": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q046:claim:4",
+   "kind": "claim",
+   "case": "Q046",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s23": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q046:claim:5",
+   "kind": "claim",
+   "case": "Q046",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:relevant-tax-authority": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q046:claim:6",
+   "kind": "claim",
+   "case": "Q046",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:income-tax": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q017:claim:1",
+   "kind": "claim",
+   "case": "Q017",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(2)-(7)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q017:claim:2",
+   "kind": "claim",
+   "case": "Q017",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(2)-(7)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q017:claim:3",
+   "kind": "claim",
+   "case": "Q017",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s157": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q017:claim:4",
+   "kind": "claim",
+   "case": "Q017",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q017:gap:1",
+   "kind": "gap",
+   "case": "Q017",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q017:gap:2",
+   "kind": "gap",
+   "case": "Q017",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N12:claim:1",
+   "kind": "claim",
+   "case": "N12",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s105": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N12:claim:2",
+   "kind": "claim",
+   "case": "N12",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s147:def:tax": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N12:gap:1",
+   "kind": "gap",
+   "case": "N12",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N12:gap:2",
+   "kind": "gap",
+   "case": "N12",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N12:gap:3",
+   "kind": "gap",
+   "case": "N12",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q005:claim:1",
+   "kind": "claim",
+   "case": "Q005",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s11": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q005:claim:2",
+   "kind": "claim",
+   "case": "Q005",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s11": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q005:claim:3",
+   "kind": "claim",
+   "case": "Q005",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s11": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q005:gap:1",
+   "kind": "gap",
+   "case": "Q005",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q005:gap:2",
+   "kind": "gap",
+   "case": "Q005",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q011:claim:1",
+   "kind": "claim",
+   "case": "Q011",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s27(1)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q011:claim:2",
+   "kind": "claim",
+   "case": "Q011",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s27(5)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q011:claim:3",
+   "kind": "claim",
+   "case": "Q011",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s27(5)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q011:claim:4",
+   "kind": "claim",
+   "case": "Q011",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s27(5)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q011:claim:5",
+   "kind": "claim",
+   "case": "Q011",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s27(5)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q011:claim:6",
+   "kind": "claim",
+   "case": "Q011",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s27(5)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q011:gap:1",
+   "kind": "gap",
+   "case": "Q011",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q011:gap:2",
+   "kind": "gap",
+   "case": "Q011",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q011:gap:3",
+   "kind": "gap",
+   "case": "Q011",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q037:claim:1",
+   "kind": "claim",
+   "case": "Q037",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q037:claim:2",
+   "kind": "claim",
+   "case": "Q037",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q037:claim:3",
+   "kind": "claim",
+   "case": "Q037",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s147:def:small-business": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q037:claim:4",
+   "kind": "claim",
+   "case": "Q037",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s147:def:small-business": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q037:claim:5",
+   "kind": "claim",
+   "case": "Q037",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q037:claim:6",
+   "kind": "claim",
+   "case": "Q037",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q037:claim:7",
+   "kind": "claim",
+   "case": "Q037",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q037:claim:8",
+   "kind": "claim",
+   "case": "Q037",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s22(1)-(10)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q037:gap:1",
+   "kind": "gap",
+   "case": "Q037",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N13:claim:1",
+   "kind": "claim",
+   "case": "N13",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s55": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N13:claim:2",
+   "kind": "claim",
+   "case": "N13",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s55": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N13:claim:3",
+   "kind": "claim",
+   "case": "N13",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s55": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N13:claim:4",
+   "kind": "claim",
+   "case": "N13",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s55": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N13:claim:5",
+   "kind": "claim",
+   "case": "N13",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s121": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N13:gap:1",
+   "kind": "gap",
+   "case": "N13",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N13:gap:2",
+   "kind": "gap",
+   "case": "N13",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q049:claim:1",
+   "kind": "claim",
+   "case": "Q049",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s72": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q049:claim:2",
+   "kind": "claim",
+   "case": "Q049",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s147:def:relevant-tax-authority": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q049:claim:3",
+   "kind": "claim",
+   "case": "Q049",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s72": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q049:claim:4",
+   "kind": "claim",
+   "case": "Q049",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s72": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q049:claim:5",
+   "kind": "claim",
+   "case": "Q049",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s72": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q049:claim:6",
+   "kind": "claim",
+   "case": "Q049",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s72": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q049:claim:7",
+   "kind": "claim",
+   "case": "Q049",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s72": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N09:claim:1",
+   "kind": "claim",
+   "case": "N09",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s10": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N09:claim:2",
+   "kind": "claim",
+   "case": "N09",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s10": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N09:claim:3",
+   "kind": "claim",
+   "case": "N09",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s10": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N09:claim:4",
+   "kind": "claim",
+   "case": "N09",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s7": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N09:claim:5",
+   "kind": "claim",
+   "case": "N09",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s7": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N09:gap:1",
+   "kind": "gap",
+   "case": "N09",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N09:gap:2",
+   "kind": "gap",
+   "case": "N09",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q038:claim:1",
+   "kind": "claim",
+   "case": "Q038",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s35": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q038:claim:2",
+   "kind": "claim",
+   "case": "Q038",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s35": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q038:claim:3",
+   "kind": "claim",
+   "case": "Q038",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s35": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q038:claim:4",
+   "kind": "claim",
+   "case": "Q038",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s35": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q038:claim:5",
+   "kind": "claim",
+   "case": "Q038",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s36": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q038:claim:6",
+   "kind": "claim",
+   "case": "Q038",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s36": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q038:claim:7",
+   "kind": "claim",
+   "case": "Q038",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s101": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q038:claim:8",
+   "kind": "claim",
+   "case": "Q038",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s66": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q038:gap:1",
+   "kind": "gap",
+   "case": "Q038",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q038:gap:2",
+   "kind": "gap",
+   "case": "Q038",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q042:claim:1",
+   "kind": "claim",
+   "case": "Q042",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s49(1)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q042:claim:2",
+   "kind": "claim",
+   "case": "Q042",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s65": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q042:claim:3",
+   "kind": "claim",
+   "case": "Q042",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s65": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q042:claim:4",
+   "kind": "claim",
+   "case": "Q042",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s65": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q042:claim:5",
+   "kind": "claim",
+   "case": "Q042",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s65": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q042:claim:6",
+   "kind": "claim",
+   "case": "Q042",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s65": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q042:claim:7",
+   "kind": "claim",
+   "case": "Q042",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s49(1)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q042:claim:8",
+   "kind": "claim",
+   "case": "Q042",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s107": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q042:claim:9",
+   "kind": "claim",
+   "case": "Q042",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s107": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q042:claim:10",
+   "kind": "claim",
+   "case": "Q042",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s34": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q042:gap:1",
+   "kind": "gap",
+   "case": "Q042",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q042:gap:2",
+   "kind": "gap",
+   "case": "Q042",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q042:gap:3",
+   "kind": "gap",
+   "case": "Q042",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q016:claim:1",
+   "kind": "claim",
+   "case": "Q016",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s155": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q016:claim:2",
+   "kind": "claim",
+   "case": "Q016",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s155": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q016:claim:3",
+   "kind": "claim",
+   "case": "Q016",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s155": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q016:claim:4",
+   "kind": "claim",
+   "case": "Q016",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s155": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q016:gap:1",
+   "kind": "gap",
+   "case": "Q016",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q016:gap:2",
+   "kind": "gap",
+   "case": "Q016",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q016:gap:3",
+   "kind": "gap",
+   "case": "Q016",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q020:claim:1",
+   "kind": "claim",
+   "case": "Q020",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s163(1)(m)-(v)": "accurate",
+    "nta2025:s163(1)(a)-(c)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q020:claim:2",
+   "kind": "claim",
+   "case": "Q020",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch13:table1": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q020:gap:1",
+   "kind": "gap",
+   "case": "Q020",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q020:gap:2",
+   "kind": "gap",
+   "case": "Q020",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q048:claim:1",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(a)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:2",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(a)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:3",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(a)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:4",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(a)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:5",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(a)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:6",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(a)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:7",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(a)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:8",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(b)-(c)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:9",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(b)-(c)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:10",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(b)-(c)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:11",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(b)-(c)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:12",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(1)(b)-(c)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:13",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(2)-(7)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:14",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(2)-(7)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:15",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(2)-(7)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:16",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(2)-(7)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:17",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(2)-(7)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:18",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s190(2)-(7)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:claim:19",
+   "kind": "claim",
+   "case": "Q048",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s157": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q048:gap:1",
+   "kind": "gap",
+   "case": "Q048",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N20:claim:1",
+   "kind": "claim",
+   "case": "N20",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s104": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N20:claim:2",
+   "kind": "claim",
+   "case": "N20",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s158": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N20:gap:1",
+   "kind": "gap",
+   "case": "N20",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N20:gap:2",
+   "kind": "gap",
+   "case": "N20",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N20:calc:C1",
+   "kind": "calc",
+   "case": "N20",
+   "verdict": null,
+   "states_law": null,
+   "figure_correct": true,
+   "cites": {
+    "ntaa2025:s104": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N17:claim:1",
+   "kind": "claim",
+   "case": "N17",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s59": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N17:claim:2",
+   "kind": "claim",
+   "case": "N17",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s59": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N17:claim:3",
+   "kind": "claim",
+   "case": "N17",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:small-company": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N17:gap:1",
+   "kind": "gap",
+   "case": "N17",
+   "verdict": "supported",
+   "states_law": true,
+   "figure_correct": null,
+   "cites": {},
+   "supported": true
+  },
+  {
+   "key": "N17:gap:2",
+   "kind": "gap",
+   "case": "N17",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N16:claim:1",
+   "kind": "claim",
+   "case": "N16",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s56": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N16:claim:2",
+   "kind": "claim",
+   "case": "N16",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s56": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N16:claim:3",
+   "kind": "claim",
+   "case": "N16",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:small-company": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N16:gap:1",
+   "kind": "gap",
+   "case": "N16",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N16:calc:C1",
+   "kind": "calc",
+   "case": "N16",
+   "verdict": null,
+   "states_law": null,
+   "figure_correct": true,
+   "cites": {
+    "nta2025:s202:def:small-company": "accurate",
+    "nta2025:s56": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:claim:1",
+   "kind": "claim",
+   "case": "Q012",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(1)-(2)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:claim:2",
+   "kind": "claim",
+   "case": "Q012",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(1)-(2)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:claim:3",
+   "kind": "claim",
+   "case": "Q012",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(1)-(2)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:claim:4",
+   "kind": "claim",
+   "case": "Q012",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(1)-(2)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:claim:5",
+   "kind": "claim",
+   "case": "Q012",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(1)-(2)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:claim:6",
+   "kind": "claim",
+   "case": "Q012",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(3)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:claim:7",
+   "kind": "claim",
+   "case": "Q012",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(3)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:claim:8",
+   "kind": "claim",
+   "case": "Q012",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s147(3)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:claim:9",
+   "kind": "claim",
+   "case": "Q012",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:invoice": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:claim:10",
+   "kind": "claim",
+   "case": "Q012",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s153": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q012:gap:1",
+   "kind": "gap",
+   "case": "Q012",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N08:claim:1",
+   "kind": "claim",
+   "case": "N08",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch1:pt1:para15-17": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N08:claim:2",
+   "kind": "claim",
+   "case": "N08",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch1:pt1:para15-17": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N08:claim:3",
+   "kind": "claim",
+   "case": "N08",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch1:pt1:para2-3": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N08:claim:4",
+   "kind": "claim",
+   "case": "N08",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch1:pt1:para2-3": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N08:claim:5",
+   "kind": "claim",
+   "case": "N08",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch1:pt1:para2-3": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N08:claim:6",
+   "kind": "claim",
+   "case": "N08",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:hire-purchase": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N08:claim:7",
+   "kind": "claim",
+   "case": "N08",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:sch1:pt1:para15-17": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N08:gap:1",
+   "kind": "gap",
+   "case": "N08",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N08:gap:2",
+   "kind": "gap",
+   "case": "N08",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N08:gap:3",
+   "kind": "gap",
+   "case": "N08",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N07:claim:1",
+   "kind": "claim",
+   "case": "N07",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:digital-assets": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N07:claim:2",
+   "kind": "claim",
+   "case": "N07",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s34": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N07:claim:3",
+   "kind": "claim",
+   "case": "N07",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s27(5)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N07:gap:1",
+   "kind": "gap",
+   "case": "N07",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N07:gap:2",
+   "kind": "gap",
+   "case": "N07",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N07:gap:3",
+   "kind": "gap",
+   "case": "N07",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N11:claim:1",
+   "kind": "claim",
+   "case": "N11",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N11:claim:2",
+   "kind": "claim",
+   "case": "N11",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N11:claim:3",
+   "kind": "claim",
+   "case": "N11",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N11:claim:4",
+   "kind": "claim",
+   "case": "N11",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N11:claim:5",
+   "kind": "claim",
+   "case": "N11",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N11:claim:6",
+   "kind": "claim",
+   "case": "N11",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N11:claim:7",
+   "kind": "claim",
+   "case": "N11",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N11:claim:8",
+   "kind": "claim",
+   "case": "N11",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(5)-(8)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N11:claim:9",
+   "kind": "claim",
+   "case": "N11",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(5)-(8)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N11:gap:1",
+   "kind": "gap",
+   "case": "N11",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q009:claim:1",
+   "kind": "claim",
+   "case": "Q009",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s34": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q009:claim:2",
+   "kind": "claim",
+   "case": "Q009",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s34": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q009:claim:3",
+   "kind": "claim",
+   "case": "Q009",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s34": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q009:claim:4",
+   "kind": "claim",
+   "case": "Q009",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s34": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q009:claim:5",
+   "kind": "claim",
+   "case": "Q009",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s47": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q009:gap:1",
+   "kind": "gap",
+   "case": "Q009",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q009:gap:2",
+   "kind": "gap",
+   "case": "Q009",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q009:gap:3",
+   "kind": "gap",
+   "case": "Q009",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q009:gap:4",
+   "kind": "gap",
+   "case": "Q009",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q045:claim:1",
+   "kind": "claim",
+   "case": "Q045",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s107": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q045:claim:2",
+   "kind": "claim",
+   "case": "Q045",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s107": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q045:claim:3",
+   "kind": "claim",
+   "case": "Q045",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s107": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q045:claim:4",
+   "kind": "claim",
+   "case": "Q045",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s107": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q045:gap:1",
+   "kind": "gap",
+   "case": "Q045",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q045:gap:2",
+   "kind": "gap",
+   "case": "Q045",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q027:claim:1",
+   "kind": "claim",
+   "case": "Q027",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:year-of-assessment": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q027:claim:2",
+   "kind": "claim",
+   "case": "Q027",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s147:def:calendar-year": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q027:gap:1",
+   "kind": "gap",
+   "case": "Q027",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N19:claim:1",
+   "kind": "claim",
+   "case": "N19",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s101": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N19:claim:2",
+   "kind": "claim",
+   "case": "N19",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s101": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N19:claim:3",
+   "kind": "claim",
+   "case": "N19",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s101": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N19:gap:1",
+   "kind": "gap",
+   "case": "N19",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N19:calc:C1",
+   "kind": "calc",
+   "case": "N19",
+   "verdict": null,
+   "states_law": null,
+   "figure_correct": true,
+   "cites": {
+    "ntaa2025:s101": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q021:claim:1",
+   "kind": "claim",
+   "case": "Q021",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s163(1)(a)-(c)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q021:claim:2",
+   "kind": "claim",
+   "case": "Q021",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s163(1)(a)-(c)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q021:gap:1",
+   "kind": "gap",
+   "case": "Q021",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q021:gap:2",
+   "kind": "gap",
+   "case": "Q021",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N06:claim:1",
+   "kind": "claim",
+   "case": "N06",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:gross-turnover": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N06:claim:2",
+   "kind": "claim",
+   "case": "N06",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:gross-turnover": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N06:claim:3",
+   "kind": "claim",
+   "case": "N06",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:gross-turnover": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N06:claim:4",
+   "kind": "claim",
+   "case": "N06",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:small-company": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N06:gap:1",
+   "kind": "gap",
+   "case": "N06",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N10:claim:1",
+   "kind": "claim",
+   "case": "N10",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s11(3)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N10:claim:2",
+   "kind": "claim",
+   "case": "N10",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s11(3)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N10:claim:3",
+   "kind": "claim",
+   "case": "N10",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s11(3)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N10:claim:4",
+   "kind": "claim",
+   "case": "N10",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s11(1)-(2)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N10:gap:1",
+   "kind": "gap",
+   "case": "N10",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N10:gap:2",
+   "kind": "gap",
+   "case": "N10",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N10:gap:3",
+   "kind": "gap",
+   "case": "N10",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q006:claim:1",
+   "kind": "claim",
+   "case": "Q006",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q006:claim:2",
+   "kind": "claim",
+   "case": "Q006",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q006:claim:3",
+   "kind": "claim",
+   "case": "Q006",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q006:claim:4",
+   "kind": "claim",
+   "case": "Q006",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s20(1)(a)-(h)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q006:claim:5",
+   "kind": "claim",
+   "case": "Q006",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s21(a)-(o)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q006:claim:6",
+   "kind": "claim",
+   "case": "Q006",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s21(a)-(o)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q006:claim:7",
+   "kind": "claim",
+   "case": "Q006",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s20(2)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q006:gap:1",
+   "kind": "gap",
+   "case": "Q006",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q006:gap:2",
+   "kind": "gap",
+   "case": "Q006",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q006:gap:3",
+   "kind": "gap",
+   "case": "Q006",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N15:claim:1",
+   "kind": "claim",
+   "case": "N15",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s148": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N15:claim:2",
+   "kind": "claim",
+   "case": "N15",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s149": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "N15:gap:1",
+   "kind": "gap",
+   "case": "N15",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "N15:calc:C1",
+   "kind": "calc",
+   "case": "N15",
+   "verdict": null,
+   "states_law": null,
+   "figure_correct": true,
+   "cites": {
+    "nta2025:s148": "accurate",
+    "nta2025:s149": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q033:claim:1",
+   "kind": "claim",
+   "case": "Q033",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s9": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q033:claim:2",
+   "kind": "claim",
+   "case": "Q033",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s9": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q033:gap:1",
+   "kind": "gap",
+   "case": "Q033",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q033:gap:2",
+   "kind": "gap",
+   "case": "Q033",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q001:claim:1",
+   "kind": "claim",
+   "case": "Q001",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s56": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q001:claim:2",
+   "kind": "claim",
+   "case": "Q001",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s56": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q001:claim:3",
+   "kind": "claim",
+   "case": "Q001",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s202:def:small-company": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q001:claim:4",
+   "kind": "claim",
+   "case": "Q001",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s57": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q040:claim:1",
+   "kind": "claim",
+   "case": "Q040",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(5)-(8)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q040:claim:2",
+   "kind": "claim",
+   "case": "Q040",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q040:claim:3",
+   "kind": "claim",
+   "case": "Q040",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(1)-(4)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q040:claim:4",
+   "kind": "claim",
+   "case": "Q040",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s49(1)-(6)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q040:claim:5",
+   "kind": "claim",
+   "case": "Q040",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "ntaa2025:s41(5)-(8)": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q040:gap:1",
+   "kind": "gap",
+   "case": "Q040",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q040:gap:2",
+   "kind": "gap",
+   "case": "Q040",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q040:gap:3",
+   "kind": "gap",
+   "case": "Q040",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q023:claim:1",
+   "kind": "claim",
+   "case": "Q023",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s165": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q023:claim:2",
+   "kind": "claim",
+   "case": "Q023",
+   "verdict": "supported",
+   "states_law": null,
+   "figure_correct": null,
+   "cites": {
+    "nta2025:s165": "accurate"
+   },
+   "supported": true
+  },
+  {
+   "key": "Q023:gap:1",
+   "kind": "gap",
+   "case": "Q023",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  },
+  {
+   "key": "Q023:gap:2",
+   "kind": "gap",
+   "case": "Q023",
+   "verdict": null,
+   "states_law": false,
+   "figure_correct": null,
+   "cites": {},
+   "supported": false
+  }
+ ]
+}
