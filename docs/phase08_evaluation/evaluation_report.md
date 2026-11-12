@@ -135,8 +135,8 @@ reviewer. No successor session was recorded (D-146).
   citation label counts as part of its context header) was applied.
 - **Overseer check (design Section 4.1, point 3).** The overseer read a seeded random 10% sample of the
   shown claims, 24 per run (seed 20261112 plus the run number), against the chunk text: **48 of 48
-  agree**. Four close calls were read in full and agree (run 2 Q009 claim 2, run 2 N08 claim 7, run 1
-  N17 gap 1, run 2 Q024 gap 2). 16 sampled gaps judged "not stating law" agree. Every R case and every
+  agree** (the keys are listed in `g3_check.json` and were re-read by the overseer). Four close calls were read in full and agree (run 2 Q009 claim 2, run 2 N08 claim 7, run 1
+  N17 gap 1, run 2 Q024 gap 2; found outside the sample). 16 sampled gaps judged "not stating law" agree. Every R case and every
   false refusal was read. There were no adjudications, so the reviewer's own figures and the
   adjudicated figures are identical.
 - **Kene's spot check (design Section 4.1, point 4).** Ten cases, five a run, all confirmed on
@@ -264,7 +264,7 @@ tool (Section 3.2). In each run six answers (all N) used a tool and the other 43
 | All | 180 | 7.9 s | 8.3 s | 12.9 s | 46.8 s | $0.0090 |
 | Answered | 98 | 11.3 s | 10.2 s | 14.0 s | 46.8 s | $0.0134 |
 | Declined by the model (`not_covered`) | 42 | 5.5 s | 5.2 s | 5.9 s | 14.0 s | $0.0071 |
-| Refused before retrieval (`refused`) | 40 | 2.0 s | 2.0 s | 2.6 s | 3.2 s | $0.0002 |
+| Refused (`refused`: pre-check or low relevance) | 40 | 2.0 s | 2.0 s | 2.6 s | 3.2 s | $0.0002 |
 
 Per run: run 1 mean latency 8.2 s (median 8.3 s, 90th percentile 13.0 s, maximum 46.8 s) and mean
 cost $0.0091, $0.8177 in all; run 2 mean latency 7.5 s (median 8.3 s, 90th percentile 12.4 s, maximum

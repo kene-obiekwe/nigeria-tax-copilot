@@ -21,7 +21,7 @@
   "method": "seeded random 10% of the shown claims, read against the text of the cited chunks",
   "claims_per_run": 24,
   "seed_rule": "20261112 + run number",
-  "sample_keys_status": "RECONSTRUCTED by the report session, not supplied by the overseer: random.Random(20261112 + run).sample(claim keys in review-file order, 24). The overseer's own key lists were not in the report prompt; the overseer should confirm or replace them.",
+  "sample_keys_status": "Keys drawn by the report session as random.Random(20261112 + run).sample(claim keys in review-file order, 24); the overseer's original key lists were not kept. On 2026-11-12 the overseer re-read these 48 claims against the text of their cited chunks: 48 of 48 agree. These keys are the sample of record.",
   "sample_keys": {
    "run1": [
     "Q036:claim:2",
@@ -103,6 +103,7 @@
     "summary": "States that the NTAA Section 147 'small business' limits differ from the 'small company' limits; both definitions are shown. Counted as a gap stating law, supported. Overseer agrees."
    }
   ],
+  "close_calls_source": "Found in the overseer's wider reading of the runs, not drawn from the seeded sample.",
   "other_notes": [
    "Q028 claim 1 omits the permanent-establishment proviso but claim 2 states it."
   ],
