@@ -161,7 +161,7 @@ that Phase 12 check as the paid reproduction once it exists.
 
 | Option | Who | For | Against |
 |---|---|---|---|
-| (a) **A NEW implementation session (recommended)** | a Sonnet high session started in a fresh folder outside the project folder; Kene types the database password; the overseer re-checks | nothing of the project's state is in its context, so it follows only the README; its log is the evidence | same laptop: Docker image and Python install are shared |
+| (a) **A NEW implementation session (recommended)** | a new implementation session started in a fresh folder outside the project folder; Kene types the database password; the overseer re-checks | nothing of the project's state is in its context, so it follows only the README; its log is the evidence | same laptop: Docker image and Python install are shared |
 | (b) Kene by hand | Kene | a person following the README | long; hard to record every output |
 | (c) An outside person | someone Kene trusts | a true third party | needs a public repo and their time; not under the project's control |
 
@@ -450,12 +450,12 @@ Grouped, user-facing first, each with its source:
 
 ### 8.2 Sessions, models and effort
 
-| Session | Steps | Model and effort | Why |
+| Session | Steps | Effort | Why |
 |---|---|---|---|
-| Phase 10 Build 1 | B1, then B2 | Sonnet, high | multi-file tooling and tests from a fixed spec (CLAUDE.md Section 4, row 3); the exact-compare logic must not touch pinned code; B2 is a Mermaid source file, one document and a drift test (D-177 (b)) |
-| Phase 10 Build 2 | B3, K2 hash check | Sonnet, high | many documents with figures checked by tests; the privacy text is fixed by Section 4.3 and Kene's decisions, so no legal design is left to the session |
-| Phase 10 clean-clone check | C1 | Sonnet, high | follows the README literally and records evidence; a new session has no project context, which is the point |
-| Overseer | reviews | Opus, medium or high | verification |
+| Phase 10 Build 1 | B1, then B2 | high | multi-file tooling and tests from a fixed spec (CLAUDE.md Section 4, row 3); the exact-compare logic must not touch pinned code; B2 is a Mermaid source file, one document and a drift test (D-177 (b)) |
+| Phase 10 Build 2 | B3, K2 hash check | high | many documents with figures checked by tests; the privacy text is fixed by Section 4.3 and Kene's decisions, so no legal design is left to the session |
+| Phase 10 clean-clone check | C1 | high | follows the README literally and records evidence; a new session has no project context, which is the point |
+| Overseer | reviews | medium or high | verification |
 
 **Spend: $0.** No step calls a paid API: the clean clone has no keys, and the reproduction is cache-only.
 The only downloads are the release assets and the Python packages of the clean venv.
@@ -502,3 +502,14 @@ before quoting any section:
 - Nigeria Data Protection Act 2023, text hosted by DataGuidance and KPMG Nigeria.
 - Nigeria Data Protection Commission, General Application and Implementation Directive 2025 (ndpc.gov.ng).
 - Law-firm summaries of the Act and the GAID (Mondaq, DLA Piper Privacy Matters).
+
+## 11. Build record
+
+Phase 10 closed on 2026-11-13 at a spend of $0.
+
+- Builds B1 to B3 and corpus-release steps K1 and K2: the README rewrite, reproduction checks, architecture diagram,
+  privacy text and consent acknowledgement, and the published corpus release with its checks.
+- Clean-clone check C1: run 1 on 9718754 was not met (14 of 16 rows; deviation D1, a pinned hash taken over CRLF bytes,
+  C-14). D-187 fixed it; run 2 on 0e9b42c passed 16 of 16 rows (A10: 1864 passed, 31 skipped).
+- Decisions: D-186 (privacy additions), D-187 (line endings), D-188 (exit gate passed). Correction: C-14.
+- Record: [clean_clone_check.md](clean_clone_check.md).

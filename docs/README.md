@@ -48,6 +48,7 @@ document is added, moved or renamed.
 | [phase08_evaluation/evaluation_report.md](phase08_evaluation/evaluation_report.md) | Phase 8 evaluation report and gate G3 result (passed, D-149): the G3 table for run 1, run 2 and pooled with intervals, the method, results by subset and category, hit@5, answer coverage, citation recall, usefulness, latency and cost per query, the gate history, known limitations (personal income tax out of scope first) and how to reproduce. |
 | [phase09_interface/interface_design.md](phase09_interface/interface_design.md) | Design for the Phase 9 interface and audit log (approved 2026-11-12, D-150 to D-168): the Streamlit answer card with citation chips, the section reader and parity with the rendered answer, the start-up check of the shipped configuration, the `audit` schema and its write path from `gen-log/3`, failure handling, the local-only log viewer, privacy and 90-day retention, access tiers and optional sign-in, the Phase 11 limit and cost-cap hook, timeouts, tests, the exit-gate procedure and the build plan (cap $0.40). Build records (Build A and Build B, 2026-11-12) at the end: the audit schema, start-up check and app service (Build A); the Streamlit app, the local viewer and the CLIs (Build B), with deviations (C-10, C-11, D-169) and test counts. |
 | [phase10_packaging/packaging_design.md](phase10_packaging/packaging_design.md) | Design for Phase 10 (approved 2026-11-13, D-171 to D-185 and C-13; the diagram is Mermaid only, D-177 (b)): the README outline and the source of every fact it cites, the exit gate made testable (exact rebuild, exact retrieval from published cached vectors, exact re-scoring of the committed records, no paid rerun), the clean-clone check, the architecture diagram and its stages, the privacy text checked point by point against the Nigeria Data Protection Act 2023 (not legal advice), the deletion contact route, licence and usage, the D-11 GitHub Release, carried items, the build plan ($0) and the decisions. |
+| [phase10_packaging/clean_clone_check.md](phase10_packaging/clean_clone_check.md) | Record of the clean-clone check (D-174): run 1 on 9718754 (14 of 16 rows, deviation D1), run 2 on 0e9b42c (16 of 16, A10 1864 passed, 31 skipped), commands, exit codes, image digest, `pip freeze` and the gate result (D-188). |
 
 ## Scripts and data files added by the G2 fix build
 
@@ -174,7 +175,7 @@ Folders are created when their first document lands. Two-digit phase numbers kee
 | `phase07_tools/` | 7. Agentic tools | Tool specs, scope and limitations. |
 | `phase08_evaluation/` | 8. Evaluation | Evaluation methodology and report (gate G3). |
 | `phase09_interface/` | 9. Interface and audit log | UI notes, audit-log schema. |
-| `phase10_packaging/` | 10. Documentation | Packaging and reproduction notes. |
+| `phase10_packaging/` | 10. Documentation (done, D-188) | Packaging design, build record and the clean-clone record. |
 | `reference/` | Reference pages (D-178) | Architecture, known limitations and the reproduction guide. |
 | `phase11_deployment/` | 11. Deployment | Docker, Render, Supabase setup, rate limit, cold-start notes. |
 | `phase12_final_qa/` | 12. Final QA | QA checklist and sign-off. |

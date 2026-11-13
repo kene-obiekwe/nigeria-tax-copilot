@@ -166,7 +166,7 @@ def test_the_readme_follows_the_design_outline_and_status_rules():
                         "Architecture", "How to run", "How to reproduce", "Evaluation results", "Known limitations",
                         "Disclaimer", "Privacy", "Licence and usage", "Documentation"]
     status = text[text.index("## Status"): text.index("## Results at a glance")]
-    assert "Phases 1 to 9 are done" in status and "Phase 10" in status and "in progress" in status
+    assert "Phases 1 to 10 are done" in status and "Phase 11 (deployment) is next" in status
     assert "no live demo yet" in status and "G2 was **not met**" in status
     assert "advisory" not in text.lower()
     top = text.split("## Status")[0]

@@ -17,10 +17,9 @@ the corpus does not cover the question, and does any arithmetic in code rather t
 
 ## Status
 
-**Phases 1 to 9 are done** (corpus, chunking, embedding, retrieval, generation, guardrails, tools,
-evaluation, interface). **Phase 10 (documentation and packaging) is in progress.** The app has not been
-deployed: there is no live demo yet, and the live demo comes in Phase 11. Gate G2 was **not met**; see
-Results at a glance.
+**Phases 1 to 10 are done** (corpus, chunking, embedding, retrieval, generation, guardrails, tools,
+evaluation, interface, documentation and packaging). **Phase 11 (deployment) is next, and
+there is no live demo yet.** Gate G2 was **not met**; see Results at a glance.
 
 ## Results at a glance
 
@@ -150,7 +149,10 @@ clone, run every command from the repository root.
    Copy-Item .env.example .env
    ```
 
-5. Start the database (a pgvector container on host port 5434) and wait for `healthy`:
+5. **Stop any other copy of this stack first.** `docker-compose.yml` fixes the container name
+   `taxcopilot-pgvector` and host port 5434, so two copies cannot run at the same time (run
+   `docker compose down` in the other folder; its data volume is kept). Then start the database (a pgvector
+   container on host port 5434) and wait for `healthy`:
 
    ```powershell
    docker compose up -d
@@ -232,9 +234,7 @@ What each check proves, and what a failure means, is in [docs/reference/reproduc
 
 Two things to know before you run it:
 
-- **Stop any other copy of this stack first.** `docker-compose.yml` fixes the container name
-  `taxcopilot-pgvector` and host port 5434, so two copies cannot run at the same time (run
-  `docker compose down` in the other folder; its data volume is kept).
+- **Stop any other copy of this stack first.** See the note in "How to run" step 5.
 - **Test counts.** Check A10 requires 0 failed tests. To also compare the counts, add `--a10-expected`. The
   counts depend on what you installed: with `requirements.txt` only, expect `--a10-expected 1864/31` (1864
   passed, 31 skipped). One test (`tests/test_retrieval.py:401`) needs `requirements-eval.txt` and is skipped
