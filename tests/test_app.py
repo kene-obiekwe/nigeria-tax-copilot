@@ -52,7 +52,20 @@ def new_app(services, page=MAIN):
     return at.run()
 
 
+CONSENT_KEY = "consent_ack"
+
+
+def tick_consent(at):
+    """Tick the acknowledgement box if the page shows it (D-180 (a)); Ask stays disabled until then."""
+    box = [c for c in at.checkbox if c.key == CONSENT_KEY]
+    if box:
+        box[0].check()
+        at = at.run()
+    return at
+
+
 def ask(at, question):
+    at = tick_consent(at)
     at.text_area(key="question_box").set_value(question)
     next(b for b in at.button if b.label == ui.ASK_BUTTON).click()
     return at.run()
@@ -188,6 +201,78 @@ def test_a_failed_startup_check_shows_no_question_box(audit_db, tmp_path):
     assert ui.UNAVAILABLE_TEXT in [e.value for e in at.error]
     assert gen.DISCLAIMER in texts(at)  # the disclaimer is still shown
     assert "config_p7_sha256" not in " ".join(texts(at))  # check names go to the log, not to the user
+
+
+def ask_button(at):
+    return next(b for b in at.button if b.label == ui.ASK_BUTTON)
+
+
+def test_a_failed_startup_check_shows_no_consent_box_either(audit_db, tmp_path):
+    at = new_app(make_services(audit_db, tmp_path, startup=StartupResult(False, ["config_p7_sha256"], None, SNAPSHOT)))
+    assert at.checkbox == [] and at.text_area == [] and at.button == []
+    assert ui.CONSENT_TEXT not in texts(at)
+
+
+# The consent acknowledgement (packaging design Section 4.3, D-180 (a)) -------------------------------------------
+
+
+def test_the_consent_wording_is_the_designs_wording():
+    assert ui.CONSENT_TEXT == ("Your question and the answer are stored for 90 days and sent outside Nigeria to the "
+                               "providers named in Privacy details, so that the answer can be written and checked. "
+                               "You can withdraw your consent at any time by writing to taxy.copilot@gmail.com; "
+                               "your stored questions are then deleted.")
+    assert ui.CONSENT_LABEL == "I understand and agree. I will not enter real personal or taxpayer details."
+    assert ui.PRIVACY_LINK == "Privacy details"
+
+
+def test_ask_is_disabled_until_the_consent_box_is_ticked_then_enabled(audit_db, tmp_path):
+    fake = FakeGenerate()
+    at = new_app(make_services(audit_db, tmp_path, fake))
+    (box,) = at.checkbox
+    assert box.key == CONSENT_KEY and box.label == ui.CONSENT_LABEL and not box.value   # not pre-ticked
+    assert ui.CONSENT_TEXT in texts(at)
+    assert ask_button(at).disabled
+    assert fake.calls == 0 and rows(audit_db, "SELECT count(*) FROM {q}.queries") == [(0,)]
+    box.check()
+    at.run()
+    assert not at.exception
+    assert not ask_button(at).disabled
+    assert at.checkbox == [] and ui.CONSENT_TEXT not in texts(at)                        # shown once, then gone
+    at = ask(at, T.E01)                                                                   # and a question now goes through
+    assert fake.calls == 1 and last_card(at).status == "answered"
+    assert at.checkbox == [] and not ask_button(at).disabled                              # not asked again in this session
+
+
+def test_the_consent_box_is_asked_again_in_a_new_browser_session(audit_db, tmp_path):
+    services = make_services(audit_db, tmp_path)
+    at = tick_consent(new_app(services))
+    assert at.checkbox == []
+    fresh = new_app(services)                                                             # a new AppTest session
+    assert len(fresh.checkbox) == 1 and ask_button(fresh).disabled
+
+
+def test_the_tick_is_not_written_to_the_audit_schema_or_the_jsonl_record(audit_db, tmp_path, monkeypatch):
+    services = make_services(audit_db, tmp_path, ScenarioGenerate("answered_calc", monkeypatch))
+    jsonl_dir = tmp_path / "jsonl"
+    jsonl_dir.mkdir()
+    services.service.jsonl_dir = jsonl_dir
+    at = ask(new_app(services), T.E01)
+    assert last_card(at).status == "answered"
+    schema = audit_db.names.schema
+    columns = rows(audit_db, "SELECT table_name, column_name FROM information_schema.columns WHERE table_schema = %s",
+                   schema)
+    assert columns and not [c for c in columns if "consent" in c[1].lower() or "ack" in c[1].lower().split("_")]
+    tables = [r[0] for r in rows(audit_db, "SELECT table_name FROM information_schema.tables WHERE table_schema = %s "
+                                           "AND table_type = 'BASE TABLE'", schema)]
+    assert "queries" in tables
+    for table in tables:
+        dump = " ".join(r[0] for r in rows(audit_db, f"SELECT t::text FROM {{q}}.{table} t")).lower()
+        assert "consent" not in dump and CONSENT_KEY not in dump, table
+    written = sorted(jsonl_dir.glob("*.jsonl"))
+    assert written
+    for path in written:
+        content = path.read_text(encoding="utf-8").lower()
+        assert "consent" not in content and CONSENT_KEY not in content
 
 
 def test_no_service_means_no_question_box(audit_db, tmp_path):

@@ -582,31 +582,99 @@ def test_b5_pass_and_fail_paths(tmp_path, monkeypatch):
     assert "absent" in rp.check_b5(ctx).actual
 
 
-def records_for_readme(tmp_path):
+def records_for_readme(tmp_path, monkeypatch):
+    """Small invented records with the same shapes as the committed ones, and a stand-in for the G2 recount."""
     test = tmp_path / rp.RETRIEVAL_RESULTS["test"]
     test.parent.mkdir(parents=True)
-    test.write_text(json.dumps({"summary": {"overall": {"hit@5": 30, "questions": 30}}}), encoding="utf-8")
-    g3 = tmp_path / "eval" / "e2e" / "results" / "g3_result.json"
-    g3.parent.mkdir(parents=True)
-    g3.write_text(json.dumps({"pooled": {"a": {"supported": 489, "total": 489}, "b": {"accurate": 491, "total": 491},
-                                         "c": {"failed": 0, "cases": 80}, "d": {"false_refusals": 2, "cases": 100}}}),
-                  encoding="utf-8")
+    test.write_text(json.dumps({"summary": {"overall": {"hit@5": 30, "hit@1": 22, "questions": 30, "mrr": 0.8556}}}),
+                    encoding="utf-8")
+    results = tmp_path / "eval" / "e2e" / "results"
+    results.mkdir(parents=True)
+
+    def run_scores(supported, accurate):
+        return {"a": {"supported": supported, "total": supported, "rate": 1.0, "wilson": [0.9845, 1.0]},
+                "b": {"accurate": accurate, "total": accurate, "rate": 1.0, "wilson": [0.984624, 1.0]},
+                "c": {"cases": 40, "failed": 0, "wilson": [-0.0, 0.087625]},
+                "d": {"cases": 50, "false_refusals": 1, "rate": 0.02, "wilson": [0.003539, 0.104957]},
+                "reported": {"hit_at_5": {"T": {"cases": 30, "hit@5": 30}, "N": {"cases": 20, "hit@5": 19}}}}
+    (results / "e2e_run1_scores.json").write_text(json.dumps(run_scores(244, 246)), encoding="utf-8")
+    (results / "e2e_run2_scores.json").write_text(json.dumps(run_scores(245, 245)), encoding="utf-8")
+    (results / "g3_result.json").write_text(json.dumps({"pooled": {
+        "a": {"supported": 489, "total": 489, "wilson": [0.992205, 1.0]},
+        "b": {"accurate": 491, "total": 491, "wilson": [0.992237, 1.0]},
+        "c": {"failed": 0, "cases": 80, "wilson": [-0.0, 0.04582]},
+        "d": {"false_refusals": 2, "cases": 100, "wilson": [0.005502, 0.070013]}}}), encoding="utf-8")
+    g2 = tmp_path / rp.G2_RECORD
+    g2.parent.mkdir(parents=True)
+    g2.write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(rp, "g2_counts", lambda record: {
+        "repeats": 3, "cases": [40, 40, 40], "passed": [39, 39, 39], "failed": [["ADV4-009"]] * 3,
+        "false_refusals": [["ADV4-044"]] * 3, "rendered_claims": [199, 206, 198], "unsupported_rendered": [0, 0, 0]})
 
 
-def test_b6_pending_until_the_readme_has_results_then_checks_the_figures(tmp_path):
+def readme_text(tmp_path, glance_extra="", detail_extra=""):
+    glance, detail = rp.readme_figure_groups(tmp_path)
+    rows = ["| G1 retrieval | **passed** |", "| G2 adversarial guardrails | **not met** |", "| G3 end to end | **passed** |"]
+    return "\n".join(["# Title", "", rp.README_RESULTS_MARKER, "", *rows, "", f"{' | '.join(glance)} {glance_extra}", "",
+                      "## Evaluation results", "", f"{' | '.join(detail)} {detail_extra}", ""])
+
+
+def test_the_readme_figures_are_computed_from_the_records(tmp_path, monkeypatch):
+    records_for_readme(tmp_path, monkeypatch)
+    glance, detail = rp.readme_figure_groups(tmp_path)
+    assert glance[:4] == ["30 of 30", "22 of 30", "0.8556", "not met"]
+    assert {"39 of 40", "ADV4-009", "ADV4-044", "603"} <= set(glance)
+    assert {"244 of 244", "246 of 246", "245 of 245", "0 of 40", "1 of 50"} <= set(glance)
+    assert {"489 of 489", "491 of 491", "0 of 80", "2 of 100", "98.5% to 100%", "99.2% to 100%", "upper bound 8.8%",
+            "upper bound 4.6%", "2.0%; 0.4% to 10.5%", "2.0%; 0.6% to 7.0%", "19 of 20"} <= set(detail)
+
+
+def test_the_percentage_format_rounds_half_up_and_drops_the_decimal_on_100():
+    assert [rp.pct(x) for x in (1.0, 0.9845, 0.992205, 0.003539, 0.104957, 0.02, 0.087625)] == [
+        "100%", "98.5%", "99.2%", "0.4%", "10.5%", "2.0%", "8.8%"]
+
+
+def test_b6_passes_when_the_readme_holds_every_figure_and_fails_on_each_kind_of_drift(tmp_path, monkeypatch):
     ctx = rp.Ctx(root=tmp_path)
-    row = rp.check_b6(ctx)
-    assert row.status == rp.PENDING and row.reason == "pending (B3)"                  # no README at all
+    assert rp.check_b6(ctx).status == rp.FAIL                                         # no README at all
     (tmp_path / "README.md").write_text("# Title\n\nStatus: Phase 1\n", encoding="utf-8")
-    assert rp.check_b6(ctx).status == rp.PENDING                                      # an old README
-    records_for_readme(tmp_path)
-    figures = " ".join(rp.readme_figures(tmp_path))
-    assert figures == "30 of 30 not met 489 of 489 491 of 491 0 of 80 2 of 100"
-    (tmp_path / "README.md").write_text(f"{rp.README_RESULTS_MARKER}\n\n{figures}\n", encoding="utf-8")
-    assert rp.check_b6(ctx).status == rp.PASS
-    (tmp_path / "README.md").write_text(f"{rp.README_RESULTS_MARKER}\n\n30 of 30, 489 of 489\n", encoding="utf-8")
     row = rp.check_b6(ctx)
-    assert row.status == rp.FAIL and "not met" in row.actual and "30 of 30" not in row.actual
+    assert row.status == rp.FAIL and "no 'Results at a glance' section" in row.actual
+    records_for_readme(tmp_path, monkeypatch)
+    readme = tmp_path / "README.md"
+    readme.write_text(readme_text(tmp_path), encoding="utf-8")
+    assert rp.check_b6(ctx).status == rp.PASS and rp.readme_problems(readme.read_text(encoding="utf-8"), tmp_path) == []
+    # a figure that is missing from the results section
+    text = readme_text(tmp_path).replace("39 of 40", "38 of 40")
+    readme.write_text(text, encoding="utf-8")
+    row = rp.check_b6(ctx)
+    assert row.status == rp.FAIL and "39 of 40" in row.actual and "unexpected count in the results section: 38 of 40" in row.actual
+    # a wrong G3 figure
+    readme.write_text(readme_text(tmp_path).replace("489 of 489", "488 of 489"), encoding="utf-8")
+    assert "missing: 489 of 489" in rp.check_b6(ctx).actual
+    # G2 reading "met"
+    readme.write_text(readme_text(tmp_path).replace("not met", "met"), encoding="utf-8")
+    assert "missing from the results section: not met" in rp.check_b6(ctx).actual
+    # the figure "not met" is elsewhere in the section but the G2 row reads "met"
+    readme.write_text(readme_text(tmp_path, glance_extra="G2 was not met").replace("**not met**", "**met**"),
+                      encoding="utf-8")
+    assert "the G2 row of the results table does not read **not met**" in rp.check_b6(ctx).actual
+    # a pass row that says "not met"
+    readme.write_text(readme_text(tmp_path).replace("G3 end to end | **passed**", "G3 end to end | **not met**"),
+                      encoding="utf-8")
+    assert "the G3 row says not met" in rp.check_b6(ctx).actual
+    # a stray count in the results section that no record holds
+    readme.write_text(readme_text(tmp_path, glance_extra="and 12 of 13 more"), encoding="utf-8")
+    assert "unexpected count in the results section: 12 of 13" in rp.check_b6(ctx).actual
+    # the same stray count outside the results section is allowed (thresholds live there)
+    readme.write_text(readme_text(tmp_path, detail_extra="threshold at most 5 of 50"), encoding="utf-8")
+    assert rp.check_b6(ctx).status == rp.PASS
+
+
+def test_results_section_stops_at_the_next_second_level_heading():
+    text = "\n".join(["# T", "", "## Results at a glance", "", "A", "", "### Sub", "", "B", "", "## Next", "", "C", ""])
+    section = rp.results_section(text)
+    assert "B" in section and "C" not in section and "Next" not in section
 
 
 # The run, the table and the exit code --------------------------------------------------------------------

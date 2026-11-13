@@ -34,6 +34,7 @@ import os  # noqa: E402
 import re  # noqa: E402
 import subprocess  # noqa: E402
 from dataclasses import dataclass, field  # noqa: E402
+from decimal import Decimal, ROUND_HALF_UP  # noqa: E402
 from pathlib import Path  # noqa: E402
 from typing import Callable, Mapping  # noqa: E402
 
@@ -619,31 +620,92 @@ def check_b5(ctx: Ctx) -> Row:
 
 
 README_RESULTS_MARKER = "## Results at a glance"
+FIGURE = re.compile(r"(?<![\w.])\d+ of \d+(?![\w.])")
+
+
+def pct(value: float) -> str:
+    """A rate as the README writes it: one decimal, half up, and 100% without a decimal."""
+    rounded = (Decimal(str(value)) * 100).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+    return "100%" if rounded == 100 else f"{rounded}%"
+
+
+def interval(wilson: list[float]) -> str:
+    return f"{pct(wilson[0])} to {pct(wilson[1])}"
+
+
+def readme_figure_groups(root: Path = ROOT) -> tuple[list[str], list[str]]:
+    """The figure strings the README must contain, computed from the committed records (design Section 1.2
+    rule 1). `glance` must appear inside the "Results at a glance" section: the G1 figures, the G2 verdict and
+    its run 4 counts, and the four G3 figures of each run. `detail` must appear in the README: the pooled G3
+    figures, the Wilson intervals, and hit@5 on subsets T and N (the evaluation results section)."""
+    test = read_json(root / RETRIEVAL_RESULTS["test"])["summary"]["overall"]
+    g3 = read_json(root / "eval/e2e/results/g3_result.json")
+    g2 = g2_counts(read_json(root / G2_RECORD))
+    glance = [f"{test['hit@5']} of {test['questions']}", f"{test['hit@1']} of {test['questions']}", str(test["mrr"]),
+              "not met"]
+    glance += sorted({f"{n} of {g2['cases'][i]}" for i, n in enumerate(g2["passed"])})
+    glance += sorted({case for repeat in g2["failed"] for case in repeat})
+    glance += sorted({case for repeat in g2["false_refusals"] for case in repeat})
+    glance.append(str(sum(g2["rendered_claims"])))
+    detail = []
+    for n in (1, 2):
+        s = read_json(root / "eval" / "e2e" / "results" / f"e2e_run{n}_scores.json")
+        glance += [f"{s['a']['supported']} of {s['a']['total']}", f"{s['b']['accurate']} of {s['b']['total']}",
+                   f"{s['c']['failed']} of {s['c']['cases']}", f"{s['d']['false_refusals']} of {s['d']['cases']}"]
+        detail += [interval(s["a"]["wilson"]), interval(s["b"]["wilson"]), f"upper bound {pct(s['c']['wilson'][1])}",
+                   f"{pct(s['d']['rate'])}; {interval(s['d']['wilson'])}"]
+        hit = s["reported"]["hit_at_5"]
+        detail += [f"{hit[k]['hit@5']} of {hit[k]['cases']}" for k in ("T", "N")]
+    pooled = g3["pooled"]
+    detail += [f"{pooled['a']['supported']} of {pooled['a']['total']}", interval(pooled["a"]["wilson"]),
+               f"{pooled['b']['accurate']} of {pooled['b']['total']}", interval(pooled["b"]["wilson"]),
+               f"{pooled['c']['failed']} of {pooled['c']['cases']}", f"upper bound {pct(pooled['c']['wilson'][1])}",
+               f"{pooled['d']['false_refusals']} of {pooled['d']['cases']}",
+               f"{pct(pooled['d']['false_refusals'] / pooled['d']['cases'])}; {interval(pooled['d']['wilson'])}"]
+    return list(dict.fromkeys(glance)), list(dict.fromkeys(detail))
 
 
 def readme_figures(root: Path = ROOT) -> list[str]:
-    """The figure strings the rewritten README must contain, computed from the committed records (Section 1.2
-    rule 1). Written for the first README rewrite (B3); Build 2 refines the exact forms with its own test."""
-    test = read_json(root / RETRIEVAL_RESULTS["test"])["summary"]["overall"]
-    g3 = read_json(root / "eval/e2e/results/g3_result.json")
-    pooled = g3["pooled"]
-    figures = [f"{test['hit@5']} of {test['questions']}", "not met"]
-    figures += [f"{pooled['a']['supported']} of {pooled['a']['total']}", f"{pooled['b']['accurate']} of {pooled['b']['total']}",
-                f"{pooled['c']['failed']} of {pooled['c']['cases']}", f"{pooled['d']['false_refusals']} of {pooled['d']['cases']}"]
-    return figures
+    glance, detail = readme_figure_groups(root)
+    return glance + detail
+
+
+def results_section(text: str) -> str:
+    """The README text from the results heading to the next second-level heading."""
+    start = text.index(README_RESULTS_MARKER)
+    nxt = re.search(r"^## ", text[start + len(README_RESULTS_MARKER):], flags=re.M)
+    return text[start: start + len(README_RESULTS_MARKER) + nxt.start()] if nxt else text[start:]
+
+
+def readme_problems(text: str, root: Path = ROOT) -> list[str]:
+    """What is wrong with the README's figures: a missing section, a missing figure, or a count in the results
+    section that no record holds. An empty list means the README equals the records."""
+    if README_RESULTS_MARKER not in text:
+        return [f"the README has no '{README_RESULTS_MARKER[3:]}' section"]
+    glance, detail = readme_figure_groups(root)
+    section = results_section(text)
+    problems = [f"missing from the results section: {f}" for f in glance if f not in section]
+    problems += [f"missing: {f}" for f in detail if f not in text]
+    g2_row = next((line for line in section.splitlines() if line.startswith("| G2")), "")
+    if "**not met**" not in g2_row:
+        problems.append("the G2 row of the results table does not read **not met**")
+    problems += [f"the {line[2:4]} row says not met" for line in section.splitlines()
+                 if line.startswith(("| G1", "| G3")) and "not met" in line]
+    known = {f for f in glance + detail if FIGURE.fullmatch(f)}
+    problems += [f"unexpected count in the results section: {f}" for f in FIGURE.findall(section) if f not in known]
+    return problems
 
 
 def check_b6(ctx: Ctx) -> Row:
     expected = "every G1, G2 and G3 figure in the README equals the records"
     readme = ctx.path("README.md")
     text = readme.read_text(encoding="utf-8") if readme.exists() else ""
-    if README_RESULTS_MARKER not in text:
-        return Row("B6", "README figures", expected, "the README has no results section yet", PENDING,
-                   "pending (B3)")
-    missing = [f for f in readme_figures(ctx.root) if f not in text]
+    problems = readme_problems(text, ctx.root)
+    glance, detail = ("", "") if README_RESULTS_MARKER not in text else readme_figure_groups(ctx.root)
     return Row("B6", "README figures", expected,
-               "all figures present" if not missing else "missing: " + ", ".join(missing),
-               PASS if not missing else FAIL)
+               f"all {len(glance) + len(detail)} figures present; no unexpected count" if not problems
+               else "; ".join(problems[:6]) + ("" if len(problems) <= 6 else f"; and {len(problems) - 6} more"),
+               PASS if not problems else FAIL)
 
 
 CHECKS: list[tuple[str, Callable[[Ctx], Row], str]] = [

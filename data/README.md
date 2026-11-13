@@ -49,6 +49,14 @@ Revenue Service). After cloning, fetch it and check everything against the manif
 size and SHA-256 match, and never overwrites an existing file that fails the hash. The source URL
 is <https://www.nrs.gov.ng/uploads/NIGERIA_TAX_ADMINISTRATION_ACT_2025_8c945071a7.pdf>.
 
+**Mirror (D-11, D-184).** The same file, with the same size and SHA-256, is a release asset of tag
+`corpus-2026-10-18` in the project repository (the address is in
+[`eval/reproduce/assets.json`](../eval/reproduce/assets.json)). If the source URL fails, run
+`fetch_raw.py --mirror <that address>`; the mirror is tried only when the source URL fails, and the file is
+kept only if its size and SHA-256 match. The release also holds the two embedding caches used by the
+[reproduction check](../docs/reference/reproduce.md). The mirror address is not written in `manifest.csv`:
+that file is an input of the chunk build, so editing it would change the build manifest.
+
 **No NRS copy of the Nigeria Tax Act.** On 2026-10-18 the Nigeria Revenue Service's "Nigeria
 Tax Act, 2025" page carried only a written overview, with no PDF of the Act. The Lagos State IRS
 gazette copy is therefore the cited text. It may be an earlier gazette print than the one the

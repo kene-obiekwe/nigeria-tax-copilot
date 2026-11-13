@@ -16,6 +16,10 @@ Question box (deviation from Section 3.1, asked and approved at the Build B star
 `st.chat_input` cannot be pre-filled, and the design needs a box that example clicks and "Edit question"
 can fill, so the box is a text area (2,000 characters, the guardrails limit) in a form with an Ask button.
 
+Consent (packaging design Section 4.3, D-180 (a)): above the question box the page shows one acknowledgement
+and a check box, once per browser session; Ask stays disabled until the box is ticked. The tick lives only in
+the page session: it is not written to the database or to any log.
+
 The start-up check (Section 3.8) runs once per process before the box is enabled. If it fails, the app
 fails closed: it shows the unavailable text and no question box.
 """
@@ -91,6 +95,27 @@ def privacy_line() -> None:
     st.caption(ui.PRIVACY_LINE)
     with st.popover(ui.PRIVACY_LINK):
         st.markdown(ui.PRIVACY_DETAILS)
+
+
+CONSENT_KEY = "consent_ack"
+CONSENT_FLAG = "consent_given"
+
+
+def consent_given() -> bool:
+    """True once the box was ticked in this browser session. In memory only: never written to the database
+    or the log (D-180 (a))."""
+    return bool(st.session_state.get(CONSENT_FLAG))
+
+
+def consent_block() -> None:
+    """The acknowledgement above the question box, until it is ticked (packaging design Section 4.3). It sits
+    outside the form so that ticking it reruns the page and enables Ask. Once ticked it is not shown again."""
+    if consent_given():
+        return
+    st.markdown(ui.CONSENT_TEXT)
+    if st.checkbox(ui.CONSENT_LABEL, key=CONSENT_KEY):
+        st.session_state[CONSENT_FLAG] = True
+        st.rerun()
 
 
 def examples_block() -> None:
@@ -246,16 +271,18 @@ def main() -> None:
         return
 
     busy = pending is not None
+    consent_block()
+    consented = consent_given()
     with st.form("ask", clear_on_submit=False):
         st.text_area(ui.QUESTION_LABEL, key="question_box", max_chars=ui.QUESTION_MAX_CHARS, height=120,
                      placeholder=ui.QUESTION_PLACEHOLDER, disabled=busy)
-        submitted = st.form_submit_button(ui.ASK_BUTTON, disabled=busy or left == 0)
+        submitted = st.form_submit_button(ui.ASK_BUTTON, disabled=busy or left == 0 or not consented)
     st.caption(ui.SINGLE_TURN_LINE)
 
     if busy:
         finish_pending(services, live)
         return
-    if not submitted:
+    if not submitted or not consented:
         return
     question = (st.session_state.get("question_box") or "").strip()
     if not question:
