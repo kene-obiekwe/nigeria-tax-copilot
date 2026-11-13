@@ -4,7 +4,7 @@
   "repository": "kene-obiekwe/nigeria-tax-copilot",
   "tag": "corpus-2026-10-18",
   "base_url": "https://github.com/kene-obiekwe/nigeria-tax-copilot/releases/download/corpus-2026-10-18/",
-  "note": "Planned URLs (D-184). Kene creates the release in the GitHub web page (design Section 6); the hash check after upload confirms every asset against this file."
+  "note": "Release published on 2026-11-13 (D-184); the sha256 and size of all three assets were checked on download against this file (and, for the scan, data/manifest.csv)."
  },
  "snapshot": {
   "taken": "2026-11-13",
