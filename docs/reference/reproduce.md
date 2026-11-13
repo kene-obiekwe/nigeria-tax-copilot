@@ -38,6 +38,20 @@ The check runs in a **clean clone**, with both API keys empty, which proves that
 3. Read the table. It has one row per check with its id, what it checks, what is expected, what was found and
    whether it passed. The exit code is 0 only when no row failed and none was skipped or pending.
 
+Two things to know before step 1 and step 2:
+
+- **Stop any other copy of this stack first (D3 of the clean-clone check).** `docker-compose.yml` fixes the
+  container name `taxcopilot-pgvector` and host port 5434, so a second checkout cannot run beside another one,
+  whatever compose project name it uses. Run `docker compose down` in the other folder (its data volume is
+  kept) before starting the stack in the clean clone.
+- **Expected test counts (D2).** A10 passes on 0 failed tests. With `--a10-expected` it also compares the
+  counts, and they depend on what is installed. In a clone with only `requirements.txt` installed, expect
+  `--a10-expected 1864/31`: **1864 passed, 31 skipped**. The main checkout, with `requirements-eval.txt`
+  installed too, has **1865 passed, 30 skipped**; the clean-clone figure is one passed fewer and one skipped
+  more because `tests/test_retrieval.py:401` (`test_bge_client_embeds_normalised_vectors`) needs the
+  `sentence_transformers` package of `requirements-eval.txt` and skips without it. The other 30 skips are the
+  paid-API tests and the overseer or already-spent checks, which skip in every checkout.
+
 The script downloads two kinds of file when they are missing: the scanned source file of the Nigeria Tax
 Administration Act, and the two embedding cache files. Both come from the release of tag
 `corpus-2026-10-18` and are kept only when their size and sha256 match

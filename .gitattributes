@@ -4,3 +4,5 @@
 *.docx binary
 *.png binary
 *.jpg binary
+# D-187: stored byte-for-byte; the sha256 pinned in config_g2_v4.json is of the CRLF bytes, so no line-ending conversion.
+data/curated/disclosure_policy.yml -text

@@ -230,6 +230,16 @@ against the records. After steps 1 to 5 above (with both API keys left empty), r
 It prints one row per check (id, what, expected, actual, pass) and exits 0 only when every row passes.
 What each check proves, and what a failure means, is in [docs/reference/reproduce.md](docs/reference/reproduce.md).
 
+Two things to know before you run it:
+
+- **Stop any other copy of this stack first.** `docker-compose.yml` fixes the container name
+  `taxcopilot-pgvector` and host port 5434, so two copies cannot run at the same time (run
+  `docker compose down` in the other folder; its data volume is kept).
+- **Test counts.** Check A10 requires 0 failed tests. To also compare the counts, add `--a10-expected`. The
+  counts depend on what you installed: with `requirements.txt` only, expect `--a10-expected 1864/31` (1864
+  passed, 31 skipped). One test (`tests/test_retrieval.py:401`) needs `requirements-eval.txt` and is skipped
+  without it; with that file installed (as in the main checkout) the counts are 1865 passed, 30 skipped.
+
 What is reproduced is every **number**, exactly. The system's **answers** are not regenerated: they came from
 paid, non-deterministic model calls, and what the system showed is committed and pinned instead. A paid
 reproduction of regenerated answers on a sample of the evaluation questions against the live service is
