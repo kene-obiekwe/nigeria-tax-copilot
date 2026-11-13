@@ -1,0 +1,42 @@
+{
+ "schema": "reproduce-assets/1",
+ "release": {
+  "repository": "kene-obiekwe/nigeria-tax-copilot",
+  "tag": "corpus-2026-10-18",
+  "base_url": "https://github.com/kene-obiekwe/nigeria-tax-copilot/releases/download/corpus-2026-10-18/",
+  "note": "Planned URLs (D-184). Kene creates the release in the GitHub web page (design Section 6); the hash check after upload confirms every asset against this file."
+ },
+ "snapshot": {
+  "taken": "2026-11-13",
+  "note": "Byte copies of the two git-ignored cache files, taken before any other Phase 10 step; no eval script ran between the copy and the upload (design Section 6)."
+ },
+ "assets": [
+  {
+   "name": "nigeria_tax_administration_act_2025_gazette_nrs.pdf",
+   "install_as": "data/raw/nigeria_tax_administration_act_2025_gazette_nrs.pdf",
+   "sha256": "956092e5ec5aad8e8b9cda47d6dbb6bde4dacf1000e59df6fe73a5fc12abc403",
+   "bytes": 27677259,
+   "url": "https://github.com/kene-obiekwe/nigeria-tax-copilot/releases/download/corpus-2026-10-18/nigeria_tax_administration_act_2025_gazette_nrs.pdf",
+   "manifest_file": "raw/nigeria_tax_administration_act_2025_gazette_nrs.pdf",
+   "description": "NRS scan of the Nigeria Tax Administration Act 2025 (D-11); sha256 and size equal data/manifest.csv"
+  },
+  {
+   "name": "corpus_embeddings_openai_text-embedding-3-small.jsonl",
+   "install_as": "data/cache/embeddings/openai__text-embedding-3-small.jsonl",
+   "sha256": "13816da90ec99b2e264d597ac8cece203b2d1e676c819996ea1e722e653f4222",
+   "bytes": 12468276,
+   "rows": 400,
+   "url": "https://github.com/kene-obiekwe/nigeria-tax-copilot/releases/download/corpus-2026-10-18/corpus_embeddings_openai_text-embedding-3-small.jsonl",
+   "description": "corpus chunk vectors (D-172): 400 rows keyed by input sha256, from the OpenAI embeddings API"
+  },
+  {
+   "name": "query_embeddings_openai_text-embedding-3-small.jsonl",
+   "install_as": "data/cache/query_embeddings/openai__text-embedding-3-small.jsonl",
+   "sha256": "e0af2e09c8d57387cfb5a5da5c855dfd259e2a2c321c385ef70345f0a6a1fd3b",
+   "bytes": 16081320,
+   "rows": 516,
+   "url": "https://github.com/kene-obiekwe/nigeria-tax-copilot/releases/download/corpus-2026-10-18/query_embeddings_openai_text-embedding-3-small.jsonl",
+   "description": "query vectors (D-172): 516 rows keyed by input sha256, no question text, from the OpenAI embeddings API"
+  }
+ ]
+}
