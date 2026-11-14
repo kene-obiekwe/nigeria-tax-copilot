@@ -13,9 +13,32 @@ through the `app` package so it never shadows the standard library module).
 """
 from __future__ import annotations
 
-from generation.generate import DISCLAIMER  # noqa: F401  (re-exported: the one disclaimer text)
-from interface.screen import EDIT_BUTTON, SCREEN_TEXT  # noqa: F401  (D-160 text and its only button)
-from interface.startup import UNAVAILABLE_TEXT  # noqa: F401  (start-up check failed, Section 3.8)
+# The four texts below are owned by the pipeline code and re-exported lazily (PEP 562), on first use, so that
+# importing this module imports nothing heavy: `app/main.py` must be able to draw STARTUP_NOTICE before it
+# loads the pipeline (deployment design Section 3.4, D-207). `ui.DISCLAIMER` and `from app.copy import
+# DISCLAIMER` work as before. DISCLAIMER: the one disclaimer text; EDIT_BUTTON and SCREEN_TEXT: the D-160 text
+# and its only button; UNAVAILABLE_TEXT: the start-up check failed (Section 3.8).
+_OWNED = {"DISCLAIMER": "generation.generate", "EDIT_BUTTON": "interface.screen", "SCREEN_TEXT": "interface.screen",
+          "UNAVAILABLE_TEXT": "interface.startup"}
+
+
+def __getattr__(name: str) -> str:
+    if name in _OWNED:
+        import importlib  # noqa: PLC0415
+
+        value = getattr(importlib.import_module(_OWNED[name]), name)
+        globals()[name] = value
+        return value
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+# Start-up notice (deployment design Section 3.4, D-207) -------------------------------------------------------
+# Drawn at the top of app/main.py in the first run of a new process, before the heavy imports, and cleared once
+# the start-up check has run. If the wake-up measured on the live URL is over 50 s, "under a minute" becomes
+# "about two minutes" (Section 3.4).
+
+STARTUP_NOTICE = ("Taxy is starting up after a quiet spell. This usually takes under a minute. Please keep this "
+                  "page open: the question box appears when it is ready.")
 
 # Page (Section 3.1) -------------------------------------------------------------------------------------
 

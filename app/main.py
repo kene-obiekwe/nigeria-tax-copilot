@@ -36,16 +36,26 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import streamlit as st
-import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 for _path in (str(ROOT / "python"), str(ROOT)):
     if _path not in sys.path:
         sys.path.insert(0, _path)
 
+from app import copy as ui  # noqa: E402  (imports nothing heavy: the notice must not wait for the pipeline)
+
+# The start-up notice (deployment design Section 3.4, D-207). In the first run of a new process `app.services` is
+# not yet imported, and the imports below take about 30 s on the free instance: draw the notice first and clear
+# it right after `get_services()` returns. Later reruns find `app.services` loaded and draw nothing, so the
+# notice never flashes on a click.
+STARTUP_SLOT = st.empty() if "app.services" not in sys.modules else None
+if STARTUP_SLOT is not None:
+    STARTUP_SLOT.info(ui.STARTUP_NOTICE)
+
+import yaml  # noqa: E402
+
 from app import cards  # noqa: E402
 from app import chrome  # noqa: E402
-from app import copy as ui  # noqa: E402
 from app.services import Services, get_services  # noqa: E402
 
 LOG = logging.getLogger("taxy.app")
@@ -267,6 +277,8 @@ def finish_pending(services: Services, box) -> None:
 def main() -> None:
     chrome.page_setup(ui.BROWSER_TITLE)
     services = get_services()
+    if STARTUP_SLOT is not None:
+        STARTUP_SLOT.empty()  # the start-up check has run; on a failed check the unavailable text follows
     chrome.nav_links()
     header(services)
     about(services)

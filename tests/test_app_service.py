@@ -296,9 +296,9 @@ def test_tier_gate_reads_the_limits_file():
     now = datetime.now(timezone.utc)
     ctx = lambda tier, key=None: RequestContext(tier, key, "s", now)  # noqa: E731
     assert gate.limits_for(ctx("anonymous")).as_json() == {"per_session": 3, "per_user_day": None,
-                                                          "anonymous_pool_day": 50, "cost_cap_day_usd": "0.50"}
-    assert gate.limits_for(ctx("signed_in", "k")).per_user_day == 20
-    assert gate.limits_for(ctx("reviewer", "k")).per_user_day == 100
+                                                          "anonymous_pool_day": 20, "cost_cap_day_usd": "0.50"}
+    assert gate.limits_for(ctx("signed_in", "k")).per_user_day == 10   # the final values (D-200)
+    assert gate.limits_for(ctx("reviewer", "k")).per_user_day == 50
     assert gate.limits_for(ctx("local")).cost_cap_day_usd == Decimal("0.50")
     assert {gate.limits_for(ctx(t, "k")).reserve_usd for t in ("anonymous", "signed_in")} == {Decimal("0.05")}
     with pytest.raises(ValueError):
@@ -319,9 +319,85 @@ def test_local_gate_and_the_hosted_switch():
     limits = LocalGate().limits_for(RequestContext("local", None, "s", datetime.now(timezone.utc)))
     assert limits.as_json() == {"per_session": None, "per_user_day": None, "anonymous_pool_day": None,
                                 "cost_cap_day_usd": None} and limits.reserve_usd == Decimal("0.05")
-    assert isinstance(gate_for("local"), LocalGate)
-    with pytest.raises(RuntimeError, match="Phase 11"):
-        gate_for("hosted")
+    assert isinstance(gate_for("local"), LocalGate) and isinstance(gate_for("test"), LocalGate)
+    hosted = gate_for("hosted", {})
+    assert isinstance(hosted, TierGate)  # Phase 11: the hosted gate is TierGate with the final values
+    assert (hosted.cost_cap_day_usd, hosted.reserve_usd) == (Decimal("0.50"), Decimal("0.05"))
+    assert (hosted.anonymous_per_session, hosted.anonymous_pool_day) == (3, 20)
+    assert (hosted.signed_in_per_day, hosted.reviewer_per_day) == (10, 50)
+    with pytest.raises(RuntimeError, match="no gate"):
+        gate_for("staging")
+
+
+def write_limits(tmp_path, text):
+    path = tmp_path / "limits.yml"
+    path.write_text(text, encoding="utf-8")
+    return path
+
+
+GOOD_LIMITS = "cost_cap_day_usd: '0.50'\nreserve_usd: '0.05'\ntiers: {anonymous: {per_session: 3, pool_per_day: 20}}\n"
+
+
+@pytest.mark.parametrize("env,expected", [
+    ({}, "0.50"), ({"TAXY_COST_CAP_DAY_USD": ""}, "0.50"), ({"TAXY_COST_CAP_DAY_USD": "  "}, "0.50"),
+    ({"TAXY_COST_CAP_DAY_USD": "0.20"}, "0.20"), ({"TAXY_COST_CAP_DAY_USD": "0"}, "0"),
+    ({"TAXY_COST_CAP_DAY_USD": "0.50"}, "0.50"),
+    ({"TAXY_COST_CAP_DAY_USD": "5"}, "0.50"), ({"TAXY_COST_CAP_DAY_USD": "1e999999999999"}, "0.50")])  # raising is ignored
+def test_the_cost_cap_override_can_only_lower_the_cap(env, expected):
+    gate = gate_for("hosted", env)
+    assert gate.cost_cap_day_usd == Decimal(expected)
+    assert gate.limits_for(RequestContext("anonymous", None, "s", datetime.now(timezone.utc))).cost_cap_day_usd ==         Decimal(expected)
+
+
+def test_the_override_applies_to_every_hosted_tier_and_is_ignored_locally():
+    gate = gate_for("hosted", {"TAXY_COST_CAP_DAY_USD": "0.10"})
+    now = datetime.now(timezone.utc)
+    for tier, key in (("anonymous", None), ("signed_in", "k"), ("reviewer", "k")):
+        assert gate.limits_for(RequestContext(tier, key, "s", now)).cost_cap_day_usd == Decimal("0.10")
+    local = gate_for("local", {"TAXY_COST_CAP_DAY_USD": "0.10"})
+    assert local.limits_for(RequestContext("local", None, "s", now)).cost_cap_day_usd is None
+
+
+@pytest.mark.parametrize("value", ["abc", "-1", "NaN", "Infinity", "0.5usd"])
+def test_a_bad_override_fails_closed(value):
+    with pytest.raises(RuntimeError, match="hosted limits"):
+        gate_for("hosted", {"TAXY_COST_CAP_DAY_USD": value})
+
+
+def test_the_error_never_carries_the_override_value():
+    with pytest.raises(RuntimeError) as err:
+        gate_for("hosted", {"TAXY_COST_CAP_DAY_USD": "secret-looking-value"})
+    assert "secret-looking-value" not in str(err.value) and err.value.__cause__ is None
+
+
+@pytest.mark.parametrize("text", [
+    "cost_cap_day_usd: null\nreserve_usd: '0.05'\n",
+    "reserve_usd: '0.05'\n",
+    "cost_cap_day_usd: '0.50'\nreserve_usd: '0'\n",
+    "cost_cap_day_usd: '0.50'\nreserve_usd: null\n",
+    "cost_cap_day_usd: '-1'\nreserve_usd: '0.05'\n",
+    "cost_cap_day_usd: '0.50'\nreserve_usd: '0.05'\ntiers: {anonymous: {per_session: 2.5}}\n",
+    "cost_cap_day_usd: [unclosed\n"])
+def test_a_missing_or_unusable_limits_file_fails_closed(tmp_path, text):
+    with pytest.raises(RuntimeError, match="hosted limits"):
+        gate_for("hosted", {}, write_limits(tmp_path, text))
+    assert isinstance(gate_for("hosted", {}, write_limits(tmp_path, GOOD_LIMITS)), TierGate)
+
+
+def test_a_missing_limits_file_fails_closed(tmp_path):
+    with pytest.raises(RuntimeError, match="hosted limits"):
+        gate_for("hosted", {}, tmp_path / "absent.yml")
+
+
+def test_a_hosted_cap_of_zero_stops_every_question_in_the_database(audit_db):
+    """K2 (design Section 6.3): `TAXY_COST_CAP_DAY_USD=0` gives the cap text and writes no query row."""
+    fake = FakeGenerate()
+    svc = AppService(store=audit_db.store, gate=gate_for("hosted", {"TAXY_COST_CAP_DAY_USD": "0"}),
+                     start_id=audit_db.start_id(), config=shipped_config(),
+                     chunk_hashes=lambda ids: {i: HASHES[i] for i in ids}, generate_fn=fake, jsonl_dir=None)
+    sub = svc.submit(T.E01, ANONYMOUS, "s")
+    assert (sub.kind, sub.reason) == ("limited", "cost_cap")
+    assert fake.calls == 0 and count(audit_db, "queries") == 0
 
 
 def test_the_python_limit_day_matches_west_africa_time():

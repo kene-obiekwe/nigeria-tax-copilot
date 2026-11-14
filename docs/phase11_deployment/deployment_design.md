@@ -25,7 +25,7 @@ pinned file changes. The small interface changes Phase 9 left to this phase are 
 Contents: 0 Inputs and scope. 1 Container image. 2 Hosted database. 3 Hosting (3.4 the cold-start notice). 4 Secrets. 5 Sign-in.
 6 Limits, cost and kill switch. 7 Retention and erasure. 8 Data-protection follow-ups. 9 Exit gate.
 10 Runbook outline. 11 README and docs after go-live. 12 Build plan. 13 What can go wrong. 14 Decisions.
-15 Sources. 16 Local measurements.
+15 Sources. 16 Local measurements. 17 Build record.
 
 ## 0. Inputs and scope
 
@@ -184,6 +184,16 @@ deployed, then fails on any of the following:
 It prints the image size and the file count, and removes the image unless `--keep` is given. It needs Docker
 and about 3 minutes, so it is an opt-in script, not part of the default suite. In the scratch run all five
 checks were clean.
+
+**Build record, B1.1 (2026-11-14; the two wording fixes Kene chose after the overseer's review of B1.1).** The
+text above is kept as approved; these two readings are what the script does.
+
+- **Check 4 (names added by this build).** The base image sets `GPG_KEY`, the public id of the Python release
+  signing key, and its history shows it. A name the base image already carries is exempt from check 4, so the
+  check looks at the names this build adds. Without that exemption it would fail on every build.
+- **Check 5 (five variables).** Section 1.4 sets **five** variables, not four: `PYTHONDONTWRITEBYTECODE`,
+  `PYTHONUNBUFFERED`, `PIP_NO_CACHE_DIR`, `HOME` and `TAXY_DEPLOYMENT`. `Config.Env` may hold the base image's
+  variables (unchanged) and these five with their Section 1.4 values, and nothing else.
 
 ## 2. Hosted database: Supabase (D-195, D-196)
 
@@ -473,6 +483,9 @@ the subject in clear. The app reads `iss` and `sub` from `st.user`. *Unverified:
 both for Google; a free local sign-in test with the localhost redirect proves it before deploy. Streamlit
 keeps an identity cookie in the browser for up to 30 days, or until sign-out. The privacy text does not
 mention it yet (Section 8.4, D-204).
+
+**Expiry (D-209, approved 2026-11-14, option (a)).** Streamlit does not check the identity token's `exp` by itself. The app does
+not check it either: the 30-day identity cookie is the only expiry of a sign-in, and a user can log out at any time.
 
 ### 5.5 Wiring the two sign-in hooks
 
@@ -885,3 +898,84 @@ gave a browser with no cached files (0 of 30 front-end files from the cache).
 Started and stopped: the rebuilt scratch image and its container (both removed), the scratch environment
 file (deleted), the browser pane tab (closed). The local audit schema gained three more `app_starts` rows
 with `deployment = 'test'` (start ids 22 to 24, all `ok`).
+
+## 17. Build record
+
+### Build 1 (B1.1 and B1.2, 2026-11-14, session "Phase 11 Build 1")
+
+The overseer approved B1 and Kene approved the deviations below as D-208 and the identity-token point as D-209 on 2026-11-14.
+
+**B1.1: the container image.** `Dockerfile`, the allow-list `.dockerignore`, `requirements.lock.txt` (74 pins)
+with the two pins `Authlib==1.9.1` and `httpx==0.28.1` in `requirements.txt`, the lock-equality test, and
+`eval/deploy/check_image.py` with its tests.
+
+| Measurement | Result |
+|---|---|
+| Image | 729,041,969 bytes (729 MB) at B1.1; 729,048,571 bytes after B1.2. The design measured 725 MB; the difference is the sign-in packages |
+| Build | 169 s on a cold cache; Python 3.12.16; `pip check` clean; 75 packages with pip; 73 files under `/srv/taxy`; user uid 1000; the project files are not writable by it |
+| `check_image.py --worktree` | checks 1 to 5 clean at B1.1 and again at B1.2 |
+| Start-up check inside the image | deployment `test`, local container on 5434: `ok`, no problems, snapshot 2026-10-18 (start ids 26 and 27) |
+| Default suite | B1.1: 1967 passed, 30 skipped (baseline 1880 plus 87 new tests) |
+
+**B1.2: the D-192 changes.** The hosted gate (`python/interface/limits.py`: `gate_for("hosted")` returns
+`TierGate`, fails closed on a missing file, a null cap or a reserve that is not positive, and
+`TAXY_COST_CAP_DAY_USD` can only lower the cap, `0` stopping every question; a value that is not a number of 0 or
+more fails closed); the final `app/limits.yml` (Section 6.1: $0.50, reserve $0.05, 3 a session, pool 20,
+signed in 10, reviewer 50); identity from `st.user` through `resolve_identity()` and the `sign_in` and
+`sign_out` hooks (`st.login("google")` and `st.logout()`) on a hosted deployment only (`app/services.py`; the
+session stays anonymous if no key can be derived or the user store fails, and the log gets the error type
+only); the early start-up notice (`app/main.py`, `STARTUP_NOTICE` in `app/copy.py`, the wording of Section 3.4).
+`deploy/supabase/0001_hosted_roles.sql` and `0002_revoke_api_roles.sql` (idempotent), `deploy/set_role_password.py`,
+`deploy/apply_sql.py`, and in `eval/deploy/`: `with_hosted.py`, `check_hosted_db.py`, `compare_retrieval.py`,
+`compare_live.py`, `check_live_start.py`. Free tests: `tests/test_deploy_scripts.py` (new), additions to
+`tests/test_app.py`, `tests/test_app_service.py` and `tests/test_check_image.py`.
+
+| Measurement | Result |
+|---|---|
+| Default suite after B1.2 | 2109 passed, 30 skipped. The 142 more than the 1967 of B1.1 are the 101 tests of `tests/test_deploy_scripts.py` and a net 41 in `tests/test_app.py`, `tests/test_app_service.py` and `tests/test_check_image.py` (the hosted gate and override, hosted identity and hooks, the notice, the base-image pull) |
+| Image rebuilt, `check_image.py --worktree` | clean; 73 files; the dependency layers came from the cache |
+| In the rebuilt image (deployment `test`) | start-up check `ok` (start id 27); `gate_for("hosted")` gives 0.50, 0.05, 3, 20, 10, 50, and the override gives 0.20, 0.50 (a raise is ignored) and 0; Authlib 1.9.1, httpx 0.28.1, `st.login` and `st.logout` present; `app/main.py` in a fresh process: no exception, one question box, the notice drawn then cleared, no notice on a rerun |
+| Authlib advisory check (Section 5.2) | GitHub's global advisory database for pip: 0 advisories for Authlib 1.9.1, joserfc 1.7.7 and httpx 0.28.1 (the same query lists 17 for Authlib 1.2.0, so it works); PyPI lists no vulnerability for 1.9.1. Nothing to stop on |
+
+**Deviations from the design, and additions** (approved, D-208):
+
+1. **joserfc 1.7.7.** pip resolves 1.8.0, published 2026-11-03, 11 days before the build day, so it breaks the
+   14-day rule of Section 1.2. The lock pins 1.7.7 (published 2026-10-19; Authlib needs `joserfc>=1.6.8`).
+   Kene chose to keep 1.7.7. 1.8.0 turns 14 days old on 2026-11-17.
+2. **`app/copy.py` was not light.** Section 3.4 says `app/copy.py` imports nothing heavy. It imported
+   `generation.generate`, `interface.screen` and `interface.startup` when loaded, which cost about 0.7 s of the
+   3.2 s import at full CPU, so about 7 s at 0.1 CPU before the notice could be drawn. The fix stays inside the
+   D-192 list: the four texts the pipeline owns (`DISCLAIMER`, `EDIT_BUTTON`, `SCREEN_TEXT`, `UNAVAILABLE_TEXT`)
+   are now re-exported lazily (module `__getattr__`), so `ui.DISCLAIMER` and `from app.copy import DISCLAIMER`
+   work as before. A test runs a fresh interpreter and checks that `import app.copy` loads none of the pipeline.
+3. **`deploy/apply_sql.py` (new, not named in the design).** The owner steps of Section 2.5 are SQL files, and
+   `with_hosted.py` runs a Python script, so a small runner applies one `.sql` file in one transaction through
+   `check_pgvector.connect()`. It prints the file name and "applied", and on a failure the error type only.
+4. **`set_role_password.py`:** the password must have at least 16 characters (not in the design), and the
+   SCRAM-SHA-256 verifier is computed in Python (salted, 4096 rounds). A test logs in to the local server with the
+   password it set, and a wrong password is refused.
+5. **The draw of the five cases** (Section 9.2) was not specified beyond the seed. `compare_live.py draw` takes
+   the subset T cases answered in both Phase 8 runs with identical passage lists (all 30), in id order, and
+   `random.Random(20261114).sample(ids, 5)`. That gives Q005, Q012, Q028, Q031 and Q049.
+6. **`compare_live.py` baselines.** The Phase 8 results hold no configuration hashes, prompt labels or `corpus`
+   object, so the fixed fields of an answered live row are compared with a local answered Phase 9 row
+   (`--baseline-ref`, default Q-9681c177), and a refusal with its own Phase 9 row. For an answered case the
+   pre-check result is "no refusal" and the `flags` equal the Phase 8 case. The `corpus` comparison leaves out
+   `load_id`, which differs between the two databases. A passage difference in P1 to P8 is accepted only with
+   `--parity-passed` and is listed either way.
+7. **`compare_retrieval.py`** compares the whole retrieved list (depth 20), not only the top 5, and the two
+   `evaluate()` summaries, so Section 9.1 is checked more strictly than the text asks.
+8. **`check_hosted_db.py`** also checks the two login roles' attributes (no superuser, BYPASSRLS, CREATEDB,
+   CREATEROLE or REPLICATION; connection limits 20 and 3; membership of the group role) and fails on an unexpected
+   table in the audit schema, beyond the items of Section 2.6.
+9. **`check_image.py`:** a `--worktree` mode for building before a commit exists, and it pulls the base image if
+   the local image store lacks it (a build can use its own cache and leave nothing in the store).
+10. **PUBLIC `EXECUTE`.** `0002_revoke_api_roles.sql` removes the explicit default grants Supabase gives the three
+    API roles on tables, sequences and functions the owner creates later. PostgreSQL's built-in `EXECUTE` for PUBLIC
+    on new functions is not an API-role grant and stays; the audit functions are protected by the migration
+    runner's revoke from PUBLIC (D-151) and by the privilege check of `check_hosted_db.py`.
+
+**Open points that this build does not settle** (still the design's *unverified* items, for B2 and B3): that
+`verify-full` TLS works through the pooler, that the shared pooler accepts the custom login roles, pg_cron on the
+Free plan, and what `st.user` carries for Google. Streamlit does not check the identity token's `exp` by itself
+(its documentation says so); Kene decided (D-209, option (a)) that the 30-day cookie of Section 5.4 is the only expiry.

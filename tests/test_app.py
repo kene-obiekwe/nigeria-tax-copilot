@@ -1042,3 +1042,214 @@ def test_every_page_sets_the_taxy_icon_and_logo():
     for path in (ROOT / "app" / "main.py", ROOT / "app" / "pages" / "my_questions.py"):
         text = path.read_text(encoding="utf-8")
         assert "chrome.page_setup(" in text and "st.set_page_config" not in text, path.name
+
+
+# Phase 11, step B1.2: hosted sign-in wiring and the start-up notice (deployment design Sections 3.4, 5.4, 5.5; D-192, D-207)
+
+
+import streamlit as st  # noqa: E402
+
+from app import services as app_services  # noqa: E402
+from interface.identity import user_key as derive_user_key  # noqa: E402
+
+GOOGLE_ISS = "https://accounts.google.com"
+SECRET = b"test-secret-not-a-real-one"
+
+
+class FakeUser:
+    """What `st.user` looks like to the app: a read-only mapping with `get`."""
+
+    def __init__(self, **claims):
+        self.claims = claims
+
+    def get(self, key, default=None):
+        return self.claims.get(key, default)
+
+
+def hosted_services(audit_db, tmp_path, *, secret=lambda: SECRET, touch=None):
+    ident = app_services.session_identity("hosted", claims=app_services.streamlit_claims,
+                                          touch=touch or audit_db.store.touch_user, secret=secret)
+    services = make_services(audit_db, tmp_path, identity=ident, deployment="hosted")
+    services.extra.update(app_services.deployment_wiring("hosted", audit_db.store)[1])
+    return services
+
+
+def test_only_a_hosted_deployment_gets_the_sign_in_hooks(audit_db):
+    for deployment in ("local", "test"):
+        identity, extra = app_services.deployment_wiring(deployment, audit_db.store)
+        assert extra == {} and identity().tier == ("local" if deployment == "local" else "anonymous")
+    identity, extra = app_services.deployment_wiring("hosted", audit_db.store)
+    assert sorted(extra) == ["sign_in", "sign_out"]
+
+
+def test_the_hooks_call_st_login_google_and_st_logout(monkeypatch):
+    calls = []
+    monkeypatch.setattr(st, "login", lambda *a, **k: calls.append(("login", a, k)))
+    monkeypatch.setattr(st, "logout", lambda *a, **k: calls.append(("logout", a, k)))
+    app_services.sign_in()
+    app_services.sign_out()
+    assert calls == [("login", ("google",), {}), ("logout", (), {})]
+
+
+def test_the_hosted_buttons_are_active_and_each_calls_its_hook(audit_db, tmp_path, monkeypatch):
+    calls = []
+    monkeypatch.setattr(st, "login", lambda *a, **k: calls.append(("login", a)))
+    monkeypatch.setattr(st, "logout", lambda *a, **k: calls.append(("logout", a)))
+    monkeypatch.setattr(st, "user", FakeUser())                                            # nobody signed in
+    services = hosted_services(audit_db, tmp_path)
+    at = new_app(services)
+    assert not at.exception and not at.button(key="profile-sign-in").disabled
+    assert ui.SIDEBAR_SIGN_IN not in texts(at)                                             # the "later phase" caption is gone
+    at.button(key="profile-sign-in").click()
+    at.run()
+    assert calls == [("login", ("google",))]
+    monkeypatch.setattr(st, "user", FakeUser(is_logged_in=True, iss=GOOGLE_ISS, sub="sub-1", email="a@example.test"))
+    at = new_app(services)
+    assert not at.button(key="profile-log-out").disabled
+    at.button(key="profile-log-out").click()
+    at.run()
+    assert calls[-1] == ("logout", ()) and not at.exception
+
+
+def test_the_test_deployment_buttons_stay_disabled(audit_db, tmp_path):
+    services = make_services(audit_db, tmp_path, identity=ANONYMOUS, deployment="test")
+    services.extra.update(app_services.deployment_wiring("test", audit_db.store)[1])
+    at = new_app(services)
+    assert at.button(key="profile-sign-in").disabled and ui.SIDEBAR_SIGN_IN in [c.value for c in at.sidebar.caption]
+
+
+def test_a_signed_in_session_reaches_resolve_identity_with_the_st_user_claims(audit_db, tmp_path, monkeypatch):
+    seen = []
+
+    def touch(key, provider):
+        seen.append((key, provider))
+        return audit_db.store.touch_user(key, provider)
+
+    monkeypatch.setattr(st, "user", FakeUser(is_logged_in=True, iss=GOOGLE_ISS, sub="sub-42", email="kene@example.test",
+                                              name="Not Read", tokens={"id": "never read"}))
+    services = hosted_services(audit_db, tmp_path, touch=touch)
+    ident = services.identity()
+    expected = derive_user_key(SECRET, GOOGLE_ISS, "sub-42")
+    assert (ident.tier, ident.user_key, ident.display) == ("signed_in", expected, "kene@example.test")
+    assert seen == [(expected, "google")]
+    at = new_app(services)
+    assert not at.exception
+    assert ui.SIDEBAR_SIGNED_IN_AS.format(display="kene@example.test") in [t.value for t in at.sidebar.text]
+    assert app_services.streamlit_claims() == {"is_logged_in": True, "iss": GOOGLE_ISS, "sub": "sub-42",
+                                               "email": "kene@example.test"}                  # four claims, no tokens
+    row = audit_db.conn.execute(f"SELECT user_key, provider FROM {audit_db.q('users')}").fetchall()
+    assert row == [(expected, "google")]                                                      # no email, no name stored
+
+
+@pytest.mark.parametrize("claims", [{}, {"is_logged_in": False}])
+def test_nobody_logged_in_is_anonymous_on_hosted(audit_db, tmp_path, monkeypatch, claims):
+    monkeypatch.setattr(st, "user", FakeUser(**claims))
+    assert hosted_services(audit_db, tmp_path).identity().tier == "anonymous"
+    assert app_services.streamlit_claims() is None
+
+
+@pytest.mark.parametrize("name,user,secret", [
+    ("no subject", FakeUser(is_logged_in=True, iss=GOOGLE_ISS, email="x@example.test"), lambda: SECRET),
+    ("no issuer", FakeUser(is_logged_in=True, sub="s", email="x@example.test"), lambda: SECRET),
+    ("no secret", FakeUser(is_logged_in=True, iss=GOOGLE_ISS, sub="s", email="x@example.test"), lambda: None)])
+def test_missing_claims_or_secret_leave_the_session_anonymous_and_log_only_the_error_type(
+        name, user, secret, audit_db, tmp_path, monkeypatch, caplog):
+    monkeypatch.setattr(st, "user", user)
+    services = hosted_services(audit_db, tmp_path, secret=secret)
+    with caplog.at_level("ERROR"):
+        ident = services.identity()
+    assert ident.tier == "anonymous" and ident.user_key is None
+    assert "IdentityError" in caplog.text
+    for secret_text in ("x@example.test", GOOGLE_ISS, SECRET.decode()):
+        assert secret_text not in caplog.text
+    at = new_app(services)
+    assert not at.exception and not at.button(key="profile-sign-in").disabled
+
+
+def test_a_failing_user_store_leaves_the_session_anonymous(audit_db, tmp_path, monkeypatch, caplog):
+    monkeypatch.setattr(st, "user", FakeUser(is_logged_in=True, iss=GOOGLE_ISS, sub="s", email="x@example.test"))
+
+    def broken(key, provider):
+        raise RuntimeError("database says " + key)
+
+    with caplog.at_level("ERROR"):
+        ident = hosted_services(audit_db, tmp_path, touch=broken).identity()
+    assert ident.tier == "anonymous" and "RuntimeError" in caplog.text and "database says" not in caplog.text
+
+
+# The start-up notice (D-207) ---------------------------------------------------------------------------------------
+
+
+class RecordingSlot:
+    """Wraps the real `st.empty()` slot and records what main.py draws into it."""
+
+    def __init__(self, real, events):
+        self.real, self.events = real, events
+
+    def info(self, text, *args, **kwargs):
+        self.events.append(("info", text))
+        return self.real.info(text, *args, **kwargs)
+
+    def empty(self):
+        self.events.append(("empty", None))
+        return self.real.empty()
+
+
+def record_slots(monkeypatch):
+    events = []
+    real_empty = st.empty
+    monkeypatch.setattr(st, "empty", lambda: RecordingSlot(real_empty(), events))
+    return events
+
+
+def test_the_startup_notice_wording_is_the_designs_wording():
+    assert ui.STARTUP_NOTICE == ("Taxy is starting up after a quiet spell. This usually takes under a minute. Please "
+                                 "keep this page open: the question box appears when it is ready.")
+    assert "§" not in ui.STARTUP_NOTICE
+
+
+def test_importing_the_copy_module_imports_nothing_heavy():
+    """The notice is drawn before the pipeline loads (design Section 3.4): `app.copy` must not pull it in."""
+    import subprocess
+    code = ("import sys; sys.path[:0] = ['python', '.']; import app.copy as ui; "
+            "heavy = [m for m in ('generation', 'interface', 'psycopg', 'anthropic', 'openai', 'pandas', 'pyarrow', "
+            "'check_pgvector', 'audit', 'embed', 'tools') if m in sys.modules]; "
+            "print(heavy, ui.STARTUP_NOTICE[:5]); "
+            "from generation.generate import DISCLAIMER; assert ui.DISCLAIMER == DISCLAIMER; "
+            "assert ui.UNAVAILABLE_TEXT and ui.EDIT_BUTTON and ui.SCREEN_TEXT")
+    out = subprocess.run([sys.executable, "-c", code], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr[-500:]
+    assert out.stdout.strip() == "[] Taxy"
+
+
+def test_a_cold_first_run_draws_the_notice_then_clears_it_and_a_warm_rerun_draws_none(audit_db, tmp_path, monkeypatch):
+    events = record_slots(monkeypatch)
+    monkeypatch.delitem(sys.modules, "app.services", raising=False)                      # a new process: not loaded yet
+    services = make_services(audit_db, tmp_path)
+    at = new_app(services)
+    assert not at.exception
+    assert events == [("info", ui.STARTUP_NOTICE), ("empty", None)]                      # drawn first, cleared after the check
+    assert ui.STARTUP_NOTICE not in texts(at)                                            # gone once the page is ready
+    assert len(at.text_area) == 1                                                        # the question box is there
+    assert "app.services" in sys.modules
+    events.clear()
+    at = at.run()                                                                        # an ordinary rerun (a click)
+    assert not at.exception and events == [] and ui.STARTUP_NOTICE not in texts(at)
+
+
+def test_a_warm_first_render_never_draws_the_notice(audit_db, tmp_path, monkeypatch):
+    events = record_slots(monkeypatch)
+    assert "app.services" in sys.modules                                                 # imported by this test module
+    at = new_app(make_services(audit_db, tmp_path))
+    assert not at.exception and [e for e in events if e[0] == "info"] == []
+
+
+def test_a_cold_run_with_a_failed_startup_check_replaces_the_notice_with_the_unavailable_text(audit_db, tmp_path,
+                                                                                                monkeypatch):
+    events = record_slots(monkeypatch)
+    monkeypatch.delitem(sys.modules, "app.services", raising=False)
+    services = make_services(audit_db, tmp_path, startup=StartupResult(False, ["database"], None, SNAPSHOT))
+    at = new_app(services)
+    assert not at.exception and events == [("info", ui.STARTUP_NOTICE), ("empty", None)]
+    assert ui.STARTUP_NOTICE not in texts(at) and ui.UNAVAILABLE_TEXT in [e.value for e in at.error]
+    assert at.text_area == []

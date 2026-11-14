@@ -1,22 +1,25 @@
 """The rate-limit and cost-cap hook (interface design, Section 8; D-162).
 
 The Python gate only chooses the `Limits` for a request; the check itself runs in the database, in
-`open_query()`, under an advisory lock and in the same transaction as the receipt insert. Phase 9
-ships `LocalGate` (no limits; the sidebar still shows today's spend) and `TierGate` (reads
-`app/limits.yml`; unit tested, not enabled). Phase 11 sets the values and enables `TierGate` for
-`TAXY_DEPLOYMENT=hosted`; until then `gate_for("hosted")` refuses, so a hosted app cannot start
-without a cap.
+`open_query()`, under an advisory lock and in the same transaction as the receipt insert. There are
+two gates: `LocalGate` (no limits; the sidebar still shows today's spend) and `TierGate` (reads
+`app/limits.yml`). `gate_for("hosted")` returns `TierGate` with the Phase 11 values (deployment design
+Sections 6.1 and 6.3, D-200, D-201) and fails closed: a missing or unreadable file, a null cap or a reserve
+that is not positive raises, so a hosted app cannot start without a cap. The environment variable
+`TAXY_COST_CAP_DAY_USD` can only lower the daily cap (the lower of the file value and the variable is used;
+`0` stops every question); a value that is not a number of 0 or more also fails closed.
 
 The limit day runs from midnight West Africa Time. Africa/Lagos is UTC+1 all year (no daylight
 saving), so a fixed offset is used here; the database uses the 'Africa/Lagos' zone itself.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+import os
+from dataclasses import dataclass, replace
 from datetime import datetime, timedelta, timezone
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
-from typing import Protocol
+from typing import Mapping, Protocol
 
 import yaml
 
@@ -24,6 +27,7 @@ ROOT = Path(__file__).resolve().parents[2]
 LIMITS_FILE = ROOT / "app" / "limits.yml"
 WAT = timezone(timedelta(hours=1), "WAT")
 DEFAULT_RESERVE_USD = Decimal("0.05")  # above the dearest Phase 7 question ($0.036)
+COST_CAP_ENV = "TAXY_COST_CAP_DAY_USD"  # hosted only; can only lower the cap (design Section 6.3, K2)
 
 
 @dataclass(frozen=True)
@@ -124,7 +128,38 @@ class TierGate:
         raise ValueError(f"unknown tier {ctx.tier!r}")
 
 
-def gate_for(deployment: str) -> Gate:
+def lowered_cap(file_cap: Decimal, environ: Mapping[str, str]) -> Decimal:
+    """The daily cap after the environment override: the lower of the file value and `TAXY_COST_CAP_DAY_USD`.
+    An unset or blank variable changes nothing; a value that is not a finite number of 0 or more raises."""
+    raw = (environ.get(COST_CAP_ENV) or "").strip()
+    if not raw:
+        return file_cap
+    try:
+        override = Decimal(raw)
+    except InvalidOperation:
+        raise ValueError(f"{COST_CAP_ENV} is not a number") from None
+    if not override.is_finite() or override < 0:
+        raise ValueError(f"{COST_CAP_ENV} must be a number of 0 or more")
+    return min(file_cap, override)
+
+
+def hosted_gate(path: Path = LIMITS_FILE, environ: Mapping[str, str] = os.environ) -> TierGate:
+    """`TierGate` for a hosted deployment. Fails closed with RuntimeError (never a value in the message)."""
+    try:
+        gate = TierGate.from_file(path)
+        if gate.cost_cap_day_usd is None:
+            raise ValueError("the daily cost cap is null")
+        if gate.reserve_usd is None or gate.reserve_usd <= 0:
+            raise ValueError("the reserve is not positive")
+        return replace(gate, cost_cap_day_usd=lowered_cap(gate.cost_cap_day_usd, environ))
+    except (OSError, ValueError, TypeError, ArithmeticError, yaml.YAMLError) as exc:
+        raise RuntimeError(f"the hosted limits are not usable ({type(exc).__name__}): a hosted app does not start "
+                           "without a valid daily cap") from None
+
+
+def gate_for(deployment: str, environ: Mapping[str, str] = os.environ, path: Path = LIMITS_FILE) -> Gate:
     if deployment in ("local", "test"):
         return LocalGate()
-    raise RuntimeError("the hosted gate is switched on in Phase 11 (TierGate with the Phase 11 values)")
+    if deployment == "hosted":
+        return hosted_gate(path, environ)
+    raise RuntimeError(f"no gate for deployment {deployment!r}")
