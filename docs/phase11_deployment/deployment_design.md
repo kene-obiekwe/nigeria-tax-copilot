@@ -1099,3 +1099,77 @@ file of `deploy/` (nor `.env.hosted`) is, and the file holds one certificate wit
 | `check_image.py --worktree` | clean (checks 1 to 5 found nothing); 729,052,248 bytes; 75 files under `/srv/taxy` (the 73 of B1 plus the certificate and audit migration 4, D-210) |
 | Inside the image | `/srv/taxy/deploy/supabase/prod-ca-2021.crt` is present (1,367 bytes, readable by the app user) and is the only file under `/srv/taxy/deploy` |
 | Image | removed after the check |
+
+### B3 (2026-11-14, session "Phase 11 Build 2")
+
+No question was asked, locally or live, and no paid call was made ($0). Kene did every sign-in and every click in
+Render and Google; the build session never typed a credential and read no secret, cookie or token. Times are UTC
+(West Africa Time is one hour ahead).
+
+**Step 1: the free local sign-in test** (Section 5.5). The app ran from the working tree as `TAXY_DEPLOYMENT=hosted`
+against the local container, with placeholder values (not keys) for `LLM_API_KEY` and `EMBEDDING_API_KEY`, a
+throwaway `TAXY_USER_KEY_SECRET` made for the test and never shown, and the local `.streamlit/secrets.toml` with the
+localhost redirect. The start-up check passed (local start id 29, deployment `hosted`).
+
+| Check | Result |
+|---|---|
+| "Sign in with Google" | enabled; calls `st.login("google")`: the browser went to `accounts.google.com` with the redirect `http://localhost:8501/oauth2callback`, scopes `openid email profile` and PKCE (S256) |
+| Consent screen | "Sign in to Taxy"; shares name, profile picture and email address; Kene pressed Continue (deviation 1) |
+| `iss` and `sub` from `st.user` (Section 5.4, *unverified* until now) | **settled**: both present for Google, because a user key was derived (`resolve_identity()` refuses claims without them) |
+| What was stored | one `audit.users` row: a 64-character lower-case hex key (HMAC-SHA256), provider `google`, tier `signed_in`. The account's email appears in none of the 114 text and JSON columns of the audit schema |
+| Sidebar profile block | "Signed in as" with the account for the session only, "Delete my history", "Log out"; "Questions left today" moved from 3 (anonymous) to 10 (signed in) |
+| "Delete my history" | the dialog ("cannot be undone, and you will be signed out"), then "Yes, delete everything": the user row was gone (0 rows) and the session was signed out |
+| "Log out" | after a second sign-in, it calls `st.logout()`: the sidebar went back to "Sign in with Google". That second sign-in left one HMAC-only user row in the local database; it cannot be linked to anyone, because the test's key secret no longer exists |
+
+**Step 2: the deploy.** Kene used "Manual Deploy", then "Deploy a specific commit", with **`9944ddeba6d1da5e6b72dd6745a6f1c9a3a4c8a7`**
+(origin/main, D-211). The overseer had amended the B3a commit before the push (a wording change in the Build 2
+record), so the hash differs from the build's local `99b376c`; the content is the same apart from that line. The
+deploy went Live.
+
+**Step 3: `check_live_start.py`** (Section 3.2), as the reviewer, after the first page view: "hosted start id 3:
+outcome ok, python 3.12.16, streamlit 1.66.0, commit 9944ddeba6d1; clean: ok, no problems, pinned config, approved
+commit". After each cold start below the check passed again (start ids 4 and 5). The hosted database holds no
+query and no user row.
+
+**Step 4: the live page.** Title "Taxy · Nigerian SME Tax Reference"; the short disclaimer "Research and reference
+tool. Not tax advice. Corpus snapshot 18 October 2026, Official Gazette text."; the consent text and checkbox; the
+Privacy details (who runs it, what is stored); the menu with System, Light and Dark, Print and Record screen and no
+developer options; in the sidebar "Questions left today: 3" and "Sign in with Google"; no console error.
+**Environment saves (from Render's documentation, nothing changed):** saving environment variables in the dashboard
+starts a deploy unless "Save only" is chosen ("Save, rebuild, and deploy", "Save and deploy" or "Save only"), and
+saving a secret file starts a new deploy. So a variable change takes effect only through a deploy, and "Save only"
+waits for the next one.
+
+**Step 5: the cold start** (Section 3.4), each after more than 16 minutes with no traffic.
+
+| Run | Render's loading page | Taxy page (title) | Start row written | Question box | Total |
+|---|---|---|---|---|---|
+| 1 (16:07:39) | HTTP 503, "Render - Application loading": "INCOMING HTTP REQUEST DETECTED", "SERVICE WAKING UP" (16:07:42); still shown at 16:07:59 | by 16:08:08 | start id 4, 16:08:07 | by 16:08:08 | **about 29 s** |
+| 2 (16:26:49) | the same page, then "ALLOCATING COMPUTE RESOURCES" (16:26:56), "PREPARING INSTANCE FOR INITIALIZATION" (16:26:59), "STARTING THE INSTANCE" (16:27:03); still shown at 16:27:14 | 16:27:28 | start id 5, 16:27:27 | 16:27:30 | **about 41 s** |
+
+Render's loading page moves on to the app by itself: the browser was left alone and the same tab became the Taxy
+page. The start-up notice was not caught: the in-app part (from the last sample of Render's page to the question
+box) was at most 16 s in run 2 and 9 s in run 1, shorter than the sampling gap. Both runs are well under the 120 s
+upgrade trigger of Section 3.3. **The notice wording rule:** the in-app part is under 50 s, so "under a minute"
+stays and `app/copy.py` is not changed. Run 1's screenshots were lost because the browser pane was hidden; its times
+come from the page text read at each sample.
+
+Screenshots (run 2, and the live page):
+[Render's page at the request](img/b3_cold_01_render_162649.jpg),
+[Render's page while the instance starts](img/b3_cold_02_render_162658.jpg),
+[still Render's page at 16:27:14](img/b3_cold_03_render_162714.jpg),
+[the ready page at 16:27:32](img/b3_cold_04_ready_162732.jpg),
+[the ready page, wide](img/b3_live_ready_wide.jpg),
+[the theme menu](img/b3_live_theme_menu.jpg).
+
+**Deviations:**
+
+1. **The Google app name is "Taxy"**, not "Nigerian SME Tax Reference" (Section 5.1, step 2). The consent screen
+   reads "Sign in to Taxy". It matches the page's brand (D-189); Kene accepted it at the B3 review (2026-11-14).
+2. **The deployed commit is `9944dde`**, the overseer's amended B3a commit (step 2).
+3. **One local test row remains** (step 1, "Log out"): HMAC only, unlinkable, local database only.
+4. **The notice was not observed live** (step 5); the rule is applied on the measured in-app part, which bounds it.
+
+**For the paid gate:** the live service runs `9944dde` with a clean start (start id 5); the hosted database has no
+query or user rows; the first `job_run_details` row (pg_cron, after 01:00 UTC on 2026-11-15) is still to be read;
+the consent screen for a Google account that is not the owner (K5) is still to be recorded.
