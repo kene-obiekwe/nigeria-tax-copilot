@@ -67,6 +67,10 @@ PRIVACY_LINE = ("Do not enter personal or taxpayer details: no names, Tax Identi
                 "account, phone or email details. Use made-up figures. Full privacy details are under About in "
                 "the sidebar.")
 PRIVACY_LINK = "Privacy details"
+# The two go-live facts (deployment design Section 8.4, D-204), word for word in the README Privacy section too.
+PRIVACY_HOSTING = "The demo is hosted in Frankfurt, Germany (Render for the app, Supabase for the database)."
+PRIVACY_COOKIES = ("The page uses a functional security cookie and, if you sign in, a sign-in cookie that lasts up to "
+                   "30 days or until you sign out.")
 PRIVACY_DETAILS = (
     "**Who runs it.** The public demo is run by Kene Christopher Obiekwe for research and demonstration. To ask "
     "for access to, correction or deletion of your data, or to object to its use, write to "
@@ -92,6 +96,7 @@ PRIVACY_DETAILS = (
     "[Supabase](https://supabase.com/privacy), "
     "[Google](https://policies.google.com/privacy). These providers process data outside Nigeria, where the law "
     "may not protect it in the same way.\n\n"
+    f"**Hosting and cookies.** {PRIVACY_HOSTING} {PRIVACY_COOKIES}\n\n"
     "**No automated decisions.** The service makes no decision about you; it returns reference text from the "
     "statutes.\n\n"
     "**Please do not enter** real personal or taxpayer data. The service is not intended for children."

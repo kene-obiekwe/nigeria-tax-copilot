@@ -946,6 +946,25 @@ def test_check_answered_and_check_refusal_combine_the_classes_without_printing_t
     assert cl.check_refusal(refusal, refusal, []).failures == []
 
 
+def test_check_answered_and_check_refusal_take_the_uuid_the_database_returns():
+    """psycopg returns `query_id` as a `uuid.UUID`, not a string (the gate's first run failed on it, D-212)."""
+    import uuid
+
+    from retrieval.smoke_query import matches
+    qid = uuid.UUID("abcdef12-3456-7890-abcd-ef1234567890")
+    live = dict(good_data(), passages=[{"label": f"P{n}", "chunk_id": f"c{n}", "cited": n == 1,
+                                        "chunk_text_sha256": "S"} for n in range(1, 9)])
+    live["query"] = dict(good_data()["query"], **base_row(), query_id=qid)
+    live["corpus_text"] = {"c1": {"text_sha256": "S"}}
+    result = cl.check_answered(live, {"query": base_row()}, CASE, local_sha={"c1": "S"}, gold_units=["c1"],
+                               matches=matches, start_problems=[], parity_passed=False)
+    assert result.failures == [] and result.reference == "abcdef12"
+    refusal = {"query": base_row(status="refused", refusal_reason="foreign_law", refusal_stage="pre_check",
+                                 refusal_text="x", query_id=qid)}
+    result = cl.check_refusal(refusal, refusal, [])
+    assert result.failures == [] and result.reference == "abcdef12"
+
+
 def test_pairs_are_parsed_and_a_malformed_one_is_a_usage_error(capsys):
     assert cl.parse_pairs(["Q-1a2b3c4d=Q031", "Q-5e6f7a8b=Q-e88f33ea"]) == [("Q-1a2b3c4d", "Q031"), ("Q-5e6f7a8b", "Q-e88f33ea")]
     for bad in ("Q-1a2b3c4d", "=Q031", "Q-1a2b3c4d="):

@@ -209,13 +209,13 @@ def check_answered(live: dict, baseline: dict, case: dict, *, local_sha, gold_un
     fail2, accepted = class2(live["passages"], case, parity_passed=parity_passed)
     failures += [f"passages {d}" for d in fail2]
     failures += class3(live, local_sha=local_sha, gold_units=gold_units, matches=matches, start_problems=start_problems)
-    return RowResult(live["query"].get("query_id", "?")[:8], case["id"], failures, accepted)
+    return RowResult(str(live["query"].get("query_id", "?"))[:8], case["id"], failures, accepted)
 
 
 def check_refusal(live: dict, baseline: dict, start_problems: list[str]) -> RowResult:
     failures = class1_refusal(live["query"], baseline["query"])
     failures += [f"app start: {p}" for p in start_problems]
-    return RowResult(live["query"].get("query_id", "?")[:8], "refusal", failures)
+    return RowResult(str(live["query"].get("query_id", "?"))[:8], "refusal", failures)
 
 
 def parse_pairs(items: list[str]) -> list[tuple[str, str]]:

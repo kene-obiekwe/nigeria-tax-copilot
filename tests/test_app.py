@@ -338,6 +338,7 @@ def test_the_order_above_the_question_box_is_card_privacy_line_consent_box(audit
     assert order == ["example_card", ui.PRIVACY_LINE, ui.CONSENT_TEXT, "box"]
     assert ui.PRIVACY_LINK in [p.proto.popover.label for p in at.main.get("popover")]
     assert ui.PRIVACY_DETAILS in [m.value for m in at.sidebar.markdown]
+    assert ui.PRIVACY_HOSTING in ui.PRIVACY_DETAILS and ui.PRIVACY_COOKIES in ui.PRIVACY_DETAILS   # D-204
     assert ui.SCOPE_TEXT in [m.value for m in at.sidebar.markdown] and ui.SCOPE_TEXT not in [m.value for m in at.main.markdown]
 
 
@@ -551,13 +552,30 @@ def test_the_anonymous_session_limit_disables_the_box_at_the_limit(audit_db, tmp
     services.deployment = "test"
     at = new_app(services)
     assert ui.SIDEBAR_LEFT.format(n=1) in texts(at)
+    assert ui.LIMIT_SESSION.format(n=1) not in texts(at)             # no reason line while questions are left
     at = ask(at, T.E01)                                              # the one question available
     assert last_card(at).status == "answered"
     ask_button = next(b for b in at.button if b.label == ui.ASK_BUTTON)
     assert ui.SIDEBAR_LEFT.format(n=0) in texts(at) and ask_button.disabled   # the box is disabled at the limit
+    assert ui.LIMIT_SESSION.format(n=1) in texts(at)                 # and the sidebar says why (D-212)
     assert not at.exception
     sub = services.service.submit(T.E01, ANONYMOUS, at.session_state["session_key"])   # open_query refuses it too
     assert (sub.kind, sub.reason) == ("limited", "session_limit")
+
+
+def test_the_signed_in_daily_limit_disables_the_box_and_the_sidebar_says_why(audit_db, tmp_path):
+    identity = Identity("signed_in", "ab" * 32)
+    audit_db.store.touch_user("ab" * 32, "google")
+    services = make_services(audit_db, tmp_path, identity=identity, gate=tier_gate(signed_in_per_day=1))
+    services.deployment = "test"
+    at = new_app(services)
+    assert ui.SIDEBAR_LEFT.format(n=1) in texts(at) and ui.LIMIT_DAILY.format(n=1) not in texts(at)
+    at = ask(at, T.E01)
+    assert last_card(at).status == "answered"
+    ask_button = next(b for b in at.button if b.label == ui.ASK_BUTTON)
+    assert ui.SIDEBAR_LEFT.format(n=0) in texts(at) and ask_button.disabled
+    assert ui.LIMIT_DAILY.format(n=1) in texts(at) and ui.LIMIT_SESSION.format(n=1) not in texts(at)
+    assert not at.exception
 
 
 @pytest.mark.parametrize("gate,identity,reason,expected", [

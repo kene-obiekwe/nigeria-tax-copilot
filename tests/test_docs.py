@@ -111,7 +111,8 @@ DATA_README = ROOT / "data" / "README.md"
 DOCS_INDEX = ROOT / "docs" / "README.md"
 LIMITATIONS = ROOT / "docs" / "reference" / "limitations.md"
 REPRODUCE = ROOT / "docs" / "reference" / "reproduce.md"
-B3_DOCS = [README, NOTICE, DATA_README, DOCS_INDEX, LIMITATIONS, REPRODUCE]
+RUNBOOK = ROOT / "docs" / "phase11_deployment" / "runbook.md"
+B3_DOCS = [README, NOTICE, DATA_README, DOCS_INDEX, LIMITATIONS, REPRODUCE, RUNBOOK]
 OPERATOR = "Kene Christopher Obiekwe"
 MAILBOX = "taxy.copilot@gmail.com"
 
@@ -167,8 +168,9 @@ def test_the_readme_follows_the_design_outline_and_status_rules():
                         "Architecture", "How to run", "How to reproduce", "Evaluation results", "Known limitations",
                         "Disclaimer", "Privacy", "Licence and usage", "Documentation"]
     status = text[text.index("## Status"): text.index("## Results at a glance")]
-    assert "Phases 1 to 10 are done" in status and "Phase 11 (deployment) is next" in status
-    assert "no live demo yet" in status and "G2 was **not met**" in status
+    assert "Phases 1 to 11 are done" in status and "Phase 12 (final QA) is next" in status   # Phase 11 Section 11
+    assert re.search(r"<https://[\w.-]+\.onrender\.com>", status) and "no live demo yet" not in status
+    assert "G2 was **not met**" in status
     assert "advisory" not in text.lower()
     top = text.split("## Status")[0]
     assert "not tax advice" in top and "Personal income tax is out of scope" in top
@@ -246,7 +248,7 @@ def test_b3_docs_have_no_section_sign_no_attribution_and_no_broken_link(doc):
     assert broken == []
 
 
-@pytest.mark.parametrize("doc", [LIMITATIONS, REPRODUCE], ids=lambda p: p.name)
+@pytest.mark.parametrize("doc", [LIMITATIONS, REPRODUCE, RUNBOOK], ids=lambda p: p.name)
 def test_reference_pages_open_with_the_disclaimer_line(doc):
     assert "not tax advice" in read(doc).split("\n\n", 2)[1]
 
@@ -255,7 +257,8 @@ def test_the_limitations_page_puts_personal_income_tax_first_and_names_the_cases
     text = flat(read(LIMITATIONS))
     for needed in ("Personal income tax is out of scope", "ADV4-009", "ADV4-044", "N05", "Q032", "N17", "Q009", "N11",
                    "8.8%", "does not detect names or addresses", "Each question is answered on its own",
-                   "log viewer is local only", "note tagger", "Phase 11", "Interest is never computed"):
+                   "log viewer is local only", "note tagger", "Phase 11", "Interest is never computed",
+                   "D-213", "One visitor can use up the shared pool", "Free hosting"):
         assert needed in text, needed
     assert text.index("Personal income tax is out of scope") < text.index("ADV4-009")
 
@@ -272,5 +275,42 @@ def test_the_reproduce_page_names_every_check_and_the_no_regeneration_rule():
 def test_the_docs_index_lists_the_new_and_changed_documents():
     text = read(DOCS_INDEX)
     for target in ("reference/limitations.md", "reference/reproduce.md", "reference/architecture.md",
-                   "../README.md", "../NOTICE.md", "../data/README.md", "phase09_interface/ui_revision.md"):
+                   "../README.md", "../NOTICE.md", "../data/README.md", "phase09_interface/ui_revision.md",
+                   "phase11_deployment/deployment_design.md", "phase11_deployment/runbook.md"):
         assert f"]({target})" in text, target
+
+
+# Phase 11 step D1: go-live docs (deployment design Section 11, D-204, D-212, D-213) ------------------------------
+
+
+def test_the_d204_sentences_are_in_the_readme_and_the_popover_as_written():
+    readme = flat(privacy_section(read(README)))
+    popover = flat(ui.PRIVACY_DETAILS)
+    for sentence in (ui.PRIVACY_HOSTING, ui.PRIVACY_COOKIES):
+        assert sentence in readme and sentence in popover, sentence
+    assert "Frankfurt, Germany" in ui.PRIVACY_HOSTING and "30 days" in ui.PRIVACY_COOKIES
+
+
+def test_the_readme_has_the_hosted_demo_paragraph_the_runbook_link_and_the_pool_limitation():
+    text = read(README)
+    run = text[text.index("## How to run"): text.index("## How to reproduce")]
+    assert "**Hosted demo.**" in run and "](docs/phase11_deployment/runbook.md)" in run
+    for needed in ("3 questions per browser session", "20 a day", "10 questions a day", "$0.50"):
+        assert needed in flat(run), needed
+    limits = flat(text[text.index("## Known limitations"): text.index("## Disclaimer")])
+    assert "D-213" in limits and "ADV4-009" in limits and "ADV4-044" in limits
+
+
+def test_the_runbook_has_every_entry_of_the_outline_and_the_r12_note():
+    text = read(RUNBOOK)
+    for n in range(1, 15):
+        assert re.search(rf"^## R{n}\. ", text, flags=re.M), f"R{n}"
+    r12 = text[text.index("## R12."): text.index("## R13.")]
+    assert "for information only" in r12 and "200" in r12
+    assert '"Save only"' in text and "Deploy a specific commit" in text and "check_live_start.py" in text
+
+
+def test_the_phase11_decisions_are_logged():
+    log = read(ROOT / "docs" / "00_planning" / "decision_log.md")
+    assert "| D-212 | 2026-11-14 |" in log and "| D-213 | 2026-11-14 |" in log
+    assert "143.1 MiB" in log and "$0.0752" in log

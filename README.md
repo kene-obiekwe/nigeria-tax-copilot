@@ -15,9 +15,11 @@ the corpus does not cover the question, and does any arithmetic in code rather t
 
 ## Status
 
-**Phases 1 to 10 are done** (corpus, chunking, embedding, retrieval, generation, guardrails, tools,
-evaluation, interface, documentation and packaging). **Phase 11 (deployment) is next, and
-there is no live demo yet.** Gate G2 was **not met**; see Results at a glance.
+**Phases 1 to 11 are done** (corpus, chunking, embedding, retrieval, generation, guardrails, tools,
+evaluation, interface, documentation and packaging, deployment). The live demo is at
+<https://taxy-1db6.onrender.com>. It runs on a free plan, so the first visit after about 15 quiet minutes can
+take up to about two minutes to wake, and the page says so while it starts. **Phase 12 (final QA) is next.**
+Gate G2 was **not met**; see Results at a glance.
 
 ## Results at a glance
 
@@ -114,8 +116,15 @@ In short:
 
 ## How to run
 
-Tested on Windows 11 with PowerShell, Python 3.12 and Docker Desktop. Other platforms are untested. After the
-clone, run every command from the repository root.
+**Hosted demo.** Open <https://taxy-1db6.onrender.com> and tick the consent box. Without signing in you can ask
+3 questions per browser session, from a pool of 20 a day shared by everyone who is not signed in. "Sign in with
+Google" gives you 10 questions a day of your own and your history under "My questions". The whole service
+stops answering for the day once it has spent $0.50 on model calls. Days run from midnight West Africa Time.
+How the service is deployed, checked, rolled back and switched off is in the
+[runbook](docs/phase11_deployment/runbook.md).
+
+**Run it locally.** Tested on Windows 11 with PowerShell, Python 3.12 and Docker Desktop. Other platforms are
+untested. After the clone, run every command from the repository root.
 
 1. Clone the repository and open PowerShell in the new folder:
 
@@ -234,9 +243,9 @@ Two things to know before you run it:
 
 - **Stop any other copy of this stack first.** See the note in "How to run" step 5.
 - **Test counts.** Check A10 requires 0 failed tests. To also compare the counts, add `--a10-expected`. The
-  counts depend on what you installed: with `requirements.txt` only, expect `--a10-expected 1864/31` (1864
+  counts depend on what you installed: with `requirements.txt` only, expect `--a10-expected 2127/31` (2127
   passed, 31 skipped). One test (`tests/test_retrieval.py:401`) needs `requirements-eval.txt` and is skipped
-  without it; with that file installed (as in the main checkout) the counts are 1865 passed, 30 skipped.
+  without it; with that file installed (as in the main checkout) the counts are 2128 passed, 30 skipped.
 
 What is reproduced is every **number**, exactly. The system's **answers** are not regenerated: they came from
 paid, non-deterministic model calls, and what the system showed is committed and pinned instead. A paid
@@ -294,6 +303,11 @@ The main one for users: **personal income tax is out of scope**. The full list, 
   retrieval.
 - The personal-data screen blocks email addresses, phone numbers and long digit runs; it does not detect names
   or addresses.
+- The hosted demo shares one pool of 20 questions a day among everyone who is not signed in. A reload starts a
+  new session with 3 more questions, so one visitor can use up the pool for the day; signed-in users keep their
+  own 10 (D-213).
+- The hosted demo runs on free plans: the first visit after a quiet spell waits for the service to wake, and
+  the database pauses after a quiet week until it is resumed.
 - Built and tested on Windows 11 with PowerShell only.
 
 ## Disclaimer
@@ -319,7 +333,9 @@ and to the hosting providers Render and Supabase; Google handles sign-in if you 
 policies apply: [Anthropic](https://www.anthropic.com/legal/privacy),
 [OpenAI](https://openai.com/policies/privacy-policy), [Render](https://render.com/privacy),
 [Supabase](https://supabase.com/privacy) and [Google](https://policies.google.com/privacy). These providers
-process data outside Nigeria, where the law may not protect it in the same way. The service makes no decision
+process data outside Nigeria, where the law may not protect it in the same way. The demo is hosted in
+Frankfurt, Germany (Render for the app, Supabase for the database). The page uses a functional security cookie
+and, if you sign in, a sign-in cookie that lasts up to 30 days or until you sign out. The service makes no decision
 about you; it returns reference text from the statutes. Do not enter real personal or taxpayer data; the service is not intended for children. You may ask for access to, correction or
 deletion of your data, or object to its use, by writing to taxy.copilot@gmail.com and, for an anonymous
 question, quoting its reference; you may also complain to the Nigeria Data Protection Commission. You can withdraw your consent at any time by

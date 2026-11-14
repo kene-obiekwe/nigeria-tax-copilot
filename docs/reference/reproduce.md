@@ -46,9 +46,9 @@ Two things to know before step 1 and step 2:
   kept) before starting the stack in the clean clone.
 - **Expected test counts (D2).** A10 passes on 0 failed tests. With `--a10-expected` it also compares the
   counts, and they depend on what is installed. In a clone with only `requirements.txt` installed, expect
-  `--a10-expected 1864/31`: **1864 passed, 31 skipped**. The main checkout, with `requirements-eval.txt`
-  installed too, has **1865 passed, 30 skipped**; the clean-clone figure is one passed fewer and one skipped
-  more because `tests/test_retrieval.py:401` (`test_bge_client_embeds_normalised_vectors`) needs the
+  `--a10-expected 2127/31`: **2127 passed, 31 skipped**. The main checkout, with `requirements-eval.txt`
+  installed too, has **2128 passed, 30 skipped** (both measured 2026-11-14 at the Phase 11 close-out); the
+  clean-clone figure is one passed fewer and one skipped more because `tests/test_retrieval.py:401` (`test_bge_client_embeds_normalised_vectors`) needs the
   `sentence_transformers` package of `requirements-eval.txt` and skips without it. The other 30 skips are the
   paid-API tests and the overseer or already-spent checks, which skip in every checkout.
 

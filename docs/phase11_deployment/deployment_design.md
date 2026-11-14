@@ -1173,3 +1173,145 @@ Screenshots (run 2, and the live page):
 **For the paid gate:** the live service runs `9944dde` with a clean start (start id 5); the hosted database has no
 query or user rows; the first `job_run_details` row (pg_cron, after 01:00 UTC on 2026-11-15) is still to be read;
 the consent screen for a Google account that is not the owner (K5) is still to be recorded.
+
+### Gate G, parts (b) and (c) (2026-11-14, session "Phase 11 gate")
+
+Gate (a) passed in B2 and was not rerun. Every question went through the live page at https://taxy-1db6.onrender.com
+in the app's browser pane, commit `9944ddeba6d1`. Kene did the Google sign-in and the log-out, and made every Render
+change ("Save only", then "Deploy a specific commit" with `9944ddeba6d1da5e6b72dd6745a6f1c9a3a4c8a7`, so that the
+newer docs-only commit on `main` was never deployed). The build session typed no credential and read no secret,
+cookie or token. Spend and rows were read as the reviewer with a throwaway script outside the repository that
+prints the same sum as `audit.spend_since` from West Africa Time midnight, plus reference, tier, status, reason
+and cost for each row (no question text, no key). Times are UTC. Every question was a phase question, word for
+word, or the made-up `no_such_section` question "What does Section 412 of the Nigeria Tax Act 2025 say?" with
+no figure and no personal detail.
+
+**Before any paid question:** `check_live_start.py --commit 9944dde...` clean (start id 5); hosted spend today
+$0.0000; no query row.
+
+**(b) Known questions end-to-end** (Section 9.2), signed in as Kene (`signed_in`), live start id 5. Before each
+answered question the spend was read and the stop rule applied (spend plus $0.05 against $0.40); the highest
+reading before an answered question was $0.0586 (before Q049).
+
+| # | Case | Live reference | Status | Cost | Spend after |
+|---|---|---|---|---|---|
+| 1 | Q005 | Q-9d13ecb0 | answered | $0.0210 | $0.0221 |
+| 2 | Q012 | Q-dba31e06 | answered | $0.0161 | $0.0382 |
+| 3 | Q028 | Q-92c75cc8 | answered | $0.0067 | $0.0449 |
+| 4 | Q031 | Q-2db6707f | answered | $0.0136 | $0.0586 |
+| 5 | Q049 | Q-36e237e4 | answered | $0.0141 | $0.0726 |
+| 6 | Q-e88f33ea (`no_such_section`) | Q-565a4055 | refused, `no_such_section`, `pre_check` | $0.0002 | |
+| 7 | Q-67c8ea25 (`foreign_law`) | Q-6719f531 | refused, `foreign_law`, `pre_check` | $0.0003 | $0.0731 |
+
+`compare_live.py check --commit 9944dde... --case ... --refusal ... --parity-passed` (baselines as built in B1:
+Q-9681c177 for the fixed fields of the answered rows, the Phase 8 case for flags and passages, each refusal's own
+Phase 9 row): **PASS for all 7 rows** ("every live row meets its three classes"). No passage difference was listed,
+so the parity exception was not needed: P1 to P8 equal the Phase 8 case for all five answered questions.
+The script had to be run through a wrapper (deviation 2).
+
+**(c) Limits and cap** (Section 9.3). Cheap questions are the `no_such_section` question above.
+
+| Step | What ran | Result |
+|---|---|---|
+| 1. Session limit | fresh anonymous session, start id 5: Q-23ca7445, Q-bcad8cea, Q-edd704be, each refused at `pre_check` ($0.0008, $0.0002, $0.0002) | after the 3rd, "Questions left today: 0" and Ask disabled; the 4th could not be sent; no `queries` row for it; no session text and no `admission_counts` row (deviation 1) |
+| 2. Signed-in daily limit | after (b), Q-b6719a7b, Q-b44f2954, Q-b331558b ($0.0002 each), 10 in all | after the 10th, "Questions left today: 0" and Ask disabled; the 11th could not be sent; no row; no daily-limit text (deviation 1) |
+| 3. Kill switch K2 | `TAXY_COST_CAP_DAY_USD=0`, deploy, start id 6 (17:02:13, ok, `9944dde`); fresh anonymous session (Kene had logged out), one cheap question | the cap text "The service has reached its usage limit for today. Please try again tomorrow.", no reference shown; no `queries` row (13 before and after); spend unchanged at $0.0736; `admission_counts` `2026-11-14 anonymous cost_cap 1` |
+| 4. The cap counts real spend | S = $0.0736 read; override `0.1237` (S + 0.0501), deploy, start id 7 (17:07:24, ok); S read again before asking: $0.0736; fresh anonymous session | the 1st cheap question admitted: Q-c6a22219, refused at `pre_check`, $0.0008, spend $0.0744; the 2nd got the cap text ($0.0744 + $0.05 over $0.1237): no row (14 before and after), `cost_cap` 2 |
+| Restore | Kene deleted `TAXY_COST_CAP_DAY_USD` ("Save only"), deploy, start id 8 (17:16:02, ok) | Render's Environment list, seen in Kene's screenshot, holds the four variables of Section 4 only (`DATABASE_URL`, `EMBEDDING_API_KEY`, `LLM_API_KEY`, `TAXY_USER_KEY_SECRET`); `check_live_start.py` clean for start id 8; one cheap question from a fresh anonymous session was admitted (Q-7ae6a1d5, $0.0008, spend $0.0752), which the 0.1237 override would have refused, so the file cap of $0.50 applies again |
+| 5. Anonymous pool | not run live, as the design says | covered by `test_audit_limits.py` |
+
+**Spend.** The service's own sum for the day: **$0.0752 against the $0.40 phase cap** (15 query rows: 5 answered,
+10 refused at `pre_check`; `admission_counts`: `cost_cap` 2, nothing else), within the design's estimate of about $0.10. Query embeddings for the five answered
+questions are not in `total_cost_usd` and are under $0.0001. The per-row figures above are rounded to four places.
+The first question after each process start cost $0.0008 against $0.0002 later (Q-23ca7445, Q-c6a22219,
+Q-7ae6a1d5); not investigated.
+
+**Other pass-rule items** (Section 9.4), all $0:
+
+| Check | Result |
+|---|---|
+| `check_image.py --rev 9944dde...` | clean: checks 1 to 5 found nothing; 729,050,648 bytes; 75 files under `/srv/taxy`; image removed |
+| `check_hosted_db.py` (owner) | clean: no finding; `vector` 0.8.2, PostgreSQL 17.11; both login roles' `search_path` `public, extensions` |
+| Default suite | 2120 passed, 30 skipped (11 min 26 s), on the working tree of `378b165` (the deployed `9944dde` plus the docs-only B3 record) |
+| Live starts | ids 5 to 8, all `ok`, no problems, commit `9944ddeba6d1`; ids 6 to 8 are the three deploys of (c); no other restart happened during the gate |
+
+**Deviations and open items** (for the overseer):
+
+1. **The page cannot show the session or daily limit text.** The page disables Ask once the tier's count is used
+   up (interface design Section 7, rule 7), so a 4th anonymous or an 11th signed-in question cannot be sent.
+   `open_query`'s refusal with the reason's text and its `admission_counts` row are reached only by a question
+   that gets past a stale count; they are covered by `test_audit_limits.py`, not by the live page. Section 9.3,
+   steps 1 and 2 expected the text and a row. What the page does instead: the sidebar reads "Questions left today: 0"
+   and Ask is greyed out, with no sentence saying why.
+2. **`compare_live.py check` failed with `TypeError` before comparing anything.** Lines 212 and 218 slice
+   `query_id[:8]` for a display label, and psycopg returns a `uuid.UUID` from the database, not the string the test
+   fakes use. The label is overwritten on the next line. The comparison was run unchanged through a throwaway wrapper
+   outside the repository that turns the fetched `query_id` into a string; no check was altered. The repository
+   file was not changed. The fix is `str(...)` on both lines plus a test with a `uuid.UUID`.
+3. **Memory was not measured.** Render's Free plan does not show memory or CPU ("Upgrade to any paid compute plan
+   to view application metrics like memory and CPU usage"; limit 512 MB). The 400 MB check of Sections 3.3 and 9.2
+   could not be done. What is known: no restart happened during the seven questions (start id 5 ran from 16:27:27
+   until the first deploy of (c) at 17:02), so the process stayed under the 512 MB limit.
+4. **The order of (c) changed** (approved by Kene before the gate): step 1 ran before the sign-in, because the
+   sign-in cookie applies to every tab of the browser, and steps 3, 4 and the restore check used fresh anonymous
+   sessions, because the signed-in daily count was used up and Ask stays disabled at 0.
+5. **Settings restore** used "Save only" plus "Deploy a specific commit", three deploys in all (D-205 left the
+   method to the gate; B3 recorded that an environment save takes effect only through a deploy).
+
+**Gate (b) and (c) result: not yet a clean pass; it waits on the overseer's ruling on deviations 1 and 3.** All 7
+questions of (b) meet their three classes; (c) steps 3 and 4 behave exactly as stated, and every setting is
+restored and proven; steps 1 and 2 stop the extra question, but by the page's disabled Ask, not by the stated
+text and row (deviation 1); the image check, the database check and the default suite are clean; the memory check
+could not be made on Render Free (deviation 3). Spend $0.0752 of $0.40.
+
+### Close-out D1 (2026-11-14, session "Phase 11 gate", second prompt)
+
+**Overseer verdict and Kene's rulings** (2026-11-14): the gate passed (D-212). Deviation 1 accepted; deviation 2 fixed;
+deviation 3 measured locally; the order change accepted. The shared anonymous pool limitation is accepted and stated
+(D-213). The "not yet a clean pass" line of the gate record above is left as written; this entry records the ruling.
+
+**Fix 1, the sidebar says why Ask is off.** When the tier's count is used up, the sidebar now shows, under
+"Questions left today: 0", the limit's own text from `app/copy.py`: `LIMIT_SESSION` for an anonymous session ("You
+have used the 3 questions available without signing in. Sign in to ask more.") and `LIMIT_DAILY` for a signed-in
+user ("You have reached today's limit of 10 questions. It resets at midnight West Africa Time."). No new wording.
+`app/main.py` (`sidebar()`); tests in `tests/test_app.py`: the anonymous-limit test now checks the line appears only
+at 0, and a new signed-in test checks the daily text (and not the session text).
+
+**Fix 2, `compare_live.py` takes a UUID.** Lines 212 and 218 wrap `query_id` in `str()` before slicing the display
+label. New test `test_check_answered_and_check_refusal_take_the_uuid_the_database_returns` passes a `uuid.UUID`; it
+fails without the fix and passes with it. The live comparison was rerun with the fixed script, no wrapper:
+`compare_live.py check --commit 9944dde... --parity-passed` with the seven gate rows: **PASS for all 7**.
+
+**Memory, measured locally** (deviation 3; budget $0.05). The image was built from the working tree
+(`check_image.py --worktree --keep`: clean, 729,052,459 bytes, 75 files) and run as `docker run --memory 512m
+--cpus 0.1`, deployment `test`, against the local database on 5434 through `host.docker.internal`; the database
+settings and the two API keys reached `docker run` by name from `.env` through a throwaway launcher outside the
+repository, which printed no value. `docker stats` was sampled about every 2 s (115 samples) while one answered
+question was asked in the browser pane: Q005, the dearest of the five live questions.
+
+| Measurement | Result |
+|---|---|
+| Health endpoint after the container started | 50 s |
+| Memory with the page loaded, before the question | 72.5 to 73.7 MiB |
+| **Peak during the question** | **143.1 MiB** of 512 MiB (about 150 MB), against the 400 MB limit of Sections 3.3 and 9.2 |
+| Question | Q005 answered, local reference Q-16bb8751, 94 s at 0.1 CPU, local start id 30 (`test`, `ok`) |
+| Cost | **$0.0203** (local development keys; within the $0.05 cap) |
+
+The container and the image were removed afterwards. The local audit schema keeps the one `test` start row and the
+one query row.
+
+**Phase spend:** the hosted gate $0.0752 plus this local measurement $0.0203: **$0.0955 against the $0.40 cap**.
+
+**Docs at go-live** (Section 11): the README Status (Phases 1 to 11 done, the live URL, the cold-start note,
+Phase 12 next, G2 not met), a "Hosted demo" paragraph under How to run with the runbook link, the two D-204
+sentences in the README Privacy section and in `PRIVACY_DETAILS` (as `PRIVACY_HOSTING` and `PRIVACY_COOKIES`), two
+README limitations (D-213 and free hosting); `docs/reference/limitations.md` item 5 rewritten and items 8 to 10
+added; `docs/reference/reproduce.md` and the README test counts refreshed (2127 passed, 31 skipped with `requirements.txt` only; 2128 passed, 30 skipped in the main checkout); the new `runbook.md` (R1 to
+R14); `docs/README.md` rows for the runbook and `img/`, the design row and the folder row; decision rows D-212 and
+D-213; `tests/test_docs.py` pins.
+
+**Tests:** the default suite in the main checkout, 2128 passed, 30 skipped (13 min 44 s), 8 more than the gate's 2120:
+the signed-in limit test, the UUID test, four new `tests/test_docs.py` tests and the runbook added to two parametrised
+docs checks. The same working tree with only `requirements.txt` installed (a fresh virtual environment outside the
+repository): 2127 passed, 31 skipped (11 min 34 s), the one extra skip being `tests/test_retrieval.py:401`. Then
+`tests/test_docs.py` again after the count edits (40 passed).

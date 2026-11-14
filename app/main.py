@@ -184,6 +184,8 @@ def sidebar(services: Services, identity, key: str) -> int | None:
                 if cap is not None:
                     left = max(cap - usage["questions"], 0)
                     st.caption(ui.SIDEBAR_LEFT.format(n=left))
+                    if left == 0:  # Ask is disabled at 0 (D-212): say why, in the limit's own text
+                        st.caption((ui.LIMIT_DAILY if identity.signed_in else ui.LIMIT_SESSION).format(n=cap))
                 st.caption(ui.SIDEBAR_SPEND.format(amount=f"{usage['spend_usd']:.4f}"))
             except Exception as exc:  # noqa: BLE001
                 LOG.error("usage figures failed (%s)", type(exc).__name__)

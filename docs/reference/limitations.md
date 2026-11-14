@@ -84,10 +84,22 @@ From the [interface design](../phase09_interface/interface_design.md):
 3. **The log viewer is local only** and is never part of the public app.
 4. **The low-relevance refusal still runs the note tagger**, a small Claude Haiku call whose cost is recorded
    in the log.
-5. **Sign-in, the usage limits and the daily cost cap are built but switched on only in Phase 11** (D-162,
-   D-163).
+5. **Sign-in, the usage limits and the daily cost cap are on in the hosted demo** since Phase 11 (D-162,
+   D-163, D-200): 3 questions per browser session without signing in, from a pool of 20 a day shared by
+   everyone not signed in; 10 a day when signed in; a daily cost cap of $0.50 for the whole service
+   ([deployment design](../phase11_deployment/deployment_design.md), Section 6.1). Run locally, the app has no
+   limits.
 6. **Rotating the secret behind the one-way sign-in key detaches signed-in histories** from their owners.
 7. **Locally nothing is deleted automatically.** The 90-day deletion is a hosted-service setting.
+8. **One visitor can use up the shared pool** (D-213). A reload starts a new browser session with 3 more
+   questions, so a single visitor who keeps reloading can use all 20 questions of the day's pool; everyone else
+   who is not signed in is then refused until midnight West Africa Time. Signed-in users keep their own 10, and
+   the $0.50 daily cap bounds the cost either way.
+9. **When a count limit is reached, Ask is switched off.** The sidebar shows "Questions left today: 0" and says
+   why; the question cannot be sent (D-212).
+10. **Free hosting.** The first visit after about 15 quiet minutes waits for the service to wake (29 to 41 s
+    measured on the live service, Section 17 of the deployment design), and the database pauses after a quiet
+    week until it is resumed ([runbook](../phase11_deployment/runbook.md), R11).
 
 ## 6. Platforms
 
