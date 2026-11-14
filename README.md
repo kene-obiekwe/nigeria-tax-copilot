@@ -369,11 +369,11 @@ See the [documentation index](docs/README.md). The three reference pages are the
 
 ## Project status
 
-**Phases 1 to 11 are done** (corpus, chunking, embedding, retrieval, generation, guardrails, tools,
-evaluation, interface, documentation and packaging, deployment). The live demo is at
-<https://taxy-1db6.onrender.com>. It runs on a free plan, so the first visit after about 15 quiet minutes can
-take up to about two minutes to wake, and the page says so while it starts. **Phase 12 (final QA)** is a short
-manual checklist on the live URL, run by Kene: about 3 answered questions, about $0.05, capped at $0.15 (D-215;
-[checklist](docs/phase12_qa/qa_checklist.md)). The fresh adversarial pass and the full harness rerun are
-deferred, because G1 and G3 are measured and the Phase 11 checks showed the live system equals the evaluated
-one. Gate G2 was **not met**; see Results at a glance under Evaluation results.
+**All phases are complete (D-216).** Phases 1 to 11 (corpus, chunking, embedding, retrieval, generation,
+guardrails, tools, evaluation, interface, documentation and packaging, deployment) are done, and Phase 12 (final
+QA) was done by the short manual checklist on the live URL (D-215), which passed on 2026-11-14
+([checklist](docs/phase12_qa/qa_checklist.md)). The live demo is at <https://taxy-1db6.onrender.com>. It runs on
+a free plan, so the first visit after about 15 quiet minutes can take up to about two minutes to wake, and the
+page says so while it starts. The fresh adversarial pass and the full harness rerun were deferred, because G1
+and G3 are measured and the Phase 11 checks showed the live system equals the evaluated one.
+Gate G2 was **not met**; see Results at a glance under Evaluation results.

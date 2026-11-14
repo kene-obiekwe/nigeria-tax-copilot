@@ -19,8 +19,9 @@ Each published number is in one of three classes, and the class decides what rep
 
 So a reader reproduces every **number** exactly. A reader does not regenerate the **answers**: they came from
 paid, non-deterministic model calls, and the records of what the system showed are committed and pinned
-instead (D-171). Regenerating answers can only be compared with a tolerance, and the plan has that paid check
-for Phase 12, on a sample of the evaluation questions against the live service.
+instead (D-171). Regenerating answers can only be compared with a tolerance. The plan had a paid check of that
+kind for Phase 12; what happened instead is that the short live checklist passed on 2026-11-14, and the fresh
+adversarial pass and the full rerun were deferred (D-215).
 
 ## 2. Steps
 

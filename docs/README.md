@@ -53,7 +53,7 @@ document is added, moved or renamed.
 | [phase11_deployment/deployment_design.md](phase11_deployment/deployment_design.md) | Design for Phase 11 (approved 2026-11-14, D-192 to D-207; build records in Section 17 with D-208 to D-211; exit gate passed, D-212 and D-213): the container image and dependency lock, the hosted Supabase database (session pooler, Data API off, roles and RLS), Render hosting, secrets, Google sign-in, the final limits and kill switch, retention and erasure, data-protection follow-ups (not legal advice), the cold-start notice, the exit gate made testable (cap $0.40), the runbook outline, the build plan and the risks; Section 17 records Build 1, Build 2, B3a, B3 (live deploy and cold start), the paid gate G (parts (b) and (c), $0.0752) and the D1 close-out (the local memory measurement and the two fixes). |
 | [phase11_deployment/runbook.md](phase11_deployment/runbook.md) | Operator's runbook for the hosted demo (R1 to R14): deploy and check a commit, roll back, rotate the database passwords, API keys, OAuth and cookie secrets and the user-key secret, change limits and watch credits, retention, erasure and access requests, breach steps, the Supabase pause, the monthly data-protection count (for information only), a cost spike and the kill switch. |
 | [phase11_deployment/img/](phase11_deployment/img/) | Screenshots of the B3 live deploy: Render's loading page during a cold start, the ready page and the theme menu (deployment design Section 17, B3). |
-| [phase12_qa/qa_checklist.md](phase12_qa/qa_checklist.md) | Phase 12 manual checklist (D-215): seven checks of the live site run by Kene, with a blank result column, the deferred items and the reason, and room for the date and results. |
+| [phase12_qa/qa_checklist.md](phase12_qa/qa_checklist.md) | Phase 12 manual checklist (D-215): seven checks of the live site run by Kene on 2026-11-14, all pass, with the deferred items and the reason (D-216). |
 
 ## Scripts and data files added by the G2 fix build
 
@@ -183,7 +183,7 @@ Folders are created when their first document lands. Two-digit phase numbers kee
 | `phase10_packaging/` | 10. Documentation (done, D-188) | Packaging design, build record and the clean-clone record. |
 | `reference/` | Reference pages (D-178) | Architecture, known limitations and the reproduction guide. |
 | `phase11_deployment/` | 11. Deployment (done, D-212) | Deployment design with its build and gate records, the runbook and the B3 screenshots. |
-| `phase12_qa/` | 12. Final QA | Manual QA checklist and sign-off (D-215). |
+| `phase12_qa/` | 12. Final QA (done, D-216) | Manual QA checklist with the 2026-11-14 results (D-215). |
 
 Correction C-13: the plan names three top-level documents (`architecture.md`, `methodology.md` and
 `limitations.md`). They are `reference/architecture.md`, `reference/limitations.md` and

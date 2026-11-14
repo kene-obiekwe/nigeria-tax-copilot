@@ -170,7 +170,8 @@ def test_the_readme_follows_the_design_outline_and_status_rules():
     assert "### Results at a glance" in text and text.index("### Results at a glance") > text.index("## Evaluation results")
     assert text.index("### Results at a glance") < text.index("## Known limitations")
     status = text[text.index("## Project status"):]
-    assert "Phases 1 to 11 are done" in status and "Phase 12 (final QA)" in status and "D-215" in status
+    assert "All phases are complete (D-216)" in flat(status) and "Phase 12 (final QA)" in flat(status)
+    assert "D-215" in flat(status) and "passed on 2026-11-14" in flat(status)
     assert re.search(r"<https://[\w.-]+\.onrender\.com>", status) and "no live demo yet" not in status
     assert "G2 was **not met**" in status
     assert "advisory" not in text.lower()
@@ -271,7 +272,7 @@ def test_the_reproduce_page_names_every_check_and_the_no_regeneration_rule():
     for check_id in [f"A{i}" for i in range(1, 11)] + [f"B{i}" for i in range(1, 7)]:
         assert f"| {check_id} |" in text, check_id
     for needed in ("reproduce.py --profile clean", "corpus-2026-10-18", "not part of this reproduction", "D-171",
-                   "Phase 12", "assets.json", "Leave `LLM_API_KEY` and `EMBEDDING_API_KEY` empty"):
+                   "Phase 12", "passed on 2026-11-14", "D-215", "assets.json", "Leave `LLM_API_KEY` and `EMBEDDING_API_KEY` empty"):
         assert needed in text, needed
 
 
@@ -321,7 +322,7 @@ def test_the_phase11_decisions_are_logged():
 
 def test_the_phase12_checklist_and_the_d214_d215_decisions_are_in_place():
     log = read(ROOT / "docs" / "00_planning" / "decision_log.md")
-    assert "| D-214 | 2026-11-14 |" in log and "| D-215 | 2026-11-14 |" in log
+    assert "| D-214 | 2026-11-14 |" in log and "| D-215 | 2026-11-14 |" in log and "| D-216 | 2026-11-14 |" in log
     checklist = read(ROOT / "docs" / "phase12_qa" / "qa_checklist.md")
     for n in range(1, 8):
         assert f"| Q{n} |" in checklist, n
