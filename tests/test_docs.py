@@ -163,16 +163,19 @@ def test_the_readme_follows_the_design_outline_and_status_rules():
     text = read(README)
     headings = re.findall(r"^## (.+)$", text, flags=re.M)
     assert re.findall(r"^# (.+)$", text, flags=re.M)[0] == "Taxy: Nigerian SME Tax Reference"   # UI revision UI-12
-    assert headings == ["Status", "Results at a glance", "The problem",
-                        "Why retrieval rather than a plain model", "Scope and snapshot date", "What it does not cover",
-                        "Architecture", "How to run", "How to reproduce", "Evaluation results", "Known limitations",
-                        "Disclaimer", "Privacy", "Licence and usage", "Documentation"]
-    status = text[text.index("## Status"): text.index("## Results at a glance")]
-    assert "Phases 1 to 11 are done" in status and "Phase 12 (final QA) is next" in status   # Phase 11 Section 11
+    assert headings == ["The problem", "Why retrieval rather than a plain model", "Architecture",
+                        "Scope and snapshot date", "What it does not cover", "How to run", "How to reproduce",
+                        "Evaluation results", "Known limitations", "Privacy", "Disclaimer", "Licence and usage",
+                        "Documentation", "Project status"]                                   # D-214
+    assert "### Results at a glance" in text and text.index("### Results at a glance") > text.index("## Evaluation results")
+    assert text.index("### Results at a glance") < text.index("## Known limitations")
+    status = text[text.index("## Project status"):]
+    assert "Phases 1 to 11 are done" in status and "Phase 12 (final QA)" in status and "D-215" in status
     assert re.search(r"<https://[\w.-]+\.onrender\.com>", status) and "no live demo yet" not in status
     assert "G2 was **not met**" in status
     assert "advisory" not in text.lower()
-    top = text.split("## Status")[0]
+    top = text.split("## The problem")[0]
+    assert "**Try it:** https://taxy-1db6.onrender.com" in top
     assert "not tax advice" in top and "Personal income tax is out of scope" in top
     assert re.search(r"portfolio|career|project \d of", text, re.I) is None
 
@@ -314,3 +317,13 @@ def test_the_phase11_decisions_are_logged():
     log = read(ROOT / "docs" / "00_planning" / "decision_log.md")
     assert "| D-212 | 2026-11-14 |" in log and "| D-213 | 2026-11-14 |" in log
     assert "143.1 MiB" in log and "$0.0752" in log
+
+
+def test_the_phase12_checklist_and_the_d214_d215_decisions_are_in_place():
+    log = read(ROOT / "docs" / "00_planning" / "decision_log.md")
+    assert "| D-214 | 2026-11-14 |" in log and "| D-215 | 2026-11-14 |" in log
+    checklist = read(ROOT / "docs" / "phase12_qa" / "qa_checklist.md")
+    for n in range(1, 8):
+        assert f"| Q{n} |" in checklist, n
+    assert "Deferred (D-215)" in checklist
+    assert "](phase12_qa/qa_checklist.md)" in read(DOCS_INDEX)

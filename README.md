@@ -1,5 +1,13 @@
 # Taxy: Nigerian SME Tax Reference
 
+A grounded retrieval-augmented generation (RAG) system over Nigerian tax statutes, aimed at questions
+from small and medium enterprises. It retrieves the relevant statutory passages first, answers only from
+those passages with section-level citations, checks each statement against the cited text, declines when
+the corpus does not cover the question, and does any arithmetic in code rather than in the language model.
+
+**Try it:** https://taxy-1db6.onrender.com (free hosting: the first visit after a quiet spell can take
+up to about two minutes to wake)
+
 > **Disclaimer.** This is a research and reference tool. It is **not tax advice** and is not a
 > substitute for a licensed tax professional. It must not be used for an actual filing or compliance
 > decision. Answers come only from the Nigeria Tax Act 2025 and selected parts of the Nigeria Tax
@@ -7,35 +15,6 @@
 > changes are not included. **Personal income tax is out of scope**: questions about it, about PAYE
 > and about an individual's tax bands and rates are declined. It is not designed to process real
 > taxpayer data.
-
-A grounded retrieval-augmented generation (RAG) system over Nigerian tax statutes, aimed at questions
-from small and medium enterprises. It retrieves the relevant statutory passages first, answers only from
-those passages with section-level citations, checks each statement against the cited text, declines when
-the corpus does not cover the question, and does any arithmetic in code rather than in the language model.
-
-## Status
-
-**Phases 1 to 11 are done** (corpus, chunking, embedding, retrieval, generation, guardrails, tools,
-evaluation, interface, documentation and packaging, deployment). The live demo is at
-<https://taxy-1db6.onrender.com>. It runs on a free plan, so the first visit after about 15 quiet minutes can
-take up to about two minutes to wake, and the page says so while it starts. **Phase 12 (final QA) is next.**
-Gate G2 was **not met**; see Results at a glance.
-
-## Results at a glance
-
-| Gate | What it measures | Result | Figures | Record |
-|---|---|---|---|---|
-| G1 retrieval | The right statute section is among the top 5 passages, on 30 held-out questions | **passed** | hit@5 30 of 30; hit@1 22 of 30; MRR 0.8556 | [`test_final.json`](eval/retrieval/results/test_final.json) |
-| G2 adversarial guardrails | Hostile and tricky questions, on a held-out set, three repeats | **not met** | Decision runs 1 to 4 all failed. Run 4: 39 of 40 cases passed in each repeat (ADV4-009 failed), one false refusal in each repeat (ADV4-044), all 603 rendered claims supported by their cited text | [G2 results, run 4](docs/phase06_guardrails/g2_results_v4.md) |
-| G3 end to end | The shipped system on 90 held-out cases, run twice; each run must meet all four thresholds | **passed** | Run 1: (a) 244 of 244, (b) 246 of 246, (c) 0 of 40, (d) 1 of 50. Run 2: (a) 245 of 245, (b) 245 of 245, (c) 0 of 40, (d) 1 of 50 | [`g3_result.json`](eval/e2e/results/g3_result.json) |
-| Phase 7 exit check | 14 new questions on the calculator and section lookup tools | **passed** on run 1 | Every shown figure equals the hand-worked figure; every kept claim supported | [`exit_run1.json`](eval/tools/results/exit_run1.json) |
-
-G3 metrics: (a) shown items supported by a passage they cite (threshold 95%); (b) shown citations that
-point to a section stating what the claim says (95%); (c) must-refuse cases answered (none allowed, out of
-40); (d) in-scope questions falsely refused (at most 10%). The reviewer was a calibrated model session,
-not an independent person, and the sets are small. G2 and G3 measure different things on different sets:
-G3 is a held-out measurement of the shipped system, and G2 closed as not met. Details are under Evaluation
-results and Known limitations.
 
 ## The problem
 
@@ -62,6 +41,29 @@ other way round:
 The design documents are the [generation design](docs/phase05_generation/generation_design.md), the
 [guardrails design](docs/phase06_guardrails/guardrails_design.md) and the
 [tools design](docs/phase07_tools/tools_design.md).
+
+## Architecture
+
+The diagram and the stage-by-stage description are in the [architecture page](docs/reference/architecture.md);
+GitHub draws the diagram from its Mermaid source ([`diagrams/architecture.mmd`](diagrams/architecture.mmd)).
+In short:
+
+- **Corpus build** (offline, deterministic): five pinned source PDFs, a re-read of the scanned Administration
+  Act, text and structure extraction, 400 chunks under a 450-token cap, a register of differences between
+  the two official texts, then embedding with OpenAI `text-embedding-3-small` into a pgvector database
+  ([chunking design](docs/phase02_chunking/chunking_design.md),
+  [vector store](docs/phase03_embedding/vector_store.md)).
+- **Retrieval:** vector search plus exact section lookup, top 5 passages, with one keyword slot, a
+  commencement lookup and one definition attachment; a relevance floor refuses off-topic questions
+  ([retrieval report](docs/phase04_retrieval/retrieval_report.md)).
+- **Generation:** Claude Sonnet 5.5 writes claims that cite passage labels, using a bounded tool loop with a
+  section-lookup tool and a Decimal calculator ([tools design](docs/phase07_tools/tools_design.md)).
+- **Guardrails:** a pre-check on the question, a rule check and a Claude Haiku 5.5 claim verifier with
+  evidence quotes, a gap check, scope notes and disclosures for disputed text
+  ([guardrails design](docs/phase06_guardrails/guardrails_design.md)).
+- **Interface and audit:** a Streamlit page with citation chips and a section reader, a personal-data screen,
+  and an audit log of every question, projected from the generation log; the answer card is shown only if it
+  equals the logged text ([interface design](docs/phase09_interface/interface_design.md)).
 
 ## Scope and snapshot date
 
@@ -90,29 +92,6 @@ are in the [data inventory](data/README.md).
 - Tax periods before 2026, and any change to the law after 2026-10-18.
 - Any connection to a filing system or to the Nigeria Revenue Service.
 - Memory: each question is answered on its own.
-
-## Architecture
-
-The diagram and the stage-by-stage description are in the [architecture page](docs/reference/architecture.md);
-GitHub draws the diagram from its Mermaid source ([`diagrams/architecture.mmd`](diagrams/architecture.mmd)).
-In short:
-
-- **Corpus build** (offline, deterministic): five pinned source PDFs, a re-read of the scanned Administration
-  Act, text and structure extraction, 400 chunks under a 450-token cap, a register of differences between
-  the two official texts, then embedding with OpenAI `text-embedding-3-small` into a pgvector database
-  ([chunking design](docs/phase02_chunking/chunking_design.md),
-  [vector store](docs/phase03_embedding/vector_store.md)).
-- **Retrieval:** vector search plus exact section lookup, top 5 passages, with one keyword slot, a
-  commencement lookup and one definition attachment; a relevance floor refuses off-topic questions
-  ([retrieval report](docs/phase04_retrieval/retrieval_report.md)).
-- **Generation:** Claude Sonnet 5.5 writes claims that cite passage labels, using a bounded tool loop with a
-  section-lookup tool and a Decimal calculator ([tools design](docs/phase07_tools/tools_design.md)).
-- **Guardrails:** a pre-check on the question, a rule check and a Claude Haiku 5.5 claim verifier with
-  evidence quotes, a gap check, scope notes and disclosures for disputed text
-  ([guardrails design](docs/phase06_guardrails/guardrails_design.md)).
-- **Interface and audit:** a Streamlit page with citation chips and a section reader, a personal-data screen,
-  and an audit log of every question, projected from the generation log; the answer card is shown only if it
-  equals the logged text ([interface design](docs/phase09_interface/interface_design.md)).
 
 ## How to run
 
@@ -250,11 +229,29 @@ Two things to know before you run it:
 What is reproduced is every **number**, exactly. The system's **answers** are not regenerated: they came from
 paid, non-deterministic model calls, and what the system showed is committed and pinned instead. A paid
 reproduction of regenerated answers on a sample of the evaluation questions against the live service is
-planned for Phase 12. OCR of the scanned Administration Act can optionally be re-run in its own environment
+planned for Phase 12 and deferred (D-215). OCR of the scanned Administration Act can optionally be re-run in its own environment
 (about 60 minutes); its committed output is byte-identical across runs ([data inventory](data/README.md) and
 [chunking design](docs/phase02_chunking/chunking_design.md)).
 
 ## Evaluation results
+
+### Results at a glance
+
+| Gate | What it measures | Result | Figures | Record |
+|---|---|---|---|---|
+| G1 retrieval | The right statute section is among the top 5 passages, on 30 held-out questions | **passed** | hit@5 30 of 30; hit@1 22 of 30; MRR 0.8556 | [`test_final.json`](eval/retrieval/results/test_final.json) |
+| G2 adversarial guardrails | Hostile and tricky questions, on a held-out set, three repeats | **not met** | Decision runs 1 to 4 all failed. Run 4: 39 of 40 cases passed in each repeat (ADV4-009 failed), one false refusal in each repeat (ADV4-044), all 603 rendered claims supported by their cited text | [G2 results, run 4](docs/phase06_guardrails/g2_results_v4.md) |
+| G3 end to end | The shipped system on 90 held-out cases, run twice; each run must meet all four thresholds | **passed** | Run 1: (a) 244 of 244, (b) 246 of 246, (c) 0 of 40, (d) 1 of 50. Run 2: (a) 245 of 245, (b) 245 of 245, (c) 0 of 40, (d) 1 of 50 | [`g3_result.json`](eval/e2e/results/g3_result.json) |
+| Phase 7 exit check | 14 new questions on the calculator and section lookup tools | **passed** on run 1 | Every shown figure equals the hand-worked figure; every kept claim supported | [`exit_run1.json`](eval/tools/results/exit_run1.json) |
+
+G3 metrics: (a) shown items supported by a passage they cite (threshold 95%); (b) shown citations that
+point to a section stating what the claim says (95%); (c) must-refuse cases answered (none allowed, out of
+40); (d) in-scope questions falsely refused (at most 10%). The reviewer was a calibrated model session,
+not an independent person, and the sets are small. G2 and G3 measure different things on different sets:
+G3 is a held-out measurement of the shipped system, and G2 closed as not met. Details are under Evaluation
+results and Known limitations.
+
+### G3 end-to-end detail
 
 Gate G3 (D-134, D-137): on a held-out end-to-end set run twice with the shipped configuration, each run must
 meet all four thresholds on its own. Both did. Intervals are Wilson 95% intervals; the pooled column is
@@ -310,15 +307,6 @@ The main one for users: **personal income tax is out of scope**. The full list, 
   the database pauses after a quiet week until it is resumed.
 - Built and tested on Windows 11 with PowerShell only.
 
-## Disclaimer
-
-This is a research and reference tool. It is **not tax, legal or financial advice** and is not a substitute
-for a licensed tax professional. It must not be used for an actual filing or compliance decision. The corpus
-is the Nigeria Tax Act 2025 and selected procedural parts of the Nigeria Tax Administration Act 2025, as a
-dated snapshot of 18 October 2026. **Personal income tax is out of scope:** questions about it, about PAYE and
-about an individual's tax bands and rates are declined. The figures in this README describe this system on
-these question sets; they are not a guarantee about any other question.
-
 ## Privacy
 
 **Privacy.** The public demo is run by Kene Christopher Obiekwe for research and demonstration. It stores each
@@ -351,6 +339,15 @@ in your own database and nothing is deleted automatically.
 This text is a plain statement of what the app does. It is not legal advice and does not say that any law
 applies or is met.
 
+## Disclaimer
+
+This is a research and reference tool. It is **not tax, legal or financial advice** and is not a substitute
+for a licensed tax professional. It must not be used for an actual filing or compliance decision. The corpus
+is the Nigeria Tax Act 2025 and selected procedural parts of the Nigeria Tax Administration Act 2025, as a
+dated snapshot of 18 October 2026. **Personal income tax is out of scope:** questions about it, about PAYE and
+about an individual's tax bands and rates are declined. The figures in this README describe this system on
+these question sets; they are not a guarantee about any other question.
+
 ## Licence and usage
 
 The code and the project's own documents are under the MIT licence ([LICENSE](LICENSE)). The statute texts in
@@ -369,3 +366,14 @@ See the [documentation index](docs/README.md). The three reference pages are the
 [reproduction guide](docs/reference/reproduce.md); the evaluation method is in the
 [evaluation report](docs/phase08_evaluation/evaluation_report.md), and decisions and corrections are in the
 [decision log](docs/00_planning/decision_log.md).
+
+## Project status
+
+**Phases 1 to 11 are done** (corpus, chunking, embedding, retrieval, generation, guardrails, tools,
+evaluation, interface, documentation and packaging, deployment). The live demo is at
+<https://taxy-1db6.onrender.com>. It runs on a free plan, so the first visit after about 15 quiet minutes can
+take up to about two minutes to wake, and the page says so while it starts. **Phase 12 (final QA)** is a short
+manual checklist on the live URL, run by Kene: about 3 answered questions, about $0.05, capped at $0.15 (D-215;
+[checklist](docs/phase12_qa/qa_checklist.md)). The fresh adversarial pass and the full harness rerun are
+deferred, because G1 and G3 are measured and the Phase 11 checks showed the live system equals the evaluated
+one. Gate G2 was **not met**; see Results at a glance under Evaluation results.

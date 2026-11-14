@@ -673,10 +673,14 @@ def readme_figures(root: Path = ROOT) -> list[str]:
 
 
 def results_section(text: str) -> str:
-    """The README text from the results heading to the next second-level heading."""
+    """The README text from the results heading to the next heading of the same or a higher level (D-214: the
+    heading is `### Results at a glance` inside Evaluation results; a bare `## ` heading is read the same way)."""
     start = text.index(README_RESULTS_MARKER)
-    nxt = re.search(r"^## ", text[start + len(README_RESULTS_MARKER):], flags=re.M)
-    return text[start: start + len(README_RESULTS_MARKER) + nxt.start()] if nxt else text[start:]
+    line_start = text.rfind(chr(10), 0, start) + 1
+    level = len(text[line_start:start]) + 2                      # leading "#" before the marker, plus its own "##"
+    after = start + len(README_RESULTS_MARKER)
+    nxt = re.search(rf"^#{{1,{level}}} ", text[after:], flags=re.M)
+    return text[start: after + nxt.start()] if nxt else text[start:]
 
 
 def readme_problems(text: str, root: Path = ROOT) -> list[str]:

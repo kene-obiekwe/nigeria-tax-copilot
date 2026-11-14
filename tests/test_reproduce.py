@@ -679,6 +679,13 @@ def test_results_section_stops_at_the_next_second_level_heading():
     assert "B" in section and "C" not in section and "Next" not in section
 
 
+def test_results_section_under_a_third_level_heading_stops_at_the_next_third_level_heading():
+    text = chr(10).join(["# T", "", "## Eval", "", "### Results at a glance", "", "A", "", "#### Sub", "", "B", "",
+                         "### Detail", "", "C", "", "## Next", ""])
+    section = rp.results_section(text)
+    assert "A" in section and "B" in section and "C" not in section and "Detail" not in section
+
+
 # The run, the table and the exit code --------------------------------------------------------------------
 
 
