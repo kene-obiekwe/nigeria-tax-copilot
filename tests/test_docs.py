@@ -161,7 +161,8 @@ def test_g2_is_stated_as_not_met_in_the_results_table_in_the_same_type_as_the_pa
 def test_the_readme_follows_the_design_outline_and_status_rules():
     text = read(README)
     headings = re.findall(r"^## (.+)$", text, flags=re.M)
-    assert headings == ["Nigerian SME Tax Reference", "Status", "Results at a glance", "The problem",
+    assert re.findall(r"^# (.+)$", text, flags=re.M)[0] == "Taxy: Nigerian SME Tax Reference"   # UI revision UI-12
+    assert headings == ["Status", "Results at a glance", "The problem",
                         "Why retrieval rather than a plain model", "Scope and snapshot date", "What it does not cover",
                         "Architecture", "How to run", "How to reproduce", "Evaluation results", "Known limitations",
                         "Disclaimer", "Privacy", "Licence and usage", "Documentation"]
@@ -271,5 +272,5 @@ def test_the_reproduce_page_names_every_check_and_the_no_regeneration_rule():
 def test_the_docs_index_lists_the_new_and_changed_documents():
     text = read(DOCS_INDEX)
     for target in ("reference/limitations.md", "reference/reproduce.md", "reference/architecture.md",
-                   "../README.md", "../NOTICE.md", "../data/README.md"):
+                   "../README.md", "../NOTICE.md", "../data/README.md", "phase09_interface/ui_revision.md"):
         assert f"]({target})" in text, target

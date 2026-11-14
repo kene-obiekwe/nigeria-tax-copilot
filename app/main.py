@@ -2,9 +2,11 @@
 
     .venv\\Scripts\\streamlit run app\\main.py
 
-Title and one line, the status strip, the disclaimer, the scope box, the privacy line, example questions
-(while the session has no questions), this session's questions and answers as cards, the question box, and
-a sidebar. Every text is in `app/copy.py`.
+Layout (UI revision, docs/phase09_interface/ui_revision.md, UI-1 to UI-14): the name "Taxy" with the subtitle
+and one line, a short disclaimer line with the snapshot date, one example card with previous and next arrows
+(while the session has no questions), this session's questions and answers as cards, the short privacy line,
+the consent box, the question box. The sidebar holds the page links, About (snapshot, full disclaimer, scope
+and privacy details), today's figures and the profile block. Every text is in `app/copy.py`.
 
 What the script does with a question (Section 2): the personal-data screen, then `open_query()` (admission
 and the receipt row in one call), then a worker thread runs `generate()`; the script waits for it with a
@@ -42,6 +44,7 @@ for _path in (str(ROOT / "python"), str(ROOT)):
         sys.path.insert(0, _path)
 
 from app import cards  # noqa: E402
+from app import chrome  # noqa: E402
 from app import copy as ui  # noqa: E402
 from app.services import Services, get_services  # noqa: E402
 
@@ -71,6 +74,14 @@ def fill_example(text: str) -> None:
     st.session_state["question_box"] = text
 
 
+EXAMPLE_INDEX = "example_index"
+
+
+def step_example(delta: int, total: int) -> None:
+    """Previous or next example card; wraps from the last to the first and back (UI-6)."""
+    st.session_state[EXAMPLE_INDEX] = (st.session_state.get(EXAMPLE_INDEX, 0) + delta) % total
+
+
 def edit_blocked() -> None:
     st.session_state["question_box"] = st.session_state.pop("blocked", "")
 
@@ -79,21 +90,32 @@ def edit_blocked() -> None:
 
 
 def header(services: Services) -> None:
-    st.title(ui.PAGE_TITLE)
+    """The name, the subtitle, one line and the short disclaimer line (UI-1, UI-5)."""
+    st.title(ui.APP_NAME, anchor=False)
+    st.subheader(ui.PAGE_TITLE, anchor=False)
     st.write(ui.TAGLINE)
     date = format_snapshot(services.snapshot)
-    st.caption(ui.STATUS_STRIP.format(date=date) if date else ui.STATUS_STRIP_UNKNOWN)
-    st.info(ui.DISCLAIMER)
+    st.info(ui.DISCLAIMER_LINE.format(date=date) if date else ui.SHORT_DISCLAIMER, icon=":material/info:")
 
 
-def scope_box(first_question: bool) -> None:
-    with st.expander(ui.SCOPE_TITLE, expanded=first_question):
-        st.markdown(ui.SCOPE_TEXT)
+def about(services: Services) -> None:
+    """About in the sidebar: the snapshot, the full disclaimer, what the tool covers and the privacy details.
+    Shown even when the start-up check failed, so the full disclaimer is always on the page."""
+    date = format_snapshot(services.snapshot)
+    with st.sidebar:
+        st.subheader(ui.ABOUT_TITLE, anchor=False)
+        st.caption(ui.STATUS_STRIP.format(date=date) if date else ui.STATUS_STRIP_UNKNOWN)
+        st.caption(ui.DISCLAIMER)
+        with st.expander(ui.SCOPE_TITLE):
+            st.markdown(ui.SCOPE_TEXT)
+        with st.expander(ui.PRIVACY_LINK):
+            st.markdown(ui.PRIVACY_DETAILS)
 
 
 def privacy_line() -> None:
+    """One short line; the full text is in About and, for phones, in the button next to it (UI-8)."""
     st.caption(ui.PRIVACY_LINE)
-    with st.popover(ui.PRIVACY_LINK):
+    with st.popover(ui.PRIVACY_LINK, icon=":material/lock:"):
         st.markdown(ui.PRIVACY_DETAILS)
 
 
@@ -119,26 +141,29 @@ def consent_block() -> None:
 
 
 def examples_block() -> None:
-    st.subheader(ui.EXAMPLES_TITLE)
+    """One example card at a time (UI-6): the question is the button that fills the box; nothing is sent."""
+    examples = load_examples()
+    total = len(examples)
+    index = st.session_state.get(EXAMPLE_INDEX, 0) % total
+    example = examples[index]
+    with st.container(border=True, key="example_card"):
+        st.caption(ui.EXAMPLE_CARD_LABEL.format(topic=example["topic"]))
+        st.button(example["question"], key="example-card", on_click=fill_example, args=(example["question"],),
+                  icon=":material/edit_note:", width="stretch")
+        with st.container(horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"):
+            st.button(ui.EXAMPLE_PREV, key="example-prev", on_click=step_example, args=(-1, total),
+                      icon=":material/arrow_back:", type="tertiary")
+            st.caption(ui.EXAMPLE_COUNTER.format(n=index + 1, total=total), width="content")
+            st.button(ui.EXAMPLE_NEXT, key="example-next", on_click=step_example, args=(1, total),
+                      icon=":material/arrow_forward:", icon_position="right", type="tertiary")
     st.caption(ui.EXAMPLES_HELP)
-    for i, example in enumerate(load_examples()):
-        st.caption(example["topic"])
-        st.button(example["question"], key=f"example-{i}", on_click=fill_example, args=(example["question"],),
-                  use_container_width=True)
 
 
 def sidebar(services: Services, identity, key: str) -> int | None:
-    """The sidebar; returns the questions left today when a count limit applies, else None."""
+    """Today's figures in the sidebar; returns the questions left today when a count limit applies, else None.
+    The signed-in line and the sign-in note are in the profile block (`chrome.profile_block`)."""
     left = None
     with st.sidebar:
-        date = format_snapshot(services.snapshot)
-        if date:
-            st.caption(ui.SIDEBAR_SNAPSHOT.format(date=date))
-        st.caption(ui.SIDEBAR_DISCLAIMER)
-        if identity.signed_in:
-            st.caption(ui.SIDEBAR_SIGNED_IN_AS.format(display=identity.display or ""))
-        elif services.deployment != "local":
-            st.caption(ui.SIDEBAR_SIGN_IN)
         if services.service is not None:
             try:
                 usage = services.service.usage_today(identity, key)
@@ -177,9 +202,9 @@ def render_entries(services: Services, key: str, reader) -> None:
     if entries:
         st.subheader(ui.THIS_SESSION)
     for i, entry in enumerate(entries):
-        with st.chat_message("user"):
+        with st.chat_message("user", avatar=":material/person:"):
             st.write(entry["question"])
-        with st.chat_message("assistant"):
+        with st.chat_message("assistant", avatar=chrome.ICON):
             if entry["kind"] == "card":
                 cards.render_card(st, entry["card"], key=f"card-{i}", reader=reader,
                                   feedback=lambda card, rating, reason: save_feedback(services, key, card, rating, reason))
@@ -240,9 +265,11 @@ def finish_pending(services: Services, box) -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title=ui.PAGE_TITLE, layout="centered", initial_sidebar_state="expanded")
+    chrome.page_setup(ui.BROWSER_TITLE)
     services = get_services()
+    chrome.nav_links()
     header(services)
+    about(services)
     if not services.ok:  # fail closed (Section 3.8): no question box
         st.error(ui.UNAVAILABLE_TEXT)
         return
@@ -252,9 +279,8 @@ def main() -> None:
     entries = st.session_state.setdefault("entries", [])
     pending = st.session_state.get("pending")
     left = sidebar(services, identity, key)
+    chrome.profile_block(services, identity)
 
-    scope_box(first_question=not entries)
-    privacy_line()
     if not entries and pending is None and "blocked" not in st.session_state:
         examples_block()
 
@@ -262,7 +288,8 @@ def main() -> None:
     render_entries(services, key, reader)
     live = st.container()
 
-    # The question box
+    # The question box, with the privacy line and the consent box above it (UI-7)
+    privacy_line()
     if st.session_state.pop("clear_box", False):
         st.session_state["question_box"] = ""
     if "blocked" in st.session_state:  # D-160: a hard block; the only button is "Edit question"
@@ -276,7 +303,8 @@ def main() -> None:
     with st.form("ask", clear_on_submit=False):
         st.text_area(ui.QUESTION_LABEL, key="question_box", max_chars=ui.QUESTION_MAX_CHARS, height=120,
                      placeholder=ui.QUESTION_PLACEHOLDER, disabled=busy)
-        submitted = st.form_submit_button(ui.ASK_BUTTON, disabled=busy or left == 0 or not consented)
+        submitted = st.form_submit_button(ui.ASK_BUTTON, disabled=busy or left == 0 or not consented,
+                                          type="primary", icon=":material/send:")
     st.caption(ui.SINGLE_TURN_LINE)
 
     if busy:

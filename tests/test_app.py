@@ -35,20 +35,24 @@ def file_chunks(ids):
     return T.STORE.chunks(list(ids))
 
 
-def make_services(audit_db, tmp_path, generate_fn=None, *, identity=None, startup=None, **kwargs):
+def make_services(audit_db, tmp_path, generate_fn=None, *, identity=None, startup=None, deployment="local", **kwargs):
     start_id = audit_db.start_id()
     service = AppService(store=audit_db.store, gate=kwargs.pop("gate", None) or __import__("interface.limits", fromlist=["x"]).LocalGate(),
                          start_id=start_id, config=shipped_config(), chunk_hashes=lambda ids: {i: HASHES[i] for i in ids},
                          generate_fn=generate_fn or FakeGenerate(), jsonl_dir=None, close_retry_delay_s=0.01,
                          parity=cards.make_parity(file_chunks))
     ident = identity or LOCAL
-    return Services("local", startup or StartupResult(True, [], start_id, SNAPSHOT), service, file_chunks,
+    return Services(deployment, startup or StartupResult(True, [], start_id, SNAPSHOT), service, file_chunks,
                     (lambda: ident) if isinstance(ident, Identity) else ident, **kwargs)
 
 
 def new_app(services, page=MAIN):
-    at = AppTest.from_file(page, default_timeout=60)
+    """The app from its entry point, as Streamlit runs it; another page is opened with `switch_page`, so the
+    sidebar page links resolve against `app/main.py` (UI revision UI-9)."""
+    at = AppTest.from_file(MAIN, default_timeout=60)
     at.session_state["services"] = services
+    if page != MAIN:
+        at.switch_page(str(Path(page).relative_to(Path(MAIN).parent)))
     return at.run()
 
 
@@ -82,10 +86,11 @@ def test_first_render_shows_the_fixed_texts(audit_db, tmp_path):
     at = new_app(make_services(audit_db, tmp_path))
     assert not at.exception
     shown = texts(at)
-    assert gen.DISCLAIMER in shown                                  # the imported constant, not retyped
+    assert gen.DISCLAIMER in shown                                  # the imported constant, not retyped (About)
     assert ui.STATUS_STRIP.format(date="18 October 2026") in shown  # the snapshot date comes from the database load
     assert ui.SCOPE_TEXT in shown and ui.PRIVACY_LINE in shown and ui.SINGLE_TURN_LINE in shown
-    assert at.title[0].value == ui.PAGE_TITLE
+    assert at.title[0].value == ui.APP_NAME and at.subheader[0].value == ui.PAGE_TITLE           # UI-1
+    assert ui.DISCLAIMER_LINE.format(date="18 October 2026") in [i.value for i in at.main.info]  # UI-5, main page
     assert len(at.text_area) == 1 and at.text_area[0].max_chars == 2000
     assert at.chat_input == []  # deviation: a text area, so that examples and Edit question can fill it
 
@@ -282,14 +287,39 @@ def test_no_service_means_no_question_box(audit_db, tmp_path):
     assert at.text_area == [] and ui.UNAVAILABLE_TEXT in [e.value for e in at.error]
 
 
-def test_examples_fill_the_box_and_send_nothing(audit_db, tmp_path):
+def example_buttons(at):
+    return [b for b in at.button if b.key and b.key.startswith("example-")]
+
+
+def test_one_example_card_at_a_time_with_arrows_that_visit_all_ten_and_wrap(audit_db, tmp_path):
+    """UI-6: one card; Next visits the ten questions of examples.yml in order and wraps; Previous goes back."""
+    from app import main
+    questions = [e["question"] for e in main.load_examples()]
+    at = new_app(make_services(audit_db, tmp_path))
+    assert sorted(b.key for b in example_buttons(at)) == ["example-card", "example-next", "example-prev"]
+    seen = []
+    for n in range(len(questions)):
+        seen.append(at.button(key="example-card").label)
+        assert ui.EXAMPLE_COUNTER.format(n=n + 1, total=10) in texts(at)
+        at.button(key="example-next").click()
+        at.run()
+    assert seen == questions and at.button(key="example-card").label == questions[0]    # wrapped to the first
+    at.button(key="example-prev").click()
+    at.run()
+    assert at.button(key="example-card").label == questions[-1]                           # and back to the last
+    assert not at.exception
+
+
+def test_clicking_the_example_card_fills_the_box_and_sends_nothing(audit_db, tmp_path):
     fake = FakeGenerate()
     at = new_app(make_services(audit_db, tmp_path, fake))
-    examples = [b for b in at.button if b.key and b.key.startswith("example-")]
-    assert len(examples) == 10
-    examples[3].click()
+    for _ in range(3):
+        at.button(key="example-next").click()
+        at.run()
+    card = at.button(key="example-card")
+    card.click()
     at.run()
-    assert at.text_area(key="question_box").value == examples[3].label
+    assert at.text_area(key="question_box").value == card.label
     assert fake.calls == 0 and rows(audit_db, "SELECT count(*) FROM {q}.queries") == [(0,)]
     assert "pending" not in at.session_state
 
@@ -297,7 +327,31 @@ def test_examples_fill_the_box_and_send_nothing(audit_db, tmp_path):
 def test_the_examples_disappear_once_a_question_has_been_asked(audit_db, tmp_path):
     at = new_app(make_services(audit_db, tmp_path))
     at = ask(at, T.E01)
-    assert [b for b in at.button if b.key and b.key.startswith("example-")] == []
+    assert example_buttons(at) == []
+
+
+def test_the_order_above_the_question_box_is_card_privacy_line_consent_box(audit_db, tmp_path):
+    """UI-7 and UI-8: the example card, the short privacy line with its Privacy details button, the consent box,
+    then the question box; the full privacy text is in About too."""
+    at = new_app(make_services(audit_db, tmp_path))
+    order = [node for node in walk(at.main) if node in ("example_card", ui.PRIVACY_LINE, ui.CONSENT_TEXT, "box")]
+    assert order == ["example_card", ui.PRIVACY_LINE, ui.CONSENT_TEXT, "box"]
+    assert ui.PRIVACY_LINK in [p.proto.popover.label for p in at.main.get("popover")]
+    assert ui.PRIVACY_DETAILS in [m.value for m in at.sidebar.markdown]
+    assert ui.SCOPE_TEXT in [m.value for m in at.sidebar.markdown] and ui.SCOPE_TEXT not in [m.value for m in at.main.markdown]
+
+
+def walk(node):
+    """The main area in page order: the example card's key, texts, and "box" for the question box."""
+    for child in getattr(node, "children", {}).values():
+        if getattr(child, "type", None) == "text_area":
+            yield "box"
+        elif getattr(child, "key", None) == "example_card":
+            yield "example_card"
+            continue
+        elif getattr(child, "type", None) in ("markdown", "caption") and isinstance(getattr(child, "value", None), str):
+            yield child.value
+        yield from walk(child)
 
 
 def test_a_blocked_question_is_not_sent_not_stored_and_has_only_edit_question(audit_db, tmp_path):
@@ -798,3 +852,193 @@ def test_every_ui_text_lives_in_copy_py():
 def test_hints_say_how_to_rephrase_not_what_the_law_says():
     for hint in filter(None, ui.HINTS.values()):
         assert not any(word in hint.lower() for word in ("section ", "rate of", "%", "must pay", "exempt from"))
+
+
+# UI revision: page links, profile block, theme and logo (docs/phase09_interface/ui_revision.md) ---------------------
+
+
+def profile_keys(at):
+    return sorted(b.key for b in at.sidebar.button if b.key and b.key.startswith("profile-"))
+
+
+def page_links(at):
+    return [(link.proto.label, link.proto.page) for link in at.sidebar.get("page_link")]
+
+
+def test_the_sidebar_names_the_two_pages(audit_db, tmp_path):
+    """UI-9: "Ask a question" and "My questions" instead of the file names; the same on both pages."""
+    for page in (MAIN, HISTORY):
+        at = new_app(make_services(audit_db, tmp_path), page=page)
+        assert not at.exception
+        labels = [label for label, _ in page_links(at)]
+        assert labels[:2] == [ui.NAV_ASK, ui.HISTORY_TITLE], page
+
+
+def test_the_profile_block_is_hidden_locally_when_signed_out(audit_db, tmp_path):
+    for page in (MAIN, HISTORY):
+        at = new_app(make_services(audit_db, tmp_path), page=page)
+        assert profile_keys(at) == [] and ui.SIDEBAR_SIGN_IN not in texts(at), page
+
+
+def test_signed_out_on_a_hosted_deployment_shows_sign_in_disabled_until_the_hook_is_wired(audit_db, tmp_path):
+    services = make_services(audit_db, tmp_path, identity=ANONYMOUS, deployment="hosted")
+    at = new_app(services)
+    assert not at.exception
+    assert profile_keys(at) == ["profile-sign-in"] and at.button(key="profile-sign-in").disabled
+    assert at.button(key="profile-sign-in").label == ui.SIGN_IN_BUTTON
+    assert ui.SIDEBAR_SIGN_IN in [c.value for c in at.sidebar.caption]               # "switched on in a later phase"
+    calls = []
+    services.extra["sign_in"] = lambda: calls.append("sign_in")                       # Phase 11 wires st.login here
+    at = new_app(services)
+    assert not at.button(key="profile-sign-in").disabled and ui.SIDEBAR_SIGN_IN not in texts(at)
+    at.button(key="profile-sign-in").click()
+    at.run()
+    assert calls == ["sign_in"] and not at.exception
+
+
+def test_signed_in_the_profile_shows_the_session_display_and_its_actions(audit_db, tmp_path):
+    """UI-14 with the fake identity: the display text of this session only, Delete my history, Log out; the
+    display text is not written anywhere (D-163). My questions is not repeated in the profile block (F2)."""
+    audit_db.store.touch_user(KEY_A, "google")
+    signed_out = []
+    for page in (MAIN, HISTORY):
+        at = new_app(history_services(audit_db, tmp_path, KEY_A), page=page)
+        assert not at.exception
+        assert ui.SIDEBAR_SIGNED_IN_AS.format(display="someone@example.test") in [t.value for t in at.sidebar.text]
+        assert profile_keys(at) == ["profile-delete", "profile-log-out"]
+        assert at.button(key="profile-log-out").disabled                                # no sign-out hook yet
+        assert page_links(at)[2:] == []                                                   # only the two page links
+    at = new_app(history_services(audit_db, tmp_path, KEY_A, signed_out))
+    at.button(key="profile-log-out").click()
+    at.run()
+    assert signed_out == [KEY_A] and not at.exception
+    schema = audit_db.names.schema
+    tables = [r[0] for r in rows(audit_db, "SELECT table_name FROM information_schema.tables WHERE table_schema = %s "
+                                           "AND table_type = 'BASE TABLE'", schema)]
+    for table in tables:
+        dump = " ".join(r[0] for r in rows(audit_db, f"SELECT t::text FROM {{q}}.{table} t"))
+        assert "someone@example.test" not in dump, table
+
+
+def test_the_signed_in_email_is_plain_text_never_a_link(audit_db, tmp_path):
+    """F1: the display goes out as a text element, which Streamlit never parses as Markdown, so an email address
+    is not turned into a mailto link. No Markdown or caption element carries it either."""
+    audit_db.store.touch_user(KEY_A, "google")
+    at = new_app(history_services(audit_db, tmp_path, KEY_A))
+    assert not at.exception
+    shown = [t for t in at.sidebar.text if "someone@example.test" in t.value]
+    assert [t.value for t in shown] == [ui.SIDEBAR_SIGNED_IN_AS.format(display="someone@example.test")]
+    assert all(t.proto.DESCRIPTOR.name == "Text" for t in shown)
+    markdown = [m.value for m in at.get("markdown")] + [c.value for c in at.caption]
+    assert not any("someone@example.test" in m or "mailto" in m for m in markdown)
+
+
+def test_delete_from_the_profile_asks_first_then_removes_only_that_users_rows(audit_db, tmp_path):
+    seeded = seed_history(audit_db, tmp_path)
+    signed_out = []
+    at = new_app(history_services(audit_db, tmp_path, KEY_A, signed_out))
+    at.button(key="profile-delete").click()
+    at.run()
+    assert ui.DELETE_CONFIRM in [w.value for w in at.warning]
+    assert rows(audit_db, "SELECT count(*) FROM {q}.queries") == [(2,)]                # nothing deleted before confirming
+    at.button(key="profile-delete-no").click()
+    at.run()
+    assert ui.DELETE_CONFIRM not in [w.value for w in at.warning]                       # Cancel closes the dialog
+    assert rows(audit_db, "SELECT count(*) FROM {q}.queries") == [(2,)]
+    at.button(key="profile-delete").click()
+    at.run()
+    at.button(key="profile-delete-yes").click()
+    at.run()
+    assert not at.exception
+    assert rows(audit_db, "SELECT user_key FROM {q}.queries") == [(KEY_B,)]
+    assert rows(audit_db, "SELECT user_key FROM {q}.users") == [(KEY_B,)]
+    assert signed_out == [KEY_A]
+    assert ui.DELETE_DONE.format(n=1) in [s.value for s in at.sidebar.success]
+    assert seeded[KEY_B][1]                                                             # user B's row is still there
+
+
+def test_answers_use_the_taxy_icon_and_ask_is_the_primary_button(audit_db, tmp_path):
+    """UI-13: chrome only; the card text is the parity-checked text, unchanged."""
+    from app import chrome
+    at = ask(new_app(make_services(audit_db, tmp_path)), T.E01)
+    assert at.form_submit_button[0].proto.type == "primary"
+    avatars = [m.avatar for m in at.chat_message]
+    assert avatars[0] == ":material/person:" and avatars[1]                              # the icon file, served by the app
+    assert Path(chrome.ICON).name == "taxy_icon.svg"
+
+
+CONFIG = ROOT / ".streamlit" / "config.toml"
+
+
+def theme():
+    import tomllib
+    return tomllib.loads(CONFIG.read_text(encoding="utf-8"))
+
+
+def test_the_config_keeps_telemetry_off_offers_light_dark_and_system_and_loads_nothing_from_outside():
+    config = theme()
+    assert config["browser"]["gatherUsageStats"] is False                                # D-161
+    assert config["client"]["toolbarMode"] == "viewer"                                  # UI-4: the theme menu
+    assert config["client"]["showSidebarNavigation"] is False                           # UI-9
+    assert {"light", "dark"} <= set(config["theme"])
+    assert "://" not in CONFIG.read_text(encoding="utf-8")                                 # no theme or font URL
+    sections = [config["theme"], *(config["theme"][m] for m in ("light", "dark"))]
+    assert not [k for section in sections for k in section if k in ("font", "headingFont", "codeFont", "fontFaces",
+                                                                     "base")]      # Streamlit's built-in font only
+
+
+def _luminance(hex_colour):
+    channels = [int(hex_colour[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+    lin = [c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4 for c in channels]
+    return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+
+
+def _ratio(a, b):
+    high, low = sorted((_luminance(a), _luminance(b)), reverse=True)
+    return (high + 0.05) / (low + 0.05)
+
+
+def _blend(fg, bg, alpha):
+    return "#" + "".join(f"{round(alpha * int(fg[i:i + 2], 16) + (1 - alpha) * int(bg[i:i + 2], 16)):02x}"
+                         for i in (1, 3, 5))
+
+
+@pytest.mark.parametrize("mode", ["light", "dark"])
+def test_every_text_colour_pair_of_the_theme_passes_wcag_aa(mode):
+    """Body text, captions (Streamlit draws them at 60% opacity), links and white labels on the primary button,
+    on the main and sidebar backgrounds: at least 4.5:1 (WCAG 2.1 AA). The rendered page was measured too
+    (ui_revision.md, Build)."""
+    main, side = theme()["theme"][mode], theme()["theme"][mode]["sidebar"]
+    pairs = {
+        "text": (main["textColor"], main["backgroundColor"]),
+        "text on secondary": (main["textColor"], main["secondaryBackgroundColor"]),
+        "caption": (_blend(main["textColor"], main["backgroundColor"], 0.6), main["backgroundColor"]),
+        "caption on secondary": (_blend(main["textColor"], main["secondaryBackgroundColor"], 0.6),
+                                 main["secondaryBackgroundColor"]),
+        "link": (main["linkColor"], main["backgroundColor"]),
+        "primary button label": ("#FFFFFF", main["primaryColor"]),
+        "sidebar text": (side["textColor"], side["backgroundColor"]),
+        "sidebar caption": (_blend(side["textColor"], side["backgroundColor"], 0.6), side["backgroundColor"]),
+        "sidebar link": (side["linkColor"], side["backgroundColor"]),
+        "sidebar primary button label": ("#FFFFFF", side["primaryColor"]),
+    }
+    low = {name: round(_ratio(*pair), 2) for name, pair in pairs.items() if _ratio(*pair) < 4.5}
+    assert low == {}
+
+
+@pytest.mark.parametrize("name", ["taxy_logo.svg", "taxy_icon.svg"])
+def test_the_logo_files_are_plain_shapes_with_nothing_loaded_from_outside(name):
+    import re
+    import xml.etree.ElementTree as ET
+    text = (ROOT / "app" / "assets" / name).read_text(encoding="utf-8")
+    root = ET.fromstring(text)
+    tags = {el.tag.split("}")[-1] for el in root.iter()}
+    assert tags <= {"svg", "rect", "path", "circle", "g"}                                # no text, image, script or link
+    assert re.findall(r"https?://[^\"']+", text) == ["http://www.w3.org/2000/svg"]
+    assert "href" not in text and "font" not in text and "style" not in text
+
+
+def test_every_page_sets_the_taxy_icon_and_logo():
+    for path in (ROOT / "app" / "main.py", ROOT / "app" / "pages" / "my_questions.py"):
+        text = path.read_text(encoding="utf-8")
+        assert "chrome.page_setup(" in text and "st.set_page_config" not in text, path.name

@@ -6,7 +6,8 @@ never from a URL, a query parameter or a form field, and the page has no input t
 Opening an answer shows the stored rendered text with chips for its supporting passages and records the
 delivery `shown_in_history`. "Delete my history" asks for confirmation, then calls `erase_user`.
 
-Phase 9 builds and tests this with a fake identity; Phase 11 wires the real sign-in.
+Phase 9 builds and tests this with a fake identity; Phase 11 wires the real sign-in. The page settings, the
+logo, the page links and the profile block come from `app/chrome.py` (UI revision); the page itself is unchanged.
 """
 from __future__ import annotations
 
@@ -22,6 +23,7 @@ for _path in (str(ROOT / "python"), str(ROOT)):
         sys.path.insert(0, _path)
 
 from app import cards  # noqa: E402
+from app import chrome  # noqa: E402
 from app import copy as ui  # noqa: E402
 from app.services import get_services  # noqa: E402
 
@@ -42,14 +44,16 @@ def cancel_delete() -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title=f"{ui.HISTORY_TITLE} · {ui.PAGE_TITLE}", layout="centered")
+    chrome.page_setup(f"{ui.HISTORY_TITLE} · {ui.APP_NAME}")
     services = get_services()
+    chrome.nav_links()
     st.title(ui.HISTORY_TITLE)
     st.info(ui.DISCLAIMER)
     if not services.ok:
         st.error(ui.UNAVAILABLE_TEXT)
         return
     identity = services.identity()
+    chrome.profile_block(services, identity)
     if not identity.signed_in:
         st.info(ui.HISTORY_NOT_SIGNED_IN)
         return

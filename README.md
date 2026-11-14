@@ -1,6 +1,4 @@
-# nigeria-tax-copilot
-
-## Nigerian SME Tax Reference
+# Taxy: Nigerian SME Tax Reference
 
 > **Disclaimer.** This is a research and reference tool. It is **not tax advice** and is not a
 > substitute for a licensed tax professional. It must not be used for an actual filing or compliance

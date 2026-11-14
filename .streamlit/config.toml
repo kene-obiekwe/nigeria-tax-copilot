@@ -1,7 +1,57 @@
-# Streamlit settings for the app (interface design, Section 6.3; D-161).
-# Streamlit's own usage statistics are off. No analytics script is added anywhere.
+# Streamlit settings for the app (interface design, Section 6.3; D-161; UI revision docs/phase09_interface/ui_revision.md).
+# Streamlit's own usage statistics are off. No analytics script is added anywhere. No font, theme or image is
+# loaded from another site: the theme uses Streamlit's built-in font and these colours only.
 [browser]
 gatherUsageStats = false
 
 [client]
-toolbarMode = "minimal"
+# "viewer" keeps the menu at the top right (System, Light, Dark; Print; Record screen) and hides the developer
+# options (rerun, clear cache, deploy). "minimal" would hide the menu and with it the theme choice (UI-4).
+toolbarMode = "viewer"
+# The sidebar shows "Ask a question" and "My questions" as page links instead of the file names (UI-9).
+showSidebarNavigation = false
+
+# Palette A "Forest" (UI-2). Every text colour pair passes WCAG AA (4.5:1) in both modes, including captions,
+# which Streamlit draws at 60% opacity; tests/test_app.py checks the figures from this file.
+[theme]
+baseRadius = "0.6rem"
+buttonRadius = "0.6rem"
+showWidgetBorder = true
+showSidebarBorder = true
+headingFontWeights = [700, 650, 600, 600, 600, 600]
+
+[theme.light]
+primaryColor = "#0A6B4B"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F1F5F2"
+textColor = "#0B1510"
+linkColor = "#0A6B4B"
+borderColor = "#C9D6CF"
+codeBackgroundColor = "#F1F5F2"
+blueColor = "#0A6B4B"
+
+[theme.light.sidebar]
+backgroundColor = "#EDF3EF"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#0B1510"
+borderColor = "#C9D6CF"
+primaryColor = "#0A6B4B"
+linkColor = "#0A6B4B"
+
+[theme.dark]
+primaryColor = "#137A55"
+backgroundColor = "#0F1613"
+secondaryBackgroundColor = "#18231E"
+textColor = "#E4EDE8"
+linkColor = "#6BCFA3"
+borderColor = "#2C3B34"
+codeBackgroundColor = "#18231E"
+blueColor = "#3FAF84"
+
+[theme.dark.sidebar]
+backgroundColor = "#131D18"
+secondaryBackgroundColor = "#1B2822"
+textColor = "#E4EDE8"
+borderColor = "#2C3B34"
+primaryColor = "#137A55"
+linkColor = "#6BCFA3"

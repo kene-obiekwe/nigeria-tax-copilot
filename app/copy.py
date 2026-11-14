@@ -19,7 +19,9 @@ from interface.startup import UNAVAILABLE_TEXT  # noqa: F401  (start-up check fa
 
 # Page (Section 3.1) -------------------------------------------------------------------------------------
 
+APP_NAME = "Taxy"  # the app's name (UI revision UI-1); PAGE_TITLE stays as the subtitle and the export heading
 PAGE_TITLE = "Nigerian SME Tax Reference"
+BROWSER_TITLE = "Taxy · Nigerian SME Tax Reference"
 TAGLINE = ("Answers from the text of the Nigeria Tax Act 2025 and the Nigeria Tax Administration Act 2025, "
            "with the sections they come from.")
 STATUS_STRIP = "Corpus snapshot: {date} · Official Gazette text"
@@ -36,12 +38,11 @@ SCOPE_TEXT = (
     "with a note."
 )
 
-PRIVACY_LINE = (
-    "Do not enter personal or taxpayer details: no names, Tax Identification Numbers, NIN or BVN, account "
-    "numbers, phone numbers or email addresses. Use made-up figures. Your question and the answer are stored "
-    "for 90 days so that answers can be checked, then deleted. Questions are sent to Anthropic and OpenAI to "
-    "find and check the answer."
-)
+# The short line on the main page (UI revision UI-8); the full text is under About in the sidebar and in the
+# "Privacy details" button next to the line.
+PRIVACY_LINE = ("Do not enter personal or taxpayer details: no names, Tax Identification Numbers, NIN or BVN, "
+                "account, phone or email details. Use made-up figures. Full privacy details are under About in "
+                "the sidebar.")
 PRIVACY_LINK = "Privacy details"
 PRIVACY_DETAILS = (
     "**Who runs it.** The public demo is run by Kene Christopher Obiekwe for research and demonstration. To ask "
@@ -89,7 +90,11 @@ EMPTY_QUESTION = "Type a question first."
 # Examples (Section 7.5) ---------------------------------------------------------------------------------
 
 EXAMPLES_TITLE = "Example questions"
-EXAMPLES_HELP = "Click one to put it in the question box. It is not sent until you press Ask."
+EXAMPLES_HELP = "Click the question to put it in the question box. It is not sent until you press Ask."
+EXAMPLE_CARD_LABEL = "Example question · {topic}"
+EXAMPLE_COUNTER = "{n} of {total}"
+EXAMPLE_PREV = "Previous"
+EXAMPLE_NEXT = "Next"
 
 # Answer card (Section 3.2) ------------------------------------------------------------------------------
 
@@ -176,10 +181,16 @@ BLOCKED_NOTICE_TITLE = "Question not sent"
 
 # Sidebar (Sections 3.1, 7.2, 8) ---------------------------------------------------------------------------
 
-SIDEBAR_SNAPSHOT = "Corpus snapshot {date}"
-SIDEBAR_DISCLAIMER = "Research and reference tool. Not tax advice."
+# The short disclaimer line under the title (UI revision UI-5); the full disclaimer heads About and ends every
+# answer.
+SHORT_DISCLAIMER = "Research and reference tool. Not tax advice."
+DISCLAIMER_LINE = "Research and reference tool. Not tax advice. Corpus snapshot {date}, Official Gazette text."
+ABOUT_TITLE = "About"
+NAV_ASK = "Ask a question"
 SIDEBAR_SIGN_IN = "Sign-in is switched on in a later phase. Until then the app is open without sign-in."
 SIDEBAR_SIGNED_IN_AS = "Signed in as {display}"
+SIGN_IN_BUTTON = "Sign in with Google"
+LOG_OUT_BUTTON = "Log out"
 SIDEBAR_TODAY = "Today (West Africa Time)"
 SIDEBAR_QUESTIONS = "Questions asked today: {n}"
 SIDEBAR_LEFT = "Questions left today: {n}"
