@@ -45,9 +45,24 @@ def make_tar(members: dict[str, bytes | tuple[str, str]]) -> bytes:
     "requirements.txt", "requirements.lock.txt", ".streamlit/config.toml", "app/main.py", "python/embed/load.py",
     "data/curated/rates.yml", "data/derived/chunks/chunks.jsonl", "data/derived/section_map.csv",
     "eval/tools/run_exit_check.py", "eval/tools/config_p7.json", "eval/guardrails/config_g2_v4.json",
-    "eval/retrieval/config_v3.json", "eval/retrieval/config_final.json", "eval/retrieval/run_eval.py"])
+    "eval/retrieval/config_v3.json", "eval/retrieval/config_final.json", "eval/retrieval/run_eval.py",
+    "deploy/supabase/prod-ca-2021.crt"])
 def test_files_the_start_up_check_needs_are_allowed(path):
     assert ci.allowed(path, RULES)
+
+
+@pytest.mark.parametrize("path", [
+    "deploy/set_role_password.py", "deploy/apply_sql.py", "deploy/supabase/0001_hosted_roles.sql",
+    "deploy/supabase/0002_revoke_api_roles.sql", "deploy/supabase/prod-ca.crt", ".env.hosted"])
+def test_only_the_ca_certificate_of_deploy_is_allowed(path):
+    """D-211: the public CA certificate goes into the image for verify-full; nothing else from deploy/."""
+    assert not ci.allowed(path, RULES)
+
+
+def test_the_ca_certificate_is_a_public_certificate_with_no_secret_shape():
+    data = (ROOT / "deploy" / "supabase" / "prod-ca-2021.crt").read_bytes()
+    assert data.count(b"-----BEGIN CERTIFICATE-----") == 1
+    assert ci.scan_secrets(data) == []
 
 
 @pytest.mark.parametrize("path", [

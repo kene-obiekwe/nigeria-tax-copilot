@@ -120,6 +120,7 @@ context, so `COPY . .` would otherwise put them in the image (Render "Using secr
 !eval/retrieval/config_final.json
 !eval/retrieval/config_v3.json
 !eval/generation/run_exit_check.py
+!deploy/supabase/prod-ca-2021.crt
 **/__pycache__
 app/review.py
 python/ingest/
@@ -135,6 +136,10 @@ the vectors are in the database, and a question is embedded by the API), `data/d
 `tests/`, every evaluation question set (sealed or spent), the review packs, `app/review.py` (D-158) and
 `python/ingest/`. In the scratch build the start-up check passed with exactly this list. The first attempt
 without `config_v3.json` failed `live_config`, which shows the check catches a missing file.
+
+**Added in B3a (D-211):** `deploy/supabase/prod-ca-2021.crt`, Supabase's public CA certificate (one certificate,
+no key), so that the hosted app can connect with `sslmode=verify-full` (Section 2.2). It is the only file of
+`deploy/` in the image; the SQL files and the password script stay out.
 
 ### 1.4 User, layout and command
 
@@ -419,6 +424,17 @@ asks for, reads out, prints or logs a value. The random secrets are made by Kene
 in as a Docker build argument. **Dedicated keys:** Kene creates separate API keys for the hosted service at
 both providers, so revoking one (kill switch K3) leaves local work untouched and hosted usage can be told
 apart. The start-up check stays presence-only (`hosted_checks`). No new check reads a value.
+
+**The form of Render's `DATABASE_URL` (D-211).** The same form as `DATABASE_URL_APP` in `.env.hosted` (the user name
+`taxy_app_login.<project-ref>`, the session pooler on port 5432), with the certificate's absolute path inside the
+image, because the app's working directory is not the repository root there:
+
+```
+postgresql://taxy_app_login.<project-ref>:<app password>@aws-0-eu-central-1.pooler.supabase.com:5432/postgres?sslmode=verify-full&sslrootcert=/srv/taxy/deploy/supabase/prod-ca-2021.crt
+```
+
+The laptop lines keep the relative path `deploy/supabase/prod-ca-2021.crt` (commands run from the repository
+root). Kene types the value into Render; the build never sees it.
 
 ## 5. Sign-in (D-199)
 
@@ -765,8 +781,9 @@ never creates an account, signs in, or sees a value.
 | B2 | Owner steps through `with_hosted.py`: A4 to A6 load (Section 2.4); `migrate.py` and `--check`; `0001_hosted_roles.sql`; `grant_review.py --apply`; `0002_revoke_api_roles.sql`; Data API settings confirmed off (Kene, dashboard); Kene runs `set_role_password.py` twice and types `DATABASE_URL_APP` and `REVIEW_DATABASE_URL`; `check_hosted_db.py` clean; the start-up check as `taxy_app_login` from the laptop; **gate (a)** (Section 9.1); the pg_cron jobs | build, Kene for passwords | NEW "Phase 11 Build 2", high | $0 |
 | — | **Stop: overseer reviews the B2 record (privileges, parity)** | overseer | | |
 | K2 | Kene creates the two hosted API keys at the providers and stores them in the password manager | Kene, web pages | — | $0 |
-| K3 | Render: (1) sign in at render.com; (2) New, then Web Service, then connect GitHub and allow this repository only; (3) name, region Frankfurt, branch `main`, runtime Docker, plan Free; (4) Advanced: health check path `/_stcore/health`, Auto-Deploy **Off**; (5) Environment: add the four secret variables of Section 4, typed by you; (6) create, then copy the URL into chat (not a secret) | Kene, web page | — | $0 |
+| K3 | Render: (1) sign in at render.com; (2) New, then Web Service, then connect GitHub and allow this repository only; (3) name, region Frankfurt, branch `main`, runtime Docker, plan Free; (4) Advanced: health check path `/_stcore/health`, Auto-Deploy **Off**; (5) Environment: add the four secret variables of Section 4, typed by you (`DATABASE_URL` ends with `?sslmode=verify-full&sslrootcert=/srv/taxy/deploy/supabase/prod-ca-2021.crt`, D-211); (6) create, then copy the URL into chat (not a secret) | Kene, web page | — | $0 |
 | K4 | Google OAuth (Section 5.1, steps 1 to 8), with the URL from K3 | Kene, web page | — | $0 |
+| B3a | The CA certificate in the image (D-211): the allow-list line, its tests, the image rebuilt and `check_image.py --worktree` clean; the form of Render's `DATABASE_URL` (Section 4) | build | Build 2, before K3 | $0 |
 | B3 | Free sign-in test locally (localhost redirect; the "Sign in with Google" and "Log out" buttons call `st.login` and `st.logout`; checks `iss` and `sub`, the key, the sidebar); Render "Deploy a specific commit" (Kene clicks); `check_live_start.py`; consent and the page read in the browser; whether an environment save restarts the service; cold start measured on the live URL from a quiet start, with a screenshot every 10 s of Render's loading page, the start-up notice and the ready page (Section 3.4), and the notice wording rule applied; no question asked | build, Kene clicks | Build 2, second prompt | $0 |
 | — | **Stop: overseer review; Kene's go for the paid gate** | overseer, Kene | | |
 | G | Gate (b) and (c), spend under the $0.40 cap (Section 9) | build drives the browser; Kene signs in | NEW "Phase 11 gate", high | about $0.10 (worst $0.19) |
@@ -1006,7 +1023,7 @@ facts and error types only.
 | `0001_hosted_roles.sql` | the first run failed and changed nothing (deviation 2); applied after the fix |
 | `grant_review.py --apply` | the reviewer group role can SELECT the four corpus tables (deviation 3) |
 | `0002_revoke_api_roles.sql` | applied. Before it, `anon`, `authenticated` and `service_role` held SELECT, INSERT, UPDATE and DELETE on all four corpus tables with RLS off (as Section 2.6 expected). After it, none of them holds any privilege on them, and RLS is on |
-| Data API settings off (Section 2.6, Kene in the dashboard) | **not yet confirmed** at the time of writing |
+| Data API settings off (Section 2.6, Kene in the dashboard) | confirmed by Kene on 2026-11-14, after the B2 commit: "Enable Data API" off and saved; the "automatically expose new tables" setting is not shown while the Data API is off, so nothing can be exposed through it |
 | Passwords | Kene ran `set_role_password.py` for `app` and `review` and typed `DATABASE_URL_APP` and `REVIEW_DATABASE_URL` (deviation 5) |
 | `check_hosted_db.py` | clean (no finding) before and after migration 4 |
 | App login probe | reads 400 chunks and 400 embeddings; a `DELETE` on `corpus_loads` is refused (`InsufficientPrivilege`) |
@@ -1060,7 +1077,8 @@ The test split reproduces the G1 record (30 of 30, 22 of 30, 0.8556). The larges
    Kene reset the database password in the dashboard and retyped the owner line.
 
 **Left for B3 and later:** the first `job_run_details` row; the certificate inside the image (the allow-list of
-Section 1.3 does not name `deploy/supabase/`) and the `sslrootcert` path in Render's `DATABASE_URL`; whether the
+Section 1.3 does not name `deploy/supabase/`) and the `sslrootcert` path in Render's `DATABASE_URL` (both settled
+by D-211 in B3a: the certificate is allow-listed, and the path is `/srv/taxy/deploy/supabase/prod-ca-2021.crt`); whether the
 dashboard's "Enforce SSL on incoming connections" is on (not tested here).
 
 **Fixes at the overseer review** (approved with fixes, 2026-11-14): `eval/reproduce/reproduce.py` row A7 expected
@@ -1069,3 +1087,15 @@ the text `audit-schema/1`, so a clean-clone A7 failed after migration 4. It now 
 (`audit-schema/2`, versions 1 to 4). The current-state descriptions of the label and the app functions were
 updated in the interface design and in the `python/audit/__init__.py`, `store.py` and `startup.py` docstrings;
 dated records were left as they are.
+
+### B3a (2026-11-14, session "Phase 11 Build 2")
+
+D-211: `deploy/supabase/prod-ca-2021.crt` added to the `.dockerignore` allow-list (Section 1.3), and the form of
+Render's `DATABASE_URL` recorded (Section 4 and step K3). New static tests: the certificate is allowed, no other
+file of `deploy/` (nor `.env.hosted`) is, and the file holds one certificate with no secret-shaped string.
+
+| Measurement | Result |
+|---|---|
+| `check_image.py --worktree` | clean (checks 1 to 5 found nothing); 729,052,248 bytes; 75 files under `/srv/taxy` (the 73 of B1 plus the certificate and audit migration 4, D-210) |
+| Inside the image | `/srv/taxy/deploy/supabase/prod-ca-2021.crt` is present (1,367 bytes, readable by the app user) and is the only file under `/srv/taxy/deploy` |
+| Image | removed after the check |

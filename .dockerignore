@@ -17,6 +17,8 @@
 !eval/retrieval/config_final.json
 !eval/retrieval/config_v3.json
 !eval/generation/run_exit_check.py
+# Supabase's public CA certificate, for sslmode=verify-full on the hosted database (D-211). Only this file of deploy/.
+!deploy/supabase/prod-ca-2021.crt
 **/__pycache__
 app/review.py
 python/ingest/
