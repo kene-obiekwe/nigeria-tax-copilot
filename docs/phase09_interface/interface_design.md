@@ -313,18 +313,20 @@ of the image by `.dockerignore` (Phase 11).
   exposed by mistake.
 - Numbered SQL migrations in `python/audit/migrations/`: `0001_audit.sql` (tables, indexes, trigger, RLS
   on), `0002_functions.sql` (the write and read functions), `0003_roles.sql` (group roles, the `PUBLIC`
-  revoke and default privileges, the grants and the reviewer policies). The
+  revoke and default privileges, the grants and the reviewer policies), and, since D-210 (Phase 11),
+  `0004_schema_versions.sql` (the `schema_versions()` function the start-up check reads the recorded
+  migrations through, so the app role needs no table privilege). The
   runner `python/audit/migrate.py` applies each pending file in one transaction and records its version,
   name and sha256 in `audit.schema_migrations`. If an applied file's sha256 no longer matches its record, it
   stops with an error: an applied migration is never edited, and a change is a new numbered file.
-- The schema version label is **`audit-schema/1`**. `app_starts` records it, and the start-up check
-  requires it.
+- The schema version label is **`audit-schema/2`** (versions 1 to 4; `audit-schema/1` was versions 1 to 3
+  until D-210). `app_starts` records it, and the start-up check requires it.
 - The migrations are templates with three names: the schema (`audit`, or a throwaway `test_audit_<hex>`
   in tests), the app role and the reviewer role. That lets tests run against the live container without
   touching the real schema, as the existing `db_schema` fixture does.
 - `load.py` and `schema.sql` are not changed. The corpus tables stay in `public`.
 
-### 4.3 Schema (`audit-schema/1`)
+### 4.3 Schema (`audit-schema/1`; unchanged in `audit-schema/2`)
 
 Names are unqualified. The migration runner sets `search_path` to the target schema.
 
@@ -343,7 +345,7 @@ CREATE TABLE app_starts (
     deployment        text NOT NULL CHECK (deployment IN ('local', 'hosted', 'test')),
     git_commit        text,
     app_version       text NOT NULL,              -- 'app/1'
-    audit_schema      text NOT NULL,              -- 'audit-schema/1'
+    audit_schema      text NOT NULL,              -- 'audit-schema/2' (D-210)
     python_version    text NOT NULL,
     streamlit_version text NOT NULL,
     config_file       text NOT NULL,              -- 'eval/tools/config_p7.json'
@@ -627,7 +629,7 @@ answer anyway (option b) is simpler but gives up (i) and (ii).
   tables and the functions.
 - **`taxy_app` (group role, NOLOGIN):** no table privileges. `EXECUTE` only on: `record_start`,
   `open_query`, `close_query`, `add_delivery`, `add_feedback`, `touch_user`, `user_history`,
-  `erase_user`, `spend_since`, `count_since`.
+  `erase_user`, `spend_since`, `count_since`, and (migration 4, D-210) `schema_versions`.
 - **`taxy_review` (group role, NOLOGIN):** `SELECT` on every audit table and on the corpus tables.
   Nothing else: no `EXECUTE` on any audit function.
 - **Owner-only maintenance:** `purge_expired` and `erase_query` are executable by the owner alone. No
@@ -656,7 +658,9 @@ reviewer role can read.
 5. `GRANT SELECT ON ALL TABLES IN SCHEMA <audit> TO <reviewer role>`, and the reviewer policy on each
    table.
 
-A later migration that adds a function grants it explicitly, or it stays owner-only.
+A later migration that adds a function grants it explicitly, or it stays owner-only. Migration 4
+(`0004_schema_versions.sql`, D-210) grants `EXECUTE` on `schema_versions()` to the app role, which makes
+eleven app functions.
 
 Every function is `SECURITY DEFINER` with `SET search_path` pinned to the audit schema and `pg_catalog`:
 
@@ -671,6 +675,7 @@ Every function is `SECURITY DEFINER` with `SET search_path` pinned to the audit 
 | `user_history(user_key, limit, offset)` | that user's final rows: reference, time, question, status, rendered, cited passages |
 | `erase_user(user_key)` | deletes the user and, by cascade, their queries and children (app role: the signed-in user's own "Delete my history") |
 | `spend_since(ts)`, `count_since(kind, key, ts)` | the figures the limit display needs |
+| `schema_versions()` (migration 4, D-210) | the version, name and sha256 of each recorded migration, and nothing else: the start-up check reads them through it |
 | `purge_expired(days)` (owner only) | refuses `days` below 90 (D-159); deletes `queries` older than `days` (children by cascade), users not seen for `days` with no queries left, and `admission_counts` older than 400 days |
 | `erase_query(query_id)` (owner only) | deletes one query and, by cascade, its children: the deletion request for an anonymous question (Section 6.1) |
 

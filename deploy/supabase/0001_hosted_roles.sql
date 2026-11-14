@@ -24,7 +24,8 @@ BEGIN
             EXECUTE format('CREATE ROLE %I LOGIN', v_pair[1]);
         END IF;
         -- Every attribute is set on every run, so a role that already exists is brought to the same state.
-        EXECUTE format('ALTER ROLE %I LOGIN INHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS '
+        -- No NOSUPERUSER: Supabase's owner is not a superuser and may not name that attribute (a new role is never one).
+        EXECUTE format('ALTER ROLE %I LOGIN INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS '
                        'CONNECTION LIMIT %s', v_pair[1], v_pair[3]);
         EXECUTE format('GRANT %I TO %I', v_pair[2], v_pair[1]);
         -- `vector` and `<=>` live in schema `extensions` on Supabase (Section 2.3): set the path explicitly.

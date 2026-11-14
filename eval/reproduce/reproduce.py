@@ -304,8 +304,10 @@ def check_a6(ctx: Ctx) -> Row:
 def check_a7(ctx: Ctx) -> Row:
     code1, out1 = ctx.run(ctx.script("python/audit/migrate.py"), ctx.root)
     code2, out2 = ctx.run(ctx.script("python/audit/migrate.py", "--check"), ctx.root)
-    ok = code1 == 0 and code2 == 0 and "audit-schema/1" in out2 and "problem" not in out2.replace("problems;", "")
-    return Row("A7", "audit\\migrate.py, then --check", "audit-schema/1 applied; check exit 0",
+    from audit.migrate import SCHEMA_LABEL  # noqa: PLC0415 - the current label, not a copy of it (D-210)
+
+    ok = code1 == 0 and code2 == 0 and SCHEMA_LABEL in out2 and "problem" not in out2.replace("problems;", "")
+    return Row("A7", "audit\\migrate.py, then --check", f"{SCHEMA_LABEL} applied; check exit 0",
                f"migrate exit {code1} ({tail(out1)}); check exit {code2} ({tail(out2)})", PASS if ok else FAIL)
 
 

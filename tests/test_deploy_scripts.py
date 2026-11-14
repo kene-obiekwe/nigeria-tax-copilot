@@ -541,7 +541,7 @@ def test_the_default_config_names_the_designs_roles_tables_and_functions():
     cfg = chd.Config()
     assert (cfg.app_login, cfg.review_login) == ("taxy_app_login", "taxy_review_login")
     assert cfg.api_roles == ("anon", "authenticated", "service_role", "authenticator")
-    assert len(cfg.audit_tables) == 11 and len(cfg.corpus_tables) == 4 and len(cfg.app_functions) == 10
+    assert len(cfg.audit_tables) == 11 and len(cfg.corpus_tables) == 4 and len(cfg.app_functions) == 11
     assert (cfg.app_connection_limit, cfg.review_connection_limit) == (20, 3)
 
 

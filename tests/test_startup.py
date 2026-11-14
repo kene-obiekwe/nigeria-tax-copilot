@@ -43,7 +43,7 @@ def test_the_check_passes_on_the_repository(audit_db):
     assert (result.ok, result.problems) == (True, [])
     assert result.start_id is not None and result.corpus_snapshot == startup.EXPECTED_SNAPSHOT
     assert start_rows(audit_db) == [("ok", [], "eval/tools/config_p7.json", startup.P7_CONFIG_SHA256, "2026-10-18",
-                                     "audit-schema/1", "app/1")]
+                                     "audit-schema/2", "app/1")]
 
 
 def test_the_shipped_config_names_config_p7():

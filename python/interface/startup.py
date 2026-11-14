@@ -16,7 +16,7 @@ embedding call):
 4. Corpus (`corpus_*`, `disclaimer_date`): the latest corpus load has snapshot 2026-10-18 and the
    committed chunk and register hashes; 400 chunks; 400 embeddings for text-embedding-3-small at 1,536
    dimensions; the date inside DISCLAIMER is the snapshot date.
-5. `audit_*`: the audit schema is at audit-schema/1, the recorded migration hashes match the files and
+5. `audit_*`: the audit schema is at audit-schema/2, the recorded migration hashes match the files and
    the privileges are as designed (`migrate.check_schema`).
 6. Hosted only: `hosted_env` (the key variables are present: checked by name and non-empty only, never
    read out) and `hosted_jsonl` (no JSONL directory is configured).

@@ -11,7 +11,7 @@ What it must find:
 1. `anon`, `authenticated`, `service_role` and `authenticator` hold **no** privilege on schema `audit`, on any
    audit table, sequence or function, or on the four corpus tables (and their sequences).
 2. Row-level security is on for all 15 tables: the 11 audit tables and the 4 corpus tables.
-3. The app login (`taxy_app_login`) can execute exactly the ten audit functions, can SELECT the four corpus
+3. The app login (`taxy_app_login`) can execute exactly the eleven audit functions (D-210 adds schema_versions), can SELECT the four corpus
    tables, and holds nothing else on any table, sequence or function of `audit` or `public`.
 4. The review login (`taxy_review_login`) holds SELECT only (on the 11 audit tables and the 4 corpus tables),
    no EXECUTE on any audit function, and nothing else.

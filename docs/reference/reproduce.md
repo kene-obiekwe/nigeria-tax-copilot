@@ -73,7 +73,7 @@ To compare the passed and skipped test counts of the Phase 10 commit, add
 | A4 | `eval\reproduce\fetch_assets.py` | the two cache files are present with the sha256 recorded in `assets.json` |
 | A5 | `check_pgvector.py` | the database in the container has the pgvector extension |
 | A6 | load with the cache-only client | 400 chunks and 400 vectors loaded from the cache, none from the API, and the load record's chunk hash equals the one from A3 |
-| A7 | `audit\migrate.py`, then `--check` | the `audit-schema/1` migrations apply and the schema check exits 0 |
+| A7 | `audit\migrate.py`, then `--check` | the migrations of the current label (`audit-schema/2`, versions 1 to 4 since D-210) apply and the schema check exits 0 |
 | A8 | the start-up check, keys empty | the app's start-up check passes with no API key and records one `ok` row |
 | A9 | retrieval recompute, dev and test, in memory | every question's ranked ids equal the committed `dev_final.json` and `test_final.json`; test hit@5 30 of 30, hit@1 22 of 30, MRR 0.8556; no query vector from the API |
 | A10 | `python -m pytest -q` (without `TAXY_RUN_API_TESTS`) | the test suite has 0 failures |

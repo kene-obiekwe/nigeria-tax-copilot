@@ -32,12 +32,14 @@ sys.path.insert(0, str(ROOT / "python"))
 from psycopg import sql  # noqa: E402
 
 MIGRATIONS_DIR = Path(__file__).with_name("migrations")
-SCHEMA_LABEL = "audit-schema/1"
-SCHEMA_VERSIONS = {SCHEMA_LABEL: (1, 2, 3)}  # the migrations that make up each schema label
+SCHEMA_LABEL = "audit-schema/2"
+# The migrations that make up each schema label. audit-schema/2 adds schema_versions() (migration 4, D-210).
+SCHEMA_VERSIONS = {"audit-schema/1": (1, 2, 3), SCHEMA_LABEL: (1, 2, 3, 4)}
 DEFAULT_SCHEMA, DEFAULT_APP_ROLE, DEFAULT_REVIEW_ROLE = "audit", "taxy_app", "taxy_review"
 TABLES = ("schema_migrations", "app_starts", "users", "queries", "passages", "claims", "gaps", "computations",
           "deliveries", "feedback", "admission_counts")
-# The app role's ten functions (Section 4.6), as PostgreSQL prints their input argument types.
+# The app role's eleven functions (Section 4.6, plus schema_versions from migration 4, D-210), as PostgreSQL
+# prints their input argument types.
 APP_FUNCTIONS = (
     "record_start(text, text, text, text, text, text, text, text, bigint, date, text, text, text[])",
     "open_query(uuid, bigint, text, text, text, text, numeric, jsonb)",
@@ -49,6 +51,7 @@ APP_FUNCTIONS = (
     "erase_user(text)",
     "spend_since(timestamp with time zone)",
     "count_since(text, text, timestamp with time zone)",
+    "schema_versions()",
 )
 # Owner-only: the two maintenance functions and the two helpers.
 OWNER_ONLY_FUNCTIONS = ("purge_expired(integer)", "erase_query(uuid)", "wat_day_start(timestamp with time zone)",
@@ -131,6 +134,17 @@ def applied(conn, schema: str) -> dict[int, tuple[str, str]]:
     return {version: (name, digest) for version, name, digest in rows}
 
 
+def recorded_versions(conn, schema: str) -> dict[int, tuple[str, str]] | None:
+    """{version: (name, sha256)} read through `<schema>.schema_versions()` (migration 4, D-210), so a role that
+    may execute that function but holds no table privilege (the hosted app login) can read them. None when the
+    function does not exist (a schema older than migration 4). The runner's own owner path uses `applied()`."""
+    if conn.execute("SELECT to_regprocedure(%s)", (f"{schema}.schema_versions()",)).fetchone()[0] is None:
+        return None
+    rows = conn.execute(sql.SQL("SELECT version, name, sha256 FROM {}.schema_versions()")
+                        .format(sql.Identifier(schema))).fetchall()
+    return {version: (name, digest) for version, name, digest in rows}
+
+
 def _check_applied(done: dict[int, tuple[str, str]], files: list[Migration]) -> None:
     by_version = {m.version: m for m in files}
     for version, (name, digest) in sorted(done.items()):
@@ -194,13 +208,16 @@ def check_schema(conn, names: Names = Names(), label: str = SCHEMA_LABEL,
         files = {m.version: m for m in migration_files(directory)}
     except MigrationError:
         return ["audit_migration_files"]
-    done = applied(conn, names.schema)
-    if not done:
+    if conn.execute("SELECT to_regclass(%s)", (f"{names.schema}.schema_migrations",)).fetchone()[0] is None:
+        return ["audit_schema_missing"]
+    # Read through the function, never the table: the app role holds no audit table privilege (D-210).
+    done = recorded_versions(conn, names.schema)
+    if done == {}:
         return ["audit_schema_missing"]
     problems = []
-    if tuple(sorted(done)) != SCHEMA_VERSIONS[label]:
+    if done is None or tuple(sorted(done)) != SCHEMA_VERSIONS[label]:
         problems.append("audit_schema_version")
-    if any(v not in files or files[v].sha256 != digest for v, (_, digest) in done.items()):
+    if any(v not in files or files[v].sha256 != digest for v, (_, digest) in (done or {}).items()):
         problems.append("audit_migration_sha256")
     funcs = function_privileges(conn, names.schema, ("public", names.app_role, names.review_role))
     if any(may["public"] for _, _, may in funcs):

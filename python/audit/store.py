@@ -65,7 +65,8 @@ class _Calls:
 
 
 class AuditStore(_Calls):
-    """The app role's ten functions."""
+    """The app role's functions: the ten the app calls (`schema_versions()`, the eleventh, is read by the
+    start-up check through `migrate.check_schema`, D-210)."""
 
     def record_start(self, *, deployment: str, git_commit: str | None, app_version: str, audit_schema: str,
                      python_version: str, streamlit_version: str, config_file: str, config_sha256: str,

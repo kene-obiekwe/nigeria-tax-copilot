@@ -230,7 +230,8 @@ audit and page connections. That is well under the pool size of 15 per role and 
 
 **TLS:** the connection string carries `sslmode=verify-full` with `sslrootcert` pointing to Supabase's CA
 certificate. That file is public, downloaded by Kene from the dashboard and committed as
-`deploy/supabase/prod-ca.crt`. If `verify-full` cannot connect through the pooler, the build records the
+`deploy/supabase/prod-ca-2021.crt` (the dashboard's file name; this design first said `prod-ca.crt`, see the
+Build 2 record). If `verify-full` cannot connect through the pooler, the build records the
 error and uses `sslmode=require`. That rule is fixed here; the build does not choose. In the dashboard,
 "Enforce SSL on incoming connections" is turned on.
 
@@ -979,3 +980,92 @@ only); the early start-up notice (`app/main.py`, `STARTUP_NOTICE` in `app/copy.p
 `verify-full` TLS works through the pooler, that the shared pooler accepts the custom login roles, pg_cron on the
 Free plan, and what `st.user` carries for Google. Streamlit does not check the identity token's `exp` by itself
 (its documentation says so); Kene decided (D-209, option (a)) that the 30-day cookie of Section 5.4 is the only expiry.
+
+### Build 2 (B2, 2026-11-14, session "Phase 11 Build 2")
+
+Every owner step ran from the laptop through `with_hosted.py owner`, one step per command, over `sslmode=verify-full`.
+No paid call was made ($0) and no question was asked through the app. Kene typed every password; no build session
+saw one. The probes in this step used throwaway scripts outside the repository that print yes/no answers, catalog
+facts and error types only.
+
+**The design's unverified items, now settled:**
+
+| Item | Result |
+|---|---|
+| `verify-full` TLS through the shared pooler (Section 2.2) | **works** with `deploy/supabase/prod-ca-2021.crt`. Two controls are refused: a public CA bundle in place of Supabase's CA, and the pooler's IP address as the host (the certificate names `*.pooler.supabase.com`). The `require` fallback is not used. All three lines of `.env.hosted` end in `?sslmode=verify-full&sslrootcert=deploy/supabase/prod-ca-2021.crt` (a relative path, so the commands run from the repository root) |
+| The shared pooler accepts the custom login roles (Section 2.2) | **yes**: `taxy_app_login.<ref>` and `taxy_review_login.<ref>` connect through the session pooler on port 5432; `current_user` is the login role and `search_path` is `public, extensions` for both |
+| pg_cron on the Free plan, and the job role (Section 7) | **available**: `pg_cron` 1.6.4 is installed (schema `pg_catalog`). Both jobs are scheduled and run as `postgres` (`cron.timezone` is GMT). The first `job_run_details` row (2026-11-15, 01:00 UTC) is still to be read, in B3. The by-hand fallback is not needed |
+| pgvector and server versions (Section 2.3) | hosted `vector` 0.8.2 in schema `extensions`, PostgreSQL 17.11 (aarch64); local `vector` 0.8.7. Parity is proved by gate (a), not by the versions |
+
+**What ran, and the results:**
+
+| Step | Result |
+|---|---|
+| A4 to A6 (Section 2.4) | A4: both caches match `assets.json`. A5: pgvector 0.8.2. A6: 400 chunks, 400 vectors from the cache, 0 from the API, `chunks_sha256` equal to the committed file. 3 of 3 pass |
+| `migrate.py`, then `--check` | versions 1 to 3 applied, `audit-schema/1`. After the D-210 fix (deviation 6), version 4 applied: `audit-schema/2`, versions 1 to 4 |
+| `0001_hosted_roles.sql` | the first run failed and changed nothing (deviation 2); applied after the fix |
+| `grant_review.py --apply` | the reviewer group role can SELECT the four corpus tables (deviation 3) |
+| `0002_revoke_api_roles.sql` | applied. Before it, `anon`, `authenticated` and `service_role` held SELECT, INSERT, UPDATE and DELETE on all four corpus tables with RLS off (as Section 2.6 expected). After it, none of them holds any privilege on them, and RLS is on |
+| Data API settings off (Section 2.6, Kene in the dashboard) | **not yet confirmed** at the time of writing |
+| Passwords | Kene ran `set_role_password.py` for `app` and `review` and typed `DATABASE_URL_APP` and `REVIEW_DATABASE_URL` (deviation 5) |
+| `check_hosted_db.py` | clean (no finding) before and after migration 4 |
+| App login probe | reads 400 chunks and 400 embeddings; a `DELETE` on `corpus_loads` is refused (`InsufficientPrivilege`) |
+| Start-up check as `taxy_app_login` (deployment `test`) | the first run failed with `audit_schema` (start id 1; deviation 6). After the fix: `ok`, no problems, snapshot 2026-10-18, corpus load 1 (start id 2) |
+| Gate (a), `compare_retrieval.py` (Section 9.1) | **pass** (table below) |
+| A9 against Supabase, as `taxy_app_login` | pass: dev 20 questions, hit@5 20, hit@1 16, MRR 0.8792, 0 differences; test 30 questions, hit@5 30, hit@1 22, MRR 0.8556, 0 differences; 0 query vectors from the API |
+| pg_cron jobs (Section 7) | job 1 `taxy-purge-90d`, `0 1 * * *`, `select audit.purge_expired(90)`; job 2 `taxy-cron-history`, `30 1 * * *`, the `job_run_details` clean-up of Section 7; both active, user `postgres` |
+
+**Gate (a):** hosted and local retrieval for every dev and test question, with query vectors from the published cache.
+
+| Configuration | Split | Questions | Differences (whole ranked list, depth 20) | Largest distance difference | Hosted hit@5, hit@1, MRR |
+|---|---|---|---|---|---|
+| `config_final.json` | dev | 20 | 0 | 5.38e-07 | 20, 16, 0.8792 |
+| `config_final.json` | test | 30 | 0 | 5.37e-07 | 30, 22, 0.8556 |
+| `config_v3.json` | dev | 20 | 0 | 5.38e-07 | 20, 16, 0.8792 |
+| `config_v3.json` | test | 30 | 0 | 5.37e-07 | 30, 22, 0.8556 |
+
+The test split reproduces the G1 record (30 of 30, 22 of 30, 0.8556). The largest distance difference is below the
+1e-6 warning level. No result file was written.
+
+**Deviations from the design and the prompt:**
+
+1. **The certificate file is `deploy/supabase/prod-ca-2021.crt`**, the name the dashboard gives it, not
+   `prod-ca.crt`. Section 2.2 now says so. No code named the file.
+2. **`0001_hosted_roles.sql`: `NOSUPERUSER` removed** (approved by the overseer). Supabase's `postgres` role is not a
+   superuser, and PostgreSQL 17 refuses any `ALTER ROLE` that names the attribute: "Only roles with the SUPERUSER
+   attribute may alter roles with the SUPERUSER attribute." A role created by a role that is not a superuser is never
+   one, and `check_hosted_db.py` still fails on `rolsuper`. The local tests run as a superuser, which is why they
+   passed. Every other statement of the file passed first in a rolled-back trial.
+3. **`grant_review.py --apply` ran before `0001_hosted_roles.sql`**: it was chained after the failed first run. It
+   is harmless: it is the design's next step and grants the reviewer group role SELECT on the four corpus tables
+   only. From then on every owner step ran as its own command.
+4. **TLS for the first owner steps.** The owner line named no `sslmode` at first, so the steps up to and including
+   `0002` ran with `PGSSLMODE=verify-full` and `PGSSLROOTCERT` (the certificate) set in the shell, which libpq
+   applies when the line names no mode. Kene then added the settings to all three lines.
+5. **The password commands ran through the owner line**: `with_hosted.py owner deploy\set_role_password.py app`
+   (and `review`), as the script's own usage says. Run directly, as the prompt wrote them, the script would have
+   connected to the local container.
+6. **The start-up check could not run as the app login (D-210).** `migrate.check_schema()` read
+   `audit.schema_migrations` directly, and the app role, by design, holds no audit table privilege ("permission
+   denied for table schema_migrations"). Locally the app runs as the owner, so nothing had caught it. Kene approved
+   D-210 (option 1, 2026-11-14), a scope extension into `python/audit` (`migrate.py` and the new migration only):
+   migration `0004_schema_versions.sql` adds `audit.schema_versions()` (owner-owned, SECURITY DEFINER, search path
+   pinned, returning version, name and sha256 only, EXECUTE for the app group role only). `check_schema()` reads the
+   versions through it; `migrate.py`'s own owner path still reads the table; `APP_FUNCTIONS` has eleven entries; the
+   label is `audit-schema/2` (versions 1 to 4). Every other check in `check_schema()` is unchanged, including "the app
+   role has no audit table privilege". New tests run `check_schema()` as the app role on the local container.
+   Migration 4 was applied locally and on Supabase. The failed `app_starts` row (start id 1, deployment `test`,
+   outcome `failed`, problems `audit_schema`) holds no personal data and goes with the 90-day purge.
+7. **The owner password was reset once.** The first connection was refused ("password authentication failed");
+   Kene reset the database password in the dashboard and retyped the owner line.
+
+**Left for B3 and later:** the first `job_run_details` row; the certificate inside the image (the allow-list of
+Section 1.3 does not name `deploy/supabase/`) and the `sslrootcert` path in Render's `DATABASE_URL`; whether the
+dashboard's "Enforce SSL on incoming connections" is on (not tested here).
+
+**Fixes at the overseer review** (approved with fixes, 2026-11-14): `eval/reproduce/reproduce.py` row A7 expected
+the text `audit-schema/1`, so a clean-clone A7 failed after migration 4. It now compares against
+`migrate.SCHEMA_LABEL` (D-210 scope), and `reproduce.py --profile clean --only A7` passes locally
+(`audit-schema/2`, versions 1 to 4). The current-state descriptions of the label and the app functions were
+updated in the interface design and in the `python/audit/__init__.py`, `store.py` and `startup.py` docstrings;
+dated records were left as they are.

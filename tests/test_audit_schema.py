@@ -197,7 +197,7 @@ def test_an_edited_applied_file_stops_the_runner(audit_db, tmp_path):
 
 def test_migration_files_must_be_numbered_without_gaps(tmp_path):
     shutil.copytree(mig.MIGRATIONS_DIR, tmp_path / "m")
-    (tmp_path / "m" / "0005_late.sql").write_text("SELECT 1;", encoding="utf-8")
+    (tmp_path / "m" / "0006_late.sql").write_text("SELECT 1;", encoding="utf-8")
     with pytest.raises(MigrationError, match="no gap"):
         mig.migration_files(tmp_path / "m")
 
@@ -357,11 +357,11 @@ def test_a_role_with_no_grants_cannot_execute_any_function_and_sees_nothing(audi
                 conn.execute(null_call(audit_db.names.schema, signature))
 
 
-def test_the_app_role_executes_exactly_its_ten_functions(audit_db):
+def test_the_app_role_executes_exactly_its_eleven_functions(audit_db):
     names = audit_db.names
     privileges = mig.function_privileges(audit_db.conn, names.schema, (names.app_role,))
     assert sorted(sig for sig, _, may in privileges if may[names.app_role]) == sorted(APP_FUNCTIONS)
-    assert len(APP_FUNCTIONS) == 10
+    assert len(APP_FUNCTIONS) == 11
     with as_role(names.app_role) as conn:
         assert conn.execute(f"SELECT {names.schema}.spend_since(now() - interval '1 day')").fetchone()[0] == 0
         for signature in ("purge_expired(integer)", "erase_query(uuid)"):
@@ -369,6 +369,32 @@ def test_the_app_role_executes_exactly_its_ten_functions(audit_db):
                 conn.execute(null_call(names.schema, signature))
         with pytest.raises(errors.InsufficientPrivilege):
             conn.execute(f"SELECT {names.schema}.purge_expired(400)")
+
+
+def test_check_schema_passes_as_the_app_role_which_cannot_read_the_migrations_table(audit_db):
+    """The hosted app runs as its own login with no audit table privilege (D-210): the start-up check's schema
+    check must pass as that role, reading the versions through schema_versions(), not the table."""
+    names = audit_db.names
+    with as_role(names.app_role) as conn:
+        with pytest.raises(errors.InsufficientPrivilege):
+            conn.execute(f"SELECT version FROM {audit_db.q('schema_migrations')}")
+        assert mig.check_schema(conn, names) == []
+        assert mig.recorded_versions(conn, names.schema) == mig.applied(audit_db.conn, names.schema)
+
+
+def test_schema_versions_returns_version_name_and_sha256_only_and_the_reviewer_cannot_call_it(audit_db):
+    names = audit_db.names
+    cur = audit_db.conn.execute(f"SELECT * FROM {names.schema}.schema_versions()")
+    assert [c.name for c in cur.description] == ["version", "name", "sha256"]
+    assert cur.fetchall() == [(m.version, m.name, m.sha256) for m in mig.migration_files()]
+    with as_role(names.review_role) as conn, pytest.raises(errors.InsufficientPrivilege):
+        conn.execute(f"SELECT * FROM {names.schema}.schema_versions()")
+
+
+def test_check_schema_reports_a_schema_without_the_versions_function(audit_db):
+    audit_db.conn.execute(f"DROP FUNCTION {audit_db.names.schema}.schema_versions()")
+    problems = mig.check_schema(audit_db.conn, audit_db.names)
+    assert "audit_schema_version" in problems and "audit_app_grants" in problems
 
 
 def test_every_function_is_security_definer_with_a_pinned_search_path(audit_db):
@@ -380,10 +406,10 @@ def test_public_cannot_execute_any_function_including_one_added_later(audit_db, 
     names = audit_db.names
     copy = tmp_path / "migrations"
     shutil.copytree(mig.MIGRATIONS_DIR, copy)
-    (copy / "0004_later.sql").write_text(
+    (copy / "0005_later.sql").write_text(
         "CREATE FUNCTION later_one() RETURNS integer LANGUAGE sql SECURITY DEFINER "
         "SET search_path = {{schema}}, pg_catalog, pg_temp AS 'SELECT 1';\n", encoding="utf-8")
-    assert mig.migrate(audit_db.conn, names, copy) == [4]
+    assert mig.migrate(audit_db.conn, names, copy) == [5]
     privileges = mig.function_privileges(audit_db.conn, names.schema, ("public", names.app_role, names.review_role))
     assert "later_one()" in [sig for sig, _, _ in privileges]
     assert not any(may["public"] for _, _, may in privileges)

@@ -350,9 +350,11 @@ def test_a6_check_uses_the_injected_loader_and_the_chunks_hash(tmp_path, monkeyp
 
 
 def test_a7_pass_and_fail_paths(tmp_path):
-    ok = ctx_for(tmp_path, (0, "applied: [1, 2, 3]"), (0, "schema audit: audit-schema/1; versions [1, 2, 3]"))
+    ok = ctx_for(tmp_path, (0, "applied: [4]"), (0, "schema audit: audit-schema/2; versions [1, 2, 3, 4]"))
     assert rp.check_a7(ok).status == rp.PASS
-    assert rp.check_a7(ctx_for(tmp_path, (1, "error"), (0, "audit-schema/1"))).status == rp.FAIL
+    old = ctx_for(tmp_path, (0, "applied"), (0, "schema audit: audit-schema/1; versions [1, 2, 3]"))
+    assert rp.check_a7(old).status == rp.FAIL                     # the label before D-210 no longer passes
+    assert rp.check_a7(ctx_for(tmp_path, (1, "error"), (0, "audit-schema/2"))).status == rp.FAIL
     assert rp.check_a7(ctx_for(tmp_path, (0, "applied"), (1, "schema audit: problems\n  problem: x"))).status == rp.FAIL
     assert rp.check_a7(ctx_for(tmp_path, (0, "applied"), (0, "schema audit: problems"))).status == rp.FAIL
 
